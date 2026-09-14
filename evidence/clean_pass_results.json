@@ -1,6 +1,6 @@
 {
   "scope": "Offline reference engine; synthetic inputs; NOT Android, provider integration, live operations, human expert quality, or backtest proof",
-  "time_utc": "2026-09-14T16:13:58.266208+00:00",
+  "time_utc": "2026-09-14T17:00:37.202238+00:00",
   "python": "3.12.13",
   "source_sha256": "666b4873f4b86b4b0b04762093ed53c9b2e404bdeb1fea72390017ab0ed4cbf5",
   "tests_run": 50,
@@ -72,35 +72,35 @@
       "id": "tests.test_core.C01Numbers.test_negative_margin",
       "domain": "C01Numbers",
       "status": "PASS",
-      "seconds": 0.00017,
+      "seconds": 0.000118,
       "detail": ""
     },
     {
       "id": "tests.test_core.C01Numbers.test_nonfinite_and_bool",
       "domain": "C01Numbers",
       "status": "PASS",
-      "seconds": 0.00021,
+      "seconds": 0.000268,
       "detail": ""
     },
     {
       "id": "tests.test_core.C01Numbers.test_price_return_6m_hand",
       "domain": "C01Numbers",
       "status": "PASS",
-      "seconds": 4.6e-05,
+      "seconds": 4.8e-05,
       "detail": ""
     },
     {
       "id": "tests.test_core.C01Numbers.test_trailing_per_financial",
       "domain": "C01Numbers",
       "status": "PASS",
-      "seconds": 3.2e-05,
+      "seconds": 3.1e-05,
       "detail": ""
     },
     {
       "id": "tests.test_core.C01Numbers.test_trailing_per_loss_making",
       "domain": "C01Numbers",
       "status": "PASS",
-      "seconds": 3.3e-05,
+      "seconds": 3.2e-05,
       "detail": ""
     },
     {
@@ -114,133 +114,133 @@
       "id": "tests.test_core.C01Numbers.test_trailing_per_zero_eps",
       "domain": "C01Numbers",
       "status": "PASS",
-      "seconds": 3e-05,
+      "seconds": 3.5e-05,
       "detail": ""
     },
     {
       "id": "tests.test_core.C01Numbers.test_yoy_hand",
       "domain": "C01Numbers",
       "status": "PASS",
-      "seconds": 9.4e-05,
+      "seconds": 3.4e-05,
       "detail": ""
     },
     {
       "id": "tests.test_core.C01Numbers.test_yoy_negative_base",
       "domain": "C01Numbers",
       "status": "PASS",
-      "seconds": 0.000112,
+      "seconds": 4.9e-05,
       "detail": ""
     },
     {
       "id": "tests.test_core.C01Numbers.test_yoy_zero_base",
       "domain": "C01Numbers",
       "status": "PASS",
-      "seconds": 4.2e-05,
+      "seconds": 3.8e-05,
       "detail": ""
     },
     {
       "id": "tests.test_core.C02Accounting.test_currency_mismatch",
       "domain": "C02Accounting",
       "status": "PASS",
-      "seconds": 7e-05,
+      "seconds": 6.7e-05,
       "detail": ""
     },
     {
       "id": "tests.test_core.C02Accounting.test_dash_is_missing_not_zero",
       "domain": "C02Accounting",
       "status": "PASS",
-      "seconds": 0.000116,
+      "seconds": 3.7e-05,
       "detail": ""
     },
     {
       "id": "tests.test_core.C02Accounting.test_direct_quarter_not_double_subtract",
       "domain": "C02Accounting",
       "status": "PASS",
-      "seconds": 6e-05,
+      "seconds": 4.9e-05,
       "detail": ""
     },
     {
       "id": "tests.test_core.C02Accounting.test_issuer_mismatch",
       "domain": "C02Accounting",
       "status": "PASS",
-      "seconds": 5.5e-05,
+      "seconds": 4.9e-05,
       "detail": ""
     },
     {
       "id": "tests.test_core.C02Accounting.test_money_leading_signs",
       "domain": "C02Accounting",
       "status": "PASS",
-      "seconds": 4.2e-05,
+      "seconds": 4.1e-05,
       "detail": ""
     },
     {
       "id": "tests.test_core.C02Accounting.test_period_mismatch",
       "domain": "C02Accounting",
       "status": "PASS",
-      "seconds": 5.4e-05,
+      "seconds": 6.9e-05,
       "detail": ""
     },
     {
       "id": "tests.test_core.C02Accounting.test_scope_mismatch",
       "domain": "C02Accounting",
       "status": "PASS",
-      "seconds": 4.7e-05,
+      "seconds": 9.9e-05,
       "detail": ""
     },
     {
       "id": "tests.test_core.C02Accounting.test_ytd_needs_previous",
       "domain": "C02Accounting",
       "status": "PASS",
-      "seconds": 6.2e-05,
+      "seconds": 5.7e-05,
       "detail": ""
     },
     {
       "id": "tests.test_core.C02Accounting.test_ytd_subtraction",
       "domain": "C02Accounting",
       "status": "PASS",
-      "seconds": 6.1e-05,
+      "seconds": 5.8e-05,
       "detail": ""
     },
     {
       "id": "tests.test_core.C02Accounting.test_zero_real_money",
       "domain": "C02Accounting",
       "status": "PASS",
-      "seconds": 3.6e-05,
+      "seconds": 3.8e-05,
       "detail": ""
     },
     {
       "id": "tests.test_core.C03TimeAndIdentity.test_alphanumeric",
       "domain": "C03TimeAndIdentity",
       "status": "PASS",
-      "seconds": 5.7e-05,
+      "seconds": 4.5e-05,
       "detail": ""
     },
     {
       "id": "tests.test_core.C03TimeAndIdentity.test_future_information_excluded",
       "domain": "C03TimeAndIdentity",
       "status": "PASS",
-      "seconds": 5.2e-05,
+      "seconds": 4.7e-05,
       "detail": ""
     },
     {
       "id": "tests.test_core.C03TimeAndIdentity.test_identity_sql_rejected",
       "domain": "C03TimeAndIdentity",
       "status": "PASS",
-      "seconds": 4.7e-05,
+      "seconds": 5.6e-05,
       "detail": ""
     },
     {
       "id": "tests.test_core.C03TimeAndIdentity.test_integer_identity_rejected",
       "domain": "C03TimeAndIdentity",
       "status": "PASS",
-      "seconds": 3.8e-05,
+      "seconds": 3.9e-05,
       "detail": ""
     },
     {
       "id": "tests.test_core.C03TimeAndIdentity.test_leading_zero",
       "domain": "C03TimeAndIdentity",
       "status": "PASS",
-      "seconds": 3.6e-05,
+      "seconds": 3.5e-05,
       "detail": ""
     },
     {
@@ -254,105 +254,105 @@
       "id": "tests.test_core.C04RankProperties.test_all_ties_50",
       "domain": "C04RankProperties",
       "status": "PASS",
-      "seconds": 0.000234,
+      "seconds": 0.000178,
       "detail": ""
     },
     {
       "id": "tests.test_core.C04RankProperties.test_all_zero_weights",
       "domain": "C04RankProperties",
       "status": "PASS",
-      "seconds": 5.9e-05,
+      "seconds": 6.1e-05,
       "detail": ""
     },
     {
       "id": "tests.test_core.C04RankProperties.test_default_weights_sum100",
       "domain": "C04RankProperties",
       "status": "PASS",
-      "seconds": 3.4e-05,
+      "seconds": 4.4e-05,
       "detail": ""
     },
     {
       "id": "tests.test_core.C04RankProperties.test_filter_does_not_recompute",
       "domain": "C04RankProperties",
       "status": "PASS",
-      "seconds": 0.000188,
+      "seconds": 0.000193,
       "detail": ""
     },
     {
       "id": "tests.test_core.C04RankProperties.test_hand_midrank_tie",
       "domain": "C04RankProperties",
       "status": "PASS",
-      "seconds": 0.00015,
+      "seconds": 9.6e-05,
       "detail": ""
     },
     {
       "id": "tests.test_core.C04RankProperties.test_lone_stock_no_fake_50",
       "domain": "C04RankProperties",
       "status": "PASS",
-      "seconds": 7.4e-05,
+      "seconds": 0.000173,
       "detail": ""
     },
     {
       "id": "tests.test_core.C04RankProperties.test_missing_not_in_denominator",
       "domain": "C04RankProperties",
       "status": "PASS",
-      "seconds": 8.4e-05,
+      "seconds": 8.8e-05,
       "detail": ""
     },
     {
       "id": "tests.test_core.C04RankProperties.test_negative_weights",
       "domain": "C04RankProperties",
       "status": "PASS",
-      "seconds": 5.3e-05,
+      "seconds": 5.4e-05,
       "detail": ""
     },
     {
       "id": "tests.test_core.C04RankProperties.test_no_active_metrics",
       "domain": "C04RankProperties",
       "status": "PASS",
-      "seconds": 3.9e-05,
+      "seconds": 4e-05,
       "detail": ""
     },
     {
       "id": "tests.test_core.C04RankProperties.test_per_low_is_high_score",
       "domain": "C04RankProperties",
       "status": "PASS",
-      "seconds": 7.9e-05,
+      "seconds": 8.1e-05,
       "detail": ""
     },
     {
       "id": "tests.test_core.C04RankProperties.test_permutation_invariant_200",
       "domain": "C04RankProperties",
       "status": "PASS",
-      "seconds": 0.135237,
+      "seconds": 0.135913,
       "detail": ""
     },
     {
       "id": "tests.test_core.C04RankProperties.test_unknown_metric",
       "domain": "C04RankProperties",
       "status": "PASS",
-      "seconds": 0.000126,
+      "seconds": 8e-05,
       "detail": ""
     },
     {
       "id": "tests.test_core.C05Missingness.test_all_missing_0_100",
       "domain": "C05Missingness",
       "status": "PASS",
-      "seconds": 0.000122,
+      "seconds": 0.000108,
       "detail": ""
     },
     {
       "id": "tests.test_core.C05Missingness.test_missing_interval_hand",
       "domain": "C05Missingness",
       "status": "PASS",
-      "seconds": 0.000115,
+      "seconds": 0.000185,
       "detail": ""
     },
     {
       "id": "tests.test_core.C05Missingness.test_one_metric_cannot_be_strong_score",
       "domain": "C05Missingness",
       "status": "PASS",
-      "seconds": 0.000132,
+      "seconds": 0.000102,
       "detail": ""
     },
     {
@@ -366,56 +366,56 @@
       "id": "tests.test_core.C06Decision.test_qualified_buy_review",
       "domain": "C06Decision",
       "status": "PASS",
-      "seconds": 6.7e-05,
+      "seconds": 8.1e-05,
       "detail": ""
     },
     {
       "id": "tests.test_core.C07Evidence.test_valid_quote_structure",
       "domain": "C07Evidence",
       "status": "PASS",
-      "seconds": 5.9e-05,
+      "seconds": 6.8e-05,
       "detail": ""
     },
     {
       "id": "tests.test_core.C08Updates.test_price_revalues_without_forced_prose",
       "domain": "C08Updates",
       "status": "PASS",
-      "seconds": 0.000163,
+      "seconds": 6.4e-05,
       "detail": ""
     },
     {
       "id": "tests.test_core.C09Persistence.test_duplicate_event_once",
       "domain": "C09Persistence",
       "status": "PASS",
-      "seconds": 0.021543,
+      "seconds": 0.012306,
       "detail": ""
     },
     {
       "id": "tests.test_core.C10SecurityAndRights.test_official_https_allowed",
       "domain": "C10SecurityAndRights",
       "status": "PASS",
-      "seconds": 0.000139,
+      "seconds": 0.000126,
       "detail": ""
     },
     {
       "id": "tests.test_core.C11BudgetAndRetry.test_cost_hand_hypothetical",
       "domain": "C11BudgetAndRetry",
       "status": "PASS",
-      "seconds": 6.7e-05,
+      "seconds": 6.1e-05,
       "detail": ""
     },
     {
       "id": "tests.test_core.C12PresentationContract.test_exact_four_slots",
       "domain": "C12PresentationContract",
       "status": "PASS",
-      "seconds": 5.4e-05,
+      "seconds": 5e-05,
       "detail": ""
     },
     {
       "id": "tests.test_core.C12PresentationContract.test_metric_order_is_id_based",
       "domain": "C12PresentationContract",
       "status": "PASS",
-      "seconds": 0.000117,
+      "seconds": 4.4e-05,
       "detail": ""
     }
   ]

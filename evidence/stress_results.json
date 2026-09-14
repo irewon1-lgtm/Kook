@@ -1,5 +1,5 @@
 {
-  "time_utc": "2026-09-14T16:14:02.949944+00:00",
+  "time_utc": "2026-09-14T17:00:41.683376+00:00",
   "scope": "Synthetic local reference model, not current market data, production throughput, model quality or investment returns",
   "total": 8,
   "passed": 8,
@@ -8,7 +8,7 @@
       "id": "S01",
       "scenario": "3,500 synthetic stocks / 35,000 metric ranking",
       "status": "PASS",
-      "seconds": 0.14939,
+      "seconds": 0.131904,
       "detail": {
         "synthetic_issuers": 3500,
         "synthetic_metric_values": 14000,
@@ -21,7 +21,7 @@
       "id": "S02",
       "scenario": "Independent exact rational arithmetic oracle",
       "status": "PASS",
-      "seconds": 0.007332,
+      "seconds": 0.00735,
       "detail": {
         "independent_pairwise_oracle": true,
         "issuers": 60,
@@ -34,7 +34,7 @@
       "id": "S03",
       "scenario": "Forced crash at 137/500 and process reopening",
       "status": "PASS",
-      "seconds": 1.640568,
+      "seconds": 1.207783,
       "detail": {
         "failure_at": 137,
         "before": 136,
@@ -47,7 +47,7 @@
       "id": "S04",
       "scenario": "One invalid issuer among 500",
       "status": "PASS",
-      "seconds": 1.282907,
+      "seconds": 1.170963,
       "detail": {
         "valid_published": 499,
         "isolated_failure": [
@@ -60,7 +60,7 @@
       "id": "S05",
       "scenario": "10,000 repeated event deliveries",
       "status": "PASS",
-      "seconds": 0.979293,
+      "seconds": 1.348638,
       "detail": {
         "deliveries": 10000,
         "unique_jobs": 500,
@@ -71,7 +71,7 @@
       "id": "S06",
       "scenario": "Concurrent budget reservation",
       "status": "PASS",
-      "seconds": 0.114807,
+      "seconds": 0.18446,
       "detail": {
         "parallel_threads": 16,
         "requests": 100,
@@ -85,7 +85,7 @@
       "id": "S07",
       "scenario": "Out-of-order revisions cannot overwrite newest",
       "status": "PASS",
-      "seconds": 0.046996,
+      "seconds": 0.067061,
       "detail": {
         "delivery_order": [
           1,
@@ -108,7 +108,7 @@
       "id": "S08",
       "scenario": "Synthetic cost differential calculation",
       "status": "PASS",
-      "seconds": 1.7e-05,
+      "seconds": 0.000132,
       "detail": {
         "synthetic_inputs_only": true,
         "not_provider_price_quote": true,
