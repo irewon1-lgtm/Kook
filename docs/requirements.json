@@ -1,0 +1,819 @@
+{
+  "version": "KR-V3",
+  "count": 68,
+  "status_meaning": "Specification coverage is not implementation completion. Reference tests apply only to listed reference logic.",
+  "requirements": [
+    {
+      "id": "KR-001",
+      "group": "범위",
+      "user_requirements": [
+        1,
+        4
+      ],
+      "requirement": "실제 명단 기반 KOSPI/KOSDAQ 보통주를 유효일별 관리한다. ETF·ETN·워런트·우선주·SPAC는 별도 제외 목록으로 남긴다.",
+      "acceptance_evidence": "master snapshot, included/excluded codes with reason and effective dates",
+      "current_status": "FUTURE_END_TO_END_TEST_REQUIRED"
+    },
+    {
+      "id": "KR-002",
+      "group": "식별",
+      "user_requirements": [
+        1,
+        4
+      ],
+      "requirement": "종목코드는 선행 0과 영문을 보존하는 6자리 문자열로 취급한다. DART 8자리 corp_code와 섞지 않는다.",
+      "acceptance_evidence": "alphanumeric/leading-zero regression and issuer crosswalk",
+      "current_status": "FUTURE_END_TO_END_TEST_REQUIRED"
+    },
+    {
+      "id": "KR-003",
+      "group": "보존",
+      "user_requirements": [
+        1,
+        4
+      ],
+      "requirement": "미국 앱과 기존 운영환경을 수정하지 않는 새 작업영역을 만든다.",
+      "acceptance_evidence": "worktree/path isolation and change list",
+      "current_status": "FUTURE_END_TO_END_TEST_REQUIRED"
+    },
+    {
+      "id": "KR-004",
+      "group": "화면",
+      "user_requirements": [
+        1,
+        4
+      ],
+      "requirement": "WebView 래퍼가 아닌 Kotlin Compose Android 화면으로 만든다.",
+      "acceptance_evidence": "source inspection plus signed/debug APK identified and device screenshots",
+      "current_status": "FUTURE_END_TO_END_TEST_REQUIRED"
+    },
+    {
+      "id": "KR-005",
+      "group": "제작",
+      "user_requirements": [
+        1,
+        4
+      ],
+      "requirement": "처음에 최소 앱의 실제 빌드 가능 여부를 확인한다.",
+      "acceptance_evidence": "toolchain version, build log, produced APK hash",
+      "current_status": "FUTURE_END_TO_END_TEST_REQUIRED"
+    },
+    {
+      "id": "KR-006",
+      "group": "대상",
+      "user_requirements": [
+        1,
+        4
+      ],
+      "requirement": "거래정지·신규상장·정정·상장폐지 이력을 숨기지 않는다.",
+      "acceptance_evidence": "searchable warning states and point-in-time universe tests",
+      "current_status": "FUTURE_END_TO_END_TEST_REQUIRED"
+    },
+    {
+      "id": "KR-007",
+      "group": "10지표",
+      "user_requirements": [
+        1,
+        3
+      ],
+      "requirement": "Q01 52주 고점 대비 낙폭를 metric_registry.json의 공식·단위·예외로 구현한다.",
+      "acceptance_evidence": "actual issuer component sources + independent arithmetic reconciliation + Q01 edge cases",
+      "current_status": "REFERENCE_LOGIC_TESTED; REAL_ISSUER_NOT_TESTED"
+    },
+    {
+      "id": "KR-008",
+      "group": "10지표",
+      "user_requirements": [
+        1,
+        3
+      ],
+      "requirement": "Q02 12~1개월 모멘텀를 metric_registry.json의 공식·단위·예외로 구현한다.",
+      "acceptance_evidence": "actual issuer component sources + independent arithmetic reconciliation + Q02 edge cases",
+      "current_status": "REFERENCE_LOGIC_TESTED; REAL_ISSUER_NOT_TESTED"
+    },
+    {
+      "id": "KR-009",
+      "group": "10지표",
+      "user_requirements": [
+        1,
+        3
+      ],
+      "requirement": "Q03 분기 매출 YoY를 metric_registry.json의 공식·단위·예외로 구현한다.",
+      "acceptance_evidence": "actual issuer component sources + independent arithmetic reconciliation + Q03 edge cases",
+      "current_status": "REFERENCE_LOGIC_TESTED; REAL_ISSUER_NOT_TESTED"
+    },
+    {
+      "id": "KR-010",
+      "group": "10지표",
+      "user_requirements": [
+        1,
+        3
+      ],
+      "requirement": "Q04 분기 영업이익률를 metric_registry.json의 공식·단위·예외로 구현한다.",
+      "acceptance_evidence": "actual issuer component sources + independent arithmetic reconciliation + Q04 edge cases",
+      "current_status": "REFERENCE_LOGIC_TESTED; REAL_ISSUER_NOT_TESTED"
+    },
+    {
+      "id": "KR-011",
+      "group": "10지표",
+      "user_requirements": [
+        1,
+        3
+      ],
+      "requirement": "Q05 영업이익률 YoY 변화를 metric_registry.json의 공식·단위·예외로 구현한다.",
+      "acceptance_evidence": "actual issuer component sources + independent arithmetic reconciliation + Q05 edge cases",
+      "current_status": "REFERENCE_LOGIC_TESTED; REAL_ISSUER_NOT_TESTED"
+    },
+    {
+      "id": "KR-012",
+      "group": "10지표",
+      "user_requirements": [
+        1,
+        3
+      ],
+      "requirement": "Q06 TTM FCF Margin를 metric_registry.json의 공식·단위·예외로 구현한다.",
+      "acceptance_evidence": "actual issuer component sources + independent arithmetic reconciliation + Q06 edge cases",
+      "current_status": "REFERENCE_LOGIC_TESTED; REAL_ISSUER_NOT_TESTED"
+    },
+    {
+      "id": "KR-013",
+      "group": "10지표",
+      "user_requirements": [
+        1,
+        3
+      ],
+      "requirement": "Q07 TTM Revenue/EV를 metric_registry.json의 공식·단위·예외로 구현한다.",
+      "acceptance_evidence": "actual issuer component sources + independent arithmetic reconciliation + Q07 edge cases",
+      "current_status": "REFERENCE_LOGIC_TESTED; REAL_ISSUER_NOT_TESTED"
+    },
+    {
+      "id": "KR-014",
+      "group": "10지표",
+      "user_requirements": [
+        1,
+        3
+      ],
+      "requirement": "Q08 희석주식수 YoY를 metric_registry.json의 공식·단위·예외로 구현한다.",
+      "acceptance_evidence": "actual issuer component sources + independent arithmetic reconciliation + Q08 edge cases",
+      "current_status": "REFERENCE_LOGIC_TESTED; REAL_ISSUER_NOT_TESTED"
+    },
+    {
+      "id": "KR-015",
+      "group": "10지표",
+      "user_requirements": [
+        1,
+        3
+      ],
+      "requirement": "Q09 TTM ROIC를 metric_registry.json의 공식·단위·예외로 구현한다.",
+      "acceptance_evidence": "actual issuer component sources + independent arithmetic reconciliation + Q09 edge cases",
+      "current_status": "REFERENCE_LOGIC_TESTED; REAL_ISSUER_NOT_TESTED"
+    },
+    {
+      "id": "KR-016",
+      "group": "10지표",
+      "user_requirements": [
+        1,
+        3
+      ],
+      "requirement": "Q10 순차입금/TTM EBITDA를 metric_registry.json의 공식·단위·예외로 구현한다.",
+      "acceptance_evidence": "actual issuer component sources + independent arithmetic reconciliation + Q10 edge cases",
+      "current_status": "REFERENCE_LOGIC_TESTED; REAL_ISSUER_NOT_TESTED"
+    },
+    {
+      "id": "KR-017",
+      "group": "계산·순위",
+      "user_requirements": [
+        1,
+        2,
+        3
+      ],
+      "requirement": "연결/별도·통화·회계기간·공개시점을 검증하고 정정 이력을 보존한다.",
+      "acceptance_evidence": "wrong-scope, foreign currency, future release and corrected filing tests",
+      "current_status": "REFERENCE_LOGIC_TESTED; REAL_ISSUER_NOT_TESTED"
+    },
+    {
+      "id": "KR-018",
+      "group": "계산·순위",
+      "user_requirements": [
+        1,
+        2,
+        3
+      ],
+      "requirement": "직접 분기값과 누적값을 구분하고 네 분기를 중복 없이 합산한다.",
+      "acceptance_evidence": "direct quarter and cumulative transition reconciled to annual cash flow",
+      "current_status": "REFERENCE_LOGIC_TESTED; REAL_ISSUER_NOT_TESTED"
+    },
+    {
+      "id": "KR-019",
+      "group": "계산·순위",
+      "user_requirements": [
+        1,
+        2,
+        3
+      ],
+      "requirement": "분할·유상증자·배당조정 정책을 가격·주식수·차트에 일치시킨다.",
+      "acceptance_evidence": "corporate action reference fixture and provider adjustment evidence",
+      "current_status": "REFERENCE_LOGIC_TESTED; REAL_ISSUER_NOT_TESTED"
+    },
+    {
+      "id": "KR-020",
+      "group": "계산·순위",
+      "user_requirements": [
+        1,
+        2,
+        3
+      ],
+      "requirement": "금융업 부적합 지표를 0으로 넣지 않고 별도 모델로 분석한다.",
+      "acceptance_evidence": "bank/insurer fixture and no financial-industrial peer mixing",
+      "current_status": "REFERENCE_LOGIC_TESTED; REAL_ISSUER_NOT_TESTED"
+    },
+    {
+      "id": "KR-021",
+      "group": "계산·순위",
+      "user_requirements": [
+        1,
+        2,
+        3
+      ],
+      "requirement": "검색과 필터는 기존 점수를 바꾸지 않고, 사용자 선택 지표만 사용한다.",
+      "acceptance_evidence": "filter invariance and exact selected-metric state persistence",
+      "current_status": "REFERENCE_LOGIC_TESTED; REAL_ISSUER_NOT_TESTED"
+    },
+    {
+      "id": "KR-022",
+      "group": "계산·순위",
+      "user_requirements": [
+        1,
+        2,
+        3
+      ],
+      "requirement": "비교 모집단·가중치·가격 기준일·정책 해시를 공개한다.",
+      "acceptance_evidence": "deterministic snapshot replay",
+      "current_status": "REFERENCE_LOGIC_TESTED; REAL_ISSUER_NOT_TESTED"
+    },
+    {
+      "id": "KR-023",
+      "group": "계산·순위",
+      "user_requirements": [
+        1,
+        2,
+        3
+      ],
+      "requirement": "동률은 평균 등수, 유효 표본 미달은 확대 규칙 또는 미평가로 처리한다.",
+      "acceptance_evidence": "ties, singleton, small peers, missing-denominator tests",
+      "current_status": "REFERENCE_LOGIC_TESTED; REAL_ISSUER_NOT_TESTED"
+    },
+    {
+      "id": "KR-024",
+      "group": "계산·순위",
+      "user_requirements": [
+        1,
+        2,
+        3
+      ],
+      "requirement": "결측값은 원인과 점수 가능 범위로 표시하고 회사별 재가중하지 않는다.",
+      "acceptance_evidence": "score lower/upper examples and no single-datum buy signal",
+      "current_status": "REFERENCE_LOGIC_TESTED; REAL_ISSUER_NOT_TESTED"
+    },
+    {
+      "id": "KR-025",
+      "group": "계산·순위",
+      "user_requirements": [
+        1,
+        2,
+        3
+      ],
+      "requirement": "매수·매도 검토 점수는 독립 축으로 계산하고 위험·오래된 근거가 우선한다.",
+      "acceptance_evidence": "conflict, missing-evidence, stale report and critical-risk decision cases",
+      "current_status": "REFERENCE_LOGIC_TESTED; REAL_ISSUER_NOT_TESTED"
+    },
+    {
+      "id": "KR-026",
+      "group": "계산·순위",
+      "user_requirements": [
+        1,
+        2,
+        3
+      ],
+      "requirement": "점수는 확률이나 수익률 보증으로 표시하지 않는다.",
+      "acceptance_evidence": "all score-card disclaimers and value semantics tests",
+      "current_status": "REFERENCE_LOGIC_TESTED; REAL_ISSUER_NOT_TESTED"
+    },
+    {
+      "id": "KR-027",
+      "group": "AI·뉴스·공시",
+      "user_requirements": [
+        2,
+        3,
+        4
+      ],
+      "requirement": "첫 화면 요약과 접을 수 있는 상세 한국어 분석을 함께 제공한다.",
+      "acceptance_evidence": "rendered complete text equality against canonical bundle; no truncation",
+      "current_status": "FUTURE_END_TO_END_TEST_REQUIRED"
+    },
+    {
+      "id": "KR-028",
+      "group": "AI·뉴스·공시",
+      "user_requirements": [
+        2,
+        3,
+        4
+      ],
+      "requirement": "사실·전망·계획·추론을 분리하고 모든 중요한 수치에 출처를 붙인다.",
+      "acceptance_evidence": "claim-source ledger with issuer/period/kind/source excerpt",
+      "current_status": "FUTURE_END_TO_END_TEST_REQUIRED"
+    },
+    {
+      "id": "KR-029",
+      "group": "AI·뉴스·공시",
+      "user_requirements": [
+        2,
+        3,
+        4
+      ],
+      "requirement": "숫자 증감뿐 아니라 원인·사업구조·현금·자본배분·반대 근거를 설명한다.",
+      "acceptance_evidence": "30 representative human/expert quality reviews; rubric >=85/100; zero critical factual errors",
+      "current_status": "FUTURE_END_TO_END_TEST_REQUIRED"
+    },
+    {
+      "id": "KR-030",
+      "group": "AI·뉴스·공시",
+      "user_requirements": [
+        2,
+        3,
+        4
+      ],
+      "requirement": "제목·검색 요약만 읽은 자료는 본문 전체를 읽었다고 표시하지 않는다.",
+      "acceptance_evidence": "read_level and full text entitlement audit",
+      "current_status": "FUTURE_END_TO_END_TEST_REQUIRED"
+    },
+    {
+      "id": "KR-031",
+      "group": "AI·뉴스·공시",
+      "user_requirements": [
+        2,
+        3,
+        4
+      ],
+      "requirement": "뉴스 3개와 공시 2개를 우선 제공하되 부족하면 실제 개수와 탐색 범위를 표시한다.",
+      "acceptance_evidence": "0/1/2-item real source scenarios; no fabricated fills",
+      "current_status": "FUTURE_END_TO_END_TEST_REQUIRED"
+    },
+    {
+      "id": "KR-032",
+      "group": "AI·뉴스·공시",
+      "user_requirements": [
+        2,
+        3,
+        4
+      ],
+      "requirement": "한 사건의 재전송 기사들을 독립 근거 여러 개로 세지 않는다.",
+      "acceptance_evidence": "event clustering and evidence-count tests",
+      "current_status": "FUTURE_END_TO_END_TEST_REQUIRED"
+    },
+    {
+      "id": "KR-033",
+      "group": "AI·뉴스·공시",
+      "user_requirements": [
+        2,
+        3,
+        4
+      ],
+      "requirement": "과거 계약과 취소·정정 공시를 연결하고 반대 사실을 누락하지 않는다.",
+      "acceptance_evidence": "contract/cancellation event chain with impacted report sections",
+      "current_status": "FUTURE_END_TO_END_TEST_REQUIRED"
+    },
+    {
+      "id": "KR-034",
+      "group": "AI·뉴스·공시",
+      "user_requirements": [
+        2,
+        3,
+        4
+      ],
+      "requirement": "매수·매도 판단마다 지금 판단을 바꾸는 확인 조건을 표시한다.",
+      "acceptance_evidence": "explicit observable reversal conditions and anchored score rationale",
+      "current_status": "FUTURE_END_TO_END_TEST_REQUIRED"
+    },
+    {
+      "id": "KR-035",
+      "group": "AI·뉴스·공시",
+      "user_requirements": [
+        2,
+        3,
+        4
+      ],
+      "requirement": "가격평가·DCF 등의 가정은 분리하고 금액 예측을 사실로 표기하지 않는다.",
+      "acceptance_evidence": "input assumptions, sensitivity ranges and no pseudo precision",
+      "current_status": "FUTURE_END_TO_END_TEST_REQUIRED"
+    },
+    {
+      "id": "KR-036",
+      "group": "AI·뉴스·공시",
+      "user_requirements": [
+        2,
+        3,
+        4
+      ],
+      "requirement": "AI의 JSON 형식 통과를 사실성·전문성 합격으로 취급하지 않는다.",
+      "acceptance_evidence": "separate schema, grounding, semantic and human gates",
+      "current_status": "FUTURE_END_TO_END_TEST_REQUIRED"
+    },
+    {
+      "id": "KR-037",
+      "group": "자동갱신",
+      "user_requirements": [
+        3,
+        4
+      ],
+      "requirement": "가격·실적·정정·주식수·중요 사건별로 영향을 받는 항목만 다시 계산한다.",
+      "acceptance_evidence": "event dependency replay and invalidation tests",
+      "current_status": "REFERENCE_SUBSET_TESTED; LIVE_OPERATION_NOT_TESTED"
+    },
+    {
+      "id": "KR-038",
+      "group": "자동갱신",
+      "user_requirements": [
+        3,
+        4
+      ],
+      "requirement": "보고서의 analysed_event_watermark를 마지막 중요 사건과 비교한다.",
+      "acceptance_evidence": "old report/new news explicitly REVIEW_PENDING",
+      "current_status": "REFERENCE_SUBSET_TESTED; LIVE_OPERATION_NOT_TESTED"
+    },
+    {
+      "id": "KR-039",
+      "group": "자동갱신",
+      "user_requirements": [
+        3,
+        4
+      ],
+      "requirement": "자료 수집 시각과 실제 가격·재무·분석 기준 시각을 나눠 표시한다.",
+      "acceptance_evidence": "UI timestamp semantics checks",
+      "current_status": "REFERENCE_SUBSET_TESTED; LIVE_OPERATION_NOT_TESTED"
+    },
+    {
+      "id": "KR-040",
+      "group": "자동갱신",
+      "user_requirements": [
+        3,
+        4
+      ],
+      "requirement": "정상 최신 원본이 없으면 이전 정상본을 유지하되 지연 사실을 표시한다.",
+      "acceptance_evidence": "provider outage and fallback version test",
+      "current_status": "REFERENCE_SUBSET_TESTED; LIVE_OPERATION_NOT_TESTED"
+    },
+    {
+      "id": "KR-041",
+      "group": "자동갱신",
+      "user_requirements": [
+        3,
+        4
+      ],
+      "requirement": "작업 ID 중복을 제거하고 중단 후 완료분을 다시 만들지 않는다.",
+      "acceptance_evidence": "500 jobs crash/reopen/resume with 136 retained, 364 remaining",
+      "current_status": "REFERENCE_SUBSET_TESTED; LIVE_OPERATION_NOT_TESTED"
+    },
+    {
+      "id": "KR-042",
+      "group": "자동갱신",
+      "user_requirements": [
+        3,
+        4
+      ],
+      "requirement": "자료·게시 이벤트·작업 완료를 같은 DB 거래로 확정한다.",
+      "acceptance_evidence": "transaction rollback, outbox and worker fencing tests",
+      "current_status": "REFERENCE_SUBSET_TESTED; LIVE_OPERATION_NOT_TESTED"
+    },
+    {
+      "id": "KR-043",
+      "group": "자동갱신",
+      "user_requirements": [
+        3,
+        4
+      ],
+      "requirement": "뒤늦게 끝난 오래된 작업이 최신본을 덮어쓰지 못하게 한다.",
+      "acceptance_evidence": "out-of-order completion and expired lease tests",
+      "current_status": "REFERENCE_SUBSET_TESTED; LIVE_OPERATION_NOT_TESTED"
+    },
+    {
+      "id": "KR-044",
+      "group": "자동갱신",
+      "user_requirements": [
+        3,
+        4
+      ],
+      "requirement": "한 종목 실패는 그 종목만 격리하고 나머지는 계속 게시한다.",
+      "acceptance_evidence": "499 normal + 1 isolated case",
+      "current_status": "REFERENCE_SUBSET_TESTED; LIVE_OPERATION_NOT_TESTED"
+    },
+    {
+      "id": "KR-045",
+      "group": "자동갱신",
+      "user_requirements": [
+        3,
+        4
+      ],
+      "requirement": "자동갱신 완료는 실제 예약 실행에서 앱 버전 변경까지 증명한다.",
+      "acceptance_evidence": "live scheduler log + fetched version + Android received version",
+      "current_status": "REFERENCE_SUBSET_TESTED; LIVE_OPERATION_NOT_TESTED"
+    },
+    {
+      "id": "KR-046",
+      "group": "자동갱신",
+      "user_requirements": [
+        3,
+        4
+      ],
+      "requirement": "서버 재시작·인증 만료·한도·공급원 지연을 운영 상태판에 표시한다.",
+      "acceptance_evidence": "operations health fixtures and actual failure alert delivery",
+      "current_status": "REFERENCE_SUBSET_TESTED; LIVE_OPERATION_NOT_TESTED"
+    },
+    {
+      "id": "KR-047",
+      "group": "증권앱 기능",
+      "user_requirements": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "requirement": "일·주·월·분봉·거래량·실적과 공시 사건을 차트에 표시한다.",
+      "acceptance_evidence": "licensed series versus chart screenshot reconciliation",
+      "current_status": "FUTURE_END_TO_END_TEST_REQUIRED"
+    },
+    {
+      "id": "KR-048",
+      "group": "증권앱 기능",
+      "user_requirements": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "requirement": "KRX/NXT·세션·조정 방식·실시간/지연을 가격 옆에 표시한다.",
+      "acceptance_evidence": "market-specific quote contract and source as-of",
+      "current_status": "FUTURE_END_TO_END_TEST_REQUIRED"
+    },
+    {
+      "id": "KR-049",
+      "group": "증권앱 기능",
+      "user_requirements": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "requirement": "호가·체결·투자자별 수급을 공급 권한 범위 안에서 연결한다.",
+      "acceptance_evidence": "approved provider payload-to-screen proof",
+      "current_status": "FUTURE_END_TO_END_TEST_REQUIRED"
+    },
+    {
+      "id": "KR-050",
+      "group": "증권앱 기능",
+      "user_requirements": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "requirement": "관심종목·저장 필터·2~5종목 비교를 제공한다.",
+      "acceptance_evidence": "state restore and comparison tests",
+      "current_status": "FUTURE_END_TO_END_TEST_REQUIRED"
+    },
+    {
+      "id": "KR-051",
+      "group": "증권앱 기능",
+      "user_requirements": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "requirement": "수동·모의 포트폴리오의 손익과 입출금·수수료를 구분한다.",
+      "acceptance_evidence": "independent portfolio ledger arithmetic",
+      "current_status": "FUTURE_END_TO_END_TEST_REQUIRED"
+    },
+    {
+      "id": "KR-052",
+      "group": "증권앱 기능",
+      "user_requirements": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "requirement": "가격·중요 공시·실적·리스크 변화 알림에 중복 방지를 적용한다.",
+      "acceptance_evidence": "locked/offline/background Galaxy push tests",
+      "current_status": "FUTURE_END_TO_END_TEST_REQUIRED"
+    },
+    {
+      "id": "KR-053",
+      "group": "증권앱 기능",
+      "user_requirements": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "requirement": "가족 초대 1회 링크, 만료·회수, 본인 2기기 연결을 구현한다.",
+      "acceptance_evidence": "invite expiry/revoke and cross-user isolation tests",
+      "current_status": "FUTURE_END_TO_END_TEST_REQUIRED"
+    },
+    {
+      "id": "KR-054",
+      "group": "증권앱 기능",
+      "user_requirements": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "requirement": "360dp 화면과 글자 크기 100/130/200%, TalkBack을 시험한다.",
+      "acceptance_evidence": "actual emulator/device accessibility captures",
+      "current_status": "FUTURE_END_TO_END_TEST_REQUIRED"
+    },
+    {
+      "id": "KR-055",
+      "group": "증권앱 기능",
+      "user_requirements": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "requirement": "네트워크가 끊겨도 마지막 정상본을 읽고 오프라인 시각을 표시한다.",
+      "acceptance_evidence": "offline launch, reconnect sync and version test",
+      "current_status": "FUTURE_END_TO_END_TEST_REQUIRED"
+    },
+    {
+      "id": "KR-056",
+      "group": "증권앱 기능",
+      "user_requirements": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "requirement": "실계좌 조회와 실주문 권한을 분리하고 실주문은 승인 전 비활성으로 둔다.",
+      "acceptance_evidence": "read-only token, paper order flow and explicit enable approval",
+      "current_status": "FUTURE_END_TO_END_TEST_REQUIRED"
+    },
+    {
+      "id": "KR-057",
+      "group": "운영·보안·완료",
+      "user_requirements": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "requirement": "모든 자료 공급원의 저장·표시·변형·재배포 권리를 계약 단위로 확인한다.",
+      "acceptance_evidence": "provider entitlement record; no UNKNOWN treated as APPROVED",
+      "current_status": "FUTURE_END_TO_END_TEST_REQUIRED"
+    },
+    {
+      "id": "KR-058",
+      "group": "운영·보안·완료",
+      "user_requirements": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "requirement": "공공 시세가 무료라는 이유로 실시간·재배포 가능하다고 가정하지 않는다.",
+      "acceptance_evidence": "data rights matrix and provider terms snapshot",
+      "current_status": "FUTURE_END_TO_END_TEST_REQUIRED"
+    },
+    {
+      "id": "KR-059",
+      "group": "운영·보안·완료",
+      "user_requirements": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "requirement": "비밀키는 서버 보관하며 APK·Git·로그에 포함하지 않는다.",
+      "acceptance_evidence": "secret scanning, mobile reverse inspection and redacted logs",
+      "current_status": "FUTURE_END_TO_END_TEST_REQUIRED"
+    },
+    {
+      "id": "KR-060",
+      "group": "운영·보안·완료",
+      "user_requirements": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "requirement": "URL·다운로드·사용자 입력과 API 권한을 검증한다.",
+      "acceptance_evidence": "SSRF/redirect/DNS rebinding, injection and authorization tests",
+      "current_status": "FUTURE_END_TO_END_TEST_REQUIRED"
+    },
+    {
+      "id": "KR-061",
+      "group": "운영·보안·완료",
+      "user_requirements": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "requirement": "추가 비용 한도 기본값 0, 승인 후에도 원자적 예산 예약을 적용한다.",
+      "acceptance_evidence": "100 concurrent synthetic requests cannot exceed limit",
+      "current_status": "FUTURE_END_TO_END_TEST_REQUIRED"
+    },
+    {
+      "id": "KR-062",
+      "group": "운영·보안·완료",
+      "user_requirements": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "requirement": "오류 재시도·Retry-After·재시도 금지 오류·실패 격리를 구분한다.",
+      "acceptance_evidence": "429/5xx/auth and crash loop tests",
+      "current_status": "FUTURE_END_TO_END_TEST_REQUIRED"
+    },
+    {
+      "id": "KR-063",
+      "group": "운영·보안·완료",
+      "user_requirements": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "requirement": "외부 쓰기·Actions·배포·실주문은 사전 승인 없이 실행하지 않는다.",
+      "acceptance_evidence": "approval ledger linked to exact target and budget",
+      "current_status": "FUTURE_END_TO_END_TEST_REQUIRED"
+    },
+    {
+      "id": "KR-064",
+      "group": "운영·보안·완료",
+      "user_requirements": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "requirement": "원본·소스·정책·스키마·모델·릴리스 버전과 해시를 기록한다.",
+      "acceptance_evidence": "manifest and reproducible bundle checks",
+      "current_status": "FUTURE_END_TO_END_TEST_REQUIRED"
+    },
+    {
+      "id": "KR-065",
+      "group": "운영·보안·완료",
+      "user_requirements": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "requirement": "앱·PDF·CSV 내보내기는 하나의 정본에서 생성한다.",
+      "acceptance_evidence": "output-to-bundle content and version equality",
+      "current_status": "FUTURE_END_TO_END_TEST_REQUIRED"
+    },
+    {
+      "id": "KR-066",
+      "group": "운영·보안·완료",
+      "user_requirements": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "requirement": "백테스트는 당시에 공개된 자료와 상장폐지 종목·수수료·슬리피지를 포함한다.",
+      "acceptance_evidence": "point-in-time walk-forward report, holdout results; not yet executed",
+      "current_status": "FUTURE_END_TO_END_TEST_REQUIRED"
+    },
+    {
+      "id": "KR-067",
+      "group": "운영·보안·완료",
+      "user_requirements": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "requirement": "실제 설치·실데이터·보고서 품질·자동갱신 검증이 끝나기 전 최종완료라고 하지 않는다.",
+      "acceptance_evidence": "separate status ledger and real acceptance artifacts",
+      "current_status": "FUTURE_END_TO_END_TEST_REQUIRED"
+    },
+    {
+      "id": "KR-068",
+      "group": "운영·보안·완료",
+      "user_requirements": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "requirement": "중단 시 파일·체크포인트·완료/미완료 작업 ID를 재개 ZIP에 담는다.",
+      "acceptance_evidence": "new session resumes from extracted package without recreating successes",
+      "current_status": "FUTURE_END_TO_END_TEST_REQUIRED"
+    }
+  ]
+}

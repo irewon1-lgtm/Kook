@@ -1,0 +1,35 @@
+{
+  "version": "decision-v3-initial-not-performance-validated",
+  "buy_weights": {
+    "quant": 40,
+    "business": 25,
+    "valuation": 20,
+    "catalyst": 15
+  },
+  "sell_weights": {
+    "thesis_break": 35,
+    "financing": 25,
+    "overvaluation": 20,
+    "governance": 20
+  },
+  "missing_axis": "score_interval",
+  "precedence": [
+    "CRITICAL_RISK",
+    "REVIEW_PENDING",
+    "INSUFFICIENT_EVIDENCE",
+    "CONFLICT",
+    "SELL_REVIEW",
+    "BUY_REVIEW",
+    "WATCH"
+  ],
+  "rules": {
+    "CONFLICT": "buy_lower>=70 and sell_lower>=60",
+    "SELL_REVIEW": "sell_lower>=70",
+    "BUY_REVIEW": "complete_buy_axes and buy_lower>=70 and sell_upper<=40"
+  },
+  "is_probability": false,
+  "is_personalized_order_advice": false,
+  "performance_validated": false,
+  "ai_role": "extract_evidence_and_anchored_axis_assessment; deterministic_code_computes_total",
+  "thresholds_status": "INITIAL_DECLARED_POLICY_NOT_EMPIRICALLY_OPTIMAL"
+}

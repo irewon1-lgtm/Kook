@@ -1,0 +1,125 @@
+{
+  "time_utc": "2026-09-14T16:14:02.949944+00:00",
+  "scope": "Synthetic local reference model, not current market data, production throughput, model quality or investment returns",
+  "total": 8,
+  "passed": 8,
+  "results": [
+    {
+      "id": "S01",
+      "scenario": "3,500 synthetic stocks / 35,000 metric ranking",
+      "status": "PASS",
+      "seconds": 0.14939,
+      "detail": {
+        "synthetic_issuers": 3500,
+        "synthetic_metric_values": 14000,
+        "visible": 3500,
+        "filter_invariance": true,
+        "snapshot_hash": "727c17970ee478f886a046a585c103f30cdd5659e1aebf52d8e91131becbc7c0"
+      }
+    },
+    {
+      "id": "S02",
+      "scenario": "Independent exact rational arithmetic oracle",
+      "status": "PASS",
+      "seconds": 0.007332,
+      "detail": {
+        "independent_pairwise_oracle": true,
+        "issuers": 60,
+        "metrics": 240,
+        "arithmetic": "fractions.Fraction",
+        "max_tolerance": 1e-10
+      }
+    },
+    {
+      "id": "S03",
+      "scenario": "Forced crash at 137/500 and process reopening",
+      "status": "PASS",
+      "seconds": 1.640568,
+      "detail": {
+        "failure_at": 137,
+        "before": 136,
+        "resumed_only": 364,
+        "after": 500,
+        "unique_outbox": 500
+      }
+    },
+    {
+      "id": "S04",
+      "scenario": "One invalid issuer among 500",
+      "status": "PASS",
+      "seconds": 1.282907,
+      "detail": {
+        "valid_published": 499,
+        "isolated_failure": [
+          "000137"
+        ],
+        "whole_universe_blocked": false
+      }
+    },
+    {
+      "id": "S05",
+      "scenario": "10,000 repeated event deliveries",
+      "status": "PASS",
+      "seconds": 0.979293,
+      "detail": {
+        "deliveries": 10000,
+        "unique_jobs": 500,
+        "duplicates_suppressed": 9500
+      }
+    },
+    {
+      "id": "S06",
+      "scenario": "Concurrent budget reservation",
+      "status": "PASS",
+      "seconds": 0.114807,
+      "detail": {
+        "parallel_threads": 16,
+        "requests": 100,
+        "accepted": 10,
+        "budget_limit_units": 1000,
+        "used_units": 1000,
+        "money_spent": 0
+      }
+    },
+    {
+      "id": "S07",
+      "scenario": "Out-of-order revisions cannot overwrite newest",
+      "status": "PASS",
+      "seconds": 0.046996,
+      "detail": {
+        "delivery_order": [
+          1,
+          3,
+          2,
+          5,
+          4,
+          9,
+          8,
+          10,
+          7,
+          6
+        ],
+        "published_versions": 5,
+        "outdated_rejected": 5,
+        "final_version": 10
+      }
+    },
+    {
+      "id": "S08",
+      "scenario": "Synthetic cost differential calculation",
+      "status": "PASS",
+      "seconds": 1.7e-05,
+      "detail": {
+        "synthetic_inputs_only": true,
+        "not_provider_price_quote": true,
+        "assumed_input_USD_per_million": 1,
+        "assumed_output_USD_per_million": 4,
+        "initial_USD": 96.0,
+        "monthly_incremental_USD": 144.0,
+        "monthly_full_daily_USD": 2880.0,
+        "relative_reduction": 20,
+        "other_costs_excluded": true
+      }
+    }
+  ]
+}

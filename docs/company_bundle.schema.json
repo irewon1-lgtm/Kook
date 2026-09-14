@@ -1,0 +1,624 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:kr-stock:v3:company-bundle",
+  "title": "KR Stock canonical company bundle — structural validation only",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "issuer_id",
+    "security_code",
+    "bundle_version",
+    "policy_hash",
+    "input_hash",
+    "asof",
+    "metrics",
+    "report",
+    "decision",
+    "news",
+    "filings",
+    "quality",
+    "rights"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "3.0"
+    },
+    "issuer_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "security_code": {
+      "type": "string",
+      "pattern": "^[0-9A-Z]{6}$"
+    },
+    "bundle_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "policy_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "input_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "asof": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "published_at",
+        "financial_asof",
+        "price_asof",
+        "analysis_asof",
+        "event_watermark"
+      ],
+      "properties": {
+        "published_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "financial_asof": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "price_asof": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "analysis_asof": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "event_watermark": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "M01",
+        "M02",
+        "M03",
+        "M04"
+      ],
+      "properties": {
+        "M01": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "value",
+            "unit",
+            "status",
+            "source_ids",
+            "financial_asof",
+            "price_asof",
+            "reason"
+          ],
+          "properties": {
+            "id": {
+              "const": "M01"
+            },
+            "value": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "unit": {
+              "const": "%"
+            },
+            "status": {
+              "enum": [
+                "AVAILABLE",
+                "MISSING",
+                "NOT_APPLICABLE",
+                "REVIEW",
+                "STALE"
+              ]
+            },
+            "source_ids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            },
+            "financial_asof": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "price_asof": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "reason": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "M02": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "value",
+            "unit",
+            "status",
+            "source_ids",
+            "financial_asof",
+            "price_asof",
+            "reason"
+          ],
+          "properties": {
+            "id": {
+              "const": "M02"
+            },
+            "value": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "unit": {
+              "const": "%"
+            },
+            "status": {
+              "enum": [
+                "AVAILABLE",
+                "MISSING",
+                "NOT_APPLICABLE",
+                "REVIEW",
+                "STALE"
+              ]
+            },
+            "source_ids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            },
+            "financial_asof": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "price_asof": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "reason": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "M03": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "value",
+            "unit",
+            "status",
+            "source_ids",
+            "financial_asof",
+            "price_asof",
+            "reason"
+          ],
+          "properties": {
+            "id": {
+              "const": "M03"
+            },
+            "value": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "unit": {
+              "const": "배"
+            },
+            "status": {
+              "enum": [
+                "AVAILABLE",
+                "MISSING",
+                "NOT_APPLICABLE",
+                "REVIEW",
+                "STALE"
+              ]
+            },
+            "source_ids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            },
+            "financial_asof": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "price_asof": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "reason": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "M04": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "value",
+            "unit",
+            "status",
+            "source_ids",
+            "financial_asof",
+            "price_asof",
+            "reason"
+          ],
+          "properties": {
+            "id": {
+              "const": "M04"
+            },
+            "value": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "unit": {
+              "const": "%"
+            },
+            "status": {
+              "enum": [
+                "AVAILABLE",
+                "MISSING",
+                "NOT_APPLICABLE",
+                "REVIEW",
+                "STALE"
+              ]
+            },
+            "source_ids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            },
+            "financial_asof": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "price_asof": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "reason": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "report": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "summary",
+        "sections",
+        "claims",
+        "analysed_event_watermark"
+      ],
+      "properties": {
+        "state": {
+          "enum": [
+            "CURRENT",
+            "REVIEW_PENDING",
+            "PARTIAL",
+            "UNAVAILABLE"
+          ]
+        },
+        "summary": {
+          "type": "string"
+        },
+        "sections": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "title",
+              "body",
+              "claim_ids"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              },
+              "body": {
+                "type": "string"
+              },
+              "claim_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "claims": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "issuer_id",
+              "kind",
+              "text",
+              "source_ids"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "issuer_id": {
+                "type": "string"
+              },
+              "kind": {
+                "enum": [
+                  "ACTUAL",
+                  "PLAN",
+                  "FORECAST",
+                  "INFERENCE",
+                  "UNKNOWN"
+                ]
+              },
+              "text": {
+                "type": "string"
+              },
+              "source_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "analysed_event_watermark": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "buy_lower",
+        "buy_upper",
+        "sell_lower",
+        "sell_upper",
+        "label",
+        "is_probability",
+        "performance_validated",
+        "evidence_ids"
+      ],
+      "properties": {
+        "buy_lower": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 100
+        },
+        "buy_upper": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 100
+        },
+        "sell_lower": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 100
+        },
+        "sell_upper": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 100
+        },
+        "label": {
+          "enum": [
+            "CRITICAL_RISK",
+            "REVIEW_PENDING",
+            "INSUFFICIENT_EVIDENCE",
+            "CONFLICT",
+            "SELL_REVIEW",
+            "BUY_REVIEW",
+            "WATCH"
+          ]
+        },
+        "is_probability": {
+          "const": false
+        },
+        "performance_validated": {
+          "type": "boolean"
+        },
+        "evidence_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "news": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/source"
+      }
+    },
+    "filings": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/source"
+      }
+    },
+    "quality": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "numeric_status",
+        "grounding_status",
+        "human_review_status"
+      ],
+      "properties": {
+        "numeric_status": {
+          "type": "string"
+        },
+        "grounding_status": {
+          "type": "string"
+        },
+        "human_review_status": {
+          "type": "string"
+        }
+      }
+    },
+    "rights": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "entitlement_ids"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "APPROVED",
+            "PENDING",
+            "DENIED",
+            "SYNTHETIC_FIXTURE"
+          ]
+        },
+        "entitlement_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "issuer_id",
+        "title",
+        "url",
+        "published_at",
+        "fetched_at",
+        "read_level",
+        "event_id",
+        "summary"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "issuer_id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "published_at": {
+          "type": "string"
+        },
+        "fetched_at": {
+          "type": "string"
+        },
+        "read_level": {
+          "type": "string"
+        },
+        "event_id": {
+          "type": "string"
+        },
+        "summary": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

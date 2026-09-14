@@ -1,0 +1,84 @@
+{
+  "version": "event-v3",
+  "dependencies": {
+    "PRICE": [
+      "DECISION",
+      "Q01",
+      "Q02",
+      "Q07",
+      "RANK",
+      "VALUATION"
+    ],
+    "FINANCIAL": [
+      "DECISION",
+      "Q03",
+      "Q04",
+      "Q05",
+      "Q06",
+      "Q07",
+      "Q08",
+      "Q09",
+      "Q10",
+      "RANK",
+      "REPORT_REVIEW"
+    ],
+    "CORRECTION": [
+      "DECISION",
+      "FILINGS",
+      "Q03",
+      "Q04",
+      "Q05",
+      "Q06",
+      "Q07",
+      "Q08",
+      "Q09",
+      "Q10",
+      "RANK",
+      "REPORT_REVIEW"
+    ],
+    "SPLIT": [
+      "CHART",
+      "DECISION",
+      "Q01",
+      "Q02",
+      "Q07",
+      "Q08",
+      "RANK"
+    ],
+    "MATERIAL_NEWS": [
+      "DECISION",
+      "NEWS",
+      "REPORT_REVIEW"
+    ],
+    "MINOR_NEWS": [
+      "CHECK_LOG",
+      "NEWS"
+    ],
+    "CANCELLATION": [
+      "DECISION",
+      "FILINGS",
+      "NEWS",
+      "REPORT_REVIEW"
+    ],
+    "HALT": [
+      "DECISION",
+      "RISK_BANNER",
+      "TRADABILITY"
+    ],
+    "MASTER": [
+      "MASTER",
+      "RANK"
+    ]
+  },
+  "live_data_status": "NOT_CONNECTED",
+  "financial_poll_minutes_target": 5,
+  "news_poll_minutes_target": 10,
+  "polling_subject_to_provider_terms_quota": true,
+  "numeric_latency_target_after_source_arrival_minutes": 15,
+  "material_analysis_latency_target_after_source_arrival_minutes": 60,
+  "targets_measured_in_production": false,
+  "price_only_policy": "update_related_metrics_rank_and_valuation; material_valuation_boundary_change_also_report_review",
+  "publication": "atomic_versioned_bundle_with_outbox",
+  "report_freshness": "analysed_event_watermark_not_checked_at",
+  "source_publication_delay_not_hidden": true
+}
