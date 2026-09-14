@@ -1,0 +1,1022 @@
+{
+  "scope": "Offline reference engine; synthetic inputs; NOT Android, provider integration, live operations, human expert quality, or backtest proof",
+  "time_utc": "2026-09-13T14:54:58.276655+00:00",
+  "python": "3.13.5",
+  "source_sha256": "daa6ea0361ef0bf2c89d1367f57112ecb17cad373159eeaf318d29a1c8cece06",
+  "tests_run": 135,
+  "success": false,
+  "domains": {
+    "C01Numbers": {
+      "tests": 20,
+      "pass": 20,
+      "failed": 0
+    },
+    "C02Accounting": {
+      "tests": 15,
+      "pass": 15,
+      "failed": 0
+    },
+    "C03AdversarialTime": {
+      "tests": 2,
+      "pass": 0,
+      "failed": 2
+    },
+    "C03TimeAndIdentity": {
+      "tests": 14,
+      "pass": 14,
+      "failed": 0
+    },
+    "C04RankProperties": {
+      "tests": 14,
+      "pass": 14,
+      "failed": 0
+    },
+    "C05Missingness": {
+      "tests": 6,
+      "pass": 6,
+      "failed": 0
+    },
+    "C06Decision": {
+      "tests": 11,
+      "pass": 11,
+      "failed": 0
+    },
+    "C07Evidence": {
+      "tests": 8,
+      "pass": 8,
+      "failed": 0
+    },
+    "C08Updates": {
+      "tests": 8,
+      "pass": 8,
+      "failed": 0
+    },
+    "C09Persistence": {
+      "tests": 11,
+      "pass": 11,
+      "failed": 0
+    },
+    "C10SecurityAndRights": {
+      "tests": 10,
+      "pass": 10,
+      "failed": 0
+    },
+    "C11BudgetAndRetry": {
+      "tests": 8,
+      "pass": 8,
+      "failed": 0
+    },
+    "C12PresentationContract": {
+      "tests": 8,
+      "pass": 8,
+      "failed": 0
+    }
+  },
+  "records": [
+    {
+      "id": "tests.test_core.C01Numbers.test_ev_no_double_preferred",
+      "domain": "C01Numbers",
+      "status": "PASS",
+      "seconds": 9.1e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C01Numbers.test_fcf_negative_outflow",
+      "domain": "C01Numbers",
+      "status": "PASS",
+      "seconds": 5.1e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C01Numbers.test_fcf_two_capex_categories",
+      "domain": "C01Numbers",
+      "status": "PASS",
+      "seconds": 2.3e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C01Numbers.test_leverage_hand",
+      "domain": "C01Numbers",
+      "status": "PASS",
+      "seconds": 1.9e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C01Numbers.test_margin_pp_not_percent",
+      "domain": "C01Numbers",
+      "status": "PASS",
+      "seconds": 1.6e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C01Numbers.test_negative_ebitda_not_bonus",
+      "domain": "C01Numbers",
+      "status": "PASS",
+      "seconds": 2.5e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C01Numbers.test_negative_ev_not_cheap",
+      "domain": "C01Numbers",
+      "status": "PASS",
+      "seconds": 1.8e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C01Numbers.test_negative_margin",
+      "domain": "C01Numbers",
+      "status": "PASS",
+      "seconds": 1.3e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C01Numbers.test_net_cash_rank_saturation",
+      "domain": "C01Numbers",
+      "status": "PASS",
+      "seconds": 1.4e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C01Numbers.test_net_cash_raw_negative",
+      "domain": "C01Numbers",
+      "status": "PASS",
+      "seconds": 1.4e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C01Numbers.test_nonfinite_and_bool",
+      "domain": "C01Numbers",
+      "status": "PASS",
+      "seconds": 8e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C01Numbers.test_roic_hand",
+      "domain": "C01Numbers",
+      "status": "PASS",
+      "seconds": 2e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C01Numbers.test_roic_negative_capital",
+      "domain": "C01Numbers",
+      "status": "PASS",
+      "seconds": 1.8e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C01Numbers.test_roic_operating_loss_no_fake_tax_credit",
+      "domain": "C01Numbers",
+      "status": "PASS",
+      "seconds": 1.6e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C01Numbers.test_roic_tax_abnormal",
+      "domain": "C01Numbers",
+      "status": "PASS",
+      "seconds": 1.8e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C01Numbers.test_roic_thin_capital",
+      "domain": "C01Numbers",
+      "status": "PASS",
+      "seconds": 1.6e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C01Numbers.test_yoy_hand",
+      "domain": "C01Numbers",
+      "status": "PASS",
+      "seconds": 1.6e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C01Numbers.test_yoy_negative_base",
+      "domain": "C01Numbers",
+      "status": "PASS",
+      "seconds": 1.5e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C01Numbers.test_yoy_zero_base",
+      "domain": "C01Numbers",
+      "status": "PASS",
+      "seconds": 1.5e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C01Numbers.test_zero_ev",
+      "domain": "C01Numbers",
+      "status": "PASS",
+      "seconds": 1.4e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C02Accounting.test_actual_zero_day_weights",
+      "domain": "C02Accounting",
+      "status": "PASS",
+      "seconds": 2.1e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C02Accounting.test_currency_mismatch",
+      "domain": "C02Accounting",
+      "status": "PASS",
+      "seconds": 3.4e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C02Accounting.test_dash_is_missing_not_zero",
+      "domain": "C02Accounting",
+      "status": "PASS",
+      "seconds": 1.4e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C02Accounting.test_day_weighted_shares",
+      "domain": "C02Accounting",
+      "status": "PASS",
+      "seconds": 7.6e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C02Accounting.test_direct_quarter_not_double_subtract",
+      "domain": "C02Accounting",
+      "status": "PASS",
+      "seconds": 2.6e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C02Accounting.test_issuer_mismatch",
+      "domain": "C02Accounting",
+      "status": "PASS",
+      "seconds": 2.4e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C02Accounting.test_money_leading_signs",
+      "domain": "C02Accounting",
+      "status": "PASS",
+      "seconds": 1.9e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C02Accounting.test_period_mismatch",
+      "domain": "C02Accounting",
+      "status": "PASS",
+      "seconds": 2.4e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C02Accounting.test_scope_mismatch",
+      "domain": "C02Accounting",
+      "status": "PASS",
+      "seconds": 2.1e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C02Accounting.test_ttm_duplicate",
+      "domain": "C02Accounting",
+      "status": "PASS",
+      "seconds": 2.9e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C02Accounting.test_ttm_four_nonoverlap",
+      "domain": "C02Accounting",
+      "status": "PASS",
+      "seconds": 6.2e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C02Accounting.test_ttm_missing_quarter",
+      "domain": "C02Accounting",
+      "status": "PASS",
+      "seconds": 2e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C02Accounting.test_ytd_needs_previous",
+      "domain": "C02Accounting",
+      "status": "PASS",
+      "seconds": 2.3e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C02Accounting.test_ytd_subtraction",
+      "domain": "C02Accounting",
+      "status": "PASS",
+      "seconds": 2.6e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C02Accounting.test_zero_real_money",
+      "domain": "C02Accounting",
+      "status": "PASS",
+      "seconds": 1.6e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C03AdversarialTime.test_equal_instant_different_timezones_is_not_future",
+      "domain": "C03AdversarialTime",
+      "status": "ERROR",
+      "seconds": 0.001173,
+      "detail": "Traceback (most recent call last):\n  File \"/mnt/data/kr_blueprint_v3/tests/test_core.py\", line 284, in test_equal_instant_different_timezones_is_not_future\n    self.assertIsNone(verify_claim(c,s,issuer='A',asof='2026-08-14T01:00:00Z'))\n                      ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/mnt/data/kr_blueprint_v3/engine/core.py\", line 235, in verify_claim\n    if source.get('published_at','9999')>asof: raise IntegrityError('FUTURE_SOURCE')\n                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nengine.core.IntegrityError: FUTURE_SOURCE\n"
+    },
+    {
+      "id": "tests.test_core.C03AdversarialTime.test_revision_list_cannot_mix_company",
+      "domain": "C03AdversarialTime",
+      "status": "FAIL",
+      "seconds": 0.000511,
+      "detail": "Traceback (most recent call last):\n  File \"/mnt/data/kr_blueprint_v3/tests/test_core.py\", line 287, in test_revision_list_cannot_mix_company\n    self.assertRaises(DataError,latest_revision,[F,other],P+timedelta(days=2))\n    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: DataError not raised by latest_revision\n"
+    },
+    {
+      "id": "tests.test_core.C03TimeAndIdentity.test_alphanumeric",
+      "domain": "C03TimeAndIdentity",
+      "status": "PASS",
+      "seconds": 0.000124,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C03TimeAndIdentity.test_basis_mismatch",
+      "domain": "C03TimeAndIdentity",
+      "status": "PASS",
+      "seconds": 3.2e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C03TimeAndIdentity.test_drawdown_positive",
+      "domain": "C03TimeAndIdentity",
+      "status": "PASS",
+      "seconds": 2e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C03TimeAndIdentity.test_future_information_excluded",
+      "domain": "C03TimeAndIdentity",
+      "status": "PASS",
+      "seconds": 2.4e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C03TimeAndIdentity.test_identity_sql_rejected",
+      "domain": "C03TimeAndIdentity",
+      "status": "PASS",
+      "seconds": 2.2e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C03TimeAndIdentity.test_integer_identity_rejected",
+      "domain": "C03TimeAndIdentity",
+      "status": "PASS",
+      "seconds": 1.9e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C03TimeAndIdentity.test_leading_zero",
+      "domain": "C03TimeAndIdentity",
+      "status": "PASS",
+      "seconds": 1.7e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C03TimeAndIdentity.test_momentum_excludes_current_month",
+      "domain": "C03TimeAndIdentity",
+      "status": "PASS",
+      "seconds": 0.000153,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C03TimeAndIdentity.test_momentum_stale_endpoint",
+      "domain": "C03TimeAndIdentity",
+      "status": "PASS",
+      "seconds": 3.7e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C03TimeAndIdentity.test_momentum_too_short_history",
+      "domain": "C03TimeAndIdentity",
+      "status": "PASS",
+      "seconds": 2.5e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C03TimeAndIdentity.test_month_end_anchor_leap",
+      "domain": "C03TimeAndIdentity",
+      "status": "PASS",
+      "seconds": 1.9e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C03TimeAndIdentity.test_naive_datetime",
+      "domain": "C03TimeAndIdentity",
+      "status": "PASS",
+      "seconds": 2.2e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C03TimeAndIdentity.test_restatement_point_in_time",
+      "domain": "C03TimeAndIdentity",
+      "status": "PASS",
+      "seconds": 3.6e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C03TimeAndIdentity.test_split_adjusted_drawdown",
+      "domain": "C03TimeAndIdentity",
+      "status": "PASS",
+      "seconds": 1.6e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C04RankProperties.test_all_ties_50",
+      "domain": "C04RankProperties",
+      "status": "PASS",
+      "seconds": 0.000136,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C04RankProperties.test_all_zero_weights",
+      "domain": "C04RankProperties",
+      "status": "PASS",
+      "seconds": 2.6e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C04RankProperties.test_default_weights_sum100",
+      "domain": "C04RankProperties",
+      "status": "PASS",
+      "seconds": 4.9e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C04RankProperties.test_drawdown_low_is_high_score",
+      "domain": "C04RankProperties",
+      "status": "PASS",
+      "seconds": 5.6e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C04RankProperties.test_filter_does_not_recompute",
+      "domain": "C04RankProperties",
+      "status": "PASS",
+      "seconds": 5e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C04RankProperties.test_hand_midrank_tie",
+      "domain": "C04RankProperties",
+      "status": "PASS",
+      "seconds": 4e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C04RankProperties.test_lone_stock_no_fake_50",
+      "domain": "C04RankProperties",
+      "status": "PASS",
+      "seconds": 3.3e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C04RankProperties.test_missing_not_in_denominator",
+      "domain": "C04RankProperties",
+      "status": "PASS",
+      "seconds": 3.4e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C04RankProperties.test_negative_weights",
+      "domain": "C04RankProperties",
+      "status": "PASS",
+      "seconds": 2.5e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C04RankProperties.test_no_active_metrics",
+      "domain": "C04RankProperties",
+      "status": "PASS",
+      "seconds": 1.7e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C04RankProperties.test_permutation_invariant_200",
+      "domain": "C04RankProperties",
+      "status": "PASS",
+      "seconds": 0.111302,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C04RankProperties.test_positive_affine_invariant_200",
+      "domain": "C04RankProperties",
+      "status": "PASS",
+      "seconds": 0.050923,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C04RankProperties.test_unknown_metric",
+      "domain": "C04RankProperties",
+      "status": "PASS",
+      "seconds": 4e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C04RankProperties.test_weight_scale_invariant",
+      "domain": "C04RankProperties",
+      "status": "PASS",
+      "seconds": 8.3e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C05Missingness.test_all_missing_0_100",
+      "domain": "C05Missingness",
+      "status": "PASS",
+      "seconds": 6.5e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C05Missingness.test_financial_profile_not_silent_zero",
+      "domain": "C05Missingness",
+      "status": "PASS",
+      "seconds": 5.7e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C05Missingness.test_missing_interval_hand",
+      "domain": "C05Missingness",
+      "status": "PASS",
+      "seconds": 4.7e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C05Missingness.test_one_metric_cannot_be_strong_score",
+      "domain": "C05Missingness",
+      "status": "PASS",
+      "seconds": 5e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C05Missingness.test_partial_not_sorted_above_complete",
+      "domain": "C05Missingness",
+      "status": "PASS",
+      "seconds": 8.2e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C05Missingness.test_removing_evidence_cannot_raise_lower_1000",
+      "domain": "C05Missingness",
+      "status": "PASS",
+      "seconds": 0.014411,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C06Decision.test_buy_is_not_probability",
+      "domain": "C06Decision",
+      "status": "PASS",
+      "seconds": 3.5e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C06Decision.test_conflicting_buy_and_sell",
+      "domain": "C06Decision",
+      "status": "PASS",
+      "seconds": 2.7e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C06Decision.test_critical_risk_overrides_score",
+      "domain": "C06Decision",
+      "status": "PASS",
+      "seconds": 2.4e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C06Decision.test_freshness_blocks_old_buy",
+      "domain": "C06Decision",
+      "status": "PASS",
+      "seconds": 2.1e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C06Decision.test_known_severe_can_warn_with_incomplete_other_axes",
+      "domain": "C06Decision",
+      "status": "PASS",
+      "seconds": 2.1e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C06Decision.test_missing_evidence",
+      "domain": "C06Decision",
+      "status": "PASS",
+      "seconds": 2.2e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C06Decision.test_no_claimed_performance",
+      "domain": "C06Decision",
+      "status": "PASS",
+      "seconds": 2.1e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C06Decision.test_out_of_range_ai_axis",
+      "domain": "C06Decision",
+      "status": "PASS",
+      "seconds": 2.6e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C06Decision.test_qualified_buy_review",
+      "domain": "C06Decision",
+      "status": "PASS",
+      "seconds": 2.1e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C06Decision.test_unknown_quant_blocks_buy",
+      "domain": "C06Decision",
+      "status": "PASS",
+      "seconds": 2.1e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C06Decision.test_unknown_risks_blocks_buy",
+      "domain": "C06Decision",
+      "status": "PASS",
+      "seconds": 1.9e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C07Evidence.test_fake_quote",
+      "domain": "C07Evidence",
+      "status": "PASS",
+      "seconds": 2.7e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C07Evidence.test_forecast_not_actual",
+      "domain": "C07Evidence",
+      "status": "PASS",
+      "seconds": 2.1e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C07Evidence.test_future_source",
+      "domain": "C07Evidence",
+      "status": "PASS",
+      "seconds": 1.7e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C07Evidence.test_mismatched_period",
+      "domain": "C07Evidence",
+      "status": "PASS",
+      "seconds": 1.9e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C07Evidence.test_snippet_not_fulltext",
+      "domain": "C07Evidence",
+      "status": "PASS",
+      "seconds": 1.6e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C07Evidence.test_unknown_source",
+      "domain": "C07Evidence",
+      "status": "PASS",
+      "seconds": 2.3e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C07Evidence.test_valid_quote_structure",
+      "domain": "C07Evidence",
+      "status": "PASS",
+      "seconds": 1.4e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C07Evidence.test_wrong_company",
+      "domain": "C07Evidence",
+      "status": "PASS",
+      "seconds": 1.6e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C08Updates.test_cancel_invalidates_report",
+      "domain": "C08Updates",
+      "status": "PASS",
+      "seconds": 2.2e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C08Updates.test_checked_today_not_analyzed_today",
+      "domain": "C08Updates",
+      "status": "PASS",
+      "seconds": 1.5e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C08Updates.test_correction_updates_numbers_and_reports",
+      "domain": "C08Updates",
+      "status": "PASS",
+      "seconds": 1.4e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C08Updates.test_financial_revisits_thesis",
+      "domain": "C08Updates",
+      "status": "PASS",
+      "seconds": 1.2e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C08Updates.test_minor_news_no_forced_ai",
+      "domain": "C08Updates",
+      "status": "PASS",
+      "seconds": 0.000205,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C08Updates.test_price_revalues_without_forced_prose",
+      "domain": "C08Updates",
+      "status": "PASS",
+      "seconds": 1.7e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C08Updates.test_split_updates_dilution_and_prices",
+      "domain": "C08Updates",
+      "status": "PASS",
+      "seconds": 1.3e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C08Updates.test_unknown_event_not_ignored",
+      "domain": "C08Updates",
+      "status": "PASS",
+      "seconds": 1.9e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C09Persistence.test_atomic_crash_keeps_previous",
+      "domain": "C09Persistence",
+      "status": "PASS",
+      "seconds": 0.002132,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C09Persistence.test_checkpoint_completed_not_requeued",
+      "domain": "C09Persistence",
+      "status": "PASS",
+      "seconds": 0.001113,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C09Persistence.test_corruption_detected",
+      "domain": "C09Persistence",
+      "status": "PASS",
+      "seconds": 0.001047,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C09Persistence.test_duplicate_event_once",
+      "domain": "C09Persistence",
+      "status": "PASS",
+      "seconds": 0.001153,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C09Persistence.test_lease_fencing",
+      "domain": "C09Persistence",
+      "status": "PASS",
+      "seconds": 0.000949,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C09Persistence.test_out_of_order_cannot_overwrite",
+      "domain": "C09Persistence",
+      "status": "PASS",
+      "seconds": 0.000979,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C09Persistence.test_pending_bundle_keeps_visible_old_report",
+      "domain": "C09Persistence",
+      "status": "PASS",
+      "seconds": 0.001017,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C09Persistence.test_policy_change_new_job",
+      "domain": "C09Persistence",
+      "status": "PASS",
+      "seconds": 0.000973,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C09Persistence.test_publish_wrong_issuer",
+      "domain": "C09Persistence",
+      "status": "PASS",
+      "seconds": 0.000882,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C09Persistence.test_restart_resumes_unfinished",
+      "domain": "C09Persistence",
+      "status": "PASS",
+      "seconds": 0.001102,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C09Persistence.test_stale_ready_rejected",
+      "domain": "C09Persistence",
+      "status": "PASS",
+      "seconds": 0.00094,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C10SecurityAndRights.test_authorized_scope_works",
+      "domain": "C10SecurityAndRights",
+      "status": "PASS",
+      "seconds": 4e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C10SecurityAndRights.test_expired_license_rejected",
+      "domain": "C10SecurityAndRights",
+      "status": "PASS",
+      "seconds": 1.8e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C10SecurityAndRights.test_host_suffix_attack",
+      "domain": "C10SecurityAndRights",
+      "status": "PASS",
+      "seconds": 9.8e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C10SecurityAndRights.test_http_rejected",
+      "domain": "C10SecurityAndRights",
+      "status": "PASS",
+      "seconds": 3e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C10SecurityAndRights.test_internal_network_rejected",
+      "domain": "C10SecurityAndRights",
+      "status": "PASS",
+      "seconds": 2.4e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C10SecurityAndRights.test_javascript_rejected",
+      "domain": "C10SecurityAndRights",
+      "status": "PASS",
+      "seconds": 1.9e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C10SecurityAndRights.test_license_scope_rejected",
+      "domain": "C10SecurityAndRights",
+      "status": "PASS",
+      "seconds": 1.4e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C10SecurityAndRights.test_official_https_allowed",
+      "domain": "C10SecurityAndRights",
+      "status": "PASS",
+      "seconds": 2.7e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C10SecurityAndRights.test_unverified_license_rejected",
+      "domain": "C10SecurityAndRights",
+      "status": "PASS",
+      "seconds": 1.3e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C10SecurityAndRights.test_userinfo_attack",
+      "domain": "C10SecurityAndRights",
+      "status": "PASS",
+      "seconds": 2.2e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C11BudgetAndRetry.test_auth_not_retried",
+      "domain": "C11BudgetAndRetry",
+      "status": "PASS",
+      "seconds": 0.000773,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C11BudgetAndRetry.test_cost_changed_bound",
+      "domain": "C11BudgetAndRetry",
+      "status": "PASS",
+      "seconds": 0.000682,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C11BudgetAndRetry.test_cost_hand_hypothetical",
+      "domain": "C11BudgetAndRetry",
+      "status": "PASS",
+      "seconds": 0.000882,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C11BudgetAndRetry.test_default_zero_no_paid_call",
+      "domain": "C11BudgetAndRetry",
+      "status": "PASS",
+      "seconds": 0.000748,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C11BudgetAndRetry.test_duplicate_budget_no_second_charge",
+      "domain": "C11BudgetAndRetry",
+      "status": "PASS",
+      "seconds": 0.000846,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C11BudgetAndRetry.test_limit_enforced",
+      "domain": "C11BudgetAndRetry",
+      "status": "PASS",
+      "seconds": 0.000691,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C11BudgetAndRetry.test_rate_limit_respected",
+      "domain": "C11BudgetAndRetry",
+      "status": "PASS",
+      "seconds": 0.000682,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C11BudgetAndRetry.test_retry_three_only",
+      "domain": "C11BudgetAndRetry",
+      "status": "PASS",
+      "seconds": 0.000689,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C12PresentationContract.test_canonical_key_order",
+      "domain": "C12PresentationContract",
+      "status": "PASS",
+      "seconds": 6.3e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C12PresentationContract.test_exact_ten_slots",
+      "domain": "C12PresentationContract",
+      "status": "PASS",
+      "seconds": 3.2e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C12PresentationContract.test_metric_order_is_id_based",
+      "domain": "C12PresentationContract",
+      "status": "PASS",
+      "seconds": 2.6e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C12PresentationContract.test_no_nan_in_bundle",
+      "domain": "C12PresentationContract",
+      "status": "PASS",
+      "seconds": 3.7e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C12PresentationContract.test_null_not_zero",
+      "domain": "C12PresentationContract",
+      "status": "PASS",
+      "seconds": 1.8e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C12PresentationContract.test_pp_label",
+      "domain": "C12PresentationContract",
+      "status": "PASS",
+      "seconds": 1.9e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C12PresentationContract.test_unicode_report_preserved",
+      "domain": "C12PresentationContract",
+      "status": "PASS",
+      "seconds": 2e-05,
+      "detail": ""
+    },
+    {
+      "id": "tests.test_core.C12PresentationContract.test_unknown_label_rejected",
+      "domain": "C12PresentationContract",
+      "status": "PASS",
+      "seconds": 2.2e-05,
+      "detail": ""
+    }
+  ]
+}

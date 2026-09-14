@@ -1,0 +1,88 @@
+{
+  "version": "KR-V3.0-design-4metrics",
+  "status": "SPECIFICATION_4_METRICS_CANDIDATE_PRIORITY",
+  "metric_ids": [
+    "M01",
+    "M02",
+    "M03",
+    "M04"
+  ],
+  "default_weights_sum": 100,
+  "metrics": [
+    {
+      "id": "M01",
+      "name_ko": "매출 증가율",
+      "unit": "%",
+      "default_weight": 25,
+      "direction": "HIGHER_IS_BETTER",
+      "formula": "100 * (current_period_revenue / prior_period_revenue - 1)",
+      "guards": [
+        "prior_period_revenue_positive",
+        "comparable_scope_currency_period"
+      ]
+    },
+    {
+      "id": "M02",
+      "name_ko": "영업이익률",
+      "unit": "%",
+      "default_weight": 25,
+      "direction": "HIGHER_IS_BETTER",
+      "formula": "100 * operating_profit / revenue",
+      "guards": [
+        "revenue_positive",
+        "comparable_scope_currency_period"
+      ]
+    },
+    {
+      "id": "M03",
+      "name_ko": "실적 기준 PER",
+      "unit": "배",
+      "default_weight": 25,
+      "direction": "LOWER_IS_BETTER",
+      "formula": "current_price / trailing_eps",
+      "guards": [
+        "positive_eps_only",
+        "non_financial_companies_only",
+        "loss_making_companies_na",
+        "actual_published_earnings_period_displayed"
+      ]
+    },
+    {
+      "id": "M04",
+      "name_ko": "최근 6개월 주가 상승률",
+      "unit": "%",
+      "default_weight": 25,
+      "direction": "HIGHER_IS_BETTER",
+      "formula": "100 * (current_adjusted_price / adjusted_price_6m_ago - 1)",
+      "guards": [
+        "adjusted_price_basis_unified",
+        "as_of_date_displayed",
+        "split_and_merger_distortion_prevented"
+      ]
+    }
+  ],
+  "rank_policy": {
+    "method": "fixed_snapshot_peer_midrank_percentile",
+    "minimum_valid_peer_count": 2,
+    "peer_hierarchy": [
+      "industry",
+      "sector",
+      "same_business_model"
+    ],
+    "never_mix_models": [
+      "financial",
+      "loss_making",
+      "industrial_profitable"
+    ],
+    "midrank_formula": "100*(average_ascending_goodness_rank-1)/(n_valid-1)",
+    "ties": "average_rank",
+    "singleton": "NOT_SCORED",
+    "missing": "null_with_reason_not_zero",
+    "bounds": "L=sum(w*known_percentile); U=L+100*missing_weight",
+    "official_composite": "all_4_selected_metrics_available",
+    "partial": "display_interval_separately_composite_incomplete",
+    "purpose": "candidate_investigation_priority_not_probability_of_return",
+    "is_probability": false,
+    "performance_validated": false
+  }
+}

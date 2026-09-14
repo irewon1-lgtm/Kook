@@ -1,0 +1,278 @@
+"""Independent hand-worked examples and invariants; no market data or live APIs."""
+import unittest, math, random, tempfile, json, itertools
+from pathlib import Path
+from datetime import date, datetime, timezone, timedelta
+from fractions import Fraction
+from dataclasses import replace
+from engine.core import *
+
+UTC=timezone.utc
+P=datetime(2026,8,14,7,tzinfo=UTC)
+F=Fact('A',100,date(2026,4,1),date(2026,6,30),P)
+
+def bundle(issuer,wm=1,status='READY'):
+    return {'issuer':issuer,'report_watermark':wm,'source_watermark':wm,'analysis_status':status,'body':'가상 검증자료입니다.','metrics':{'Q03':10}}
+
+class C01Numbers(unittest.TestCase):
+    def test_yoy_hand(self): self.assertAlmostEqual(yoy(120,100),20)
+    def test_yoy_negative_base(self): self.assertRaises(DataError,yoy,100,-50)
+    def test_yoy_zero_base(self): self.assertRaises(DataError,yoy,100,0)
+    def test_negative_margin(self): self.assertEqual(margin(-10,100),-10)
+    def test_margin_pp_not_percent(self): self.assertEqual(margin_delta(20,100,15,100),5)
+    def test_fcf_two_capex_categories(self): self.assertEqual(fcf_margin(50,12,8,200),15)
+    def test_fcf_negative_outflow(self): self.assertRaises(DataError,fcf_margin,50,-12,8,200)
+    def test_ev_no_double_preferred(self): self.assertEqual(enterprise_value([1000,100],200,50,20,120),1250)
+    def test_negative_ev_not_cheap(self): self.assertRaises(DataError,revenue_ev,100,-10)
+    def test_zero_ev(self): self.assertRaises(DataError,revenue_ev,100,0)
+    def test_roic_hand(self): self.assertAlmostEqual(roic(100,25,100,400,600,1000),15)
+    def test_roic_negative_capital(self): self.assertRaises(DataError,roic,100,25,100,-400,600,1000)
+    def test_roic_thin_capital(self): self.assertRaises(DataError,roic,100,25,100,1,1,1000)
+    def test_roic_tax_abnormal(self): self.assertRaises(DataError,roic,100,99,100,400,600,1000)
+    def test_roic_operating_loss_no_fake_tax_credit(self): self.assertEqual(roic(-100,-25,-100,500,500,1000),-20)
+    def test_leverage_hand(self): self.assertEqual(net_debt_ebitda(300,100,80,20),2)
+    def test_negative_ebitda_not_bonus(self): self.assertRaises(DataError,net_debt_ebitda,300,100,-80,20)
+    def test_net_cash_raw_negative(self): self.assertEqual(net_debt_ebitda(100,300,80,20),-2)
+    def test_net_cash_rank_saturation(self): self.assertEqual(scoring_value('Q10',-200),scoring_value('Q10',-2))
+    def test_nonfinite_and_bool(self):
+        for x in [float('nan'),float('inf'),float('-inf'),True,None,'3']:
+            with self.subTest(x=x): self.assertRaises(DataError,number,x)
+
+class C02Accounting(unittest.TestCase):
+    def test_direct_quarter_not_double_subtract(self): self.assertEqual(quarter_value(F,replace(F,value=80)),100)
+    def test_ytd_subtraction(self):
+        h=replace(F,value=250,start=date(2026,1,1),cumulative=True)
+        q=replace(h,value=100,end=date(2026,3,31))
+        self.assertEqual(quarter_value(h,q),150)
+    def test_ytd_needs_previous(self): self.assertRaises(DataError,quarter_value,replace(F,start=date(2026,1,1),cumulative=True))
+    def test_scope_mismatch(self): self.assertRaises(DataError,compatible,F,replace(F,scope='OFS'))
+    def test_currency_mismatch(self): self.assertRaises(DataError,compatible,F,replace(F,currency='USD'))
+    def test_issuer_mismatch(self): self.assertRaises(DataError,compatible,F,replace(F,issuer='B'))
+    def test_period_mismatch(self): self.assertRaises(DataError,compatible,F,replace(F,end=date(2026,6,29)))
+    def test_money_leading_signs(self): self.assertEqual(parse_money('(1,234)',1000),-1234000)
+    def test_dash_is_missing_not_zero(self): self.assertIsNone(parse_money('-'))
+    def test_zero_real_money(self): self.assertEqual(parse_money('0'),0)
+    def test_actual_zero_day_weights(self): self.assertRaises(DataError,day_weighted_quarter,100,0,90,0)
+    def test_day_weighted_shares(self):
+        # 6-month average 100 for 181 days; 9-month average 110 for 273 days.
+        expected=float((Fraction(110*273)-100*181)/92)
+        self.assertAlmostEqual(day_weighted_quarter(110,273,100,181),expected)
+    def test_ttm_four_nonoverlap(self):
+        qs=[replace(F,start=date(y,m,1),end=date(y,m+2,calendar.monthrange(y,m+2)[1])),account='cfo',value=v) for y,m,v in [(2025,7,10),(2025,10,20),(2026,1,30),(2026,4,40)]]
+        self.assertEqual(ttm_quarters(qs),100)
+    def test_ttm_missing_quarter(self): self.assertRaises(DataError,ttm_quarters,[F,F,F])
+    def test_ttm_duplicate(self): self.assertRaises(DataError,ttm_quarters,[F,F,F,F])
+
+class C03TimeAndIdentity(unittest.TestCase):
+    def test_leading_zero(self): self.assertEqual(security_code('005930'),'005930')
+    def test_alphanumeric(self): self.assertEqual(security_code('0009K0'),'0009K0')
+    def test_integer_identity_rejected(self): self.assertRaises(DataError,security_code,5930)
+    def test_identity_sql_rejected(self): self.assertRaises(DataError,security_code,'A;DROP')
+    def test_future_information_excluded(self): self.assertEqual(available([F],P-timedelta(seconds=1)),[])
+    def test_restatement_point_in_time(self):
+        newer=replace(F,value=80,published_at=P+timedelta(days=7),receipt='R002')
+        self.assertEqual(latest_revision([F,newer],P).value,100)
+        self.assertEqual(latest_revision([F,newer],P+timedelta(days=8)).value,80)
+    def test_naive_datetime(self): self.assertRaises(DataError,available,[F],datetime(2026,8,14))
+    def test_month_end_anchor_leap(self): self.assertEqual(months_before(date(2024,3,31),1),date(2024,2,29))
+    def test_momentum_excludes_current_month(self):
+        h={date(2025,9,12):100,date(2026,8,13):120,date(2026,9,11):60}
+        self.assertAlmostEqual(momentum(h,date(2026,9,13)),20)
+    def test_momentum_too_short_history(self): self.assertRaises(DataError,momentum,{date(2026,8,13):100},date(2026,9,13))
+    def test_momentum_stale_endpoint(self): self.assertRaises(DataError,momentum,{date(2025,1,1):100,date(2026,8,13):100},date(2026,9,13))
+    def test_split_adjusted_drawdown(self): self.assertEqual(drawdown(50,[50,50]),0)
+    def test_drawdown_positive(self): self.assertEqual(drawdown(80,[100,90]),20)
+    def test_basis_mismatch(self): self.assertRaises(DataError,drawdown,120,[100])
+
+class C04RankProperties(unittest.TestCase):
+    def test_hand_midrank_tie(self):
+        r=RankSnapshot({'A':{'Q03':10},'B':{'Q03':10},'C':{'Q03':30}},{'Q03':1},min_n=2)
+        self.assertEqual(r.score('A')['score'],25); self.assertEqual(r.score('C')['score'],100)
+    def test_all_ties_50(self):
+        r=RankSnapshot({i:{'Q03':10} for i in 'ABC'},{'Q03':1},min_n=2)
+        self.assertEqual(r.score('A')['score'],50)
+    def test_lone_stock_no_fake_50(self):
+        self.assertIsNone(RankSnapshot({'A':{'Q03':5}},{'Q03':1},min_n=2).score('A')['score'])
+    def test_drawdown_low_is_high_score(self):
+        r=RankSnapshot({'A':{'Q01':0},'B':{'Q01':80}},{'Q01':1},min_n=2)
+        self.assertEqual(r.score('A')['score'],100)
+    def test_filter_does_not_recompute(self):
+        r=RankSnapshot({'A':{'Q03':10},'B':{'Q03':20}},{'Q03':1},min_n=2)
+        self.assertEqual(r.visible(['B'])[0],r.score('B'))
+    def test_missing_not_in_denominator(self):
+        r=RankSnapshot({'A':{'Q03':1},'B':{'Q03':2},'C':{'Q03':None}},{'Q03':1},min_n=2)
+        self.assertEqual(r.score('B')['score'],100)
+    def test_no_active_metrics(self): self.assertRaises(PolicyError,normal_weights,{})
+    def test_negative_weights(self): self.assertRaises(PolicyError,normal_weights,{'Q03':-1})
+    def test_all_zero_weights(self): self.assertRaises(PolicyError,normal_weights,{'Q03':0})
+    def test_unknown_metric(self): self.assertRaises(PolicyError,normal_weights,{'Q11':1})
+    def test_default_weights_sum100(self): self.assertEqual(sum(WEIGHTS.values()),100)
+    def test_permutation_invariant_200(self):
+        rng=random.Random(17)
+        base={str(i):{m:rng.randrange(20) for m in IDS} for i in range(40)}
+        ref=RankSnapshot(base).visible()
+        for _ in range(200):
+            items=list(base.items()); rng.shuffle(items)
+            self.assertEqual(RankSnapshot(dict(items)).visible(),ref)
+    def test_positive_affine_invariant_200(self):
+        rng=random.Random(18)
+        for _ in range(200):
+            raw={str(i):{'Q03':rng.uniform(-50,300)} for i in range(30)}
+            r=RankSnapshot(raw,{'Q03':1}); s=RankSnapshot({i:{'Q03':v['Q03']*3+9} for i,v in raw.items()},{'Q03':1})
+            self.assertEqual([x['score'] for x in r.visible()],[x['score'] for x in s.visible()])
+    def test_weight_scale_invariant(self):
+        raw={'A':{'Q03':10,'Q04':20},'B':{'Q03':20,'Q04':10}}
+        a=RankSnapshot(raw,{'Q03':1,'Q04':2},min_n=2)
+        b=RankSnapshot(raw,{'Q03':10,'Q04':20},min_n=2)
+        self.assertEqual(a.score('A')['score'],b.score('A')['score'])
+
+class C05Missingness(unittest.TestCase):
+    def test_one_metric_cannot_be_strong_score(self):
+        raw={'A':{'Q03':200},'B':{m:10 for m in IDS}}
+        r=RankSnapshot(raw,min_n=2).score('A')
+        self.assertIsNone(r['score']); self.assertLessEqual(r['lower'],20)
+    def test_missing_interval_hand(self):
+        r=RankSnapshot({'A':{'Q03':2},'B':{'Q03':1,'Q04':10},'C':{'Q03':1,'Q04':20}},{'Q03':1,'Q04':1},min_n=2).score('A')
+        self.assertEqual((r['lower'],r['upper'],r['coverage']),(50,100,0.5))
+    def test_all_missing_0_100(self):
+        r=RankSnapshot({'A':{}},min_n=2).score('A')
+        self.assertEqual((r['lower'],r['upper'],r['coverage']),(0,100,0))
+    def test_removing_evidence_cannot_raise_lower_1000(self):
+        rng=random.Random(21)
+        for _ in range(1000):
+            vals={m:rng.randrange(101) for m in IDS}
+            b=score_bounds(vals,WEIGHTS)
+            vals[rng.choice(IDS)]=None
+            q=score_bounds(vals,WEIGHTS)
+            self.assertLessEqual(q[0],b[0]+1e-10); self.assertGreaterEqual(q[1]+1e-10,b[1])
+    def test_partial_not_sorted_above_complete(self):
+        r=RankSnapshot({'A':{'Q03':100},'B':{'Q03':20,'Q04':10},'C':{'Q03':10,'Q04':20}},{'Q03':1,'Q04':1},min_n=2)
+        self.assertEqual(r.visible()[-1]['issuer'],'A')
+    def test_financial_profile_not_silent_zero(self):
+        r=RankSnapshot({'BANK':{'Q01':1},'B':{m:10 for m in IDS}},min_n=2,cohort_id='FINANCIAL_NOT_APPLICABLE').score('BANK')
+        self.assertIsNone(r['score'])
+
+class C06Decision(unittest.TestCase):
+    def setUp(self): self.b={k:80 for k in BUY_W}; self.s={k:10 for k in SELL_W}
+    def test_qualified_buy_review(self): self.assertEqual(decision(self.b,self.s,evidence_ok=True,fresh=True)['label'],'BUY_REVIEW')
+    def test_buy_is_not_probability(self): self.assertFalse(decision(self.b,self.s,evidence_ok=True,fresh=True)['is_probability'])
+    def test_no_claimed_performance(self): self.assertFalse(decision(self.b,self.s,evidence_ok=True,fresh=True)['performance_validated'])
+    def test_unknown_risks_blocks_buy(self): self.assertNotEqual(decision(self.b,{},evidence_ok=True,fresh=True)['label'],'BUY_REVIEW')
+    def test_unknown_quant_blocks_buy(self):
+        self.b['quant']=None
+        self.assertNotEqual(decision(self.b,self.s,evidence_ok=True,fresh=True)['label'],'BUY_REVIEW')
+    def test_conflicting_buy_and_sell(self): self.assertEqual(decision(self.b,{k:80 for k in SELL_W},evidence_ok=True,fresh=True)['label'],'CONFLICT')
+    def test_freshness_blocks_old_buy(self): self.assertEqual(decision(self.b,self.s,evidence_ok=True,fresh=False)['label'],'REVIEW_PENDING')
+    def test_missing_evidence(self): self.assertEqual(decision(self.b,self.s,evidence_ok=False,fresh=True)['label'],'INSUFFICIENT_EVIDENCE')
+    def test_critical_risk_overrides_score(self): self.assertEqual(decision(self.b,self.s,evidence_ok=True,fresh=True,critical=True)['label'],'CRITICAL_RISK')
+    def test_known_severe_can_warn_with_incomplete_other_axes(self):
+        x=decision({}, {'thesis_break':100,'financing':100,'overvaluation':100},evidence_ok=True,fresh=True)
+        self.assertEqual(x['label'],'SELL_REVIEW')
+    def test_out_of_range_ai_axis(self): self.assertRaises(DataError,decision,{'quant':101},self.s,evidence_ok=True,fresh=True)
+
+class C07Evidence(unittest.TestCase):
+    def setUp(self):
+        self.s={'id':'S1','issuer':'A','published_at':'2026-08-14T07:00:00Z','text':'매출이 120억원이다.','kind':'ACTUAL','read_level':'FULL','period':'2026Q2'}
+        self.c={'source_id':'S1','issuer':'A','quote':'매출이 120억원이다.','kind':'ACTUAL','period':'2026Q2'}
+    def check(self): return verify_claim(self.c,self.s,issuer='A',asof='2026-08-15T00:00:00Z')
+    def test_valid_quote_structure(self): self.assertIsNone(self.check())
+    def test_wrong_company(self): self.s['issuer']='B'; self.assertRaises(IntegrityError,self.check)
+    def test_fake_quote(self): self.c['quote']='매출이 999억원이다.'; self.assertRaises(IntegrityError,self.check)
+    def test_future_source(self): self.s['published_at']='2026-09-01T00:00:00Z'; self.assertRaises(IntegrityError,self.check)
+    def test_forecast_not_actual(self): self.s['kind']='FORECAST'; self.assertRaises(IntegrityError,self.check)
+    def test_snippet_not_fulltext(self): self.s['read_level']='SNIPPET'; self.assertRaises(IntegrityError,self.check)
+    def test_mismatched_period(self): self.c['period']='2025Q2'; self.assertRaises(IntegrityError,self.check)
+    def test_unknown_source(self): self.c['source_id']='S9'; self.assertRaises(IntegrityError,self.check)
+
+class C08Updates(unittest.TestCase):
+    def test_price_revalues_without_forced_prose(self):
+        a=affected('PRICE'); self.assertTrue({'Q01','Q02','Q07','VALUATION','DECISION'}<=a); self.assertNotIn('REPORT_REVIEW',a)
+    def test_financial_revisits_thesis(self): self.assertIn('REPORT_REVIEW',affected('FINANCIAL'))
+    def test_correction_updates_numbers_and_reports(self): self.assertTrue({'Q03','Q06','Q09','FILINGS','REPORT_REVIEW'}<=affected('CORRECTION'))
+    def test_split_updates_dilution_and_prices(self): self.assertTrue({'Q01','Q02','Q08','CHART'}<=affected('SPLIT'))
+    def test_minor_news_no_forced_ai(self): self.assertNotIn('REPORT_REVIEW',affected('MINOR_NEWS'))
+    def test_cancel_invalidates_report(self): self.assertIn('REPORT_REVIEW',affected('CANCELLATION'))
+    def test_checked_today_not_analyzed_today(self): self.assertEqual(report_status(1,2,'today')['state'],'REVIEW_PENDING')
+    def test_unknown_event_not_ignored(self): self.assertRaises(DataError,affected,'NEW_SCHEMA_EVENT')
+
+class C09Persistence(unittest.TestCase):
+    def setUp(self): self.tmp=tempfile.TemporaryDirectory(); self.path=Path(self.tmp.name)/'state.sqlite'; self.s=Store(self.path)
+    def tearDown(self): self.s.close(); self.tmp.cleanup()
+    def take(self,i='A',e='E1',now=0): self.s.enqueue(i,e); return self.s.claim(now)
+    def test_duplicate_event_once(self):
+        self.assertTrue(self.s.enqueue('A','E1'))
+        for _ in range(20): self.assertFalse(self.s.enqueue('A','E1'))
+        self.assertEqual(self.s.db.execute('SELECT COUNT(*) FROM jobs').fetchone()[0],1)
+    def test_policy_change_new_job(self):
+        self.s.enqueue('A','E1','v3'); self.s.enqueue('A','E1','v4')
+        self.assertEqual(self.s.db.execute('SELECT COUNT(*) FROM jobs').fetchone()[0],2)
+    def test_atomic_crash_keeps_previous(self):
+        j=self.take(); self.s.publish(j,1,bundle('A'),1)
+        j=self.take(e='E2',now=2)
+        self.assertRaises(InjectedCrash,self.s.publish,j,2,bundle('A',2),3,True)
+        self.assertEqual(self.s.read('A')['source_watermark'],1)
+        self.assertEqual(self.s.db.execute('SELECT COUNT(*) FROM outbox').fetchone()[0],1)
+    def test_restart_resumes_unfinished(self):
+        self.take(); self.s.close(); self.s=Store(self.path)
+        self.assertIsNone(self.s.claim(10)); self.assertIsNotNone(self.s.claim(61))
+    def test_lease_fencing(self):
+        old=self.take(); new=self.s.claim(61)
+        self.assertRaises(IntegrityError,self.s.publish,old,1,bundle('A'),62)
+        self.s.publish(new,1,bundle('A'),62)
+    def test_out_of_order_cannot_overwrite(self):
+        j=self.take(); self.s.publish(j,2,bundle('A',2),1)
+        j=self.take(e='old',now=2)
+        self.assertRaises(IntegrityError,self.s.publish,j,1,bundle('A'),3)
+    def test_publish_wrong_issuer(self): self.assertRaises(IntegrityError,self.s.publish,self.take(),1,bundle('B'),1)
+    def test_stale_ready_rejected(self):
+        p=bundle('A'); p['source_watermark']=2
+        self.assertRaises(IntegrityError,self.s.publish,self.take(),1,p,1)
+    def test_pending_bundle_keeps_visible_old_report(self):
+        p=bundle('A',status='REVIEW_PENDING'); p['source_watermark']=2
+        self.s.publish(self.take(),1,p,1); self.assertEqual(self.s.read('A')['analysis_status'],'REVIEW_PENDING')
+    def test_corruption_detected(self):
+        self.s.publish(self.take(),1,bundle('A'),1)
+        self.s.db.execute("UPDATE bundles SET payload='{}'")
+        self.assertRaises(IntegrityError,self.s.read,'A')
+    def test_checkpoint_completed_not_requeued(self):
+        self.s.publish(self.take(),1,bundle('A'),1)
+        self.assertIsNone(self.s.claim(100))
+
+class C10SecurityAndRights(unittest.TestCase):
+    def test_official_https_allowed(self): self.assertTrue(safe_url('https://dart.fss.or.kr/a',{'dart.fss.or.kr'}))
+    def test_host_suffix_attack(self): self.assertFalse(safe_url('https://dart.fss.or.kr.evil.example/a',{'dart.fss.or.kr'}))
+    def test_userinfo_attack(self): self.assertFalse(safe_url('https://evil@dart.fss.or.kr/a',{'dart.fss.or.kr'}))
+    def test_http_rejected(self): self.assertFalse(safe_url('http://dart.fss.or.kr/a',{'dart.fss.or.kr'}))
+    def test_javascript_rejected(self): self.assertFalse(safe_url('javascript:alert(1)',{'dart.fss.or.kr'}))
+    def test_internal_network_rejected(self): self.assertFalse(safe_url('https://127.0.0.1/a',{'dart.fss.or.kr'}))
+    def test_license_scope_rejected(self): self.assertFalse(entitlement({'status':'APPROVED','purposes':['personal'],'expiry':'2027-01-01'},purpose='redistribute',now='2026-09-13'))
+    def test_expired_license_rejected(self): self.assertFalse(entitlement({'status':'APPROVED','purposes':['personal'],'expiry':'2025-01-01'},purpose='personal',now='2026-09-13'))
+    def test_unverified_license_rejected(self): self.assertFalse(entitlement({'status':'UNKNOWN','purposes':['personal'],'expiry':'2027-01-01'},purpose='personal',now='2026-09-13'))
+    def test_authorized_scope_works(self): self.assertTrue(entitlement({'status':'APPROVED','purposes':['personal'],'expiry':'2027-01-01'},purpose='personal',now='2026-09-13'))
+
+class C11BudgetAndRetry(unittest.TestCase):
+    def setUp(self): self.tmp=tempfile.TemporaryDirectory(); self.s=Store(Path(self.tmp.name)/'budget.sqlite')
+    def tearDown(self): self.s.close(); self.tmp.cleanup()
+    def test_default_zero_no_paid_call(self): self.assertFalse(self.s.reserve('x',1,0))
+    def test_limit_enforced(self): self.assertTrue(self.s.reserve('x',7,10)); self.assertFalse(self.s.reserve('y',7,10))
+    def test_duplicate_budget_no_second_charge(self): self.assertTrue(self.s.reserve('x',7,10)); self.assertFalse(self.s.reserve('x',7,10))
+    def test_auth_not_retried(self): self.assertIsNone(retry_delay(403,0))
+    def test_rate_limit_respected(self): self.assertEqual(retry_delay(429,0,120),120)
+    def test_retry_three_only(self): self.assertIsNotNone(retry_delay(500,2)); self.assertIsNone(retry_delay(500,3))
+    def test_cost_hand_hypothetical(self):
+        c=cost_estimate(3000,150,30,8000,2000,1,4,2)
+        self.assertEqual(c,{'initial':96.0,'incremental':144.0,'full_daily':2880.0})
+    def test_cost_changed_bound(self): self.assertRaises(DataError,cost_estimate,5,6,30,100,100,1,1)
+
+class C12PresentationContract(unittest.TestCase):
+    def test_metric_order_is_id_based(self):
+        raw={'Q02':99,'Q01':12}; out=render_metrics(raw)
+        self.assertEqual((out[0]['id'],out[0]['value'],out[0]['label']),('Q01',12,'52주 고점 대비 낙폭'))
+    def test_exact_ten_slots(self): self.assertEqual(len(render_metrics({})),10)
+    def test_null_not_zero(self): self.assertIsNone(render_metrics({})[0]['value'])
+    def test_pp_label(self): self.assertEqual(render_metrics({})[4]['unit'],'%p')
+    def test_unknown_label_rejected(self): self.assertRaises(DataError,render_metrics,{'Q99':1})
+    def test_canonical_key_order(self): self.assertEqual(digest({'a':1,'b':2}),digest({'b':2,'a':1}))
+    def test_unicode_report_preserved(self): self.assertIn('매출',canonical({'body':'매출'}))
+    def test_no_nan_in_bundle(self): self.assertRaises(ValueError,canonical,{'x':float('nan')})
+
+if __name__=='__main__': unittest.main(verbosity=2)

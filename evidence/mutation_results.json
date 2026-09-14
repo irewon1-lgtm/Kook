@@ -1,0 +1,343 @@
+{
+  "time_utc": "2026-09-13T14:58:37.785674+00:00",
+  "scope": "32 intentionally corrupted OFFLINE reference implementations; original test suite unchanged",
+  "planned": 32,
+  "complete": true,
+  "total": 32,
+  "killed": 32,
+  "survived": 0,
+  "invalid": 0,
+  "results": [
+    {
+      "id": "M01",
+      "failure_type": "성장률 음수 분모 허용",
+      "status": "KILLED",
+      "tests_run": 138,
+      "failed_tests": [
+        "tests.test_core.C01Numbers.test_yoy_negative_base",
+        "tests.test_core.C01Numbers.test_yoy_zero_base"
+      ],
+      "mutant_sha256": "569d36603427c228f581fa8fba8b25ee09a2f475bf4a016dc1ebe599f63e1518"
+    },
+    {
+      "id": "M02",
+      "failure_type": "낙폭 부호 역전",
+      "status": "KILLED",
+      "tests_run": 138,
+      "failed_tests": [
+        "tests.test_core.C03TimeAndIdentity.test_drawdown_positive"
+      ],
+      "mutant_sha256": "18819804a077cd6be3443254cf3be9d6671eb56b1375fe874968410e90f56959"
+    },
+    {
+      "id": "M03",
+      "failure_type": "CAPEX를 차감 대신 가산",
+      "status": "KILLED",
+      "tests_run": 138,
+      "failed_tests": [
+        "tests.test_core.C01Numbers.test_fcf_two_capex_categories"
+      ],
+      "mutant_sha256": "9c3fe9f1f74d2644b62afe037cd3c29b22a580e84b54f69d6452d9a3f14709bd"
+    },
+    {
+      "id": "M04",
+      "failure_type": "마진 변화 방향 역전",
+      "status": "KILLED",
+      "tests_run": 138,
+      "failed_tests": [
+        "tests.test_core.C01Numbers.test_margin_pp_not_percent"
+      ],
+      "mutant_sha256": "bd7e96cf8f7eeb5f678f80127f9a2d348296b0de3390ab4d251c1caf3577c4b2"
+    },
+    {
+      "id": "M05",
+      "failure_type": "음수 EBITDA 우량 판정",
+      "status": "KILLED",
+      "tests_run": 138,
+      "failed_tests": [
+        "tests.test_core.C01Numbers.test_negative_ebitda_not_bonus"
+      ],
+      "mutant_sha256": "621ad08959d9e8aacffc2b6dbd99d154bd58e55afe64f9d9a111aa1789033697"
+    },
+    {
+      "id": "M06",
+      "failure_type": "ROIC 세후 계산 오류",
+      "status": "KILLED",
+      "tests_run": 138,
+      "failed_tests": [
+        "tests.test_core.C01Numbers.test_roic_hand"
+      ],
+      "mutant_sha256": "fdfe00ef250cb654a1a5b11b1e2be0665dabfb49393ba79dbdbb9349d9438aa4"
+    },
+    {
+      "id": "M07",
+      "failure_type": "연결 별도 혼합",
+      "status": "KILLED",
+      "tests_run": 138,
+      "failed_tests": [
+        "tests.test_core.C02Accounting.test_scope_mismatch"
+      ],
+      "mutant_sha256": "093fac85e0675e341d79b1ff00eb1153516395e7226a8bd40ce7ac4cb69758e0"
+    },
+    {
+      "id": "M08",
+      "failure_type": "통화 혼합",
+      "status": "KILLED",
+      "tests_run": 138,
+      "failed_tests": [
+        "tests.test_core.C02Accounting.test_currency_mismatch"
+      ],
+      "mutant_sha256": "d9b24da2a0837dee54672c97f847521f4b6d983fecfb41257d47cb99b8198db2"
+    },
+    {
+      "id": "M09",
+      "failure_type": "미래 자료 사용",
+      "status": "KILLED",
+      "tests_run": 138,
+      "failed_tests": [
+        "tests.test_core.C03TimeAndIdentity.test_future_information_excluded",
+        "tests.test_core.C03TimeAndIdentity.test_restatement_point_in_time"
+      ],
+      "mutant_sha256": "88f1787a2f030675d9dac91231397e786c297c9e8599e1d09b2db8e9903c861a"
+    },
+    {
+      "id": "M10",
+      "failure_type": "직접 분기값 이중 차감",
+      "status": "KILLED",
+      "tests_run": 138,
+      "failed_tests": [
+        "tests.test_core.C02Accounting.test_direct_quarter_not_double_subtract"
+      ],
+      "mutant_sha256": "cd034d190f013f4bc282776b6bb31609e8ca219a7e33edbf162c2abb6b27f767"
+    },
+    {
+      "id": "M11",
+      "failure_type": "희석 평균주식수 기간 비가중",
+      "status": "KILLED",
+      "tests_run": 138,
+      "failed_tests": [
+        "tests.test_core.C02Accounting.test_day_weighted_shares"
+      ],
+      "mutant_sha256": "fdf0e44e88fe7aa359cab2ca3dd090dc76c444c3e4413ccfd463a8dbf32a795b"
+    },
+    {
+      "id": "M12",
+      "failure_type": "ID 대신 값 위치 사용",
+      "status": "KILLED",
+      "tests_run": 138,
+      "failed_tests": [
+        "tests.test_core.C12PresentationContract.test_metric_order_is_id_based"
+      ],
+      "mutant_sha256": "c65a3dc3347010c447bed57aa90cf13fbe3fd1804730411fb7d4036ea284a166"
+    },
+    {
+      "id": "M13",
+      "failure_type": "점수 방향 뒤집힘",
+      "status": "KILLED",
+      "tests_run": 138,
+      "failed_tests": [
+        "tests.test_core.C04RankProperties.test_all_ties_50",
+        "tests.test_core.C04RankProperties.test_drawdown_low_is_high_score",
+        "tests.test_core.C04RankProperties.test_hand_midrank_tie",
+        "tests.test_core.C04RankProperties.test_missing_not_in_denominator",
+        "tests.test_core.C04RankProperties.test_positive_affine_invariant_200",
+        "tests.test_core.C05Missingness.test_missing_interval_hand",
+        "tests.test_core.C05Missingness.test_one_metric_cannot_be_strong_score"
+      ],
+      "mutant_sha256": "bade1e14792341b6fb66297ad8858851d74c448b8babf6f7de5e6ba4fd7a0731"
+    },
+    {
+      "id": "M14",
+      "failure_type": "결측 개별 재가중",
+      "status": "KILLED",
+      "tests_run": 138,
+      "failed_tests": [
+        "tests.test_core.C05Missingness.test_financial_profile_not_silent_zero",
+        "tests.test_core.C05Missingness.test_one_metric_cannot_be_strong_score",
+        "tests.test_core.C05Missingness.test_partial_not_sorted_above_complete"
+      ],
+      "mutant_sha256": "c175c15d04b0117c342e27f6df3ec1b0f07ac184daf906af6132c4ec036290c0"
+    },
+    {
+      "id": "M15",
+      "failure_type": "검색마다 점수 재계산",
+      "status": "KILLED",
+      "tests_run": 138,
+      "failed_tests": [
+        "tests.test_core.C04RankProperties.test_filter_does_not_recompute"
+      ],
+      "mutant_sha256": "8509248f7949224765b18fbd069c82984bacc479ff6d6dcfaa644dd72b74cf43"
+    },
+    {
+      "id": "M16",
+      "failure_type": "없는 값도 백분위 분모 포함",
+      "status": "KILLED",
+      "tests_run": 138,
+      "failed_tests": [
+        "tests.test_core.C04RankProperties.test_missing_not_in_denominator"
+      ],
+      "mutant_sha256": "2b43d3748e433ffba22a12668d627abdd86554062b6faa2188ea2a8970cf7ad7"
+    },
+    {
+      "id": "M17",
+      "failure_type": "오래된 분석 매수표시",
+      "status": "KILLED",
+      "tests_run": 138,
+      "failed_tests": [
+        "tests.test_core.C06Decision.test_freshness_blocks_old_buy"
+      ],
+      "mutant_sha256": "ea1a024d61397aed85bb5e650fab5237573010ffb9adfbb3f368d566a231e627"
+    },
+    {
+      "id": "M18",
+      "failure_type": "중대 위험 신호 무시",
+      "status": "KILLED",
+      "tests_run": 138,
+      "failed_tests": [
+        "tests.test_core.C06Decision.test_critical_risk_overrides_score"
+      ],
+      "mutant_sha256": "b5184b0e8a0d688339cc789ca70be2c55a3fa07836deed86424e96fa08957d12"
+    },
+    {
+      "id": "M19",
+      "failure_type": "가짜 도메인 허용",
+      "status": "KILLED",
+      "tests_run": 138,
+      "failed_tests": [
+        "tests.test_core.C10SecurityAndRights.test_host_suffix_attack"
+      ],
+      "mutant_sha256": "99a705cc44042202191dd6e1cca754517a21a942565d24a427055e73dc73531d"
+    },
+    {
+      "id": "M20",
+      "failure_type": "승인 금액 상한 무시",
+      "status": "KILLED",
+      "tests_run": 138,
+      "failed_tests": [
+        "tests.test_core.C11BudgetAndRetry.test_default_zero_no_paid_call",
+        "tests.test_core.C11BudgetAndRetry.test_limit_enforced"
+      ],
+      "mutant_sha256": "7ff0d52a2ad7de7c0a055110ec80f60a3afb5f0c262350bc2b636d6fbdaec524"
+    },
+    {
+      "id": "M21",
+      "failure_type": "이전 버전이 새 버전 덮어씀",
+      "status": "KILLED",
+      "tests_run": 138,
+      "failed_tests": [
+        "tests.test_core.C09Persistence.test_out_of_order_cannot_overwrite"
+      ],
+      "mutant_sha256": "2d5027adc727c6f0118e32fe06a5bcb85ed7311c2c3755098280a8ca4aba7ce3"
+    },
+    {
+      "id": "M22",
+      "failure_type": "만료 작업자 펜싱 제거",
+      "status": "KILLED",
+      "tests_run": 138,
+      "failed_tests": [
+        "tests.test_core.C09Persistence.test_lease_fencing"
+      ],
+      "mutant_sha256": "81dd050407c086471f266989579214eb908da4407b4f0acdf2168d0861412ee5"
+    },
+    {
+      "id": "M23",
+      "failure_type": "원자적 저장 롤백 제거",
+      "status": "KILLED",
+      "tests_run": 138,
+      "failed_tests": [
+        "tests.test_core.C09Persistence.test_atomic_crash_keeps_previous"
+      ],
+      "mutant_sha256": "11f28ad76fbcd606de2458379a09c3f4e289ca9efa9d86553437bd523d799d64"
+    },
+    {
+      "id": "M24",
+      "failure_type": "사용권 미승인 허용",
+      "status": "KILLED",
+      "tests_run": 138,
+      "failed_tests": [
+        "tests.test_core.C10SecurityAndRights.test_unverified_license_rejected"
+      ],
+      "mutant_sha256": "92afb179101e494166c5ca876d746ec527fc19b83a1adff38c47812aeed69a10"
+    },
+    {
+      "id": "M25",
+      "failure_type": "정정공시 보고서 갱신 빠짐",
+      "status": "KILLED",
+      "tests_run": 138,
+      "failed_tests": [
+        "tests.test_core.C08Updates.test_correction_updates_numbers_and_reports"
+      ],
+      "mutant_sha256": "7624d333458bb2f9748b64a16a241f470d265dab132c1bca53eabbc02e698606"
+    },
+    {
+      "id": "M26",
+      "failure_type": "순현금 초과 가점",
+      "status": "KILLED",
+      "tests_run": 138,
+      "failed_tests": [
+        "tests.test_core.C01Numbers.test_net_cash_rank_saturation"
+      ],
+      "mutant_sha256": "c2a388c9eb20d5f259e20134d802e321a453c01b6b82a15cb7996afb8a064815"
+    },
+    {
+      "id": "M27",
+      "failure_type": "영문 종목코드 거부",
+      "status": "KILLED",
+      "tests_run": 138,
+      "failed_tests": [
+        "tests.test_core.C03TimeAndIdentity.test_alphanumeric"
+      ],
+      "mutant_sha256": "946ad8aa542dfa9c18c50b876791adfe883f385f46528d062ed1e8212ccf6061"
+    },
+    {
+      "id": "M28",
+      "failure_type": "기사 기간 대조 제거",
+      "status": "KILLED",
+      "tests_run": 138,
+      "failed_tests": [
+        "tests.test_core.C07Evidence.test_mismatched_period"
+      ],
+      "mutant_sha256": "3675028343e699cf3f408d81ad126c088b07576225519fd53eb831efbb64ed4b"
+    },
+    {
+      "id": "M29",
+      "failure_type": "본문 미열람 숨김",
+      "status": "KILLED",
+      "tests_run": 138,
+      "failed_tests": [
+        "tests.test_core.C07Evidence.test_snippet_not_fulltext"
+      ],
+      "mutant_sha256": "54ab75228d2a1f02da48a6552a1ca6738ebc555fabd0fbb955e8a517f5d2d0fc"
+    },
+    {
+      "id": "M30",
+      "failure_type": "시차 문자열 비교 회귀",
+      "status": "KILLED",
+      "tests_run": 138,
+      "failed_tests": [
+        "tests.test_core.C03AdversarialTime.test_equal_instant_different_timezones_is_not_future"
+      ],
+      "mutant_sha256": "44d29231e48c70a8a71996689a70b4cdb11a09675121dc993ac70813e1b1c500"
+    },
+    {
+      "id": "M31",
+      "failure_type": "정정공시 회사 혼합 회귀",
+      "status": "KILLED",
+      "tests_run": 138,
+      "failed_tests": [
+        "tests.test_core.C03AdversarialTime.test_revision_list_cannot_mix_company"
+      ],
+      "mutant_sha256": "6ae2ad43bf998ff39d727c89a43dd13998f17fe13de1f7a2503f168fcdb46227"
+    },
+    {
+      "id": "M32",
+      "failure_type": "금융사와 제조업 비교 혼합",
+      "status": "KILLED",
+      "tests_run": 138,
+      "failed_tests": [
+        "tests.test_core.C04Peers.test_financials_never_enter_industrial_fallback"
+      ],
+      "mutant_sha256": "ab5587cbdb80e87fe98693ab3eae83f9572d47b865787beec7fed14ed4323f89"
+    }
+  ]
+}

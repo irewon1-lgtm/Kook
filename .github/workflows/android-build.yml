@@ -1,0 +1,80 @@
+name: KR4 Extreme CleanPass Android CI
+
+on:
+  push:
+    branches:
+      - "kr4-extreme-cleanpass-v2"
+      - "main"
+  pull_request:
+    branches:
+      - "main"
+
+jobs:
+  extreme-cleanpass:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Set up Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+
+      - name: Python reference-engine CLEAN tests
+        run: |
+          set -euo pipefail
+          python3 tests/run_all.py evidence/clean_pass_results.json
+          python3 tests/run_stress.py
+
+      - name: Android repository regression tests
+        run: |
+          set -euo pipefail
+          gradle :app:testDebugUnitTest --stacktrace
+
+      - name: Build Android Debug APK
+        run: |
+          set -euo pipefail
+          gradle :app:assembleDebug --stacktrace
+
+      - name: Hard verify APK exists and is non-empty
+        run: |
+          set -euo pipefail
+          APK="app/build/outputs/apk/debug/app-debug.apk"
+          test -f "$APK"
+          test -s "$APK"
+          mkdir -p dist evidence/ci
+          cp "$APK" dist/KR4_Extreme_CleanPass_v3.1.0_debug.apk
+          sha256sum "$APK" | tee evidence/ci/APK_SHA256.txt
+          stat --printf='APK_BYTES=%s\n' "$APK" | tee evidence/ci/APK_SIZE.txt
+
+      - name: Guard against fake success
+        run: |
+          set -euo pipefail
+          test -s dist/KR4_Extreme_CleanPass_v3.1.0_debug.apk
+          test -s evidence/ci/APK_SHA256.txt
+          test -s evidence/ci/APK_SIZE.txt
+          grep -q "KR4" app/src/main/java/com/krstock/v3/ui/screens/HomeScreen.kt
+          grep -q "DEMO" app/src/main/java/com/krstock/v3/data/repository/StockRepository.kt
+          ! grep -R "news.example.com" app/src/main || exit 1
+          ! grep -R "mockStocks.first" app/src/main || exit 1
+
+      - name: Upload verified APK and evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: KR4_Extreme_CleanPass_APK
+          path: |
+            dist/KR4_Extreme_CleanPass_v3.1.0_debug.apk
+            evidence/ci/APK_SHA256.txt
+            evidence/ci/APK_SIZE.txt
+            app/build/reports/tests/testDebugUnitTest/
+          if-no-files-found: error
+          retention-days: 14

@@ -1,0 +1,24 @@
+{
+  "scope": "Offline reference engine; synthetic inputs; NOT Android, provider integration, live operations, human expert quality, or backtest proof",
+  "time_utc": "2026-09-13T14:54:00.032528+00:00",
+  "python": "3.13.5",
+  "source_sha256": "daa6ea0361ef0bf2c89d1367f57112ecb17cad373159eeaf318d29a1c8cece06",
+  "tests_run": 1,
+  "success": false,
+  "domains": {
+    "_FailedTest": {
+      "tests": 1,
+      "pass": 0,
+      "failed": 1
+    }
+  },
+  "records": [
+    {
+      "id": "unittest.loader._FailedTest.tests.test_core",
+      "domain": "_FailedTest",
+      "status": "ERROR",
+      "seconds": 0.000131,
+      "detail": "ImportError: Failed to import test module: tests.test_core\nTraceback (most recent call last):\n  File \"/usr/lib/python3.13/unittest/loader.py\", line 396, in _find_test_path\n    module = self._get_module_from_name(name)\n  File \"/usr/lib/python3.13/unittest/loader.py\", line 339, in _get_module_from_name\n    __import__(name)\n    ~~~~~~~~~~^^^^^^\n  File \"/mnt/data/kr_blueprint_v3/tests/test_core.py\", line 60\n    qs=[replace(F,start=date(y,m,1),end=date(y,m+2,calendar.monthrange(y,m+2)[1])),account='cfo',value=v) for y,m,v in [(2025,7,10),(2025,10,20),(2026,1,30),(2026,4,40)]]\n                                                                                                        ^\nSyntaxError: closing parenthesis ')' does not match opening parenthesis '['\n\n"
+    }
+  ]
+}
