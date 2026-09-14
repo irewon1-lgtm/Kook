@@ -14,13 +14,17 @@ data class MetricValue(
     val percentileScore: Double?, // 0.0 ~ 100.0 relative score
     val unit: String,
     val isAvailable: Boolean,
-    val reason: String? = null
+    val reason: String? = null,
+    val description: String = "",
+    val interpretation: String = "",
+    val caution: String = ""
 )
 
 data class StockSummary(
     val issuerId: String,        // e.g. "005930"
     val name: String,            // e.g. "삼성전자"
     val market: String,          // KOSPI / KOSDAQ
+    val sector: String = "기타",
     val isFinancial: Boolean = false,
     val isLossMaking: Boolean = false,
 
@@ -53,7 +57,13 @@ data class CompanyReport(
     val riskFactors: List<String>,
     val counterArguments: String,
     val nextVerificationConditions: List<String>,
-    val updatedAt: String
+    val updatedAt: String,
+    val oneLineView: String = "",
+    val quantSummary: String = "",
+    val businessQuality: String = "",
+    val valuationView: String = "",
+    val momentumView: String = "",
+    val dataLimitations: String = ""
 )
 
 data class NewsItem(
