@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - "kr4-extreme-cleanpass-v2"
+      - "kr4-emulator-smoke"
       - "main"
   pull_request:
     branches:
@@ -12,7 +13,7 @@ on:
 jobs:
   extreme-cleanpass:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
 
     steps:
       - name: Checkout Repository
@@ -45,6 +46,22 @@ jobs:
           set -euo pipefail
           gradle :app:assembleDebug --stacktrace
 
+      - name: Enable KVM for emulator
+        run: |
+          if [ -e /dev/kvm ]; then
+            sudo chmod 666 /dev/kvm
+          fi
+
+      - name: Real Android emulator install and UI smoke test
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          target: google_apis
+          arch: x86_64
+          profile: pixel_2
+          disable-animations: true
+          script: gradle :app:connectedDebugAndroidTest --stacktrace
+
       - name: Hard verify APK exists and is non-empty
         run: |
           set -euo pipefail
@@ -76,5 +93,7 @@ jobs:
             evidence/ci/APK_SHA256.txt
             evidence/ci/APK_SIZE.txt
             app/build/reports/tests/testDebugUnitTest/
+            app/build/reports/androidTests/
+            app/build/outputs/androidTest-results/
           if-no-files-found: error
           retention-days: 14
