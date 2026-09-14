@@ -1,0 +1,121 @@
+{
+  "research_date": "2026-09-13",
+  "source_type": "official_and_primary_research",
+  "verification_scope": "web documentation read; not API authentication or account entitlement verification",
+  "sources": [
+    {
+      "id": "S01",
+      "title": "OpenDART 단일회사 전체 재무제표",
+      "url": "https://opendart.fss.or.kr/guide/detail.do?apiGrpCd=DS003&apiId=2019020",
+      "supports": "연결/별도, 3개월/누적, 통화, 원자료 식별"
+    },
+    {
+      "id": "S02",
+      "title": "OpenDART 공시검색",
+      "url": "https://opendart.fss.or.kr/guide/detail.do?apiGrpCd=DS001&apiId=2019001",
+      "supports": "공시 조회와 정정·회사 식별"
+    },
+    {
+      "id": "S03",
+      "title": "KRX OPEN API 이용 안내",
+      "url": "https://openapi.krx.co.kr/contents/OPP/DATA/OPPDATA003.jsp",
+      "supports": "활용 목적·재배포 계약 확인"
+    },
+    {
+      "id": "S04",
+      "title": "한국투자증권 Open API",
+      "url": "https://apiportal.koreainvestment.com/intro",
+      "supports": "시세·계좌·주문 기능 및 인증 범위"
+    },
+    {
+      "id": "S05",
+      "title": "금융위원회 주식시세정보",
+      "url": "https://www.data.go.kr/data/15094808/openapi.do",
+      "supports": "실시간 아님, 익영업일 13시 이후, 재배포 제한"
+    },
+    {
+      "id": "S06",
+      "title": "NAVER 뉴스 검색 API",
+      "url": "https://developers.naver.com/docs/serviceapi/search/news/news.md",
+      "supports": "뉴스 검색 응답은 원문 전체와 다름"
+    },
+    {
+      "id": "S07",
+      "title": "Damodaran financial variable definitions",
+      "url": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/datafile/variable.htm",
+      "supports": "ROIC·기업가치·재무변수 기초"
+    },
+    {
+      "id": "S08",
+      "title": "Kenneth French Momentum Factor",
+      "url": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/Data_Library/det_mom_factor.html",
+      "supports": "최근 한 달 제외 과거 수익률 개념"
+    },
+    {
+      "id": "S09",
+      "title": "AQR Quality Minus Junk",
+      "url": "https://www.aqr.com/Insights/Research/Working-Paper/Quality-Minus-Junk",
+      "supports": "수익성·품질·안전성 차원의 참고 연구"
+    },
+    {
+      "id": "S10",
+      "title": "Android Jetpack Compose",
+      "url": "https://developer.android.com/compose",
+      "supports": "네이티브 Android UI"
+    },
+    {
+      "id": "S11",
+      "title": "Android offline-first architecture",
+      "url": "https://developer.android.com/topic/architecture/data-layer/offline-first",
+      "supports": "로컬 저장 및 오프라인 데이터 흐름"
+    },
+    {
+      "id": "S12",
+      "title": "Compose accessibility",
+      "url": "https://developer.android.com/develop/ui/compose/accessibility",
+      "supports": "접근성 기능·시험"
+    },
+    {
+      "id": "S13",
+      "title": "OpenAI Structured Outputs",
+      "url": "https://developers.openai.com/api/docs/guides/structured-outputs",
+      "supports": "스키마 준수와 사실 정확성은 다름"
+    },
+    {
+      "id": "S14",
+      "title": "ChatGPT and API billing",
+      "url": "https://help.openai.com/en/articles/9039756-billing-settings-in-chatgpt-vs-platform",
+      "supports": "구독과 API 별도 청구"
+    },
+    {
+      "id": "S15",
+      "title": "Get started with Work",
+      "url": "https://learn.chatgpt.com/docs/get-started-with-work",
+      "supports": "파일·도구·승인 범위 기반 작업"
+    },
+    {
+      "id": "S16",
+      "title": "Android security tips",
+      "url": "https://developer.android.com/privacy-and-security/security-tips",
+      "supports": "모바일 보안"
+    },
+    {
+      "id": "S17",
+      "title": "FastAPI official documentation",
+      "url": "https://fastapi.tiangolo.com/",
+      "supports": "서버 프레임워크"
+    },
+    {
+      "id": "S18",
+      "title": "PostgreSQL transactions",
+      "url": "https://www.postgresql.org/docs/current/tutorial-transactions.html",
+      "supports": "트랜잭션 원자성"
+    },
+    {
+      "id": "S19",
+      "title": "Nextrade official",
+      "url": "https://nextrade.co.kr/",
+      "supports": "시장별 시세·지연 표시"
+    }
+  ]
+}

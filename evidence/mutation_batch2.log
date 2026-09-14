@@ -1,0 +1,10 @@
+{
+  "time_utc": "2026-09-13T14:58:37.785674+00:00",
+  "scope": "32 intentionally corrupted OFFLINE reference implementations; original test suite unchanged",
+  "planned": 32,
+  "complete": true,
+  "total": 32,
+  "killed": 32,
+  "survived": 0,
+  "invalid": 0
+}

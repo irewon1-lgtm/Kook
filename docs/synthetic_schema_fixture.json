@@ -1,0 +1,145 @@
+{
+  "schema_version": "3.0",
+  "issuer_id": "SYNTHETIC_ONLY",
+  "security_code": "0009K0",
+  "bundle_version": 1,
+  "policy_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "input_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "asof": {
+    "published_at": "2026-09-13T00:00:00Z",
+    "financial_asof": null,
+    "price_asof": null,
+    "analysis_asof": null,
+    "event_watermark": null
+  },
+  "metrics": {
+    "Q01": {
+      "id": "Q01",
+      "value": null,
+      "unit": "%",
+      "status": "MISSING",
+      "source_ids": [],
+      "financial_asof": null,
+      "price_asof": null,
+      "reason": "SCHEMA_TEST_ONLY_NO_REAL_DATA"
+    },
+    "Q02": {
+      "id": "Q02",
+      "value": null,
+      "unit": "%",
+      "status": "MISSING",
+      "source_ids": [],
+      "financial_asof": null,
+      "price_asof": null,
+      "reason": "SCHEMA_TEST_ONLY_NO_REAL_DATA"
+    },
+    "Q03": {
+      "id": "Q03",
+      "value": null,
+      "unit": "%",
+      "status": "MISSING",
+      "source_ids": [],
+      "financial_asof": null,
+      "price_asof": null,
+      "reason": "SCHEMA_TEST_ONLY_NO_REAL_DATA"
+    },
+    "Q04": {
+      "id": "Q04",
+      "value": null,
+      "unit": "%",
+      "status": "MISSING",
+      "source_ids": [],
+      "financial_asof": null,
+      "price_asof": null,
+      "reason": "SCHEMA_TEST_ONLY_NO_REAL_DATA"
+    },
+    "Q05": {
+      "id": "Q05",
+      "value": null,
+      "unit": "%p",
+      "status": "MISSING",
+      "source_ids": [],
+      "financial_asof": null,
+      "price_asof": null,
+      "reason": "SCHEMA_TEST_ONLY_NO_REAL_DATA"
+    },
+    "Q06": {
+      "id": "Q06",
+      "value": null,
+      "unit": "%",
+      "status": "MISSING",
+      "source_ids": [],
+      "financial_asof": null,
+      "price_asof": null,
+      "reason": "SCHEMA_TEST_ONLY_NO_REAL_DATA"
+    },
+    "Q07": {
+      "id": "Q07",
+      "value": null,
+      "unit": "%",
+      "status": "MISSING",
+      "source_ids": [],
+      "financial_asof": null,
+      "price_asof": null,
+      "reason": "SCHEMA_TEST_ONLY_NO_REAL_DATA"
+    },
+    "Q08": {
+      "id": "Q08",
+      "value": null,
+      "unit": "%",
+      "status": "MISSING",
+      "source_ids": [],
+      "financial_asof": null,
+      "price_asof": null,
+      "reason": "SCHEMA_TEST_ONLY_NO_REAL_DATA"
+    },
+    "Q09": {
+      "id": "Q09",
+      "value": null,
+      "unit": "%",
+      "status": "MISSING",
+      "source_ids": [],
+      "financial_asof": null,
+      "price_asof": null,
+      "reason": "SCHEMA_TEST_ONLY_NO_REAL_DATA"
+    },
+    "Q10": {
+      "id": "Q10",
+      "value": null,
+      "unit": "배",
+      "status": "MISSING",
+      "source_ids": [],
+      "financial_asof": null,
+      "price_asof": null,
+      "reason": "SCHEMA_TEST_ONLY_NO_REAL_DATA"
+    }
+  },
+  "report": {
+    "state": "UNAVAILABLE",
+    "summary": "스키마 검사용 가상 입력. 실제 기업 분석이 아님.",
+    "sections": [],
+    "claims": [],
+    "analysed_event_watermark": null
+  },
+  "decision": {
+    "buy_lower": 0,
+    "buy_upper": 100,
+    "sell_lower": 0,
+    "sell_upper": 100,
+    "label": "INSUFFICIENT_EVIDENCE",
+    "is_probability": false,
+    "performance_validated": false,
+    "evidence_ids": []
+  },
+  "news": [],
+  "filings": [],
+  "quality": {
+    "numeric_status": "NOT_RUN",
+    "grounding_status": "NOT_RUN",
+    "human_review_status": "NOT_RUN"
+  },
+  "rights": {
+    "status": "SYNTHETIC_FIXTURE",
+    "entitlement_ids": []
+  }
+}

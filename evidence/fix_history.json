@@ -1,0 +1,48 @@
+{
+  "fixed_failures": [
+    {
+      "id": "FIX-01",
+      "point": "test import",
+      "cause": "unbalanced parenthesis in TTM fixture",
+      "before": "evidence/clean_pass_initial.json",
+      "saved_bad_code": "evidence/test_core_before_syntax_fix.txt",
+      "after": "evidence/clean_pass_after_syntax_fix.json",
+      "after_count": 133
+    },
+    {
+      "id": "FIX-02",
+      "point": "source publication ordering",
+      "cause": "lexicographic timezone string comparison",
+      "before": "evidence/adversarial_before_fix.json",
+      "saved_bad_code": "evidence/core_before_time_identity_fix.txt",
+      "after": "evidence/clean_pass_results.json",
+      "after_count": 138
+    },
+    {
+      "id": "FIX-03",
+      "point": "latest correction selection",
+      "cause": "missing issuer/scope/period identity check",
+      "before": "evidence/adversarial_before_fix.json",
+      "after": "evidence/clean_pass_results.json",
+      "after_count": 138
+    },
+    {
+      "id": "FIX-04",
+      "point": "mutation harness execution",
+      "cause": "local tool time limit for all 32 mutants in a single call; not paid/deployment failure",
+      "before": "evidence/mutation_timeout_record.txt",
+      "correction": "checkpoint and 16-item batches",
+      "after": "evidence/mutation_results.json",
+      "mutants_killed": 32
+    }
+  ],
+  "unverified": [
+    "Android build/install",
+    "live provider integration",
+    "actual issuer metric correctness",
+    "human professional report quality",
+    "live automated publication",
+    "point-in-time investment performance",
+    "production security audit"
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "scope": "Artifact consistency / schema guards only, not live app acceptance",
+  "time_utc": "2026-09-13T15:24:31.829780+00:00",
+  "total": 18,
+  "passed": 18,
+  "results": [
+    {
+      "check": "all specification JSON files parse",
+      "status": "PASS",
+      "detail": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "check": "original 8 plus 2 with stable IDs",
+      "status": "PASS",
+      "detail": true
+    },
+    {
+      "check": "weights and unit labels match tested engine",
+      "status": "PASS",
+      "detail": true
+    },
+    {
+      "check": "68 requirements unique and four user goals covered",
+      "status": "PASS",
+      "detail": true
+    },
+    {
+      "check": "requirement status does not assert live completion",
+      "status": "PASS",
+      "detail": true
+    },
+    {
+      "check": "draft 2020-12 schema is well formed",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "explicitly synthetic missing-data fixture valid",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "wrong metric label id rejected",
+      "status": "PASS",
+      "detail": "REJECTED_AS_EXPECTED"
+    },
+    {
+      "check": "wrong metric unit rejected",
+      "status": "PASS",
+      "detail": "REJECTED_AS_EXPECTED"
+    },
+    {
+      "check": "missing metric slot rejected",
+      "status": "PASS",
+      "detail": "REJECTED_AS_EXPECTED"
+    },
+    {
+      "check": "score outside 0..100 rejected",
+      "status": "PASS",
+      "detail": "REJECTED_AS_EXPECTED"
+    },
+    {
+      "check": "probability mislabel rejected",
+      "status": "PASS",
+      "detail": "REJECTED_AS_EXPECTED"
+    },
+    {
+      "check": "reference test result belongs to shipped source",
+      "status": "PASS",
+      "detail": true
+    },
+    {
+      "check": "all32 mutation logs/source hashes present",
+      "status": "PASS",
+      "detail": true
+    },
+    {
+      "check": "8 stress cases all recorded",
+      "status": "PASS",
+      "detail": true
+    },
+    {
+      "check": "rights are unverified not preapproved",
+      "status": "PASS",
+      "detail": true
+    },
+    {
+      "check": "copy order is same as ZIP start order",
+      "status": "PASS",
+      "detail": true
+    },
+    {
+      "check": "PDF 31 pages, page numbers and text bounds",
+      "status": "PASS",
+      "detail": {
+        "pages": 31,
+        "footer_sequence": true,
+        "outside_page_words": 0,
+        "visual_qa_record": "evidence/visual_review.json (separate manual image inspection)"
+      }
+    }
+  ]
+}
