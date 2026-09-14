@@ -12,8 +12,8 @@ android {
         applicationId = "com.krstock.v3"
         minSdk = 26
         targetSdk = 34
-        versionCode = 1
-        versionName = "3.0.0"
+        versionCode = 2
+        versionName = "3.1.0-cleanpass"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -49,4 +49,6 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
+
+    testImplementation("junit:junit:4.13.2")
 }
