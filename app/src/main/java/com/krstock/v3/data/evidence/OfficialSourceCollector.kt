@@ -17,15 +17,6 @@ internal data class OfficialSourceCollection(
     val error: String? = null
 )
 
-/**
- * Fail-closed first-party source collector.
- *
- * Trust chain:
- * 1) DART public search resolves the DART corporation code.
- * 2) DART corporate overview resolves the company's homepage / IR homepage.
- * 3) Only those authoritative hosts (and their subdomains) may be crawled.
- * 4) External/social/ad/login links are discarded rather than reclassified as first-party.
- */
 object OfficialSourceCollector {
     private const val DART = "https://dart.fss.or.kr"
     private const val MAX_PAGE_CHARS = 450_000
@@ -42,6 +33,15 @@ object OfficialSourceCollector {
         val evidence: List<ContextEvidence>,
         val discoveryPages: List<String>
     )
+
+    fun collect(issuerId: String): OfficialSourceCollection {
+        if (!issuerId.matches(Regex("[0-9A-Z]{6}"))) {
+            return OfficialSourceCollection(error = "INVALID_ISSUER_ID")
+        }
+        val searchHtml = runCatching { dartSearch(issuerId) }
+            .getOrElse { return OfficialSourceCollection(error = "DART_SEARCH_${it.javaClass.simpleName}") }
+        return collectFromDartSearchHtml(searchHtml)
+    }
 
     fun collectFromDartSearchHtml(searchHtml: String): OfficialSourceCollection {
         val corpCode = parseCorpCodeFromDartSearch(searchHtml)
@@ -105,10 +105,11 @@ object OfficialSourceCollector {
         Regex("(?is)<tr[^>]*>(.*?)</tr>").findAll(html).forEach { rowMatch ->
             val row = rowMatch.groupValues[1]
             val label = cleanHtml(row).replace(" ", "").lowercase()
-            val links = extractRawLinks(row)
-            val firstWeb = links.firstOrNull { normalizeRootUrl(it).isNotBlank() }
-                ?.let(::normalizeRootUrl)
-                .orEmpty()
+            val candidates = (extractRawLinks(row) + extractDomainLikeText(row))
+                .map(::normalizeRootUrl)
+                .filter { it.isNotBlank() && !it.contains("dart.fss.or.kr", ignoreCase = true) }
+                .distinct()
+            val firstWeb = candidates.firstOrNull().orEmpty()
             when {
                 label.contains("ir홈페이지") || label.contains("irhome") -> if (firstWeb.isNotBlank()) irHomepage = firstWeb
                 label.contains("홈페이지") || label.contains("website") -> if (firstWeb.isNotBlank()) homepage = firstWeb
@@ -116,12 +117,12 @@ object OfficialSourceCollector {
         }
 
         if (homepage.isBlank() || irHomepage.isBlank()) {
-            val text = html.replace("&amp;", "&")
+            val text = decodeHtml(html)
             val urls = Regex("https?://[^\\s'\"<>]+", RegexOption.IGNORE_CASE)
                 .findAll(text)
                 .map { it.value.trimEnd('.', ',', ';', ')') }
                 .map(::normalizeRootUrl)
-                .filter { it.isNotBlank() }
+                .filter { it.isNotBlank() && !it.contains("dart.fss.or.kr", ignoreCase = true) }
                 .distinct()
                 .toList()
             if (irHomepage.isBlank()) {
@@ -130,9 +131,7 @@ object OfficialSourceCollector {
                     s.contains("/ir") || s.contains("investor") || s.contains("invest")
                 }.orEmpty()
             }
-            if (homepage.isBlank()) {
-                homepage = urls.firstOrNull { !it.contains("dart.fss.or.kr", ignoreCase = true) }.orEmpty()
-            }
+            if (homepage.isBlank()) homepage = urls.firstOrNull().orEmpty()
         }
         return CompanyProfile(corpCode = corpCode, homepage = homepage, irHomepage = irHomepage)
     }
@@ -226,9 +225,10 @@ object OfficialSourceCollector {
 
     private fun evidenceScore(item: ContextEvidence): Int {
         val combined = "${item.title} ${item.url}".lowercase()
-        return keywordScore(combined, if (item.kind == EvidenceKind.IR) IR_KEYWORDS else OFFICIAL_KEYWORDS) +
-            if (isBinaryDocument(item.url)) 4 else 0 +
-            if (item.publishedAt.isNotBlank()) 2 else 0
+        val base = keywordScore(combined, if (item.kind == EvidenceKind.IR) IR_KEYWORDS else OFFICIAL_KEYWORDS)
+        val documentBonus = if (isBinaryDocument(item.url)) 4 else 0
+        val dateBonus = if (item.publishedAt.isNotBlank()) 2 else 0
+        return base + documentBonus + dateBonus
     }
 
     private fun keywordScore(text: String, keywords: List<String>): Int = keywords.sumOf { keyword ->
@@ -244,6 +244,10 @@ object OfficialSourceCollector {
             .map { decodeHtml(it.groupValues[1]).trim() }
             .filter { it.startsWith("http://", true) || it.startsWith("https://", true) || looksLikeDomain(it) }
             .toList()
+
+    private fun extractDomainLikeText(html: String): List<String> = Regex(
+        "(?i)(?:https?://)?(?:www\\.)?[a-z0-9가-힣][a-z0-9가-힣.-]*\\.[a-z가-힣]{2,}(?:/[a-z0-9가-힣._~:/?#\\[\\]@!$&'()*+,;=%-]*)?"
+    ).findAll(cleanHtml(html)).map { it.value }.toList()
 
     internal fun inferDate(text: String): String {
         val normalized = decodeHtml(text)
@@ -313,6 +317,42 @@ object OfficialSourceCollector {
         .distinctBy { normalizeUrl(it.url) }
 
     private fun normalizeUrl(url: String): String = url.lowercase().substringBefore('#').trimEnd('/')
+
+    private fun dartSearch(issuerId: String): String {
+        val form = linkedMapOf(
+            "textCrpNm" to issuerId,
+            "currentPage" to "1",
+            "maxResults" to "30",
+            "maxLinks" to "10",
+            "sort" to "date",
+            "series" to "desc",
+            "finalReport" to "recent"
+        )
+        val body = form.entries.joinToString("&") { (key, value) ->
+            "${URLEncoder.encode(key, "UTF-8") }=${URLEncoder.encode(value, "UTF-8") }"
+        }
+        val bytes = body.toByteArray(Charsets.UTF_8)
+        val connection = (URL("$DART/dsab001/search.ax").openConnection() as HttpURLConnection).apply {
+            requestMethod = "POST"
+            doOutput = true
+            connectTimeout = 3_500
+            readTimeout = 4_500
+            instanceFollowRedirects = true
+            setRequestProperty("Accept", "text/html,*/*")
+            setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
+            setRequestProperty("Content-Length", bytes.size.toString())
+            setRequestProperty("User-Agent", "Mozilla/5.0 (Linux; Android 14) KR4-OfficialSources/3.0")
+            setRequestProperty("Referer", "$DART/dsab001/main.do")
+        }
+        try {
+            connection.outputStream.use { it.write(bytes) }
+            val status = connection.responseCode
+            if (status !in 200..299) error("HTTP_$status")
+            return connection.inputStream.bufferedReader(Charsets.UTF_8).use { it.readText() }
+        } finally {
+            connection.disconnect()
+        }
+    }
 
     private fun get(url: String, referer: String): String {
         val expectedHost = hostOf(url)
