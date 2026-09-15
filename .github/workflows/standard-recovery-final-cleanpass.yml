@@ -1,0 +1,113 @@
+name: KR4 Standard Recovery Final CleanPass
+
+on:
+  push:
+    branches:
+      - fix/standard-recovery-main-rebase-v1-clean
+    paths:
+      - scripts/apply_standard_actual_recovery.py
+      - .github/workflows/collect-real-quant.yml
+      - evidence/real_quant_snapshot.json
+      - .github/workflows/standard-recovery-final-cleanpass.yml
+
+permissions:
+  contents: read
+
+jobs:
+  final-cleanpass:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/standard-recovery-main-rebase-v1-clean
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -q requests pandas lxml
+
+      - name: Verify production workflow wiring
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('.github/workflows/collect-real-quant.yml').read_text(encoding='utf-8')
+          required=[
+            'scripts/apply_recent_dart_fallback.py --self-test',
+            'scripts/apply_fiscal_calendar_recovery.py --self-test',
+            'scripts/apply_standard_actual_recovery.py --self-test',
+            'Apply durable fail-closed recovery chain to staging',
+            'python scripts/apply_recent_dart_fallback.py',
+            'python scripts/apply_fiscal_calendar_recovery.py',
+            'python scripts/apply_standard_actual_recovery.py',
+            'Recovery-chain integrity gate',
+          ]
+          for needle in required:
+            assert needle in p,needle
+          i1=p.index('python scripts/apply_recent_dart_fallback.py \\')
+          i2=p.index('python scripts/apply_fiscal_calendar_recovery.py \\')
+          i3=p.index('python scripts/apply_standard_actual_recovery.py \\')
+          iq=p.index('Extreme fail-closed four-metric quality gate')
+          assert i1<i2<i3<iq,(i1,i2,i3,iq)
+          assert 'fix/incomplete-267-recovery-v1' not in p
+          print('PRODUCTION_WORKFLOW_WIRING_GATE=PASS')
+          PY
+
+      - name: Regression and self-tests
+        run: |
+          set -euo pipefail
+          python tests/test_auto_update_pipeline.py
+          python tests/test_quarterly_history.py
+          python scripts/apply_recent_dart_fallback.py --self-test
+          python scripts/apply_fiscal_calendar_recovery.py --self-test
+          python scripts/apply_standard_actual_recovery.py --self-test
+
+      - name: Idempotence and immutable-metric gate
+        run: |
+          set -euo pipefail
+          cp evidence/real_quant_snapshot.json /tmp/before.json
+          python scripts/apply_standard_actual_recovery.py \
+            --quant evidence/real_quant_snapshot.json \
+            --out /tmp/after.json
+          python - <<'PY'
+          import json
+          b=json.load(open('/tmp/before.json',encoding='utf-8'))
+          a=json.load(open('/tmp/after.json',encoding='utf-8'))
+          expected={'m01_available':2508,'m02_available':2417,'m03_available':2639,'m04_available':2607,'complete_count':2388,'ranked_count':2388}
+          assert b['coverage']==expected,(b['coverage'],expected)
+          assert a['coverage']==expected,(a['coverage'],expected)
+          assert a['standard_actual_recovery'].get('source_error_count')==0
+          assert set(a['records'])==set(b['records']) and len(a['records'])==2649
+          for code,old in b['records'].items():
+            new=a['records'][code]
+            for mid in ('m01','m02','m03','m04'):
+              assert new[mid].get('raw')==old[mid].get('raw'),(code,mid,'raw changed')
+              assert new[mid].get('basis')==old[mid].get('basis'),(code,mid,'basis changed')
+            assert new.get('composite')==old.get('composite'),(code,'composite changed')
+            assert new.get('rank')==old.get('rank'),(code,'rank changed')
+          for mid in ('m01','m02','m03','m04'):
+            counted={}
+            for row in a['records'].values():
+              m=row[mid]
+              key='AVAILABLE' if m.get('raw') is not None else (m.get('reason') or 'UNKNOWN')
+              counted[key]=counted.get(key,0)+1
+            assert a['reason_counts'][mid]==counted,(mid,a['reason_counts'][mid],counted)
+          print('STANDARD_RECOVERY_IDEMPOTENCE_GATE=PASS',expected)
+          PY
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+
+      - name: Android regression and Debug APK
+        run: gradle :app:testDebugUnitTest :app:assembleDebug --stacktrace
