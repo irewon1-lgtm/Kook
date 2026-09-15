@@ -3,6 +3,9 @@
 
 This registers issuer identity only. It does NOT fabricate financial metrics, prices,
 ranks, news, filings, or investment conclusions.
+
+KRX issue codes are six characters and modern listings may contain letters
+(e.g. 0220W0). Alphanumeric codes must be preserved exactly.
 """
 from __future__ import annotations
 
@@ -25,6 +28,7 @@ SOURCE_URL = (
 )
 MIN_EXPECTED = 700
 MAX_EXPECTED = 1200
+ISSUE_CODE_RE = re.compile(r"[0-9A-Z]{6}")
 
 
 def fetch_table() -> pd.DataFrame:
@@ -54,20 +58,28 @@ def clean_text(value: object, fallback: str = "") -> str:
     return fallback if text.lower() == "nan" else text
 
 
+def normalize_issue_code(value: object) -> str:
+    raw = clean_text(value).upper()
+    # pandas may render a purely numeric code as 5930.0. Only remove this suffix
+    # when the preceding content is numeric; never strip letters from KRX codes.
+    if re.fullmatch(r"\d+\.0", raw):
+        raw = raw[:-2]
+    raw = re.sub(r"\s+", "", raw)
+    if raw.isdigit():
+        raw = raw.zfill(6)
+    if not ISSUE_CODE_RE.fullmatch(raw):
+        raise RuntimeError(f"invalid KRX issue code: {value!r} -> {raw!r}")
+    return raw
+
+
 def normalize(df: pd.DataFrame) -> tuple[list[dict[str, str]], int, list[str]]:
     source_rows: list[dict[str, str]] = []
     for _, row in df.iterrows():
-        raw_code = clean_text(row["종목코드"])
-        if raw_code.endswith(".0"):
-            raw_code = raw_code[:-2]
-        digits = re.sub(r"\D", "", raw_code)
-        code = digits.zfill(6)
+        code = normalize_issue_code(row["종목코드"])
         name = clean_text(row["회사명"])
         sector = clean_text(row["업종"], "기타")
         listing_date = clean_text(row["상장일"])
 
-        if not re.fullmatch(r"\d{6}", code):
-            raise RuntimeError(f"invalid issue code: {raw_code!r}")
         if not name:
             raise RuntimeError(f"empty company name for {code}")
         source_rows.append({
@@ -87,16 +99,13 @@ def normalize(df: pd.DataFrame) -> tuple[list[dict[str, str]], int, list[str]]:
         names = {v["name"] for v in variants}
         if len(names) != 1:
             raise RuntimeError(
-                f"same issue code maps to multiple company names: {code} -> {sorted(names)}"
+                f"same exact KRX issue code maps to multiple company names: {code} -> {sorted(names)}"
             )
         name = next(iter(names))
-
         sector_candidates = [v["sector"] for v in variants if v["sector"] and v["sector"] != "기타"]
         sector = Counter(sector_candidates).most_common(1)[0][0] if sector_candidates else "기타"
-
         date_candidates = sorted({v["listingDate"] for v in variants if v["listingDate"]})
         listing_date = date_candidates[0] if date_candidates else ""
-
         rows.append({
             "code": code,
             "name": name,
@@ -150,6 +159,7 @@ def write_evidence(
     canonical = "\n".join(
         f"{r['code']}|{r['name']}|{r['sector']}|{r['listingDate']}" for r in rows
     ).encode("utf-8")
+    alphanumeric = [r["code"] for r in rows if not r["code"].isdigit()]
     evidence = {
         "scope": "KOSPI listed-company registration master only; no financial metrics or prices",
         "source": "KRX KIND 상장법인목록",
@@ -159,8 +169,10 @@ def write_evidence(
         "source_row_count": source_row_count,
         "issuer_count": len(rows),
         "unique_issue_codes": len({r["code"] for r in rows}),
-        "duplicate_source_codes_deduplicated": duplicate_codes,
-        "six_digit_codes": all(re.fullmatch(r"\d{6}", r["code"]) for r in rows),
+        "duplicate_exact_source_codes_deduplicated": duplicate_codes,
+        "six_character_krx_codes": all(ISSUE_CODE_RE.fullmatch(r["code"]) for r in rows),
+        "alphanumeric_issue_code_count": len(alphanumeric),
+        "alphanumeric_issue_code_samples": alphanumeric[:20],
         "sha256_normalized_master": hashlib.sha256(canonical).hexdigest(),
         "sample_first_5": rows[:5],
         "sample_last_5": rows[-5:],
@@ -181,7 +193,7 @@ def main() -> None:
     write_evidence(rows, source_row_count, duplicate_codes, Path(args.evidence), snapshot_date)
     print(
         f"KOSPI_MASTER_OK count={len(rows)} source_rows={source_row_count} "
-        f"deduped_codes={len(duplicate_codes)} snapshot={snapshot_date}"
+        f"deduped_exact_codes={len(duplicate_codes)} snapshot={snapshot_date}"
     )
 
 
