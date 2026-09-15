@@ -16,8 +16,9 @@
     "M04": 38
   },
   "issuer_bucket_counts": {
-    "RECOVERABLE": 142,
-    "STRUCTURAL_ONLY": 116
+    "MIXED_STRUCTURAL_RECOVERABLE": 137,
+    "STRUCTURAL_ONLY": 116,
+    "RECOVERABLE_ONLY": 5
   },
   "missing_combination_counts": {
     "M01+M02": 121,
@@ -143,7 +144,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "000400",
@@ -163,7 +164,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "0004Y0",
@@ -183,7 +184,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "000540",
@@ -203,7 +204,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "000590",
@@ -260,7 +261,7 @@
         "M02": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "000810",
@@ -280,7 +281,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "001040",
@@ -351,7 +352,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "001230",
@@ -388,7 +389,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "001290",
@@ -408,7 +409,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "001450",
@@ -428,7 +429,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "001500",
@@ -448,7 +449,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "001510",
@@ -468,7 +469,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "001720",
@@ -505,7 +506,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "0017J0",
@@ -593,7 +594,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "003380",
@@ -630,7 +631,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "003470",
@@ -650,7 +651,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "003530",
@@ -670,7 +671,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "003540",
@@ -690,7 +691,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "003550",
@@ -727,7 +728,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "0037T0",
@@ -747,7 +748,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "0039P0",
@@ -801,7 +802,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "0041J0",
@@ -821,7 +822,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "0041L0",
@@ -841,7 +842,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "0044K0",
@@ -861,7 +862,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "004800",
@@ -932,7 +933,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "005740",
@@ -986,7 +987,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "005940",
@@ -1006,7 +1007,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "006040",
@@ -1077,7 +1078,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "006260",
@@ -1114,7 +1115,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "006840",
@@ -1151,7 +1152,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "0071M0",
@@ -1171,7 +1172,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "0072Z0",
@@ -1191,7 +1192,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "007330",
@@ -1211,7 +1212,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "007540",
@@ -1316,7 +1317,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "0088M0",
@@ -1370,7 +1371,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "0093G0",
@@ -1390,7 +1391,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "009440",
@@ -1444,7 +1445,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "0096D0",
@@ -1467,7 +1468,7 @@
         "M02": "STRUCTURAL_NA_FINANCIAL_M02",
         "M03": "STRUCTURAL_NA_ZERO_EPS"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "0097F0",
@@ -1487,7 +1488,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "0098T0",
@@ -1507,7 +1508,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "009970",
@@ -1544,7 +1545,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "0099X0",
@@ -1564,7 +1565,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "010060",
@@ -1601,7 +1602,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "0105P0",
@@ -1621,7 +1622,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "0115H0",
@@ -1641,7 +1642,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "0117P0",
@@ -1675,7 +1676,7 @@
       "classes": {
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "RECOVERABLE_ONLY"
     },
     {
       "code": "012320",
@@ -1729,7 +1730,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "0129K0",
@@ -1752,7 +1753,7 @@
         "M02": "STRUCTURAL_NA_FINANCIAL_M02",
         "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "0130D0",
@@ -1775,7 +1776,7 @@
         "M02": "STRUCTURAL_NA_FINANCIAL_M02",
         "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "0130H0",
@@ -1798,7 +1799,7 @@
         "M02": "STRUCTURAL_NA_FINANCIAL_M02",
         "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "0131D0",
@@ -1821,7 +1822,7 @@
         "M02": "STRUCTURAL_NA_FINANCIAL_M02",
         "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "0132G0",
@@ -1844,7 +1845,7 @@
         "M02": "STRUCTURAL_NA_FINANCIAL_M02",
         "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "0134X0",
@@ -1867,7 +1868,7 @@
         "M02": "STRUCTURAL_NA_FINANCIAL_M02",
         "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "013570",
@@ -1955,7 +1956,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "0164H0",
@@ -1981,7 +1982,7 @@
         "M03": "RECOVERABLE_EPS_SOURCE",
         "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "0165X0",
@@ -2007,7 +2008,7 @@
         "M03": "RECOVERABLE_EPS_SOURCE",
         "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "016600",
@@ -2027,7 +2028,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "016610",
@@ -2047,7 +2048,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "016880",
@@ -2084,7 +2085,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "019570",
@@ -2127,7 +2128,7 @@
         "M03": "RECOVERABLE_EPS_SOURCE",
         "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "021080",
@@ -2164,7 +2165,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "0218L0",
@@ -2190,7 +2191,7 @@
         "M03": "RECOVERABLE_EPS_SOURCE",
         "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "0220W0",
@@ -2216,7 +2217,7 @@
         "M03": "RECOVERABLE_EPS_SOURCE",
         "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "023760",
@@ -2236,7 +2237,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "024110",
@@ -2256,7 +2257,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "024720",
@@ -2293,7 +2294,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "027360",
@@ -2313,7 +2314,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "027410",
@@ -2367,7 +2368,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "030210",
@@ -2387,7 +2388,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "030610",
@@ -2407,7 +2408,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "031210",
@@ -2427,7 +2428,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "032830",
@@ -2447,7 +2448,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "034730",
@@ -2501,7 +2502,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "036530",
@@ -2538,7 +2539,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "041190",
@@ -2558,7 +2559,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "042370",
@@ -2629,7 +2630,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "060250",
@@ -2683,7 +2684,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "072710",
@@ -2720,7 +2721,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "078070",
@@ -2791,7 +2792,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "086520",
@@ -2828,7 +2829,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "088350",
@@ -2848,7 +2849,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "088980",
@@ -2871,7 +2872,7 @@
         "M02": "STRUCTURAL_NA_FINANCIAL_M02",
         "M03": "RECOVERABLE_EPS_SOURCE"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "094800",
@@ -2894,7 +2895,7 @@
         "M02": "STRUCTURAL_NA_FINANCIAL_M02",
         "M03": "RECOVERABLE_EPS_SOURCE"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "096760",
@@ -2931,7 +2932,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "105560",
@@ -2951,7 +2952,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "107590",
@@ -2988,7 +2989,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "138040",
@@ -3008,7 +3009,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "138930",
@@ -3028,7 +3029,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "139130",
@@ -3048,7 +3049,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "153890",
@@ -3085,7 +3086,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "180640",
@@ -3258,7 +3259,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "267250",
@@ -3312,7 +3313,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "282620",
@@ -3383,7 +3384,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "307930",
@@ -3403,7 +3404,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "309960",
@@ -3440,7 +3441,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "323410",
@@ -3460,7 +3461,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "330730",
@@ -3511,7 +3512,7 @@
       "classes": {
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "RECOVERABLE_ONLY"
     },
     {
       "code": "365660",
@@ -3548,7 +3549,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "RECOVERABLE_ACCOUNTING_SOURCE"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "RECOVERABLE_ONLY"
     },
     {
       "code": "377300",
@@ -3608,7 +3609,7 @@
         "M03": "RECOVERABLE_EPS_SOURCE",
         "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "387690",
@@ -3645,7 +3646,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "RECOVERABLE_ACCOUNTING_SOURCE"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "RECOVERABLE_ONLY"
     },
     {
       "code": "394420",
@@ -3722,7 +3723,7 @@
         "M02": "STRUCTURAL_NA_FINANCIAL_M02",
         "M03": "RECOVERABLE_EPS_SOURCE"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "417030",
@@ -3776,7 +3777,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "452300",
@@ -3813,7 +3814,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "468760",
@@ -3833,7 +3834,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "469480",
@@ -3853,7 +3854,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "469900",
@@ -3873,7 +3874,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "472230",
@@ -3893,7 +3894,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "473000",
@@ -3913,7 +3914,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "473050",
@@ -3933,7 +3934,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "473950",
@@ -3953,7 +3954,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "474490",
@@ -3973,7 +3974,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "474660",
@@ -3993,7 +3994,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "474930",
@@ -4013,7 +4014,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "475040",
@@ -4050,7 +4051,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "475250",
@@ -4070,7 +4071,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "475830",
@@ -4087,7 +4088,7 @@
       "classes": {
         "M02": "RECOVERABLE_ACCOUNTING_SOURCE"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "RECOVERABLE_ONLY"
     },
     {
       "code": "477340",
@@ -4107,7 +4108,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "477380",
@@ -4127,7 +4128,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "477470",
@@ -4147,7 +4148,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "477760",
@@ -4167,7 +4168,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "477850",
@@ -4204,7 +4205,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "478390",
@@ -4224,7 +4225,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "478440",
@@ -4244,7 +4245,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "479880",
@@ -4264,7 +4265,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "481850",
@@ -4301,7 +4302,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "482520",
@@ -4321,7 +4322,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "482680",
@@ -4341,7 +4342,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "482690",
@@ -4361,7 +4362,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "483350",
@@ -4398,7 +4399,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "486630",
@@ -4418,7 +4419,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "487360",
@@ -4438,7 +4439,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "487400",
@@ -4509,7 +4510,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "487830",
@@ -4529,7 +4530,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "488060",
@@ -4549,7 +4550,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "489210",
@@ -4569,7 +4570,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "489480",
@@ -4589,7 +4590,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "489730",
@@ -4609,7 +4610,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "492220",
@@ -4629,7 +4630,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "493280",
@@ -4666,7 +4667,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "496070",
@@ -4686,7 +4687,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "498390",
@@ -4706,7 +4707,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     },
     {
       "code": "499790",
@@ -4930,7 +4931,7 @@
         "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
         "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
       },
-      "issuer_bucket": "RECOVERABLE"
+      "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
     }
   ]
 }
