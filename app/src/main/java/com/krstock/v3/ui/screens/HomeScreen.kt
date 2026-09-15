@@ -28,7 +28,7 @@ fun HomeScreen(
 ) {
     val stocks = remember { StockRepository.getAllStocks() }
     val previewStocks = remember(stocks) {
-        val preferred = listOf("005930", "000660", "035420", "005380", "105560")
+        val preferred = listOf("005930", "000660", "035420", "005380", "000250", "086520", "247540", "035900")
         (preferred.mapNotNull { code -> stocks.find { it.issuerId == code } } + stocks.take(8))
             .distinctBy { it.issuerId }
             .take(8)
@@ -40,7 +40,7 @@ fun HomeScreen(
                 title = {
                     Column {
                         Text("KR4 국내주식", fontWeight = FontWeight.Bold, fontSize = 19.sp)
-                        Text("KOSPI 실종목 등록 단계", fontSize = 11.sp, color = TextSecondaryLight)
+                        Text("KOSPI · KOSDAQ 실종목 등록 단계", fontSize = 11.sp, color = TextSecondaryLight)
                     }
                 }
             )
@@ -63,10 +63,10 @@ fun HomeScreen(
                     shape = RoundedCornerShape(14.dp)
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
-                        Text("KOSPI 실종목 등록 완료", fontWeight = FontWeight.Bold, fontSize = 17.sp, color = BlueAccent)
+                        Text("KOSPI·KOSDAQ 실종목 등록 완료", fontWeight = FontWeight.Bold, fontSize = 17.sp, color = BlueAccent)
                         Spacer(modifier = Modifier.height(6.dp))
                         Text(
-                            "KRX KIND 유가증권시장 상장법인 목록을 기준으로 종목명 · 종목코드 · 업종 · 상장일을 등록합니다. KOSDAQ은 이번 단계에서 포함하지 않습니다.",
+                            "KRX KIND 상장법인 목록 기준으로 종목명 · 종목코드 · 시장 · 업종 · 상장일을 등록했습니다. 정량지표는 검증된 실데이터 연결 전이라 아직 비워둡니다.",
                             fontSize = 13.sp,
                             lineHeight = 19.sp
                         )
@@ -75,10 +75,12 @@ fun HomeScreen(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            SummaryPill("KOSPI 등록", "${stocks.size}개", Modifier.weight(1f))
-                            SummaryPill("KOSDAQ", "0개", Modifier.weight(1f))
-                            SummaryPill("4지표 완성", "0개", Modifier.weight(1f))
+                            SummaryPill("전체 등록", "${stocks.size}개", Modifier.weight(1f))
+                            SummaryPill("KOSPI", "${StockRepository.kospiCount()}개", Modifier.weight(1f))
+                            SummaryPill("KOSDAQ", "${StockRepository.kosdaqCount()}개", Modifier.weight(1f))
                         }
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text("4지표 완성 0개 · 점수/순위 미산출", fontSize = 11.sp, color = TextSecondaryLight)
                     }
                 }
             }
@@ -86,10 +88,10 @@ fun HomeScreen(
             item {
                 Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(14.dp)) {
                     Column(modifier = Modifier.padding(16.dp)) {
-                        Text("현재 단계에서 한 것", fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                        Text("현재 단계에서 확인된 것", fontWeight = FontWeight.Bold, fontSize = 15.sp)
                         Spacer(modifier = Modifier.height(8.dp))
-                        RegistrationRow("실제 상장 종목", "KRX KIND 기준 등록")
-                        RegistrationRow("종목 식별정보", "코드 · 회사명 · 업종 · 상장일")
+                        RegistrationRow("실제 상장 종목", "KRX KIND KOSPI · KOSDAQ")
+                        RegistrationRow("종목 식별정보", "코드 · 회사명 · 시장 · 업종 · 상장일")
                         RegistrationRow("4개 정량지표", "아직 미수집 · 가짜값 입력 안 함")
                         RegistrationRow("순위", "지표 연결 전이므로 아직 미산출")
                     }
@@ -110,7 +112,7 @@ fun HomeScreen(
                 }
             }
 
-            items(previewStocks, key = { it.issuerId }) { stock ->
+            items(previewStocks, key = { "${it.market}:${it.issuerId}" }) { stock ->
                 StockSummaryCard(stock = stock, onClick = { onStockClick(stock.issuerId) })
             }
 
@@ -120,7 +122,7 @@ fun HomeScreen(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp)
                 ) {
-                    Text("KOSPI 전체 실종목 검색")
+                    Text("KOSPI·KOSDAQ 전체 실종목 검색")
                 }
             }
 
@@ -179,7 +181,7 @@ fun StockSummaryCard(stock: StockSummary, onClick: () -> Unit) {
                         Text(stock.issuerId, fontSize = 11.sp, color = TextSecondaryLight)
                     }
                     Spacer(modifier = Modifier.height(3.dp))
-                    Text("KOSPI · ${stock.sector}", fontSize = 11.sp, color = TextSecondaryLight)
+                    Text("${stock.market} · ${stock.sector}", fontSize = 11.sp, color = TextSecondaryLight)
                     if (stock.listingDate.isNotBlank()) {
                         Text("상장일 ${stock.listingDate}", fontSize = 10.sp, color = TextSecondaryLight)
                     }
@@ -195,7 +197,7 @@ fun StockSummaryCard(stock: StockSummary, onClick: () -> Unit) {
                 CompactMetric("6개월", "미수집")
             }
             Spacer(modifier = Modifier.height(8.dp))
-            Text("실종목 등록 완료 · 정량지표 연결 전", fontSize = 11.sp, color = TextSecondaryLight)
+            Text("${stock.market} 실종목 등록 완료 · 정량지표 연결 전", fontSize = 11.sp, color = TextSecondaryLight)
         }
     }
 }
