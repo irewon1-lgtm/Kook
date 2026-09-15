@@ -1,13 +1,18 @@
 name: KR4 AutoUpdate Extreme CleanPass
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - "main"
       - "fix/auto-update-v2"
+      - "fix/app-auto-update-v1"
   pull_request:
     branches:
       - "main"
+
+permissions:
+  contents: write
 
 jobs:
   extreme-cleanpass:
@@ -17,6 +22,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
 
       - name: Set up Python 3.12
         uses: actions/setup-python@v5
@@ -137,6 +144,13 @@ jobs:
           grep -q 'schedule:' .github/workflows/collect-real-quant.yml
           grep -q '40 8 \* \* 1-5' .github/workflows/collect-real-quant.yml
           grep -q '30 12 \* \* 1-5' .github/workflows/collect-real-quant.yml
+          grep -q 'AppAutoUpdater.checkAndDownload' app/src/main/java/com/krstock/v3/MainActivity.kt
+          grep -q 'PeriodicWorkRequestBuilder<AppUpdateWorker>' app/src/main/java/com/krstock/v3/KR4Application.kt
+          grep -q 'REQUEST_INSTALL_PACKAGES' app/src/main/AndroidManifest.xml
+          grep -q 'FileProvider' app/src/main/AndroidManifest.xml
+          grep -q 'releases/latest/download/update.json' app/src/main/java/com/krstock/v3/update/AppAutoUpdater.kt
+          grep -q 'signerDigests(installed) == signerDigests(archive)' app/src/main/java/com/krstock/v3/update/AppAutoUpdater.kt
+          grep -q 'sha256(apk) != info.sha256' app/src/main/java/com/krstock/v3/update/AppAutoUpdater.kt
 
       - name: Upload verified APK and evidence
         uses: actions/upload-artifact@v4
@@ -155,3 +169,125 @@ jobs:
             app/build/outputs/androidTest-results/
           if-no-files-found: error
           retention-days: 14
+
+      - name: Detect signed app-release eligibility
+        id: release_gate
+        if: github.event_name != 'pull_request'
+        env:
+          KR4_KEYSTORE_BASE64: ${{ secrets.KR4_KEYSTORE_BASE64 }}
+          KR4_KEYSTORE_PASSWORD: ${{ secrets.KR4_KEYSTORE_PASSWORD }}
+          KR4_KEY_ALIAS: ${{ secrets.KR4_KEY_ALIAS }}
+          KR4_KEY_PASSWORD: ${{ secrets.KR4_KEY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          APP_CHANGED=false
+          if [ "$GITHUB_REF" = "refs/heads/main" ]; then
+            if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+              APP_CHANGED=true
+            elif git rev-parse HEAD^ >/dev/null 2>&1 && ! git diff --quiet HEAD^ HEAD -- app/ .github/workflows/android-build.yml; then
+              APP_CHANGED=true
+            fi
+          fi
+          SIGNING_READY=false
+          if [ -n "$KR4_KEYSTORE_BASE64" ] && [ -n "$KR4_KEYSTORE_PASSWORD" ] && [ -n "$KR4_KEY_ALIAS" ] && [ -n "$KR4_KEY_PASSWORD" ]; then
+            SIGNING_READY=true
+          fi
+          READY=false
+          if [ "$APP_CHANGED" = true ] && [ "$SIGNING_READY" = true ]; then READY=true; fi
+          echo "app_changed=$APP_CHANGED" >> "$GITHUB_OUTPUT"
+          echo "signing_ready=$SIGNING_READY" >> "$GITHUB_OUTPUT"
+          echo "ready=$READY" >> "$GITHUB_OUTPUT"
+          echo "APP_CHANGED=$APP_CHANGED SIGNING_READY=$SIGNING_READY RELEASE_READY=$READY"
+
+      - name: Prepare stable signing key and monotonic version
+        if: steps.release_gate.outputs.ready == 'true'
+        env:
+          KR4_KEYSTORE_BASE64: ${{ secrets.KR4_KEYSTORE_BASE64 }}
+          STORE_PASSWORD: ${{ secrets.KR4_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KR4_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KR4_KEY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          KEYSTORE_FILE="$RUNNER_TEMP/kr4-release.jks"
+          printf '%s' "$KR4_KEYSTORE_BASE64" | base64 --decode > "$KEYSTORE_FILE"
+          chmod 600 "$KEYSTORE_FILE"
+          VERSION_CODE=$((10000 + GITHUB_RUN_NUMBER))
+          VERSION_NAME="4.0.${GITHUB_RUN_NUMBER}"
+          echo "KR4_KEYSTORE_FILE=$KEYSTORE_FILE" >> "$GITHUB_ENV"
+          echo "KR4_KEYSTORE_PASSWORD=$STORE_PASSWORD" >> "$GITHUB_ENV"
+          echo "KR4_KEY_ALIAS=$KEY_ALIAS" >> "$GITHUB_ENV"
+          echo "KR4_KEY_PASSWORD=$KEY_PASSWORD" >> "$GITHUB_ENV"
+          echo "KR4_VERSION_CODE=$VERSION_CODE" >> "$GITHUB_ENV"
+          echo "KR4_VERSION_NAME=$VERSION_NAME" >> "$GITHUB_ENV"
+
+      - name: Build and verify signed Release APK
+        if: steps.release_gate.outputs.ready == 'true'
+        run: |
+          set -euo pipefail
+          gradle :app:assembleRelease --stacktrace
+          APK="app/build/outputs/apk/release/app-release.apk"
+          test -s "$APK"
+          mkdir -p dist
+          cp "$APK" dist/KR4.apk
+          APKSIGNER=$(find "$ANDROID_HOME/build-tools" -type f -name apksigner | sort -V | tail -1)
+          test -x "$APKSIGNER"
+          "$APKSIGNER" verify --verbose --print-certs dist/KR4.apk | tee dist/APK_SIGNING_CERT.txt
+
+      - name: Generate cryptographic latest-update manifest
+        if: steps.release_gate.outputs.ready == 'true'
+        run: |
+          set -euo pipefail
+          SHA256=$(sha256sum dist/KR4.apk | awk '{print $1}')
+          export SHA256
+          python3 - <<'PY'
+          import json, os
+          doc = {
+              "versionCode": int(os.environ["KR4_VERSION_CODE"]),
+              "versionName": os.environ["KR4_VERSION_NAME"],
+              "apkUrl": "https://github.com/irewon1-lgtm/Kook/releases/latest/download/KR4.apk",
+              "sha256": os.environ["SHA256"],
+              "mandatory": False,
+              "notes": "검증된 국내주식 앱 UI·기능 업데이트",
+              "commit": os.environ["GITHUB_SHA"],
+          }
+          with open("dist/update.json", "w", encoding="utf-8") as f:
+              json.dump(doc, f, ensure_ascii=False, indent=2)
+              f.write("\n")
+          print(json.dumps(doc, ensure_ascii=False))
+          PY
+          grep -q '"sha256"' dist/update.json
+          grep -q '"versionCode"' dist/update.json
+
+      - name: Publish immutable signed APK as GitHub latest release
+        if: steps.release_gate.outputs.ready == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          TAG="kr4-app-c${KR4_VERSION_CODE}"
+          TITLE="KR4 ${KR4_VERSION_NAME}"
+          NOTES="Extreme CleanPass 통과 후 자동 게시. commit ${GITHUB_SHA}. APK는 SHA-256 및 동일 서명 검증 후 앱에서만 설치 제안됩니다."
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" dist/KR4.apk dist/update.json dist/APK_SIGNING_CERT.txt --clobber
+            gh release edit "$TAG" --title "$TITLE" --notes "$NOTES" --latest
+          else
+            gh release create "$TAG" \
+              dist/KR4.apk \
+              dist/update.json \
+              dist/APK_SIGNING_CERT.txt \
+              --title "$TITLE" \
+              --notes "$NOTES" \
+              --latest
+          fi
+          gh release view "$TAG" --json tagName,name,isLatest,url
+
+      - name: Signed release status
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        run: |
+          if [ "${{ steps.release_gate.outputs.app_changed }}" != "true" ]; then
+            echo "No app/workflow code change: APK release intentionally skipped."
+          elif [ "${{ steps.release_gate.outputs.signing_ready }}" != "true" ]; then
+            echo "Stable APK release is wired but signing secrets are not configured yet."
+          else
+            echo "Signed APK release published and will be detected by installed KR4 apps."
+          fi

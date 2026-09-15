@@ -8,12 +8,31 @@ android {
     namespace = "com.krstock.v3"
     compileSdk = 34
 
+    val releaseKeystoreFile = System.getenv("KR4_KEYSTORE_FILE")
+    val releaseStorePassword = System.getenv("KR4_KEYSTORE_PASSWORD")
+    val releaseKeyAlias = System.getenv("KR4_KEY_ALIAS")
+    val releaseKeyPassword = System.getenv("KR4_KEY_PASSWORD")
+
+    val releaseSigningConfig = if (
+        !releaseKeystoreFile.isNullOrBlank() &&
+        !releaseStorePassword.isNullOrBlank() &&
+        !releaseKeyAlias.isNullOrBlank() &&
+        !releaseKeyPassword.isNullOrBlank()
+    ) {
+        signingConfigs.create("release") {
+            storeFile = file(releaseKeystoreFile)
+            storePassword = releaseStorePassword
+            keyAlias = releaseKeyAlias
+            keyPassword = releaseKeyPassword
+        }
+    } else null
+
     defaultConfig {
         applicationId = "com.krstock.v3"
         minSdk = 26
         targetSdk = 34
-        versionCode = 3
-        versionName = "3.2.0-auto-update"
+        versionCode = System.getenv("KR4_VERSION_CODE")?.toIntOrNull() ?: 4
+        versionName = System.getenv("KR4_VERSION_NAME") ?: "4.0.0-self-update"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -21,6 +40,9 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
+            if (releaseSigningConfig != null) {
+                signingConfig = releaseSigningConfig
+            }
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -36,6 +58,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
