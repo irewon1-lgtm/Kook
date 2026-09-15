@@ -6,6 +6,7 @@ on:
       - "connect-dart-price-data"
     paths:
       - "scripts/collect_real_quant.py"
+      - "scripts/collect_real_quant_v2.py"
       - ".github/workflows/collect-real-quant.yml"
   workflow_dispatch:
 
@@ -19,7 +20,7 @@ concurrency:
 jobs:
   collect:
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 30
     steps:
       - name: Checkout branch
         uses: actions/checkout@v4
@@ -41,7 +42,7 @@ jobs:
       - name: Collect official DART and live price data
         run: |
           set -euo pipefail
-          python scripts/collect_real_quant.py \
+          python scripts/collect_real_quant_v2.py \
             --as-of 2026-09-15 \
             --price-cutoff 2026-09-14 \
             --workers 14 \
