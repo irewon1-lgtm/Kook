@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -57,7 +58,11 @@ fun StockDetailScreen(issuerId: String, onBack: () -> Unit) {
             TopAppBar(
                 title = {
                     Column {
-                        Text("${summary.name} (${summary.issuerId})", fontWeight = FontWeight.Bold)
+                        Text(
+                            "${summary.name} (${summary.issuerId})",
+                            modifier = Modifier.testTag("detail_title"),
+                            fontWeight = FontWeight.Bold
+                        )
                         Text("${summary.market} · ${summary.sector}", fontSize = 11.sp, color = TextSecondaryLight)
                     }
                 },
@@ -66,7 +71,12 @@ fun StockDetailScreen(issuerId: String, onBack: () -> Unit) {
         }
     ) { padding ->
         Column(
-            modifier = Modifier.fillMaxSize().padding(padding).verticalScroll(rememberScrollState()).padding(16.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .testTag("detail_scroll")
+                .verticalScroll(rememberScrollState())
+                .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
             Card(
@@ -126,7 +136,12 @@ fun StockDetailScreen(issuerId: String, onBack: () -> Unit) {
                 }
             }
 
-            Text("4대 정량지표", fontWeight = FontWeight.Bold, fontSize = 17.sp)
+            Text(
+                "4대 정량지표",
+                modifier = Modifier.testTag("detail_metrics_header"),
+                fontWeight = FontWeight.Bold,
+                fontSize = 17.sp
+            )
             Text(
                 "원값 + 전체 비교군 상대점수 + 실제 원천과 계산기준을 함께 표시합니다.",
                 fontSize = 12.sp,
@@ -153,7 +168,7 @@ fun StockDetailScreen(issuerId: String, onBack: () -> Unit) {
             }
 
             Card(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().testTag("detail_source_card"),
                 colors = CardDefaults.cardColors(containerColor = BlueAccent.copy(alpha = 0.07f)),
                 shape = RoundedCornerShape(12.dp)
             ) {
