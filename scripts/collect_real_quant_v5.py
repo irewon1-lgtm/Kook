@@ -22,6 +22,7 @@ Production guarantees:
 from __future__ import annotations
 
 import bisect
+import calendar
 import json
 import math
 from datetime import date
@@ -42,6 +43,16 @@ _DOWN_CODES = {"4", "5"}
 _UP_WORDS = {"RISING", "HIGHER", "UP", "UPPER_LIMIT", "LIMIT_UP", "상승", "상한"}
 _FLAT_WORDS = {"UNCHANGED", "SAME", "FLAT", "보합"}
 _DOWN_WORDS = {"FALLING", "LOWER", "DOWN", "LOWER_LIMIT", "LIMIT_DOWN", "하락", "하한"}
+
+
+def _six_month_target(d: date) -> date:
+    month = d.month - 6
+    year = d.year
+    if month <= 0:
+        month += 12
+        year -= 1
+    day = min(d.day, calendar.monthrange(year, month)[1])
+    return date(year, month, day)
 
 
 def _direction_sign(bar: dict[str, Any]) -> int | None:
@@ -112,7 +123,7 @@ def _set_market_calendar(days: set[date] | list[date]) -> None:
 
 
 def _load_market_calendar(cutoff: date, six_month_target: date) -> None:
-    """Load official KOSPI session dates once; fail closed if coverage is weak."""
+    """Load KOSPI completed-session dates once; fail closed if coverage is weak."""
     days: set[date] = set()
     for page in range(1, 6):
         bars = v2.get_json(f"{_INDEX_PRICE_URL}?pageSize=60&page={page}")
@@ -300,7 +311,7 @@ def main() -> None:
     # calendar before the 2,649 worker pool starts.
     args = v3.parse_args_auto_cached()
     cutoff = date.fromisoformat(str(args.price_cutoff))
-    six_month_target = base.subtract_six_months(cutoff)
+    six_month_target = _six_month_target(cutoff)
     _install_patches()
     _load_market_calendar(cutoff, six_month_target)
     v3.main()
