@@ -3,6 +3,7 @@ package com.krstock.v3
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.krstock.v3.data.evidence.ContextEvidenceRepository
 import com.krstock.v3.data.model.EvidenceKind
+import com.krstock.v3.data.model.EvidenceSourceTier
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -42,6 +43,7 @@ class ContextEvidenceParserTest {
         assertTrue(rows.any { it.title.contains("공급계약") && it.source == "테스트경제" })
         assertTrue(rows.any { it.title.contains("증설") && it.publishedAt.startsWith("2026-09-14") })
         assertTrue(rows.none { it.title == "관련 뉴스" })
+        assertTrue(rows.all { it.sourceTier == EvidenceSourceTier.TRUSTED_MEDIA })
     }
 
     @Test
@@ -73,7 +75,11 @@ class ContextEvidenceParserTest {
 
         val rows = ContextEvidenceRepository.parse(json, EvidenceKind.DISCLOSURE)
         assertEquals(2, rows.size)
-        assertTrue(rows.any { it.title.contains("공급계약") })
+        val dart = rows.first { it.title.contains("공급계약") }
+        assertEquals("20260915000123", dart.receiptNo)
+        assertTrue(dart.url.contains("dart.fss.or.kr"))
+        assertTrue(dart.url.contains("20260915000123"))
+        assertEquals(EvidenceSourceTier.DART_PRIMARY, dart.sourceTier)
         assertTrue(rows.any { it.title.contains("유상증자") })
         assertTrue(rows.all { it.kind == EvidenceKind.DISCLOSURE })
     }
