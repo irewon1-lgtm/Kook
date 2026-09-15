@@ -13,9 +13,9 @@ import org.junit.runner.RunWith
 class AppAutoUpdaterInstrumentedTest {
 
     @Test
-    fun stableChannelUsesDedicatedPermanentPackageId() {
+    fun stableChannelPreservesOriginalPackageIdForInPlaceUpdates() {
         val context = ApplicationProvider.getApplicationContext<android.content.Context>()
-        assertEquals("com.krstock.v3.stable", context.packageName)
+        assertEquals("com.krstock.v3", context.packageName)
     }
 
     @Test
