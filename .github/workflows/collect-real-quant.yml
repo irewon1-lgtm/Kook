@@ -14,6 +14,7 @@ on:
       - "scripts/collect_real_quant_v2.py"
       - "scripts/collect_real_quant_v3.py"
       - "scripts/collect_quarterly_history.py"
+      - "scripts/collect_quarterly_history_parallel.py"
       - "tests/test_auto_update_pipeline.py"
       - "tests/test_quarterly_history.py"
       - ".github/workflows/collect-real-quant.yml"
@@ -77,10 +78,11 @@ jobs:
           print(json.load(open('/tmp/real_quant_snapshot.json',encoding='utf-8'))['snapshot_date_kst'])
           PY
           )
-          python scripts/collect_quarterly_history.py \
+          python scripts/collect_quarterly_history_parallel.py \
             --as-of "$AS_OF" \
             --visible-quarters 8 \
             --support-quarters 12 \
+            --period-workers 3 \
             --out /tmp/quarterly_history.json
 
       - name: Extreme fail-closed four-metric quality gate
