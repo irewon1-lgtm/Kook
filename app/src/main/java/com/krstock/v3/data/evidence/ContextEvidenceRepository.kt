@@ -58,8 +58,6 @@ object ContextEvidenceRepository {
             emptyList()
         }
 
-        // DART records are placed first so an identical Naver disclosure-index row
-        // can never downgrade a primary filing into a secondary metadata record.
         val mergedDisclosures = (dartDisclosures + naverDisclosures)
             .distinctBy { "${normalize(it.title)}:${it.publishedAt.take(10)}" }
             .sortedWith(
@@ -68,9 +66,6 @@ object ContextEvidenceRepository {
             )
             .take(24)
 
-        // Full text is fetched only for the two latest periodic DART reports.
-        // If either body cannot be loaded, DisclosureDiffEngine explicitly falls
-        // back to a lower-confidence timeline comparison instead of inventing text.
         val disclosures = hydratePeriodicDartBodies(mergedDisclosures)
         val diff = DisclosureDiffEngine.compare(disclosures)
 
@@ -90,11 +85,6 @@ object ContextEvidenceRepository {
         )
     }
 
-    /**
-     * DART's public company search accepts company name or stock code. We resolve
-     * receipt numbers here independently from Naver because Naver's disclosure
-     * JSON currently contains disclosure rows but not rcept_no.
-     */
     private fun fetchDartDisclosureIndex(issuerId: String): List<ContextEvidence> {
         val html = postForm(
             "$DART/dsab001/search.ax",
@@ -244,7 +234,7 @@ object ContextEvidenceRepository {
     private fun sectionScore(context: String): Int {
         val t = cleanHtml(context).lowercase()
         val high = listOf("사업의 내용", "위험", "연구개발", "생산", "원재료", "매출", "수주", "설비", "경영진", "영업")
-        return high.sumOf { if (t.contains(it)) 3 else 0 }
+        return high.count { t.contains(it) } * 3
     }
 
     private fun get(url: String, referer: String = "https://m.stock.naver.com/"): String {
