@@ -7,8 +7,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import java.io.File
+import java.io.FileOutputStream
 import java.net.HttpURLConnection
 import java.net.URL
+import java.nio.file.AtomicMoveNotSupportedException
+import java.nio.file.Files
+import java.nio.file.StandardCopyOption
 import java.time.LocalDate
 import java.time.ZoneId
 import kotlin.math.max
@@ -16,7 +20,7 @@ import kotlin.math.max
 /**
  * Downloads only a CI-validated public snapshot and applies it after repeating
  * the critical integrity gates on-device. A bad/partial/network-failed update
- * never replaces the last known-good cache or the bundled fallback.
+ * never replaces the last known-good cache, its rollback copy, or the bundled fallback.
  */
 object SnapshotAutoUpdater {
     private const val REMOTE_URL =
@@ -27,7 +31,7 @@ object SnapshotAutoUpdater {
     private const val MAX_BYTES = 8 * 1024 * 1024
     private val KST: ZoneId = ZoneId.of("Asia/Seoul")
 
-    enum class Source { LIVE, CACHE, BUNDLED }
+    enum class Source { LIVE, CACHE, BACKUP, BUNDLED }
 
     data class Result(
         val source: Source,
@@ -61,34 +65,51 @@ object SnapshotAutoUpdater {
         refreshBlocking(context.applicationContext, installInMemory = false)
     }
 
+    /**
+     * Bootstrap and WorkManager can overlap in the same process. Serialize the
+     * whole read/validate/promote critical section so two refreshes cannot race
+     * on temp/cache/backup files.
+     */
+    @Synchronized
     internal fun refreshBlocking(context: Context, installInMemory: Boolean): Result {
         var active = bundledResult("앱 내장 정상본")
         val cache = File(context.filesDir, CACHE_NAME)
+        val backup = File(context.filesDir, BACKUP_NAME)
 
-        // 1) Warm start from the last known-good cache. Corruption is ignored.
-        if (cache.isFile && cache.length() in 1..MAX_BYTES.toLong()) {
-            runCatching {
-                val parsed = parseAndValidate(cache.readText(Charsets.UTF_8))
-                if (isNotOlder(parsed.snapshotDate, parsed.priceCutoffDate)) {
-                    if (installInMemory) install(parsed)
-                    active = Result(
-                        Source.CACHE,
-                        parsed.snapshotDate,
-                        parsed.priceCutoffDate,
-                        "마지막 정상 자동갱신본",
-                        false,
-                    )
-                }
-            }
+        // 1) Warm start from local known-good copies. Cache is preferred when
+        // equally new, but a newer valid rollback copy can still win. Corrupt or
+        // implausibly old local files are ignored without touching them.
+        val localCandidates = listOf(
+            Triple(cache, Source.CACHE, "마지막 정상 자동갱신본"),
+            Triple(backup, Source.BACKUP, "백업 정상본 복구"),
+        )
+        for ((file, source, message) in localCandidates) {
+            if (!file.isFile || file.length() !in 1..MAX_BYTES.toLong()) continue
+            val parsed = runCatching { parseAndValidate(file.readText(Charsets.UTF_8)) }.getOrNull() ?: continue
+            if (!isNotOlderThanBundled(parsed.snapshotDate, parsed.priceCutoffDate)) continue
+            if (isOlderVersion(parsed.snapshotDate, parsed.priceCutoffDate, active.snapshotDate, active.priceCutoffDate)) continue
+            if (installInMemory) install(parsed)
+            active = Result(
+                source,
+                parsed.snapshotDate,
+                parsed.priceCutoffDate,
+                message,
+                false,
+            )
         }
 
-        // 2) Network refresh. Any failure leaves active/cache untouched.
+        // 2) Network refresh. Compare against the selected local active version,
+        // not just the APK-bundled version. This prevents a background worker
+        // from overwriting a newer disk cache with an older remote snapshot.
         val network = runCatching {
             val body = download()
             val parsed = parseAndValidate(body)
-            require(!isOlderThanActive(parsed.snapshotDate, parsed.priceCutoffDate)) {
-                "remote snapshot downgrade rejected"
-            }
+            require(!isOlderVersion(
+                parsed.snapshotDate,
+                parsed.priceCutoffDate,
+                active.snapshotDate,
+                active.priceCutoffDate,
+            )) { "remote snapshot downgrade rejected" }
             saveAtomically(context, body)
             if (installInMemory) install(parsed)
             Result(
@@ -115,7 +136,7 @@ object SnapshotAutoUpdater {
             useCaches = false
             setRequestProperty("Accept", "application/json")
             setRequestProperty("Cache-Control", "no-cache")
-            setRequestProperty("User-Agent", "KR4-Android-AutoUpdate/2")
+            setRequestProperty("User-Agent", "KR4-Android-AutoUpdate/3")
         }
         try {
             require(c.responseCode == HttpURLConnection.HTTP_OK) { "HTTP ${c.responseCode}" }
@@ -151,6 +172,13 @@ object SnapshotAutoUpdater {
         require(!snapshotDay.isAfter(today.plusDays(1))) { "future snapshot rejected" }
         require(!priceDay.isAfter(snapshotDay)) { "price cutoff after snapshot" }
         require(!priceDay.isBefore(snapshotDay.minusDays(10))) { "price cutoff is implausibly stale" }
+
+        // Do not accept an arbitrary structurally-similar JSON accidentally placed
+        // at the raw URL. It must identify itself as the v3 automatic collector.
+        val auto = root.getJSONObject("auto_update")
+        require(auto.getString("collector") == "collect_real_quant_v3.py") { "untrusted collector provenance" }
+        require(auto.getString("timezone") == "Asia/Seoul") { "unexpected snapshot timezone" }
+        require(auto.getString("dart_period") in setOf("Q1", "HY", "Q3", "FY")) { "invalid DART period provenance" }
 
         val universe = root.getInt("universe_count")
         require(universe == GeneratedRealQuantSnapshot.universeCount) {
@@ -293,36 +321,82 @@ object SnapshotAutoUpdater {
         )
     }
 
-    private fun isNotOlder(snapshotDate: String, priceDate: String): Boolean {
-        val bSnap = LocalDate.parse(GeneratedRealQuantSnapshot.bundledSnapshotDate)
-        val bPrice = LocalDate.parse(GeneratedRealQuantSnapshot.bundledPriceCutoffDate)
-        val snap = LocalDate.parse(snapshotDate)
-        val price = LocalDate.parse(priceDate)
-        return snap > bSnap || (snap == bSnap && !price.isBefore(bPrice))
-    }
+    private fun isNotOlderThanBundled(snapshotDate: String, priceDate: String): Boolean =
+        !isOlderVersion(
+            snapshotDate,
+            priceDate,
+            GeneratedRealQuantSnapshot.bundledSnapshotDate,
+            GeneratedRealQuantSnapshot.bundledPriceCutoffDate,
+        )
 
-    private fun isOlderThanActive(snapshotDate: String, priceDate: String): Boolean {
-        val activeSnap = LocalDate.parse(GeneratedRealQuantSnapshot.snapshotDate)
-        val activePrice = LocalDate.parse(GeneratedRealQuantSnapshot.priceCutoffDate)
-        val incomingSnap = LocalDate.parse(snapshotDate)
-        val incomingPrice = LocalDate.parse(priceDate)
+    /** Pure policy helper covered by JVM tests. */
+    internal fun isOlderVersion(
+        incomingSnapshotDate: String,
+        incomingPriceDate: String,
+        activeSnapshotDate: String,
+        activePriceDate: String,
+    ): Boolean {
+        val incomingSnap = LocalDate.parse(incomingSnapshotDate)
+        val incomingPrice = LocalDate.parse(incomingPriceDate)
+        val activeSnap = LocalDate.parse(activeSnapshotDate)
+        val activePrice = LocalDate.parse(activePriceDate)
         return incomingSnap < activeSnap || (incomingSnap == activeSnap && incomingPrice < activePrice)
     }
 
     private fun saveAtomically(context: Context, body: String) {
         val cache = File(context.filesDir, CACHE_NAME)
-        val backup = File(context.filesDir, BACKUP_NAME)
-        val temp = File(context.filesDir, TEMP_NAME)
-        if (cache.isFile && cache.length() > 0) {
-            cache.copyTo(backup, overwrite = true)
+        val preserveExisting = if (cache.isFile && cache.length() in 1..MAX_BYTES.toLong()) {
+            runCatching {
+                val parsed = parseAndValidate(cache.readText(Charsets.UTF_8))
+                isNotOlderThanBundled(parsed.snapshotDate, parsed.priceCutoffDate)
+            }.getOrDefault(false)
+        } else {
+            false
         }
-        temp.outputStream().buffered().use { out ->
+        writeSnapshotFilesAtomically(context.filesDir, body, preserveExisting)
+    }
+
+    /**
+     * Pure file-promotion primitive covered by JVM tests. The destination is
+     * never deleted before replacement. If atomic move is unsupported, a normal
+     * REPLACE_EXISTING move is used; any thrown failure leaves the prior cache
+     * or the rollback copy intact.
+     */
+    internal fun writeSnapshotFilesAtomically(directory: File, body: String, preserveExistingCache: Boolean) {
+        require(body.toByteArray(Charsets.UTF_8).size in 1..MAX_BYTES) { "snapshot body size invalid" }
+        directory.mkdirs()
+        val cache = File(directory, CACHE_NAME)
+        val backup = File(directory, BACKUP_NAME)
+        val temp = File(directory, TEMP_NAME)
+
+        if (preserveExistingCache && cache.isFile && cache.length() > 0) {
+            cache.copyTo(backup, overwrite = true)
+            FileOutputStream(backup, true).use { it.fd.sync() }
+        }
+
+        FileOutputStream(temp, false).use { out ->
             out.write(body.toByteArray(Charsets.UTF_8))
             out.flush()
+            out.fd.sync()
         }
         require(temp.length() in 1..MAX_BYTES.toLong()) { "temporary cache size invalid" }
-        if (cache.exists()) cache.delete()
-        require(temp.renameTo(cache)) { "atomic cache promotion failed" }
+
+        try {
+            Files.move(
+                temp.toPath(),
+                cache.toPath(),
+                StandardCopyOption.ATOMIC_MOVE,
+                StandardCopyOption.REPLACE_EXISTING,
+            )
+        } catch (_: AtomicMoveNotSupportedException) {
+            Files.move(temp.toPath(), cache.toPath(), StandardCopyOption.REPLACE_EXISTING)
+        } catch (_: UnsupportedOperationException) {
+            Files.move(temp.toPath(), cache.toPath(), StandardCopyOption.REPLACE_EXISTING)
+        }
+
+        // Sync the promoted file as a second durability barrier. We never delete
+        // the previous cache first, so failed promotion cannot create an empty slot.
+        FileOutputStream(cache, true).use { it.fd.sync() }
     }
 
     private fun bundledResult(message: String) = Result(
