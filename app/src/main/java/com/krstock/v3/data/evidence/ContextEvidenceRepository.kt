@@ -3,6 +3,7 @@ package com.krstock.v3.data.evidence
 import com.krstock.v3.data.model.ContextEvidence
 import com.krstock.v3.data.model.EvidenceBundle
 import com.krstock.v3.data.model.EvidenceKind
+import com.krstock.v3.data.model.EvidenceSourceTier
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
@@ -10,11 +11,14 @@ import org.json.JSONObject
 import org.json.JSONTokener
 import java.net.HttpURLConnection
 import java.net.URL
+import java.net.URLEncoder
 import java.util.concurrent.ConcurrentHashMap
 
 object ContextEvidenceRepository {
     private const val FRONT = "https://m.stock.naver.com/front-api"
+    private const val DART = "https://dart.fss.or.kr"
     private const val MAX_ITEMS_PER_KIND = 12
+    private const val MAX_DART_BODY = 120_000
     private val cache = ConcurrentHashMap<String, EvidenceBundle>()
 
     suspend fun load(issuerId: String): EvidenceBundle {
@@ -36,13 +40,19 @@ object ContextEvidenceRepository {
             emptyList()
         }
 
-        val disclosures = try {
+        val disclosureIndex = try {
             val text = get("$FRONT/stock/domestic/disclosure?code=$issuerId&page=1&pageSize=20")
             parse(text, EvidenceKind.DISCLOSURE)
         } catch (t: Throwable) {
             disclosureError = t.javaClass.simpleName
             emptyList()
         }
+
+        // Full DART text is best-effort and strictly fail-closed. A failed viewer
+        // fetch never gets replaced with generated text; the diff engine will mark
+        // the result as a disclosure-list fallback instead of a document redline.
+        val disclosures = hydratePeriodicDartBodies(disclosureIndex)
+        val diff = DisclosureDiffEngine.compare(disclosures)
 
         val combinedError = when {
             newsError == null && disclosureError == null -> null
@@ -52,20 +62,100 @@ object ContextEvidenceRepository {
             issuerId = issuerId,
             news = news,
             disclosures = disclosures,
+            disclosureDiff = diff,
             loaded = true,
             error = combinedError
         )
     }
 
-    private fun get(url: String): String {
+    private fun hydratePeriodicDartBodies(items: List<ContextEvidence>): List<ContextEvidence> {
+        if (items.isEmpty()) return items
+        val periodicIds = items
+            .filter { isPeriodicReport(it.title) && it.receiptNo.length >= 12 }
+            .sortedByDescending { it.publishedAt }
+            .take(2)
+            .map { it.id }
+            .toSet()
+        if (periodicIds.isEmpty()) return items
+
+        return items.map { item ->
+            if (item.id !in periodicIds) return@map item
+            val body = runCatching { fetchDartPrimaryText(item.receiptNo) }.getOrDefault("")
+            item.copy(bodyText = body)
+        }
+    }
+
+    private fun fetchDartPrimaryText(receiptNo: String): String {
+        if (!receiptNo.matches(Regex("\\d{12,16}"))) return ""
+        val mainUrl = "$DART/dsaf001/main.do?rcpNo=${URLEncoder.encode(receiptNo, "UTF-8")}" 
+        val mainHtml = get(mainUrl, referer = "$DART/")
+        val candidates = viewerCandidates(mainHtml, receiptNo)
+        if (candidates.isEmpty()) return cleanHtml(mainHtml).take(MAX_DART_BODY)
+
+        val texts = mutableListOf<String>()
+        candidates.take(3).forEach { url ->
+            runCatching { get(url, referer = mainUrl) }
+                .getOrNull()
+                ?.let(::cleanHtml)
+                ?.takeIf { it.length >= 150 }
+                ?.let(texts::add)
+        }
+        return texts.joinToString("\n\n").take(MAX_DART_BODY)
+    }
+
+    private fun viewerCandidates(mainHtml: String, receiptNo: String): List<String> {
+        data class Candidate(val score: Int, val url: String)
+        val out = mutableListOf<Candidate>()
+        val viewDoc = Regex(
+            """viewDoc\(\s*['\"]?(\d{12,16})['\"]?\s*,\s*['\"]?(\d+)['\"]?\s*,\s*['\"]?(\d+)['\"]?\s*,\s*['\"]?(\d+)['\"]?\s*,\s*['\"]?(\d+)['\"]?\s*,\s*['\"]?([^'\")]+)['\"]?\s*\)""",
+            RegexOption.IGNORE_CASE
+        )
+        viewDoc.findAll(mainHtml).forEach { match ->
+            val rcp = match.groupValues[1].ifBlank { receiptNo }
+            val dcm = match.groupValues[2]
+            val ele = match.groupValues[3]
+            val offset = match.groupValues[4]
+            val length = match.groupValues[5]
+            val dtd = match.groupValues[6]
+            val start = (match.range.first - 180).coerceAtLeast(0)
+            val end = (match.range.last + 180).coerceAtMost(mainHtml.lastIndex)
+            val context = mainHtml.substring(start, end + 1)
+            val score = sectionScore(context)
+            val url = "$DART/report/viewer.do?rcpNo=$rcp&dcmNo=$dcm&eleId=$ele&offset=$offset&length=$length&dtd=${URLEncoder.encode(dtd, "UTF-8")}" 
+            out += Candidate(score, url)
+        }
+
+        Regex("""(?:https?://dart\.fss\.or\.kr)?/report/viewer\.do\?[^'\"<>\s]+""", RegexOption.IGNORE_CASE)
+            .findAll(mainHtml)
+            .forEach { match ->
+                val raw = match.value.replace("&amp;", "&")
+                val url = if (raw.startsWith("http")) raw else DART + raw
+                val start = (match.range.first - 180).coerceAtLeast(0)
+                val end = (match.range.last + 180).coerceAtMost(mainHtml.lastIndex)
+                out += Candidate(sectionScore(mainHtml.substring(start, end + 1)), url)
+            }
+
+        return out
+            .sortedWith(compareByDescending<Candidate> { it.score }.thenBy { it.url })
+            .map { it.url }
+            .distinct()
+    }
+
+    private fun sectionScore(context: String): Int {
+        val t = cleanHtml(context).lowercase()
+        val high = listOf("사업의 내용", "위험", "연구개발", "생산", "원재료", "매출", "수주", "설비", "경영진", "영업")
+        return high.sumOf { if (t.contains(it)) 3 else 0 }
+    }
+
+    private fun get(url: String, referer: String = "https://m.stock.naver.com/"): String {
         val connection = (URL(url).openConnection() as HttpURLConnection).apply {
             requestMethod = "GET"
-            connectTimeout = 6_000
+            connectTimeout = 5_000
             readTimeout = 6_000
             instanceFollowRedirects = true
-            setRequestProperty("Accept", "application/json,text/plain,*/*")
-            setRequestProperty("User-Agent", "Mozilla/5.0 (Linux; Android 14) KR4/1.0")
-            setRequestProperty("Referer", "https://m.stock.naver.com/")
+            setRequestProperty("Accept", "application/json,text/plain,text/html,*/*")
+            setRequestProperty("User-Agent", "Mozilla/5.0 (Linux; Android 14) KR4/2.0")
+            setRequestProperty("Referer", referer)
         }
         try {
             val status = connection.responseCode
@@ -112,6 +202,7 @@ object ContextEvidenceRepository {
         val title = first(obj, when (kind) {
             EvidenceKind.NEWS -> arrayOf("title", "articleTitle", "newsTitle", "headline", "subject")
             EvidenceKind.DISCLOSURE -> arrayOf("title", "reportName", "disclosureTitle", "reportNm", "subject", "name")
+            EvidenceKind.IR, EvidenceKind.OFFICIAL -> arrayOf("title", "name", "subject")
         })?.let(::clean) ?: return null
 
         val published = first(obj, arrayOf(
@@ -122,13 +213,21 @@ object ContextEvidenceRepository {
         val source = first(obj, arrayOf(
             "officeName", "source", "providerName", "pressName", "companyName", "corpName", "market"
         ))?.let(::clean).orEmpty().ifBlank {
-            if (kind == EvidenceKind.DISCLOSURE) "공시" else "뉴스"
+            if (kind == EvidenceKind.DISCLOSURE) "DART 공시" else "뉴스"
         }
 
-        val url = first(obj, arrayOf("url", "link", "endUrl", "detailUrl", "articleUrl"))
+        val receiptNo = first(obj, arrayOf("receiptNo", "rceptNo", "rcept_no", "reportNo"))
+            ?.filter(Char::isDigit)
+            .orEmpty()
+
+        val rawUrl = first(obj, arrayOf("url", "link", "endUrl", "detailUrl", "articleUrl"))
             ?.let(::clean)
             ?.let(::absoluteUrl)
             .orEmpty()
+        val url = when {
+            kind == EvidenceKind.DISCLOSURE && receiptNo.length >= 12 -> "$DART/dsaf001/main.do?rcpNo=$receiptNo"
+            else -> rawUrl
+        }
 
         val id = buildString {
             val direct = first(obj, arrayOf("id", "articleId", "receiptNo", "rceptNo", "disclosureId", "seq"))
@@ -139,8 +238,6 @@ object ContextEvidenceRepository {
             if (isEmpty()) append("${kind.name}:${normalize(title).hashCode()}:$published")
         }
 
-        // Nested metadata can contain a generic `title`; require at least one additional
-        // evidence-like field so menu/header objects do not become fake news items.
         val evidenceShape = published.isNotBlank() || url.isNotBlank() ||
             obj.has("oid") || obj.has("aid") || obj.has("receiptNo") || obj.has("rceptNo") ||
             obj.has("officeName") || obj.has("reportName") || obj.has("disclosureTitle")
@@ -152,7 +249,14 @@ object ContextEvidenceRepository {
             title = title,
             source = source,
             publishedAt = normalizeDate(published),
-            url = url
+            url = url,
+            sourceTier = when (kind) {
+                EvidenceKind.DISCLOSURE -> EvidenceSourceTier.DART_PRIMARY
+                EvidenceKind.IR -> EvidenceSourceTier.COMPANY_IR
+                EvidenceKind.OFFICIAL -> EvidenceSourceTier.COMPANY_OFFICIAL
+                EvidenceKind.NEWS -> EvidenceSourceTier.TRUSTED_MEDIA
+            },
+            receiptNo = receiptNo
         )
     }
 
@@ -167,6 +271,19 @@ object ContextEvidenceRepository {
 
     private fun clean(value: String): String = value
         .replace(Regex("<[^>]+>"), " ")
+        .replace("&quot;", "\"")
+        .replace("&#39;", "'")
+        .replace("&amp;", "&")
+        .replace("&lt;", "<")
+        .replace("&gt;", ">")
+        .replace(Regex("\\s+"), " ")
+        .trim()
+
+    private fun cleanHtml(value: String): String = value
+        .replace(Regex("<script[^>]*>.*?</script>", setOf(RegexOption.IGNORE_CASE, RegexOption.DOT_MATCHES_ALL)), " ")
+        .replace(Regex("<style[^>]*>.*?</style>", setOf(RegexOption.IGNORE_CASE, RegexOption.DOT_MATCHES_ALL)), " ")
+        .replace(Regex("<[^>]+>"), " ")
+        .replace("&nbsp;", " ")
         .replace("&quot;", "\"")
         .replace("&#39;", "'")
         .replace("&amp;", "&")
@@ -192,5 +309,10 @@ object ContextEvidenceRepository {
         value.startsWith("/") -> "https://m.stock.naver.com$value"
         value.isBlank() -> ""
         else -> "https://m.stock.naver.com/$value"
+    }
+
+    private fun isPeriodicReport(title: String): Boolean {
+        val t = title.replace(" ", "")
+        return t.contains("사업보고서") || t.contains("반기보고서") || t.contains("분기보고서")
     }
 }
