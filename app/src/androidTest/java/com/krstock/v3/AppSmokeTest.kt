@@ -11,6 +11,7 @@ import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeLeft
 import androidx.test.espresso.Espresso.closeSoftKeyboard
+import androidx.test.espresso.Espresso.pressBack
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Rule
 import org.junit.Test
@@ -35,6 +36,18 @@ class AppSmokeTest {
         composeRule.onNodeWithText("KR4 국내주식").assertIsDisplayed()
         composeRule.onNodeWithText("실데이터 4지표 연결 완료").assertIsDisplayed()
 
+        // The most important action must be immediately visible and open the searchable ranking list.
+        composeRule.onNodeWithTag("primary_stock_explorer").assertIsDisplayed().performClick()
+        composeRule.waitForIdle()
+        composeRule.onNodeWithText("국내주식 조합순위").assertIsDisplayed()
+
+        // Android system Back from the full list must return home, never finish the activity.
+        pressBack()
+        composeRule.waitForIdle()
+        waitForDisplayedTag("primary_stock_explorer")
+        composeRule.onNodeWithText("KR4 국내주식").assertIsDisplayed()
+
+        // Horizontal swipe navigation remains supported.
         composeRule.onNodeWithTag("main_pager").performTouchInput { swipeLeft() }
         composeRule.waitForIdle()
         composeRule.onNodeWithText("국내주식 조합순위").assertIsDisplayed()
