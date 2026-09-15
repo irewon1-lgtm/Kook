@@ -1,0 +1,67 @@
+name: DART and Price Source Smoke
+
+on:
+  push:
+    branches:
+      - "connect-dart-price-data"
+    paths:
+      - ".github/workflows/dart-price-smoke.yml"
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      OPEN_DART_API_KEY: ${{ secrets.OPEN_DART_API_KEY }}
+      DART_API_KEY: ${{ secrets.DART_API_KEY }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify Naver live price endpoints
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, urllib.request
+          urls = [
+            'https://m.stock.naver.com/api/stock/005930/basic',
+            'https://m.stock.naver.com/api/stock/000250/basic',
+            'https://api.stock.naver.com/chart/domestic/item/005930?periodType=dayCandle&startDateTime=20260301&endDateTime=20260915',
+          ]
+          for u in urls:
+              req=urllib.request.Request(u,headers={'User-Agent':'Mozilla/5.0 KR4/1.0','Referer':'https://m.stock.naver.com/'})
+              with urllib.request.urlopen(req, timeout=20) as r:
+                  body=r.read()
+              assert body, u
+              print('NAVER_OK', u.split('?')[0], len(body))
+          PY
+
+      - name: Verify OpenDART secret and real API
+        run: |
+          set -euo pipefail
+          KEY="${OPEN_DART_API_KEY:-${DART_API_KEY:-}}"
+          if [ -z "$KEY" ]; then
+            echo "OPEN_DART_KEY_MISSING"
+            exit 42
+          fi
+          python3 - <<'PY'
+          import json, os, urllib.parse, urllib.request, zipfile, io, xml.etree.ElementTree as ET
+          key=os.environ.get('OPEN_DART_API_KEY') or os.environ.get('DART_API_KEY')
+          q=urllib.parse.urlencode({'crtfc_key':key})
+          req=urllib.request.Request('https://opendart.fss.or.kr/api/corpCode.xml?'+q, headers={'User-Agent':'KR4/1.0'})
+          with urllib.request.urlopen(req, timeout=30) as r: raw=r.read()
+          z=zipfile.ZipFile(io.BytesIO(raw))
+          xml=z.read(z.namelist()[0])
+          root=ET.fromstring(xml)
+          samsung=None
+          for item in root.findall('list'):
+              if (item.findtext('stock_code') or '').strip() == '005930':
+                  samsung=(item.findtext('corp_code') or '').strip(); break
+          assert samsung and len(samsung)==8
+          params=urllib.parse.urlencode({'crtfc_key':key,'corp_code':samsung,'bsns_year':'2026','reprt_code':'11012'})
+          req=urllib.request.Request('https://opendart.fss.or.kr/api/fnlttSinglAcnt.json?'+params, headers={'User-Agent':'KR4/1.0'})
+          with urllib.request.urlopen(req, timeout=30) as r: data=json.load(r)
+          assert data.get('status') in ('000','013'), data.get('message')
+          print('DART_OK corp_code='+samsung+' status='+str(data.get('status')))
+          PY
