@@ -16,10 +16,13 @@ import com.krstock.v3.data.repository.StockRepository
 import com.krstock.v3.ui.theme.TextSecondaryLight
 
 private enum class SortMode(val label: String) {
+    RANK("종합순위"),
     CODE("종목코드"),
     NAME("회사명"),
-    SECTOR("업종"),
-    LISTING("상장일")
+    GROWTH("매출성장"),
+    MARGIN("영업이익률"),
+    PER_SCORE("PER 상대점수"),
+    MOMENTUM("6개월 상승률")
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -30,12 +33,14 @@ fun StockListScreen(
 ) {
     var searchQuery by remember { mutableStateOf("") }
     var selectedMarket by remember { mutableStateOf("전체") }
-    var sortMode by remember { mutableStateOf(SortMode.CODE) }
+    var completeOnly by remember { mutableStateOf(false) }
+    var sortMode by remember { mutableStateOf(SortMode.RANK) }
 
-    val filteredStocks = remember(searchQuery, selectedMarket, sortMode) {
+    val filteredStocks = remember(searchQuery, selectedMarket, completeOnly, sortMode) {
         StockRepository.searchStocks(searchQuery)
             .asSequence()
             .filter { selectedMarket == "전체" || it.market == selectedMarket }
+            .filter { !completeOnly || it.isCompositeComplete }
             .sortedWith(sortComparator(sortMode))
             .toList()
     }
@@ -45,13 +50,11 @@ fun StockListScreen(
             TopAppBar(
                 title = {
                     Column {
-                        Text("국내주식 실종목 목록", fontWeight = FontWeight.Bold)
-                        Text("KRX KIND KOSPI · KOSDAQ 등록 마스터", fontSize = 11.sp, color = TextSecondaryLight)
+                        Text("국내주식 4지표 목록", fontWeight = FontWeight.Bold)
+                        Text("실데이터 검색 · 시장 · 완성도 · 정렬", fontSize = 11.sp, color = TextSecondaryLight)
                     }
                 },
-                navigationIcon = {
-                    TextButton(onClick = onBack) { Text("< 뒤로") }
-                }
+                navigationIcon = { TextButton(onClick = onBack) { Text("< 뒤로") } }
             )
         }
     ) { padding ->
@@ -66,7 +69,7 @@ fun StockListScreen(
                 singleLine = true,
                 supportingText = {
                     Text(
-                        "${filteredStocks.size}개 표시 · 4지표는 아직 미수집",
+                        "${filteredStocks.size}개 표시 · 4지표 완성 ${filteredStocks.count { it.isCompositeComplete }}개",
                         fontSize = 10.sp
                     )
                 }
@@ -83,6 +86,11 @@ fun StockListScreen(
                         label = { Text(market) }
                     )
                 }
+                FilterChip(
+                    selected = completeOnly,
+                    onClick = { completeOnly = !completeOnly },
+                    label = { Text("4지표 완성만") }
+                )
             }
 
             Row(
@@ -92,9 +100,7 @@ fun StockListScreen(
                 SortMode.entries.forEach { mode ->
                     AssistChip(
                         onClick = { sortMode = mode },
-                        label = {
-                            Text(if (sortMode == mode) "✓ ${mode.label}" else mode.label, fontSize = 11.sp)
-                        }
+                        label = { Text(if (sortMode == mode) "✓ ${mode.label}" else mode.label, fontSize = 11.sp) }
                     )
                 }
             }
@@ -107,7 +113,7 @@ fun StockListScreen(
                         Text("검색 결과가 없습니다.", fontWeight = FontWeight.Bold)
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
-                            "등록된 KOSPI·KOSDAQ 회사명·종목코드·업종을 기준으로 검색합니다. 없는 종목을 다른 종목으로 대신 표시하지 않습니다.",
+                            "검색어·시장·4지표 완성 조건을 바꿔보세요. 없는 종목을 다른 종목으로 대신 표시하지 않습니다.",
                             fontSize = 12.sp,
                             color = TextSecondaryLight
                         )
@@ -128,10 +134,17 @@ fun StockListScreen(
 }
 
 private fun sortComparator(mode: SortMode): Comparator<StockSummary> = when (mode) {
+    SortMode.RANK -> compareBy<StockSummary> { it.rankOrder == null }
+        .thenBy { it.rankOrder ?: Int.MAX_VALUE }
+        .thenBy { it.issuerId }
     SortMode.CODE -> compareBy<StockSummary> { it.issuerId }.thenBy { it.market }
     SortMode.NAME -> compareBy<StockSummary> { it.name }.thenBy { it.issuerId }
-    SortMode.SECTOR -> compareBy<StockSummary> { it.sector }.thenBy { it.name }
-    SortMode.LISTING -> compareBy<StockSummary> { it.listingDate.isBlank() }
-        .thenBy { it.listingDate }
+    SortMode.GROWTH -> compareByDescending<StockSummary> { it.m01RevGrowth.rawValue ?: Double.NEGATIVE_INFINITY }
+        .thenBy { it.issuerId }
+    SortMode.MARGIN -> compareByDescending<StockSummary> { it.m02OpMargin.rawValue ?: Double.NEGATIVE_INFINITY }
+        .thenBy { it.issuerId }
+    SortMode.PER_SCORE -> compareByDescending<StockSummary> { it.m03Per.percentileScore ?: Double.NEGATIVE_INFINITY }
+        .thenBy { it.issuerId }
+    SortMode.MOMENTUM -> compareByDescending<StockSummary> { it.m04Price6m.rawValue ?: Double.NEGATIVE_INFINITY }
         .thenBy { it.issuerId }
 }
