@@ -13,20 +13,28 @@ M03 actual-earnings PER policy:
    Negative PER is a loss-state marker, not a cheap-valuation signal: its M03
    percentile is fixed at 0. Positive PER keeps the normal lower-is-better rank.
 5) Exactly zero EPS remains unavailable because price / 0 is undefined.
+6) If a reference-price reset is detected in the six-month window, M03 must also
+   pass a second Naver polling-EPS cross-check. A mismatch or missing cross-check
+   fails closed rather than combining a post-action price with stale EPS.
 
-M04 six-month price-return policy:
+M04 / corporate-action policy:
 1) Never divide the raw six-month start/end closes directly.
 2) Compound each trading day's KRX/Naver reference-price return instead. KRX
    resets the reference/base price for stock splits, reverse splits, bonus
-   issues and other corporate actions, so those unit changes do not become
-   fake investment returns.
-3) If a daily reference return is missing, raw close-to-close is accepted only
+   issues and capital reductions, so those unit changes do not become fake
+   investment returns.
+3) Detect every material reference-price reset, not only raw moves outside the
+   +/-30% daily limit. This catches smaller bonus issues/capital reductions too.
+4) Best-effort Naver notice matching labels the reset as stock split, reverse
+   split, bonus issue or capital reduction. Unclassified resets stay guarded.
+5) If a daily reference return is missing, raw close-to-close is accepted only
    when it is inside the normal KRX daily price-limit band. A split-like raw
    discontinuity without adjustment metadata fails closed instead of guessing.
 """
 from __future__ import annotations
 
 import math
+import re
 import time
 from datetime import date
 from typing import Any
@@ -38,6 +46,15 @@ import collect_real_quant as base
 # percentage rounding while still rejecting split/reverse-split discontinuities.
 _DAILY_FACTOR_MIN = 0.69
 _DAILY_FACTOR_MAX = 1.31
+# A normal session's raw close factor and KRX-reference factor should be the
+# same. A >=1.5% reset is far beyond rounding noise and is treated as a material
+# corporate-action/reference-price event even if the raw move remains inside
+# the +/-30% daily band.
+_REFERENCE_RESET_REL_TOL = 0.015
+_M03_XCHECK_EPS_REL_TOL = 0.02
+_M03_XCHECK_PER_REL_TOL = 0.08
+_NOTICE_BASE = "https://stock.naver.com/api/domestic/detail/notice"
+_POLLING_BASE = "https://polling.finance.naver.com/api/realtime"
 
 
 def get_json(url: str, retries: int = 3) -> Any:
@@ -67,6 +84,11 @@ def get_json(url: str, retries: int = 3) -> Any:
 
 def _valid_daily_factor(value: float | None) -> bool:
     return value is not None and math.isfinite(value) and _DAILY_FACTOR_MIN <= value <= _DAILY_FACTOR_MAX
+
+
+def _relative_diff(a: float, b: float) -> float:
+    scale = max(abs(a), abs(b), 1e-12)
+    return abs(a - b) / scale
 
 
 def _daily_reference_factor(bar: dict[str, Any], close: float) -> float | None:
@@ -143,6 +165,146 @@ def _parse_price_bars(
     return by_date, by_factor, last_error
 
 
+def _detect_reference_reset_events(
+    by_date: dict[date, float],
+    by_factor: dict[date, float | None],
+    start_date: date,
+    end_date: date,
+) -> list[dict[str, Any]]:
+    dates = sorted(d for d in by_date if start_date <= d <= end_date)
+    events: list[dict[str, Any]] = []
+    if len(dates) < 2:
+        return events
+    prev_close = by_date[dates[0]]
+    for d in dates[1:]:
+        close = by_date[d]
+        raw_factor = close / prev_close if prev_close > 0 else None
+        adjusted_factor = by_factor.get(d)
+        if raw_factor is None or not math.isfinite(raw_factor) or raw_factor <= 0:
+            prev_close = close
+            continue
+        if adjusted_factor is None:
+            if not _valid_daily_factor(raw_factor):
+                events.append({
+                    "date": d,
+                    "reset_ratio": None,
+                    "raw_factor": raw_factor,
+                    "adjusted_factor": None,
+                    "type": "UNRESOLVED_REFERENCE_RESET",
+                })
+            prev_close = close
+            continue
+        if not _valid_daily_factor(adjusted_factor):
+            prev_close = close
+            continue
+        reset_ratio = raw_factor / adjusted_factor
+        if math.isfinite(reset_ratio) and reset_ratio > 0 and abs(reset_ratio - 1.0) >= _REFERENCE_RESET_REL_TOL:
+            family = "SPLIT_OR_BONUS_ISSUE" if reset_ratio < 1.0 else "REVERSE_SPLIT_OR_CAPITAL_REDUCTION"
+            events.append({
+                "date": d,
+                "reset_ratio": reset_ratio,
+                "raw_factor": raw_factor,
+                "adjusted_factor": adjusted_factor,
+                "type": family,
+            })
+        prev_close = close
+    return events
+
+
+def _notice_dates(text: str) -> list[date]:
+    out: list[date] = []
+    for m in re.finditer(r"(20\d{2})[-./년\s]?(\d{1,2})[-./월\s]?(\d{1,2})", text):
+        try:
+            out.append(date(int(m.group(1)), int(m.group(2)), int(m.group(3))))
+        except ValueError:
+            pass
+    return out
+
+
+def _iter_dict_nodes(value: Any):
+    if isinstance(value, dict):
+        yield value
+        for child in value.values():
+            yield from _iter_dict_nodes(child)
+    elif isinstance(value, list):
+        for child in value:
+            yield from _iter_dict_nodes(child)
+
+
+def _notice_action_label(text: str) -> str | None:
+    compact = re.sub(r"\s+", "", text)
+    if "무상증자" in compact:
+        return "BONUS_ISSUE"
+    if "주식분할" in compact or "액면분할" in compact:
+        return "STOCK_SPLIT"
+    if "주식병합" in compact or "액면병합" in compact:
+        return "REVERSE_SPLIT"
+    if "감자" in compact or "자본감소" in compact:
+        return "CAPITAL_REDUCTION"
+    return None
+
+
+def _direction_compatible(label: str, reset_ratio: float | None) -> bool:
+    if reset_ratio is None:
+        return True
+    if label in {"STOCK_SPLIT", "BONUS_ISSUE"}:
+        return reset_ratio < 1.0
+    if label in {"REVERSE_SPLIT", "CAPITAL_REDUCTION"}:
+        return reset_ratio > 1.0
+    return True
+
+
+def _annotate_action_types(code: str, events: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    if not events:
+        return events
+    try:
+        payload = get_json(f"{_NOTICE_BASE}?itemCode={code}&startIdx=0&pageSize=100")
+    except Exception:
+        return events
+
+    nodes: list[tuple[str, list[date], str]] = []
+    for node in _iter_dict_nodes(payload):
+        scalars = []
+        for k, v in node.items():
+            if isinstance(v, (str, int, float, bool)) or v is None:
+                scalars.append(f"{k}={v}")
+        text = " ".join(scalars)
+        label = _notice_action_label(text)
+        if label:
+            nodes.append((label, _notice_dates(text), text))
+
+    for event in events:
+        event_date = event["date"]
+        reset_ratio = event.get("reset_ratio")
+        best: tuple[int, str] | None = None
+        for label, dates, _text in nodes:
+            if not _direction_compatible(label, reset_ratio):
+                continue
+            if dates:
+                distance = min(abs((dt - event_date).days) for dt in dates)
+                if distance > 90:
+                    continue
+                score = distance
+            else:
+                score = 999
+            if best is None or score < best[0]:
+                best = (score, label)
+        if best is not None:
+            event["type"] = best[1]
+    return events
+
+
+def _format_action_event_tokens(events: list[dict[str, Any]]) -> str:
+    parts = []
+    for event in events:
+        dt = event["date"].strftime("%Y%m%d")
+        label = str(event.get("type") or "REFERENCE_RESET")
+        rr = event.get("reset_ratio")
+        ratio = "NA" if rr is None else f"{float(rr):.6f}"
+        parts.append(f"_EVT{dt}:{label}:{ratio}")
+    return "".join(parts)
+
+
 def _corporate_action_adjusted_return(
     by_date: dict[date, float],
     by_factor: dict[date, float | None],
@@ -163,10 +325,9 @@ def _corporate_action_adjusted_return(
         return None, "PRICE_HISTORY_SHORTER_THAN_6M", 0, 0
 
     growth = 1.0
-    corporate_action_days = 0
+    corporate_action_days = len(_detect_reference_reset_events(by_date, by_factor, start_date, end_date))
     raw_fallback_days = 0
-    prev_date = dates[0]
-    prev_close = by_date[prev_date]
+    prev_close = by_date[dates[0]]
 
     for d in dates[1:]:
         close = by_date[d]
@@ -184,16 +345,9 @@ def _corporate_action_adjusted_return(
         elif not _valid_daily_factor(adjusted_factor):
             return None, "NAVER_ADJUSTED_RETURN_INVALID", corporate_action_days, raw_fallback_days
 
-        # A raw jump outside the legal ordinary daily band while the reference
-        # factor is normal is the signature of an exchange reference-price reset
-        # such as a split/reverse split. Count it for provenance/regression.
-        if not _valid_daily_factor(raw_factor):
-            corporate_action_days += 1
-
         growth *= adjusted_factor
         if not math.isfinite(growth) or growth <= 0 or growth > 1_000_000:
             return None, "NAVER_ADJUSTED_RETURN_INVALID", corporate_action_days, raw_fallback_days
-        prev_date = d
         prev_close = close
 
     value = (growth - 1.0) * 100.0
@@ -282,6 +436,90 @@ def _fallback_actual_annual_eps(code: str) -> tuple[float | None, str, str | Non
         return None, "", type(exc).__name__
 
 
+def _extract_polling_item(payload: Any) -> dict[str, Any] | None:
+    if not isinstance(payload, dict):
+        return None
+    result = payload.get("result")
+    if not isinstance(result, dict):
+        return None
+    areas = result.get("areas")
+    if not isinstance(areas, list):
+        return None
+    for area in areas:
+        if not isinstance(area, dict):
+            continue
+        datas = area.get("datas")
+        if isinstance(datas, list):
+            for item in datas:
+                if isinstance(item, dict):
+                    return item
+    return None
+
+
+def _m03_corporate_action_crosscheck(
+    code: str,
+    row: dict[str, Any],
+    end_close: float | None,
+) -> dict[str, Any]:
+    if row.get("m03_raw") is None:
+        return row
+    if end_close is None or end_close <= 0:
+        row["m03_raw"] = None
+        row["m03_reason"] = "CORPORATE_ACTION_PER_XCHECK_NO_PRICE"
+        row["m03_basis"] = ""
+        return row
+
+    try:
+        payload = get_json(f"{_POLLING_BASE}?query=SERVICE_ITEM:{code}")
+        item = _extract_polling_item(payload)
+    except Exception:
+        item = None
+    if not item:
+        row["m03_raw"] = None
+        row["m03_reason"] = "CORPORATE_ACTION_PER_XCHECK_UNAVAILABLE"
+        row["m03_basis"] = ""
+        return row
+
+    poll_eps = base.parse_number(item.get("eps"))
+    original_eps = row.get("naver_eps")
+    if poll_eps is None or not math.isfinite(poll_eps) or poll_eps == 0:
+        row["m03_raw"] = None
+        row["m03_reason"] = "CORPORATE_ACTION_PER_XCHECK_EPS_MISSING"
+        row["m03_basis"] = ""
+        return row
+    if original_eps is None or not math.isfinite(float(original_eps)) or float(original_eps) == 0:
+        row["m03_raw"] = None
+        row["m03_reason"] = "CORPORATE_ACTION_PER_XCHECK_SOURCE_EPS_MISSING"
+        row["m03_basis"] = ""
+        return row
+    original_eps = float(original_eps)
+    if (poll_eps > 0) != (original_eps > 0) or _relative_diff(poll_eps, original_eps) > _M03_XCHECK_EPS_REL_TOL:
+        row["m03_raw"] = None
+        row["m03_reason"] = "CORPORATE_ACTION_PER_XCHECK_EPS_MISMATCH"
+        row["m03_basis"] = ""
+        return row
+
+    poll_per = end_close / poll_eps
+    raw = row.get("m03_raw")
+    if raw is None or not math.isfinite(float(raw)) or not math.isfinite(poll_per):
+        row["m03_raw"] = None
+        row["m03_reason"] = "CORPORATE_ACTION_PER_XCHECK_INVALID"
+        row["m03_basis"] = ""
+        return row
+    raw = float(raw)
+    if (poll_per > 0) != (raw > 0) or _relative_diff(poll_per, raw) > _M03_XCHECK_PER_REL_TOL:
+        row["m03_raw"] = None
+        row["m03_reason"] = "CORPORATE_ACTION_PER_XCHECK_PER_MISMATCH"
+        row["m03_basis"] = ""
+        return row
+
+    row["m03_basis"] = (row.get("m03_basis") or "") + "_CA_XCHECK_PASS_POLLING_EPS"
+    row["naver_polling_eps"] = poll_eps
+    row["naver_polling_per"] = poll_per
+    row["naver_polling_listed_shares"] = base.parse_number(item.get("countOfListedStock"))
+    return row
+
+
 def naver_metric_worker(issuer: base.Issuer, cutoff: date, six_month_target: date) -> tuple[str, dict[str, Any]]:
     code = issuer.code
     eps = None
@@ -328,6 +566,10 @@ def naver_metric_worker(issuer: base.Issuer, cutoff: date, six_month_target: dat
     start_dates = [d for d in by_date if d <= six_month_target]
     end_date = max(end_dates) if end_dates else None
     end_close = by_date[end_date] if end_date else None
+    scan_start = max(start_dates) if start_dates else (min(by_date) if by_date else six_month_target)
+    action_events = _detect_reference_reset_events(by_date, by_factor, scan_start, end_date or cutoff)
+    action_events = _annotate_action_types(code, action_events)
+    action_tokens = _format_action_event_tokens(action_events)
 
     # M03: positive provider PER stays first priority. When it is unavailable,
     # calculate from actual EPS. Negative EPS is intentionally retained as a
@@ -371,18 +613,18 @@ def naver_metric_worker(issuer: base.Issuer, cutoff: date, six_month_target: dat
     m04_raw = None
     m04_reason = None
     m04_basis = ""
-    m04_adjustment_days = 0
+    m04_adjustment_days = len(action_events)
     m04_factor_fallback_days = 0
+    start_date = max(start_dates) if start_dates else None
     if not end_dates:
         m04_reason = "NAVER_NO_PRICE_AT_CUTOFF" if not price_error else "NAVER_PRICE_ERROR"
     elif not start_dates:
         m04_reason = "PRICE_HISTORY_SHORTER_THAN_6M"
     else:
-        start_date = max(start_dates)
-        if end_date is None or (end_date - start_date).days < 150:
+        if end_date is None or start_date is None or (end_date - start_date).days < 150:
             m04_reason = "PRICE_HISTORY_SHORTER_THAN_6M"
         else:
-            m04_raw, m04_reason, m04_adjustment_days, m04_factor_fallback_days = _corporate_action_adjusted_return(
+            m04_raw, m04_reason, _action_days, m04_factor_fallback_days = _corporate_action_adjusted_return(
                 by_date,
                 by_factor,
                 start_date,
@@ -391,10 +633,12 @@ def naver_metric_worker(issuer: base.Issuer, cutoff: date, six_month_target: dat
             if m04_raw is not None:
                 m04_basis = (
                     f"{start_date.isoformat()}->{end_date.isoformat()}_"
-                    f"KRX_ADJ_DAILY_CA{m04_adjustment_days}_FB{m04_factor_fallback_days}"
+                    f"KRX_ADJ_DAILY_CA{m04_adjustment_days}_FB{m04_factor_fallback_days}{action_tokens}"
                 )
+    if action_events and not m04_basis:
+        m04_basis = f"{scan_start.isoformat()}->{(end_date or cutoff).isoformat()}_CA_SCAN{action_tokens}"
 
-    return code, {
+    row = {
         "m03_raw": round(m03_raw, 6) if m03_raw is not None else None,
         "m03_reason": m03_reason,
         "m03_basis": m03_basis,
@@ -407,10 +651,14 @@ def naver_metric_worker(issuer: base.Issuer, cutoff: date, six_month_target: dat
         "naver_end_close": end_close,
         "naver_m04_adjustment_days": m04_adjustment_days,
         "naver_m04_factor_fallback_days": m04_factor_fallback_days,
+        "naver_corporate_action_events": action_events,
         "integration_error": integration_error,
         "eps_fallback_error": eps_fallback_error,
         "price_error": price_error,
     }
+    if action_events:
+        row = _m03_corporate_action_crosscheck(code, row, end_close)
+    return code, row
 
 
 def _apply_loss_safe_per_percentiles(records: dict[str, dict[str, Any]]) -> int:
