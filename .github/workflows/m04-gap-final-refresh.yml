@@ -1,0 +1,304 @@
+name: KR4 M04 Gap-Aware Final Refresh
+
+on:
+  push:
+    branches:
+      - fix/m04-gap-aware-ca-v1
+    paths:
+      - ".github/m04-gap-final-trigger"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: kr4-m04-gap-aware-final
+  cancel-in-progress: true
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout isolated branch
+        uses: actions/checkout@v4
+        with:
+          ref: fix/m04-gap-aware-ca-v1
+          fetch-depth: 0
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install only collector dependencies
+        run: pip install requests pandas lxml
+
+      - name: Freeze current main and reject stale branch inputs
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          BASE_MAIN_SHA=$(git rev-parse origin/main)
+          BASE_SNAPSHOT_SHA=$(git rev-parse origin/main:evidence/real_quant_snapshot.json)
+          echo "BASE_MAIN_SHA=$BASE_MAIN_SHA" >> "$GITHUB_ENV"
+          echo "BASE_SNAPSHOT_SHA=$BASE_SNAPSHOT_SHA" >> "$GITHUB_ENV"
+          git show origin/main:evidence/real_quant_snapshot.json > /tmp/kr4_baseline.json
+
+          : > /tmp/critical-shas.txt
+          for path in \
+            scripts/collect_real_quant.py \
+            scripts/collect_real_quant_v2.py \
+            scripts/collect_real_quant_v3.py \
+            scripts/apply_recent_dart_fallback.py \
+            scripts/apply_fiscal_calendar_recovery.py \
+            scripts/apply_standard_actual_recovery.py \
+            scripts/standard_actual_core.py \
+            evidence/quarterly_history.json \
+            app/src/main/java/com/krstock/v3/data/generated/GeneratedKospiMaster.kt \
+            app/src/main/java/com/krstock/v3/data/generated/GeneratedKosdaqMaster.kt
+          do
+            MAIN_BLOB=$(git rev-parse "origin/main:$path")
+            BRANCH_BLOB=$(git hash-object "$path")
+            test "$MAIN_BLOB" = "$BRANCH_BLOB" || {
+              echo "STALE_BRANCH_INPUT $path main=$MAIN_BLOB branch=$BRANCH_BLOB"
+              exit 1
+            }
+            echo "$MAIN_BLOB $path" >> /tmp/critical-shas.txt
+          done
+          echo "BASELINE_INPUT_GATE_PASS main=$BASE_MAIN_SHA snapshot=$BASE_SNAPSHOT_SHA"
+
+      - name: Patch permanent v2 and run deterministic regressions
+        run: |
+          set -euo pipefail
+          python scripts/patch_gap_aware_m04_to_v2.py
+          python scripts/patch_gap_gapcases_v2_followup.py
+          python scripts/patch_m04_tests_for_market_calendar.py
+          python -m py_compile scripts/collect_real_quant_v2.py
+          python tests/test_m04_corporate_actions.py
+          python tests/test_m04_gap_aware_production.py
+          python tests/test_auto_update_pipeline.py
+          cp scripts/collect_real_quant_v2.py /tmp/collect_real_quant_v2.py
+          cp tests/test_m04_corporate_actions.py /tmp/test_m04_corporate_actions.py
+          cp tests/test_m04_gap_aware_production.py /tmp/test_m04_gap_aware_production.py
+
+      - name: Ten-stock live fail-fast probe before full collection
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import bisect
+          import calendar
+          import sys
+          from datetime import date
+          sys.path.insert(0,'scripts')
+          import collect_real_quant as base
+          import collect_real_quant_v2 as v2
+          import collect_real_quant_v3 as v3
+
+          now=v3._kst_now()
+          as_of=now.date()
+          cutoff=v3.resolve_price_cutoff(as_of,now)
+          m=cutoff.month-6; y=cutoff.year
+          if m<=0: m+=12; y-=1
+          target=date(y,m,min(cutoff.day,calendar.monthrange(y,m)[1]))
+          v2._ensure_market_calendar(cutoff,target)
+          md=v2._MARKET_DATES
+          pos=bisect.bisect_left(md,cutoff)
+          assert pos>0 and md[pos]==cutoff,(cutoff,md[-5:])
+          previous_market=md[pos-1]
+
+          # All ten were members of the old 2026-09-15 false-positive cluster.
+          codes=['001230','000210','005290','003550','004020','006800','007340','002990','003200','000720']
+          cutoff_events=[]
+          gap_cases=[]
+          for code in codes:
+            by_date,by_factor,error=v2._parse_price_bars(code,cutoff,target)
+            assert not error,(code,error)
+            end=max(d for d in by_date if d<=cutoff)
+            starts=[d for d in by_date if d<=target]
+            assert end==cutoff and starts,(code,end,len(by_date))
+            start=max(starts)
+            events=v2._detect_reference_reset_events(by_date,by_factor,start,end)
+            hit=[e for e in events if e['date']==cutoff]
+            prev_available=max((d for d in by_date if d<cutoff),default=None)
+            if prev_available!=previous_market:
+              gap_cases.append((code,str(prev_available),str(previous_market)))
+            cutoff_events.extend((code,e) for e in hit)
+            print('PROBE',code,'prev_available',prev_available,'prev_market',previous_market,'cutoff_events',hit)
+
+          assert not cutoff_events,cutoff_events
+          print('M04_TEN_STOCK_LIVE_PROBE_PASS',{
+            'cutoff':str(cutoff),
+            'previous_market':str(previous_market),
+            'gap_cases':gap_cases,
+            'cutoff_event_count':0,
+          })
+          PY
+
+      - name: Collect only four-metric app snapshot
+        run: |
+          set -euo pipefail
+          python scripts/collect_real_quant_v3.py \
+            --as-of auto \
+            --price-cutoff auto \
+            --workers 14 \
+            --kotlin-out /tmp/GeneratedRealQuantSnapshot.kt \
+            --evidence-out /tmp/real_quant_snapshot.json
+
+      - name: Apply existing recovery chain without recollecting 8Q history
+        run: |
+          set -euo pipefail
+          python scripts/apply_recent_dart_fallback.py \
+            --quant /tmp/real_quant_snapshot.json \
+            --history evidence/quarterly_history.json \
+            --out /tmp/real_quant_snapshot.json
+          python scripts/apply_fiscal_calendar_recovery.py \
+            --quant /tmp/real_quant_snapshot.json \
+            --out /tmp/real_quant_snapshot.json \
+            --kind-retries 3
+          python scripts/apply_standard_actual_recovery.py \
+            --quant /tmp/real_quant_snapshot.json \
+            --out /tmp/real_quant_snapshot.json
+          python - <<'PY'
+          import json
+          p='/tmp/real_quant_snapshot.json'
+          d=json.load(open(p,encoding='utf-8'))
+          auto=d.setdefault('auto_update',{})
+          auto['m04_engine']='gap_aware_endpoint_close_v2'
+          auto['m04_calendar']='KOSPI completed-session calendar'
+          auto['m04_gap_policy']='consecutive 1.5%; nonconsecutive <8% ignored, >=8% fail-closed unless >=2x/<=0.5x extreme unit reset'
+          json.dump(d,open(p,'w',encoding='utf-8'),ensure_ascii=False,indent=2)
+          open(p,'a',encoding='utf-8').write('\n')
+          PY
+
+      - name: Final four-metric and corporate-action gate
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json,math,re
+          from collections import Counter
+          from datetime import date
+
+          new=json.load(open('/tmp/real_quant_snapshot.json',encoding='utf-8'))
+          old=json.load(open('/tmp/kr4_baseline.json',encoding='utf-8'))
+          n=new['universe_count']
+          assert n==old['universe_count']==len(new['records'])==2649
+          assert set(new['records'])==set(old['records'])
+          assert new.get('auto_update',{}).get('collector')=='collect_real_quant_v3.py'
+          assert new.get('auto_update',{}).get('m04_engine')=='gap_aware_endpoint_close_v2'
+          snap=date.fromisoformat(new['snapshot_date_kst'])
+          price=date.fromisoformat(new['price_cutoff_date_kst'])
+          assert price<=snap and (snap-price).days<=10
+
+          b=old['coverage']; c=new['coverage']
+          floors={
+            'm01_available':max(int(n*0.88),int(b['m01_available'])-55),
+            'm02_available':max(int(n*0.84),int(b['m02_available'])-55),
+            'm03_available':max(int(n*0.58),int(b['m03_available'])-10),
+            'm04_available':max(int(n*0.96),int(b['m04_available'])-20),
+            'complete_count':max(int(n*0.50),int(b['complete_count'])-30),
+          }
+          for key,floor in floors.items():
+            assert int(c[key])>=floor,(key,c[key],floor,b[key])
+          assert c['ranked_count']==c['complete_count']
+
+          ranks=[]; evt_stocks=0; evt_dates=Counter(); ca_blocks=Counter(); source_errors=0
+          for code,row in new['records'].items():
+            assert re.fullmatch(r'[0-9A-Z]{6}',code),code
+            metrics=[row[f'm0{i}'] for i in range(1,5)]
+            for m in metrics:
+              raw,pct,reason,basis=m['raw'],m['percentile'],m['reason'],m['basis']
+              if raw is None:
+                assert pct is None and reason,(code,m)
+              else:
+                assert math.isfinite(float(raw)) and pct is not None and 0<=float(pct)<=100 and basis,(code,m)
+              if reason in {'NAVER_INTEGRATION_ERROR','NAVER_WORKER_EXCEPTION'}:
+                source_errors+=1
+            complete=all(m['raw'] is not None for m in metrics)
+            assert (row['composite'] is not None)==complete,(code,'composite')
+            assert (row['rank'] is not None)==complete,(code,'rank')
+            if row['rank'] is not None: ranks.append(int(row['rank']))
+
+            dates=re.findall(r'_EVT(20\d{6}):',str(row['m04'].get('basis') or ''))
+            if dates:
+              evt_stocks+=1; evt_dates.update(dates)
+            reason=str(row['m03'].get('reason') or '')
+            if reason.startswith('CORPORATE_ACTION_PER_XCHECK_'):
+              ca_blocks[reason]+=1
+
+          assert sorted(ranks)==list(range(1,len(ranks)+1))
+          assert source_errors<=15,source_errors
+          assert evt_dates['20260915']<50,evt_dates['20260915']
+          top_date,top_count=(evt_dates.most_common(1)[0] if evt_dates else ('NONE',0))
+          assert top_count<100,(top_date,top_count)
+          assert sum(ca_blocks.values())<=15,ca_blocks
+          assert 'EVT20260915' not in str(new['records']['001230']['m04'].get('basis') or ''),new['records']['001230']['m04']
+
+          # Preserve the four verified liquidation-trading M04 recoveries that
+          # already exist on current main.
+          for code in {'006380','008290','046070','082660'}:
+            assert new['records'][code]['m04'].get('raw') is not None,(code,new['records'][code]['m04'])
+
+          miwon=float(new['records']['134380']['m04']['raw'])
+          valof=float(new['records']['331520']['m04']['raw'])
+          assert -80.0<miwon<200.0,miwon
+          assert -90.0<valof<300.0,valof
+
+          # Recompute reason counters exactly; published metadata must match rows.
+          for mid in ('m01','m02','m03','m04'):
+            counted=Counter(
+              'AVAILABLE' if row[mid]['raw'] is not None else (row[mid]['reason'] or 'UNKNOWN')
+              for row in new['records'].values()
+            )
+            assert dict(counted)==new['reason_counts'][mid],(mid,counted,new['reason_counts'][mid])
+
+          summary={
+            'snapshot':new['snapshot_date_kst'],
+            'price':new['price_cutoff_date_kst'],
+            'coverage_before':b,
+            'coverage_after':c,
+            'corporate_action_stocks':evt_stocks,
+            'event_20260915':evt_dates['20260915'],
+            'top_event_date':top_date,
+            'top_event_count':top_count,
+            'm03_ca_blocks':dict(ca_blocks),
+            'miwon_m04':miwon,
+            'valof_m04':valof,
+          }
+          json.dump(summary,open('/tmp/m04_gap_final_summary.json','w',encoding='utf-8'),ensure_ascii=False,indent=2)
+          print('M04_GAP_FINAL_GATE_PASS',json.dumps(summary,ensure_ascii=False))
+          PY
+
+      - name: Publish permanent engine plus app JSON only if main inputs stayed unchanged
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          while read expected path; do
+            current=$(git rev-parse "origin/main:$path")
+            test "$current" = "$expected" || {
+              echo "MAIN_INPUT_CHANGED_DURING_RUN $path expected=$expected current=$current"
+              exit 1
+            }
+          done < /tmp/critical-shas.txt
+          CURRENT_SNAPSHOT_SHA=$(git rev-parse origin/main:evidence/real_quant_snapshot.json)
+          test "$CURRENT_SNAPSHOT_SHA" = "$BASE_SNAPSHOT_SHA" || {
+            echo "MAIN_SNAPSHOT_CHANGED_DURING_RUN expected=$BASE_SNAPSHOT_SHA current=$CURRENT_SNAPSHOT_SHA"
+            exit 1
+          }
+
+          SUMMARY=$(python - <<'PY'
+          import json
+          s=json.load(open('/tmp/m04_gap_final_summary.json',encoding='utf-8'))
+          c=s['coverage_after']
+          print(f"M03={c['m03_available']} M04={c['m04_available']} complete={c['complete_count']} evt0915={s['event_20260915']} CA={s['corporate_action_stocks']}")
+          PY
+          )
+
+          git checkout -B m04-gap-publish origin/main
+          cp /tmp/collect_real_quant_v2.py scripts/collect_real_quant_v2.py
+          cp /tmp/test_m04_corporate_actions.py tests/test_m04_corporate_actions.py
+          cp /tmp/test_m04_gap_aware_production.py tests/test_m04_gap_aware_production.py
+          cp /tmp/real_quant_snapshot.json evidence/real_quant_snapshot.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add scripts/collect_real_quant_v2.py tests/test_m04_corporate_actions.py tests/test_m04_gap_aware_production.py evidence/real_quant_snapshot.json
+          git commit -m "[skip actions] Fix gap-aware M04 and refresh KR4 app data: ${SUMMARY}"
+          git push origin HEAD:main
