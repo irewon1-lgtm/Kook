@@ -111,15 +111,22 @@ class PeerBenchmarkEngineTest {
 
     @Test
     fun familyBelowMinimumAlsoFailsClosed() {
-        val stocks = (1 until PeerBenchmarkEngine.MIN_FAMILY_SAMPLE).map { i ->
-            stock("S%05d".format(i), if (i % 2 == 0) "소프트웨어 개발 및 공급업" else "컴퓨터 프로그래밍 서비스업", m01 = i.toDouble())
+        val sectors = listOf(
+            "소프트웨어 개발 및 공급업",
+            "컴퓨터 프로그래밍 서비스업",
+            "시스템 통합 및 관리업"
+        )
+        val stocks = (1..18).map { i ->
+            stock("S%05d".format(i), sectors[(i - 1) % sectors.size], m01 = i.toDouble())
         }
 
         val enriched = PeerBenchmarkEngine.enrich(stocks)
-        val target = enriched.first()
-        val peer = target.m01RevGrowth.peerComparison!!
-        assertEquals(PeerGroupBasis.INSUFFICIENT, peer.basis)
-        assertNull(peer.median)
+        enriched.forEach { stock ->
+            val peer = stock.m01RevGrowth.peerComparison!!
+            assertEquals(PeerGroupBasis.INSUFFICIENT, peer.basis)
+            assertEquals(18, peer.sampleSize)
+            assertNull(peer.median)
+        }
     }
 
     @Test
