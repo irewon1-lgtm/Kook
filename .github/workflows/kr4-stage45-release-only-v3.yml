@@ -1,0 +1,305 @@
+name: KR4 Stage45 Release Only V3
+
+on:
+  workflow_run:
+    workflows:
+      - KR4 Signing Vault Probe
+    types:
+      - completed
+
+permissions:
+  contents: write
+  id-token: write
+
+concurrency:
+  group: kr4-stage45-release-only-v3
+  cancel-in-progress: false
+
+jobs:
+  release:
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_branch == 'fix/signing-vault-probe'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      EXPECTED_STABLE_CERT_SHA256: 1070e82beee574cd29ffd2dc3e693fd7f7862374f16d1606567db303ab152477
+      KR4_VERSION_CODE: '20201'
+      KR4_VERSION_NAME: '4.3.201'
+      SIGNING_VAULT_URL: https://api-v2.appdeploy.ai/app/kr4-signing-vault-5yh3dd/api/signing-material
+
+    steps:
+      - name: Fail-fast OIDC signing vault transport
+        shell: bash
+        run: |
+          set -euo pipefail
+          umask 077
+          test "$GITHUB_REF" = 'refs/heads/main'
+          test -n "${ACTIONS_ID_TOKEN_REQUEST_URL:-}"
+          test -n "${ACTIONS_ID_TOKEN_REQUEST_TOKEN:-}"
+
+          openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:3072 \
+            -out "$RUNNER_TEMP/kr4-transport-private.pem" >/dev/null 2>&1
+          openssl pkey -in "$RUNNER_TEMP/kr4-transport-private.pem" \
+            -pubout -outform DER -out "$RUNNER_TEMP/kr4-transport-public.der"
+          TRANSPORT_KEY=$(base64 -w0 "$RUNNER_TEMP/kr4-transport-public.der" | tr '+/' '-_' | tr -d '=')
+          export TRANSPORT_KEY
+
+          curl -fsS \
+            -H "Authorization: Bearer ${ACTIONS_ID_TOKEN_REQUEST_TOKEN}" \
+            "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=kr4-signing-vault" \
+            -o "$RUNNER_TEMP/kr4-oidc.json"
+
+          python3 - <<'PY'
+          import base64, json, os
+          p=os.path.join(os.environ['RUNNER_TEMP'],'kr4-oidc.json')
+          doc=json.load(open(p,encoding='utf-8'))
+          token=doc.get('value')
+          assert isinstance(token,str) and len(token)>100
+          parts=token.split('.')
+          assert len(parts)==3
+          payload=parts[1] + '='*((4-len(parts[1])%4)%4)
+          claims=json.loads(base64.urlsafe_b64decode(payload).decode('utf-8'))
+          safe={k:claims.get(k) for k in ('repository','repository_owner','event_name','ref','sub','workflow_ref','job_workflow_ref')}
+          print('OIDC_SAFE_CLAIMS',json.dumps(safe,ensure_ascii=False))
+          open(os.path.join(os.environ['RUNNER_TEMP'],'kr4-oidc.token'),'w',encoding='utf-8').write(token)
+          PY
+
+          python3 - <<'PY'
+          import json, os
+          token=open(os.path.join(os.environ['RUNNER_TEMP'],'kr4-oidc.token'),encoding='utf-8').read().strip()
+          body={'token':token,'transportKey':os.environ['TRANSPORT_KEY']}
+          with open(os.path.join(os.environ['RUNNER_TEMP'],'kr4-vault-request.json'),'w',encoding='utf-8') as f:
+              json.dump(body,f,separators=(',',':'))
+          PY
+
+          HTTP_STATUS=$(curl -sS -o "$RUNNER_TEMP/kr4-encrypted-signing.json" -w '%{http_code}' \
+            -H 'Content-Type: application/json' \
+            --data-binary @"$RUNNER_TEMP/kr4-vault-request.json" \
+            "$SIGNING_VAULT_URL")
+          echo "SIGNING_VAULT_HTTP=$HTTP_STATUS"
+          test "$HTTP_STATUS" = '200'
+
+          python3 - <<'PY'
+          import json, os
+          p=os.path.join(os.environ['RUNNER_TEMP'],'kr4-encrypted-signing.json')
+          root=json.load(open(p,encoding='utf-8'))
+          assert root.get('algorithm')=='RSA-OAEP-SHA256'
+          assert root.get('repository')=='irewon1-lgtm/Kook'
+          assert root.get('ref')=='refs/heads/main'
+          chunks=root.get('ciphertextChunks')
+          assert isinstance(chunks,list) and chunks and all(isinstance(x,str) and x for x in chunks)
+          out=os.path.join(os.environ['RUNNER_TEMP'],'kr4-encrypted-chunks.txt')
+          with open(out,'w',encoding='utf-8') as f:
+              for item in chunks: f.write(item+'\n')
+          print('SIGNING_TRANSPORT_PASS chunks=',len(chunks))
+          PY
+
+          : > "$RUNNER_TEMP/kr4-signing-bundle.txt"
+          INDEX=0
+          while IFS= read -r CHUNK; do
+            printf '%s' "$CHUNK" | base64 -d > "$RUNNER_TEMP/kr4-chunk-${INDEX}.bin"
+            openssl pkeyutl -decrypt \
+              -inkey "$RUNNER_TEMP/kr4-transport-private.pem" \
+              -in "$RUNNER_TEMP/kr4-chunk-${INDEX}.bin" \
+              -pkeyopt rsa_padding_mode:oaep \
+              -pkeyopt rsa_oaep_md:sha256 \
+              >> "$RUNNER_TEMP/kr4-signing-bundle.txt"
+            INDEX=$((INDEX + 1))
+          done < "$RUNNER_TEMP/kr4-encrypted-chunks.txt"
+          test "$INDEX" -gt 0
+
+          python3 - <<'PY'
+          import base64, json, os
+          raw=open(os.path.join(os.environ['RUNNER_TEMP'],'kr4-signing-bundle.txt'),encoding='utf-8').read().strip()
+          assert len(raw)>100
+          doc=json.loads(base64.b64decode(raw).decode('utf-8'))
+          for key in ('keystore_b64','store_password','alias','key_password'):
+              assert isinstance(doc.get(key),str) and doc[key]
+          jks=os.path.join(os.environ['RUNNER_TEMP'],'kr4-release.jks')
+          open(jks,'wb').write(base64.b64decode(doc['keystore_b64']))
+          os.chmod(jks,0o600)
+          print(f"::add-mask::{doc['store_password']}")
+          print(f"::add-mask::{doc['key_password']}")
+          with open(os.environ['GITHUB_ENV'],'a',encoding='utf-8') as out:
+              out.write(f"KR4_KEYSTORE_FILE={jks}\n")
+              out.write(f"KR4_KEYSTORE_PASSWORD={doc['store_password']}\n")
+              out.write(f"KR4_KEY_ALIAS={doc['alias']}\n")
+              out.write(f"KR4_KEY_PASSWORD={doc['key_password']}\n")
+          PY
+          rm -f "$RUNNER_TEMP/kr4-vault-request.json" "$RUNNER_TEMP/kr4-oidc.token" "$RUNNER_TEMP/kr4-oidc.json"
+          echo SIGNING_BUNDLE_DECRYPT_PASS
+
+      - name: Checkout main after signing succeeds
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 2
+
+      - name: Confirm stage 4-5 source and data baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q '4–8 QUARTER TREND' app/src/main/java/com/krstock/v3/ui/screens/StockDetailScreen.kt
+          grep -q 'object QuarterlyTrendAnalyzer' app/src/main/java/com/krstock/v3/data/analysis/QuarterlyTrendAnalyzer.kt
+          grep -q 'object OfficialSourceCollector' app/src/main/java/com/krstock/v3/data/evidence/OfficialSourceCollector.kt
+          python3 - <<'PY'
+          import json
+          d=json.load(open('evidence/real_quant_snapshot.json',encoding='utf-8'))
+          c=d['coverage']
+          assert d['universe_count']==2649
+          assert c['m01_available']==2560
+          assert c['m02_available']==2409
+          assert c['m03_available']==2638
+          assert c['m04_available']==2611
+          assert c['complete_count']==2380
+          assert c['ranked_count']==2380
+          print('STAGE45_BASELINE_PASS',d['snapshot_date_kst'],d['price_cutoff_date_kst'],c)
+          PY
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v5
+        with:
+          java-version: '17'
+          distribution: temurin
+
+      - name: Set up Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+
+      - name: Verify stable signing certificate
+        shell: bash
+        run: |
+          set -euo pipefail
+          ACTUAL_CERT_SHA=$(keytool -exportcert \
+            -keystore "$KR4_KEYSTORE_FILE" \
+            -alias "$KR4_KEY_ALIAS" \
+            -storepass "$KR4_KEYSTORE_PASSWORD" \
+            -rfc 2>/dev/null | openssl x509 -outform DER 2>/dev/null | sha256sum | awk '{print $1}')
+          test "$ACTUAL_CERT_SHA" = "$EXPECTED_STABLE_CERT_SHA256"
+          echo "KR4_SIGNING_CERT_SHA256=$ACTUAL_CERT_SHA" >> "$GITHUB_ENV"
+          echo "STABLE_SIGNING_IDENTITY_PASS cert=$ACTUAL_CERT_SHA"
+
+      - name: Finalize stage 5 labels and permanent signing endpoint
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          screen=Path('app/src/main/java/com/krstock/v3/ui/screens/StockDetailScreen.kt')
+          s=screen.read_text(encoding='utf-8')
+          old='if (item.kind == EvidenceKind.DISCLOSURE) "공시" else "뉴스",'
+          new='''when (item.kind) {\n                    EvidenceKind.DISCLOSURE -> "공시"\n                    EvidenceKind.IR -> "IR"\n                    EvidenceKind.OFFICIAL -> "공식자료"\n                    EvidenceKind.NEWS -> "뉴스"\n                },'''
+          if old in s:
+              s=s.replace(old,new,1)
+          else:
+              assert 'EvidenceKind.IR -> "IR"' in s and 'EvidenceKind.OFFICIAL -> "공식자료"' in s
+          screen.write_text(s,encoding='utf-8')
+
+          wf=Path('.github/workflows/android-build.yml')
+          w=wf.read_text(encoding='utf-8')
+          old_url='https://kr4-signing-vault-5yh3dd.v2.appdeploy.ai/api/signing-material'
+          new_url='https://api-v2.appdeploy.ai/app/kr4-signing-vault-5yh3dd/api/signing-material'
+          if old_url in w:
+              w=w.replace(old_url,new_url)
+          assert new_url in w
+          w=w.replace("grep -q 'kr4-signing-vault-5yh3dd.v2.appdeploy.ai' .github/workflows/android-build.yml", "grep -q 'api-v2.appdeploy.ai/app/kr4-signing-vault-5yh3dd/api/signing-material' .github/workflows/android-build.yml")
+          wf.write_text(w,encoding='utf-8')
+          PY
+          grep -q 'EvidenceKind.IR -> "IR"' app/src/main/java/com/krstock/v3/ui/screens/StockDetailScreen.kt
+          grep -q 'EvidenceKind.OFFICIAL -> "공식자료"' app/src/main/java/com/krstock/v3/ui/screens/StockDetailScreen.kt
+          grep -q 'api-v2.appdeploy.ai/app/kr4-signing-vault-5yh3dd/api/signing-material' .github/workflows/android-build.yml
+
+          if ! git diff --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add app/src/main/java/com/krstock/v3/ui/screens/StockDetailScreen.kt .github/workflows/android-build.yml
+            git commit -m "[skip actions] Finalize stage 4-5 UI and signing endpoint"
+            git push origin HEAD:main
+          fi
+          APP_COMMIT=$(git rev-parse HEAD)
+          echo "APP_COMMIT=$APP_COMMIT" >> "$GITHUB_ENV"
+          echo "STAGE45_FINAL_MAIN_COMMIT=$APP_COMMIT"
+
+      - name: Build stable signed Release APK only
+        shell: bash
+        run: |
+          set -euo pipefail
+          gradle :app:assembleRelease --stacktrace
+          APK="app/build/outputs/apk/release/app-release.apk"
+          test -s "$APK"
+          mkdir -p dist
+          cp "$APK" dist/KR4.apk
+          APKSIGNER=$(find "$ANDROID_HOME/build-tools" -type f -name apksigner | sort -V | tail -1)
+          AAPT=$(find "$ANDROID_HOME/build-tools" -type f -name aapt | sort -V | tail -1)
+          test -x "$APKSIGNER" && test -x "$AAPT"
+          "$APKSIGNER" verify --verbose --print-certs dist/KR4.apk | tee dist/APK_SIGNING_CERT.txt
+          ACTUAL_APK_CERT_SHA=$(awk -F': ' '/Signer #1 certificate SHA-256 digest/{print tolower($2); exit}' dist/APK_SIGNING_CERT.txt | tr -d ':')
+          test "$ACTUAL_APK_CERT_SHA" = "$EXPECTED_STABLE_CERT_SHA256"
+          BADGING=$("$AAPT" dump badging dist/KR4.apk | head -1)
+          echo "$BADGING"
+          echo "$BADGING" | grep -q "name='com.krstock.v3'"
+          echo "$BADGING" | grep -q "versionCode='${KR4_VERSION_CODE}'"
+          echo "$BADGING" | grep -q "versionName='${KR4_VERSION_NAME}'"
+          echo "SIGNED_RELEASE_BUILD_PASS bytes=$(stat -c%s dist/KR4.apk) cert=$ACTUAL_APK_CERT_SHA"
+
+      - name: Generate update manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          SHA256=$(sha256sum dist/KR4.apk | awk '{print $1}')
+          export SHA256
+          python3 - <<'PY'
+          import json, os
+          doc={
+              'versionCode':int(os.environ['KR4_VERSION_CODE']),
+              'versionName':os.environ['KR4_VERSION_NAME'],
+              'apkUrl':'https://github.com/irewon1-lgtm/Kook/releases/latest/download/KR4.apk',
+              'sha256':os.environ['SHA256'],
+              'mandatory':False,
+              'notes':'4~8분기 시계열 분석 + 회사 IR/공식자료 자동수집 및 출처 구분 표시',
+              'commit':os.environ['APP_COMMIT'],
+              'signingCertificateSha256':os.environ['KR4_SIGNING_CERT_SHA256'],
+          }
+          with open('dist/update.json','w',encoding='utf-8') as f:
+              json.dump(doc,f,ensure_ascii=False,indent=2); f.write('\n')
+          print('UPDATE_MANIFEST_PASS',json.dumps({k:v for k,v in doc.items() if k not in ('apkUrl','sha256')},ensure_ascii=False))
+          PY
+
+      - name: Publish GitHub latest release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          TAG="kr4-app-c${KR4_VERSION_CODE}"
+          TITLE="KR4 ${KR4_VERSION_NAME}"
+          NOTES="4~8분기 시계열 엔진 + DART 기반 회사 IR/공식자료 자동수집/표시. Android 14 E2E는 main run #201에서 통과. commit ${APP_COMMIT}."
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" dist/KR4.apk dist/update.json dist/APK_SIGNING_CERT.txt --clobber
+            gh release edit "$TAG" --title "$TITLE" --notes "$NOTES" --latest
+          else
+            gh release create "$TAG" dist/KR4.apk dist/update.json dist/APK_SIGNING_CERT.txt --title "$TITLE" --notes "$NOTES" --latest
+          fi
+          gh release view "$TAG" --json tagName,name,isLatest,url
+          echo STAGE45_LATEST_RELEASE_PUBLISHED
+
+      - name: Remove one-shot release workflows after successful publish
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git reset --hard origin/main
+          for f in \
+            .github/workflows/kr4-stage45-release-only.yml \
+            .github/workflows/kr4-stage45-release-only-v2.yml \
+            .github/workflows/kr4-stage45-release-only-v3.yml; do
+            test ! -e "$f" || git rm -f "$f"
+          done
+          if ! git diff --cached --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "[skip actions] Remove completed stage 4-5 one-shot release workflows"
+            git push origin HEAD:main
+          fi
