@@ -45,6 +45,8 @@ fun HomeScreen(
     val m02Count = remember(stocks) { stocks.count { it.m02OpMargin.isAvailable } }
     val m03Count = remember(stocks) { stocks.count { it.m03Per.isAvailable } }
     val m04Count = remember(stocks) { stocks.count { it.m04Price6m.isAvailable } }
+    val perLossCount = remember(stocks) { stocks.count { it.isLossMaking } }
+    val perUnresolvedCount = remember(stocks, m03Count, perLossCount) { (stocks.size - m03Count - perLossCount).coerceAtLeast(0) }
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
@@ -90,7 +92,7 @@ fun HomeScreen(
                 }
                 Spacer(Modifier.height(8.dp))
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    MetricCoverageTile("실적 PER", m03Count, stocks.size, "가치", Modifier.weight(1f))
+                    MetricCoverageTile("실적 PER", m03Count, stocks.size, "가치", Modifier.weight(1f), "적자 미적용 ${perLossCount} · 미연결 ${perUnresolvedCount}")
                     MetricCoverageTile("6개월 상승률", m04Count, stocks.size, "흐름", Modifier.weight(1f))
                 }
             }
@@ -204,7 +206,7 @@ private fun SectionHeader(title: String, subtitle: String) {
 }
 
 @Composable
-private fun MetricCoverageTile(label: String, count: Int, total: Int, category: String, modifier: Modifier = Modifier) {
+private fun MetricCoverageTile(label: String, count: Int, total: Int, category: String, modifier: Modifier = Modifier, detail: String? = null) {
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(14.dp),
@@ -217,7 +219,7 @@ private fun MetricCoverageTile(label: String, count: Int, total: Int, category: 
             Text(label, fontSize = 13.sp, fontWeight = FontWeight.SemiBold, maxLines = 1)
             Spacer(Modifier.height(8.dp))
             Text("${count}개", fontSize = 18.sp, fontWeight = FontWeight.Bold)
-            Text("${percentText(count, total)} 연결", fontSize = 10.sp, color = TextSecondaryLight)
+            Text(detail ?: "${percentText(count, total)} 연결", fontSize = 10.sp, color = TextSecondaryLight, maxLines = 1)
         }
     }
 }
@@ -281,13 +283,13 @@ fun StockSummaryCard(
 
             Spacer(modifier = Modifier.height(12.dp))
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                MetricTile("매출 증가율", metricCompact(stock.m01RevGrowth.rawValue, "%", 1), stock.m01RevGrowth.isAvailable, Modifier.weight(1f))
-                MetricTile("영업이익률", metricCompact(stock.m02OpMargin.rawValue, "%", 1), stock.m02OpMargin.isAvailable, Modifier.weight(1f))
+                MetricTile("매출 증가율", metricCompact(stock.m01RevGrowth.rawValue, "%", 1), stock.m01RevGrowth.isAvailable, metricStatus(stock.m01RevGrowth.reason, stock.m01RevGrowth.isAvailable), Modifier.weight(1f))
+                MetricTile("영업이익률", metricCompact(stock.m02OpMargin.rawValue, "%", 1), stock.m02OpMargin.isAvailable, metricStatus(stock.m02OpMargin.reason, stock.m02OpMargin.isAvailable), Modifier.weight(1f))
             }
             Spacer(modifier = Modifier.height(8.dp))
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                MetricTile("실적 PER", metricCompact(stock.m03Per.rawValue, "배", 1), stock.m03Per.isAvailable, Modifier.weight(1f))
-                MetricTile("6개월 상승률", metricCompact(stock.m04Price6m.rawValue, "%", 1), stock.m04Price6m.isAvailable, Modifier.weight(1f))
+                MetricTile("실적 PER", metricCompact(stock.m03Per.rawValue, "배", 1), stock.m03Per.isAvailable, perStatus(stock.isLossMaking, stock.m03Per.isAvailable), Modifier.weight(1f))
+                MetricTile("6개월 상승률", metricCompact(stock.m04Price6m.rawValue, "%", 1), stock.m04Price6m.isAvailable, metricStatus(stock.m04Price6m.reason, stock.m04Price6m.isAvailable), Modifier.weight(1f))
             }
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -316,7 +318,7 @@ fun StockSummaryCard(
 }
 
 @Composable
-private fun MetricTile(label: String, value: String, available: Boolean, modifier: Modifier = Modifier) {
+private fun MetricTile(label: String, value: String, available: Boolean, note: String, modifier: Modifier = Modifier) {
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(11.dp),
@@ -327,8 +329,18 @@ private fun MetricTile(label: String, value: String, available: Boolean, modifie
             Text(label, fontSize = 10.sp, color = TextSecondaryLight, maxLines = 1)
             Spacer(Modifier.height(3.dp))
             Text(value, fontSize = 14.sp, fontWeight = FontWeight.Bold, color = if (available) MaterialTheme.colorScheme.onSurface else TextTertiaryLight)
+            Spacer(Modifier.height(2.dp))
+            Text(note, fontSize = 9.sp, color = if (available) TextSecondaryLight else TextTertiaryLight, maxLines = 1)
         }
     }
+}
+
+private fun metricStatus(reason: String?, available: Boolean): String =
+    if (available) "연결됨" else if (reason.isNullOrBlank()) "자료 확인 필요" else "자료 확인 필요"
+
+private fun perStatus(isLossMaking: Boolean, available: Boolean): String {
+    if (available) return "연결됨"
+    return if (isLossMaking) "적자 · PER 미적용" else "자료 확인 필요"
 }
 
 private fun availableMetricCount(stock: StockSummary): Int = listOf(
