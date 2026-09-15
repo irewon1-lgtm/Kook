@@ -13,8 +13,10 @@ on:
     branches:
       - main
       - fix/q1-dart-fallback-recovery
+      - fix/fiscal-calendar-aware-dart-v1
     paths:
       - "scripts/apply_recent_dart_fallback.py"
+      - "scripts/apply_fiscal_calendar_recovery.py"
       - ".github/workflows/apply-recent-dart-fallback.yml"
 
 permissions:
@@ -28,7 +30,7 @@ jobs:
   apply-fallback:
     if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - name: Checkout target branch
         uses: actions/checkout@v4
@@ -41,31 +43,39 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Self-test fallback policy
+      - name: Install recovery dependencies
+        run: pip install requests pandas lxml
+
+      - name: Self-test recovery policies
         run: |
           set -euo pipefail
           python scripts/apply_recent_dart_fallback.py --self-test
+          python scripts/apply_fiscal_calendar_recovery.py --self-test
 
-      - name: Apply one-quarter actual-DART fallback
+      - name: Apply validated DART and fiscal-calendar recoveries
         run: |
           set -euo pipefail
-          cp evidence/real_quant_snapshot.json /tmp/kr4_before_recent_dart_fallback.json
+          cp evidence/real_quant_snapshot.json /tmp/kr4_before_recovery.json
           python scripts/apply_recent_dart_fallback.py \
             --quant evidence/real_quant_snapshot.json \
             --history evidence/quarterly_history.json
+          python scripts/apply_fiscal_calendar_recovery.py \
+            --quant evidence/real_quant_snapshot.json
 
       - name: Extreme recovery quality gate
         run: |
           set -euo pipefail
           python - <<'PY'
           import json, math, re
-          before=json.load(open('/tmp/kr4_before_recent_dart_fallback.json',encoding='utf-8'))
+          before=json.load(open('/tmp/kr4_before_recovery.json',encoding='utf-8'))
           after=json.load(open('evidence/real_quant_snapshot.json',encoding='utf-8'))
           assert before['universe_count']==after['universe_count']==2649
           assert set(before['records'])==set(after['records'])
-          rec=after.get('recent_dart_fallback') or {}
-          assert rec.get('policy')=='one-quarter-back validated OpenDART history only; no multi-quarter skip',rec
-          assert int(rec.get('m01_recovered',-1))>=0 and int(rec.get('m02_recovered',-1))>=0,rec
+          dart=after.get('recent_dart_fallback') or {}
+          fiscal=after.get('fiscal_calendar_recovery') or {}
+          assert dart.get('policy')=='one-quarter-back validated OpenDART history only; no multi-quarter skip',dart
+          assert fiscal.get('policy')=='non-December fiscal issuers only; latest completed Naver actual quarter; consensus rejected; existing numeric metrics preserved',fiscal
+          assert not fiscal.get('source_errors'),fiscal.get('source_errors')
           b=before['coverage']; a=after['coverage']
           for key in ('m01_available','m02_available','m03_available','m04_available','complete_count','ranked_count'):
             assert int(a[key])>=int(b[key]),(key,b[key],a[key])
@@ -85,24 +95,23 @@ jobs:
             assert (r['rank'] is not None)==complete,(code,'rank')
             if r['rank'] is not None: ranks.append(int(r['rank']))
           assert sorted(ranks)==list(range(1,len(ranks)+1))
-          print('RECENT_DART_EXTREME_GATE_PASS',json.dumps({'before':b,'after':a,'recovery':rec},ensure_ascii=False))
+          print('RECOVERY_CHAIN_EXTREME_PASS',json.dumps({'before':b,'after':a,'dart':dart,'fiscal':fiscal},ensure_ascii=False))
           PY
 
       - name: Commit recovered remote snapshot on main only
         if: github.event_name == 'workflow_run' || github.ref_name == 'main'
         run: |
           set -euo pipefail
-          # The previous validation step intentionally modified the working copy.
-          # Restore it before rebasing, then re-apply against the newest main so
-          # a concurrent data/signing commit cannot be overwritten or block pull.
           git restore --source=HEAD --worktree --staged evidence/real_quant_snapshot.json
           git pull --rebase origin main
           python scripts/apply_recent_dart_fallback.py \
             --quant evidence/real_quant_snapshot.json \
             --history evidence/quarterly_history.json
+          python scripts/apply_fiscal_calendar_recovery.py \
+            --quant evidence/real_quant_snapshot.json
           git add evidence/real_quant_snapshot.json
           if git diff --cached --quiet; then
-            echo "No one-quarter DART fallback change"
+            echo "No recovery change"
             exit 0
           fi
           git config user.name "github-actions[bot]"
@@ -110,17 +119,17 @@ jobs:
           COV=$(python - <<'PY'
           import json
           d=json.load(open('evidence/real_quant_snapshot.json',encoding='utf-8'))
-          c=d['coverage']; r=d['recent_dart_fallback']
-          print(f"M01={c['m01_available']} M02={c['m02_available']} M03={c['m03_available']} M04={c['m04_available']} complete={c['complete_count']} fallbackM01={r['m01_recovered']} fallbackM02={r['m02_recovered']} source={r['source_period']}")
+          c=d['coverage']; dr=d['recent_dart_fallback']; fr=d['fiscal_calendar_recovery']
+          print(f"M01={c['m01_available']} M02={c['m02_available']} M03={c['m03_available']} M04={c['m04_available']} complete={c['complete_count']} dartM01={dr['m01_recovered']} dartM02={dr['m02_recovered']} fiscalM01={fr['m01_recovered']} fiscalM02={fr['m02_recovered']}")
           PY
           )
-          git commit -m "Apply recent DART fallback: ${COV}"
+          git commit -m "Apply KR4 recovery chain: ${COV}"
           git push origin HEAD:main
 
-      - name: Upload fallback proof
+      - name: Upload recovery proof
         uses: actions/upload-artifact@v4
         with:
-          name: KR4_Recent_DART_Fallback_Proof
+          name: KR4_Recovery_Chain_Proof
           path: |
             evidence/real_quant_snapshot.json
             evidence/quarterly_history.json
