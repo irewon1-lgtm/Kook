@@ -30,33 +30,46 @@ jobs:
         run: python apply_standard_actual_recovery.py --self-test
       - name: Preserve before snapshot
         run: cp evidence/real_quant_snapshot.json /tmp/before.json
-      - name: Apply production recovery
+      - name: Apply V4 production recovery
         working-directory: scripts
         run: python apply_standard_actual_recovery.py --quant ../evidence/real_quant_snapshot.json --out ../evidence/real_quant_snapshot.json
       - name: Extreme immutable and coverage gates
         run: |
           python - <<'PY'
-          import json
+          import json, math
           b=json.load(open('/tmp/before.json',encoding='utf-8'))
           a=json.load(open('evidence/real_quant_snapshot.json',encoding='utf-8'))
           assert set(a['records'])==set(b['records']) and len(a['records'])==2649
-          assert b['coverage']=={'m01_available':2504,'m02_available':2409,'m03_available':2639,'m04_available':2611,'complete_count':2382,'ranked_count':2382}
-          assert a['coverage']=={'m01_available':2508,'m02_available':2417,'m03_available':2639,'m04_available':2611,'complete_count':2391,'ranked_count':2391}, a['coverage']
+          v3={'m01_available':2508,'m02_available':2417,'m03_available':2639,'m04_available':2611,'complete_count':2391,'ranked_count':2391}
+          v4={'m01_available':2508,'m02_available':2418,'m03_available':2639,'m04_available':2611,'complete_count':2392,'ranked_count':2392}
+          assert b['coverage'] in (v3,v4), b['coverage']
+          assert a['coverage']==v4, a['coverage']
           r=a['standard_actual_recovery']
-          assert r['candidate_count']==14
-          assert r['m01_recovered']==4 and r['m02_recovered']==8 and r['promoted_complete_count']==9, r
           assert r['source_error_count']==0
-          changed=set(r['m01_codes'])|set(r['m02_codes'])
-          assert changed=={'001080','082660','241820','276040','310210','358570','365590','424870','489460'}, changed
+          assert r['coverage_after']==v4
+
+          # Orum Therapeutics is the decisive V4 case: the provider publishes a
+          # finite actual margin of -63,691.04%, which is valid despite magnitude.
+          orum=a['records']['475830']['m02']
+          assert math.isclose(float(orum['raw']),-63691.04,rel_tol=0,abs_tol=1e-9), orum
+          assert '202606_NAVER_QUARTER_ACTUAL_OPM_DIRECT_STANDARD_RECOVERY'==orum['basis'], orum
+          assert orum['reason'] is None
+
+          # Existing numbers may change only when M02 was previously created by
+          # this same STANDARD_RECOVERY stage. DART/fiscal/primary values remain immutable.
           for code, old in b['records'].items():
               new=a['records'][code]
               for mid in ('m01','m02','m03','m04'):
-                  if old[mid]['raw'] is not None:
+                  if old[mid]['raw'] is None:
+                      continue
+                  allowed=(mid=='m02' and 'STANDARD_RECOVERY' in str(old[mid].get('basis') or ''))
+                  if not allowed:
                       assert new[mid]['raw']==old[mid]['raw'],(code,mid,'raw')
                       assert new[mid]['basis']==old[mid]['basis'],(code,mid,'basis')
               if old['m02']['reason']=='FINANCIAL_SECTOR_EXCLUDED':
                   assert new['m02']['raw'] is None and new['m02']['reason']=='FINANCIAL_SECTOR_EXCLUDED'
-          # Reason metadata must equal canonical rows after the recovery.
+
+          # Metadata must exactly match canonical rows.
           for mid in ('m01','m02','m03','m04'):
               counted={}
               for row in a['records'].values():
@@ -65,18 +78,26 @@ jobs:
                   counted[k]=counted.get(k,0)+1
               assert a['reason_counts'][mid]==counted,(mid,a['reason_counts'][mid],counted)
           assert a['reason_counts']['m01']['AVAILABLE']==2508
-          assert a['reason_counts']['m02']['AVAILABLE']==2417
-          print('STANDARD_ACTUAL_PRODUCTION_EXTREME_GATE=PASS')
+          assert a['reason_counts']['m02']['AVAILABLE']==2418
+          print('STANDARD_ACTUAL_V4_PRODUCTION_EXTREME_GATE=PASS',json.dumps({
+              'before':b['coverage'],'after':a['coverage'],
+              'candidate_count':r['candidate_count'],
+              'm02_recovered':r['m02_recovered'],
+              'm02_upgraded_count':r['m02_upgraded_count'],
+              'promoted_complete_count':r['promoted_complete_count'],
+              'promoted_complete_codes':r['promoted_complete_codes'],
+              'm02_upgraded_codes':r['m02_upgraded_codes'],
+          },ensure_ascii=False))
           PY
       - name: Commit recovered production snapshot
         run: |
           git add evidence/real_quant_snapshot.json
           if git diff --cached --quiet; then
-            echo 'No recovery changes.'
+            echo 'V4 production snapshot already current.'
             exit 0
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git commit -m 'Apply KR4 standard recovery: M01=2508 M02=2417 M03=2639 M04=2611 complete=2391'
+          git commit -m 'Apply KR4 direct actual OPM policy: M01=2508 M02=2418 M03=2639 M04=2611 complete=2392'
           git pull --rebase origin fix/incomplete-267-recovery-v1
           git push origin HEAD:fix/incomplete-267-recovery-v1
