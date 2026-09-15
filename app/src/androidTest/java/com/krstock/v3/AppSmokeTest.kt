@@ -59,17 +59,15 @@ class AppSmokeTest {
         composeRule.onNodeWithTag("metric_toggle_M02").performClick()
         composeRule.waitForIdle()
         composeRule.onNodeWithText("1위").assertIsDisplayed()
-        composeRule.onNodeWithText("선택 3개 지표 종합순위").assertIsDisplayed()
-        composeRule.onNodeWithText("각 33.3%").assertIsDisplayed()
+        composeRule.onNodeWithText("3개 · 각 33.3%").assertIsDisplayed()
 
         composeRule.onNodeWithTag("metric_toggle_M04").performClick()
         composeRule.waitForIdle()
         composeRule.onNodeWithText("1위").assertIsDisplayed()
-        composeRule.onNodeWithText("선택 2개 지표 종합순위").assertIsDisplayed()
-        composeRule.onNodeWithText("각 50%").assertIsDisplayed()
+        composeRule.onNodeWithText("2개 · 각 50%").assertIsDisplayed()
         composeRule.onNodeWithTag("metric_toggle_M04").performClick()
         composeRule.waitForIdle()
-        composeRule.onNodeWithText("선택 3개 지표 종합순위").assertIsDisplayed()
+        composeRule.onNodeWithText("3개 · 각 33.3%").assertIsDisplayed()
 
         // Sort-mode changes must also restart from the beginning rather than preserving stale scroll position.
         composeRule.onNodeWithTag("stock_rank_list").performScrollToIndex(10)
