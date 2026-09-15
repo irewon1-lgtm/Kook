@@ -200,7 +200,10 @@ private fun MetricGuideRow(title: String, meaning: String, direction: String) {
 @Composable
 fun StockSummaryCard(stock: StockSummary, onClick: () -> Unit) {
     Card(
-        modifier = Modifier.fillMaxWidth().clickable { onClick() },
+        modifier = Modifier
+            .fillMaxWidth()
+            .testTag("stock_${stock.issuerId}")
+            .clickable { onClick() },
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
         shape = RoundedCornerShape(12.dp)
     ) {
