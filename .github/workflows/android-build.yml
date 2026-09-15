@@ -41,8 +41,8 @@ jobs:
           assert d['market'] == 'KOSPI'
           assert 700 <= d['issuer_count'] <= 1200
           assert d['issuer_count'] == d['unique_issue_codes']
-          assert d['six_digit_codes'] is True
-          print('OFFICIAL_KOSPI_MASTER_OK', d['issuer_count'], d['snapshot_date_kst'])
+          assert d['six_character_krx_codes'] is True
+          print('OFFICIAL_KOSPI_MASTER_OK', d['issuer_count'], d['snapshot_date_kst'], 'alphanumeric', d['alphanumeric_issue_code_count'])
           PY
 
       - name: Set up JDK 17
@@ -95,30 +95,36 @@ jobs:
           test -f "$APK"
           test -s "$APK"
           mkdir -p dist evidence/ci
-          cp "$APK" dist/KR4_Extreme_CleanPass_v3.1.0_debug.apk
+          cp "$APK" dist/KR4_KOSPI_Registered_debug.apk
           sha256sum "$APK" | tee evidence/ci/APK_SHA256.txt
           stat --printf='APK_BYTES=%s\n' "$APK" | tee evidence/ci/APK_SIZE.txt
 
       - name: Guard against fake success
         run: |
           set -euo pipefail
-          test -s dist/KR4_Extreme_CleanPass_v3.1.0_debug.apk
+          test -s dist/KR4_KOSPI_Registered_debug.apk
           test -s evidence/ci/APK_SHA256.txt
           test -s evidence/ci/APK_SIZE.txt
-          grep -q "KR4" app/src/main/java/com/krstock/v3/ui/screens/HomeScreen.kt
           ! grep -R "news.example.com" app/src/main || exit 1
           ! grep -R "mockStocks.first" app/src/main || exit 1
           if [ "${GITHUB_REF_NAME}" = "register-real-kospi-master" ]; then
             test -s evidence/kospi_master_snapshot.json
+            grep -q 'DataStatus.REGISTERED' app/src/main/java/com/krstock/v3/data/repository/StockRepository.kt
             grep -q 'const val issuerCount: Int = ' app/src/main/java/com/krstock/v3/data/generated/GeneratedKospiMaster.kt
+            python - <<'PY'
+          import json
+          d=json.load(open('evidence/kospi_master_snapshot.json', encoding='utf-8'))
+          assert d['six_character_krx_codes'] is True
+          assert d['issuer_count'] >= 700
+          PY
           fi
 
       - name: Upload verified APK and evidence
         uses: actions/upload-artifact@v4
         with:
-          name: KR4_Extreme_CleanPass_APK
+          name: KR4_KOSPI_Registered_APK
           path: |
-            dist/KR4_Extreme_CleanPass_v3.1.0_debug.apk
+            dist/KR4_KOSPI_Registered_debug.apk
             evidence/ci/APK_SHA256.txt
             evidence/ci/APK_SIZE.txt
             evidence/kospi_master_snapshot.json
