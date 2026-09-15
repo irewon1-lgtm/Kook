@@ -1,0 +1,72 @@
+name: Probe Signing Vault Edge
+
+on:
+  push:
+    branches:
+      - "fix/oidc-signing-gateway-v1"
+    paths:
+      - ".github/workflows/probe-signing-vault-edge.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Request GitHub OIDC token
+        run: |
+          set -euo pipefail
+          curl -fsS \
+            -H "Authorization: Bearer ${ACTIONS_ID_TOKEN_REQUEST_TOKEN}" \
+            "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=kr4-signing-vault" \
+            -o "$RUNNER_TEMP/oidc.json"
+          python3 - <<'PY'
+          import json,os
+          p=os.path.join(os.environ['RUNNER_TEMP'],'oidc.json')
+          token=json.load(open(p,encoding='utf-8')).get('value')
+          assert isinstance(token,str) and len(token)>100
+          json.dump({'token':token},open(os.path.join(os.environ['RUNNER_TEMP'],'request.json'),'w',encoding='utf-8'))
+          PY
+
+      - name: Probe external signing route safely
+        env:
+          BASE: https://kr4-signing-vault-5yh3dd.v2.appdeploy.ai
+        run: |
+          set -euo pipefail
+          probe() {
+            NAME="$1"; shift
+            BODY="$RUNNER_TEMP/${NAME}.body"
+            STATUS=$(curl -sS -o "$BODY" -w '%{http_code}' "$@")
+            SIZE=$(stat -c%s "$BODY")
+            echo "$NAME status=$STATUS bytes=$SIZE"
+            if [ "$STATUS" != "200" ]; then
+              python3 - "$BODY" <<'PY'
+          import json,sys
+          p=sys.argv[1]
+          try:
+              x=json.load(open(p,encoding='utf-8'))
+              print('error_shape',sorted(x.keys()) if isinstance(x,dict) else type(x).__name__)
+          except Exception:
+              print('non_json_error_body')
+          PY
+            fi
+          }
+
+          probe health "$BASE/api/_healthcheck"
+          probe plain \
+            -H 'Content-Type: application/json' \
+            --data-binary "@$RUNNER_TEMP/request.json" \
+            "$BASE/api/signing-material"
+          probe browser_headers \
+            -H 'Content-Type: application/json' \
+            -H "Origin: $BASE" \
+            -H "Referer: $BASE/" \
+            -H 'User-Agent: Mozilla/5.0' \
+            --data-binary "@$RUNNER_TEMP/request.json" \
+            "$BASE/api/signing-material"
+
+          test "$(curl -sS -o /dev/null -w '%{http_code}' -H 'Content-Type: application/json' -H "Origin: $BASE" -H "Referer: $BASE/" -H 'User-Agent: Mozilla/5.0' --data-binary "@$RUNNER_TEMP/request.json" "$BASE/api/signing-material")" != "000"
