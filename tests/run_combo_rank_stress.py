@@ -53,7 +53,9 @@ assert combo_results["m02"]["eligible_count"] == coverage["m02_available"]
 assert combo_results["m03"]["eligible_count"] == coverage["m03_available"]
 assert combo_results["m04"]["eligible_count"] == coverage["m04_available"]
 
-# All four must reproduce the committed 4-metric score/rank exactly.
+# All four must reproduce the committed 4-metric rank exactly. The persisted
+# composite is rounded during snapshot generation, so score comparison uses the
+# persisted precision rather than an unrealistic nanoscopic tolerance.
 all4 = cache[frozenset(metric_ids)]
 assert len(all4) == coverage["complete_count"] == 1462
 for code, rec in records.items():
@@ -65,7 +67,7 @@ for code, rec in records.items():
     else:
         assert dynamic is not None, code
         assert dynamic["rank"] == committed_rank, code
-        assert abs(dynamic["score"] - float(committed_score)) < 1e-9, code
+        assert abs(dynamic["score"] - float(committed_score)) < 1e-6, code
 
 # Removing required metrics must never reduce eligibility.
 counts_by_size = {}
