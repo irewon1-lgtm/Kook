@@ -81,9 +81,10 @@ class AppSmokeTest {
         composeRule.onNodeWithTag("stock_search").performTextInput("삼천당제약")
         closeSoftKeyboard()
         composeRule.waitForIdle()
-        composeRule.onNodeWithTag("comparison_000250").performScrollTo().assertIsDisplayed()
+        composeRule.onNodeWithTag("stock_000250").performScrollTo().assertIsDisplayed()
+        composeRule.onNodeWithTag("comparison_000250").assertIsDisplayed()
         composeRule.onNodeWithText("한눈 비교").assertIsDisplayed()
-        composeRule.onNodeWithTag("stock_000250").performScrollTo().performClick()
+        composeRule.onNodeWithTag("stock_000250").performClick()
         composeRule.waitForIdle()
 
         composeRule.onNodeWithTag("detail_title").assertIsDisplayed()
