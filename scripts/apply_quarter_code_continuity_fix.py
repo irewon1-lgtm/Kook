@@ -13,7 +13,7 @@ def replace_once(path: Path, old: str, new: str, label: str) -> None:
 base = Path("scripts/collect_real_quant.py")
 replace_once(
     base,
-    "r\"download_ext002\\('\\d{4})','([A-Z]{2})',\\s*'([A-Z]{2})',\\s*'([^']+)'\\)\"",
+    "r\"download_ext002\\('(\\d{4})','([A-Z]{2})',\\s*'([A-Z]{2})',\\s*'([^']+)'\\)\"",
     "r\"download_ext002\\('(\\d{4})','([A-Z0-9]{2})',\\s*'([A-Z]{2})',\\s*'([^']+)'\\)\"",
     "DART period regex",
 )
@@ -25,11 +25,6 @@ insert = '''def period_label(year: int, quarter: int) -> str:\n    return f"{yea
 if text.count(anchor) != 1:
     raise SystemExit(f"continuity helper anchor count={text.count(anchor)}")
 text = text.replace(anchor, insert, 1)
-old_return = '''    entries = sorted(by_key.values(), key=lambda x: x["index"])\n    if not entries:\n        raise RuntimeError("no OpenDART quarterly PL entries found")\n    return entries\n'''
-new_return = '''    entries = sorted(by_key.values(), key=lambda x: x["index"])\n    if not entries:\n        raise RuntimeError("no OpenDART quarterly PL entries found")\n    return entries\n'''
-if text.count(old_return) != 1:
-    raise SystemExit("list entries return anchor mismatch")
-# no semantic change here; helper is enforced at support selection below
 old_support = '''    support = entries[-args.support_quarters:]\n    if len(support) < args.support_quarters:\n        raise RuntimeError(f"insufficient DART quarterly support periods: {len(support)}")\n'''
 new_support = '''    support = entries[-args.support_quarters:]\n    if len(support) < args.support_quarters:\n        raise RuntimeError(f"insufficient DART quarterly support periods: {len(support)}")\n    assert_contiguous_entries(support, args.support_quarters)\n'''
 if text.count(old_support) != 1:
