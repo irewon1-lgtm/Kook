@@ -1,0 +1,90 @@
+name: KR4 V4 Standard Recovery Fast Check
+
+on:
+  push:
+    branches:
+      - fix/incomplete-recovery-v4-main-sync
+    paths:
+      - .github/workflows/v4-standard-recovery-fast-check.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/incomplete-recovery-v4-main-sync
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -q requests pandas lxml
+      - name: Self-test V4 resolver
+        working-directory: scripts
+        run: python apply_standard_actual_recovery.py --self-test
+      - name: Preserve baseline
+        run: cp evidence/real_quant_snapshot.json /tmp/before.json
+      - name: Apply V4 to latest-main snapshot
+        working-directory: scripts
+        run: python apply_standard_actual_recovery.py --quant ../evidence/real_quant_snapshot.json --out ../evidence/real_quant_snapshot.json
+      - name: Immutable and monotonic gates
+        run: |
+          python - <<'PY'
+          import json
+          b=json.load(open('/tmp/before.json',encoding='utf-8'))
+          a=json.load(open('evidence/real_quant_snapshot.json',encoding='utf-8'))
+          bc=b['coverage']; ac=a['coverage']; r=a['standard_actual_recovery']
+          assert len(a['records'])==len(b['records'])==2649
+          assert set(a['records'])==set(b['records'])
+          assert ac['m01_available']>=bc['m01_available']
+          assert ac['m02_available']>=bc['m02_available']
+          assert ac['m03_available']==bc['m03_available']
+          assert ac['m04_available']==bc['m04_available']
+          assert ac['complete_count']>=bc['complete_count']
+          assert ac['ranked_count']==ac['complete_count']
+          assert r['source_error_count']==0
+          for code,old in b['records'].items():
+            new=a['records'][code]
+            for mid in ('m01','m02','m03','m04'):
+              if old[mid]['raw'] is None: continue
+              allow=(mid=='m02' and 'STANDARD_RECOVERY' in str(old[mid].get('basis') or ''))
+              if not allow:
+                assert new[mid]['raw']==old[mid]['raw'],(code,mid,'raw')
+                assert new[mid]['basis']==old[mid]['basis'],(code,mid,'basis')
+            if old['m02']['reason']=='FINANCIAL_SECTOR_EXCLUDED':
+              assert new['m02']['raw'] is None and new['m02']['reason']=='FINANCIAL_SECTOR_EXCLUDED'
+          for mid in ('m01','m02','m03','m04'):
+            counted={}
+            for row in a['records'].values():
+              m=row[mid]
+              k='AVAILABLE' if m['raw'] is not None else (m['reason'] or 'UNKNOWN')
+              counted[k]=counted.get(k,0)+1
+            assert a['reason_counts'][mid]==counted
+          print('V4_FAST_GATE_PASS',json.dumps({
+            'before':bc,'after':ac,
+            'candidate_count':r['candidate_count'],
+            'm01_recovered':r['m01_recovered'],
+            'm02_recovered':r['m02_recovered'],
+            'promoted_complete_count':r['promoted_complete_count'],
+            'promoted_complete_codes':r['promoted_complete_codes'],
+          },ensure_ascii=False))
+          PY
+      - name: Commit fast-validated snapshot
+        run: |
+          git add evidence/real_quant_snapshot.json
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          COV=$(python - <<'PY'
+          import json
+          c=json.load(open('evidence/real_quant_snapshot.json',encoding='utf-8'))['coverage']
+          print(f"M01={c['m01_available']} M02={c['m02_available']} M03={c['m03_available']} M04={c['m04_available']} complete={c['complete_count']}")
+          PY
+          )
+          git commit -m "Apply KR4 V4 standard recovery on latest main: ${COV}"
+          git pull --rebase origin fix/incomplete-recovery-v4-main-sync
+          git push origin HEAD:fix/incomplete-recovery-v4-main-sync
