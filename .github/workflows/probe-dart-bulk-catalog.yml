@@ -1,0 +1,24 @@
+name: Probe OpenDART Bulk Catalog
+
+on:
+  push:
+    branches:
+      - "feature/quarterly-history-v1"
+    paths:
+      - "scripts/probe_dart_bulk_catalog.py"
+      - ".github/workflows/probe-dart-bulk-catalog.yml"
+  workflow_dispatch:
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/quarterly-history-v1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install requests
+      - run: python scripts/probe_dart_bulk_catalog.py
