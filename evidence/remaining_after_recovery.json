@@ -1,28 +1,28 @@
 {
   "snapshot_date_kst": "2026-09-15",
   "universe_count": 2649,
-  "complete_count": 2391,
-  "incomplete_count": 258,
+  "complete_count": 2392,
+  "incomplete_count": 257,
   "available_counts": {
     "M01": 2508,
-    "M02": 2417,
+    "M02": 2418,
     "M03": 2639,
     "M04": 2611
   },
   "missing_counts": {
     "M01": 141,
-    "M02": 232,
+    "M02": 231,
     "M03": 10,
     "M04": 38
   },
   "issuer_bucket_counts": {
     "MIXED_STRUCTURAL_RECOVERABLE": 137,
     "STRUCTURAL_ONLY": 116,
-    "RECOVERABLE_ONLY": 5
+    "RECOVERABLE_ONLY": 4
   },
   "missing_combination_counts": {
     "M01+M02": 121,
-    "M02": 93,
+    "M02": 92,
     "M04": 23,
     "M01+M02+M04": 7,
     "M01+M02+M03+M04": 6,
@@ -33,7 +33,7 @@
   },
   "metric_class_counts": {
     "STRUCTURAL_NA_FINANCIAL_M02": 226,
-    "RECOVERABLE_ACCOUNTING_SOURCE": 147,
+    "RECOVERABLE_ACCOUNTING_SOURCE": 146,
     "STRUCTURAL_NA_NEW_LISTING_M04": 38,
     "RECOVERABLE_EPS_SOURCE": 9,
     "STRUCTURAL_NA_ZERO_EPS": 1
@@ -46,8 +46,7 @@
     "M02": {
       "FINANCIAL_SECTOR_EXCLUDED": 226,
       "DART_NO_OPERATING_INCOME": 3,
-      "DART_NO_COMPARABLE_OPERATING_MARGIN": 2,
-      "DART_OPERATING_MARGIN_OUTLIER_GUARD": 1
+      "DART_NO_COMPARABLE_OPERATING_MARGIN": 2
     },
     "M03": {
       "NAVER_EPS_MISSING": 9,
@@ -4072,23 +4071,6 @@
         "M02": "STRUCTURAL_NA_FINANCIAL_M02"
       },
       "issuer_bucket": "MIXED_STRUCTURAL_RECOVERABLE"
-    },
-    {
-      "code": "475830",
-      "name": "오름테라퓨틱",
-      "market": "KOSDAQ",
-      "sector": "기초 의약물질 제조업",
-      "listing_date": "2025-02-14",
-      "missing_metrics": [
-        "M02"
-      ],
-      "reasons": {
-        "M02": "DART_OPERATING_MARGIN_OUTLIER_GUARD"
-      },
-      "classes": {
-        "M02": "RECOVERABLE_ACCOUNTING_SOURCE"
-      },
-      "issuer_bucket": "RECOVERABLE_ONLY"
     },
     {
       "code": "477340",
