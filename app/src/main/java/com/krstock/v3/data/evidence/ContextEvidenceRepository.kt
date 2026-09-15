@@ -30,7 +30,8 @@ object ContextEvidenceRepository {
 
     private fun fetch(issuerId: String): EvidenceBundle {
         var newsError: String? = null
-        var disclosureError: String? = null
+        var naverDisclosureError: String? = null
+        var dartError: String? = null
 
         val news = try {
             val text = get("$FRONT/news/list/integration?itemCode=$issuerId&page=1&pageSize=20")
@@ -40,38 +41,137 @@ object ContextEvidenceRepository {
             emptyList()
         }
 
-        val disclosureIndex = try {
+        val naverDisclosures = try {
             val text = get("$FRONT/stock/domestic/disclosure?code=$issuerId&page=1&pageSize=20")
             parse(text, EvidenceKind.DISCLOSURE)
         } catch (t: Throwable) {
-            disclosureError = t.javaClass.simpleName
+            naverDisclosureError = t.javaClass.simpleName
             emptyList()
         }
 
-        // Full DART text is best-effort and strictly fail-closed. A failed viewer
-        // fetch never gets replaced with generated text; the diff engine will mark
-        // the result as a disclosure-list fallback instead of a document redline.
-        val disclosures = hydratePeriodicDartBodies(disclosureIndex)
+        val dartDisclosures = try {
+            fetchDartDisclosureIndex(issuerId).also {
+                if (it.isEmpty()) dartError = "EMPTY"
+            }
+        } catch (t: Throwable) {
+            dartError = t.javaClass.simpleName
+            emptyList()
+        }
+
+        // DART records are placed first so an identical Naver disclosure-index row
+        // can never downgrade a primary filing into a secondary metadata record.
+        val mergedDisclosures = (dartDisclosures + naverDisclosures)
+            .distinctBy { "${normalize(it.title)}:${it.publishedAt.take(10)}" }
+            .sortedWith(
+                compareBy<ContextEvidence> { it.sourceTier.priority }
+                    .thenByDescending { it.publishedAt }
+            )
+            .take(24)
+
+        // Full text is fetched only for the two latest periodic DART reports.
+        // If either body cannot be loaded, DisclosureDiffEngine explicitly falls
+        // back to a lower-confidence timeline comparison instead of inventing text.
+        val disclosures = hydratePeriodicDartBodies(mergedDisclosures)
         val diff = DisclosureDiffEngine.compare(disclosures)
 
-        val combinedError = when {
-            newsError == null && disclosureError == null -> null
-            else -> "news=${newsError ?: "OK"}, disclosure=${disclosureError ?: "OK"}"
+        val errors = buildList {
+            newsError?.let { add("news=$it") }
+            naverDisclosureError?.let { add("naverDisclosure=$it") }
+            dartError?.let { add("dart=$it") }
         }
+
         return EvidenceBundle(
             issuerId = issuerId,
             news = news,
             disclosures = disclosures,
             disclosureDiff = diff,
             loaded = true,
-            error = combinedError
+            error = errors.takeIf { it.isNotEmpty() }?.joinToString(", ")
         )
+    }
+
+    /**
+     * DART's public company search accepts company name or stock code. We resolve
+     * receipt numbers here independently from Naver because Naver's disclosure
+     * JSON currently contains disclosure rows but not rcept_no.
+     */
+    private fun fetchDartDisclosureIndex(issuerId: String): List<ContextEvidence> {
+        val html = postForm(
+            "$DART/dsab001/search.ax",
+            linkedMapOf(
+                "textCrpNm" to issuerId,
+                "currentPage" to "1",
+                "maxResults" to "30",
+                "maxLinks" to "10",
+                "sort" to "date",
+                "series" to "desc",
+                "finalReport" to "recent"
+            ),
+            referer = "$DART/dsab001/main.do"
+        )
+        return parseDartSearchHtml(html)
+    }
+
+    internal fun parseDartSearchHtml(html: String): List<ContextEvidence> {
+        val rows = Regex("(?is)<tr[^>]*>(.*?)</tr>").findAll(html).map { it.groupValues[1] }
+        val receiptRegex = Regex("rcpNo=(\\d{12,16})", RegexOption.IGNORE_CASE)
+        val results = mutableListOf<ContextEvidence>()
+
+        rows.forEach { row ->
+            val receipt = receiptRegex.find(row)?.groupValues?.getOrNull(1) ?: return@forEach
+            val anchor = Regex(
+                "(?is)<a[^>]*(?:href|onclick)=[\\\"'][^\\\"']*${Regex.escape(receipt)}[^\\\"']*[\\\"'][^>]*>(.*?)</a>"
+            ).find(row)
+            val rowText = cleanHtml(row)
+            val title = anchor?.groupValues?.getOrNull(1)?.let(::cleanHtml)
+                ?.takeIf { it.length >= 2 }
+                ?: inferReportTitle(rowText)
+            if (title.isBlank()) return@forEach
+
+            val date = Regex("20\\d{2}[./-]?\\d{2}[./-]?\\d{2}")
+                .findAll(rowText)
+                .map { normalizeDate(it.value) }
+                .lastOrNull()
+                .orEmpty()
+
+            results += ContextEvidence(
+                id = receipt,
+                kind = EvidenceKind.DISCLOSURE,
+                title = title,
+                source = "DART",
+                publishedAt = date,
+                url = "$DART/dsaf001/main.do?rcpNo=$receipt",
+                sourceTier = EvidenceSourceTier.DART_PRIMARY,
+                receiptNo = receipt
+            )
+        }
+
+        return results
+            .distinctBy { it.receiptNo }
+            .sortedByDescending { it.publishedAt }
+            .take(30)
+    }
+
+    private fun inferReportTitle(rowText: String): String {
+        val cleaned = rowText.replace(Regex("\\s+"), " ").trim()
+        val known = listOf(
+            "사업보고서", "반기보고서", "분기보고서", "주요사항보고서",
+            "단일판매ㆍ공급계약", "단일판매·공급계약", "유상증자", "무상증자",
+            "전환사채", "자기주식", "현금ㆍ현물배당", "현금·현물배당",
+            "영업(잠정)실적", "연결재무제표기준영업(잠정)실적"
+        )
+        val hit = known.firstOrNull { cleaned.contains(it) }
+        return hit ?: cleaned.take(100)
     }
 
     private fun hydratePeriodicDartBodies(items: List<ContextEvidence>): List<ContextEvidence> {
         if (items.isEmpty()) return items
         val periodicIds = items
-            .filter { isPeriodicReport(it.title) && it.receiptNo.length >= 12 }
+            .filter {
+                it.sourceTier == EvidenceSourceTier.DART_PRIMARY &&
+                    isPeriodicReport(it.title) &&
+                    it.receiptNo.length >= 12
+            }
             .sortedByDescending { it.publishedAt }
             .take(2)
             .map { it.id }
@@ -93,7 +193,7 @@ object ContextEvidenceRepository {
         if (candidates.isEmpty()) return cleanHtml(mainHtml).take(MAX_DART_BODY)
 
         val texts = mutableListOf<String>()
-        candidates.take(3).forEach { url ->
+        candidates.take(2).forEach { url ->
             runCatching { get(url, referer = mainUrl) }
                 .getOrNull()
                 ?.let(::cleanHtml)
@@ -166,6 +266,33 @@ object ContextEvidenceRepository {
         }
     }
 
+    private fun postForm(url: String, form: Map<String, String>, referer: String): String {
+        val body = form.entries.joinToString("&") { (key, value) ->
+            "${URLEncoder.encode(key, "UTF-8") }=${URLEncoder.encode(value, "UTF-8") }"
+        }
+        val bytes = body.toByteArray(Charsets.UTF_8)
+        val connection = (URL(url).openConnection() as HttpURLConnection).apply {
+            requestMethod = "POST"
+            doOutput = true
+            connectTimeout = 5_000
+            readTimeout = 7_000
+            instanceFollowRedirects = true
+            setRequestProperty("Accept", "text/html,*/*")
+            setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
+            setRequestProperty("Content-Length", bytes.size.toString())
+            setRequestProperty("User-Agent", "Mozilla/5.0 (Linux; Android 14) KR4/2.0")
+            setRequestProperty("Referer", referer)
+        }
+        try {
+            connection.outputStream.use { it.write(bytes) }
+            val status = connection.responseCode
+            if (status !in 200..299) error("HTTP_$status")
+            return connection.inputStream.bufferedReader(Charsets.UTF_8).use { it.readText() }
+        } finally {
+            connection.disconnect()
+        }
+    }
+
     internal fun parse(text: String, kind: EvidenceKind): List<ContextEvidence> {
         val root = JSONTokener(text).nextValue()
         val objects = mutableListOf<JSONObject>()
@@ -213,7 +340,7 @@ object ContextEvidenceRepository {
         val source = first(obj, arrayOf(
             "officeName", "source", "providerName", "pressName", "companyName", "corpName", "market"
         ))?.let(::clean).orEmpty().ifBlank {
-            if (kind == EvidenceKind.DISCLOSURE) "DART 공시" else "뉴스"
+            if (kind == EvidenceKind.DISCLOSURE) "네이버 공시목록" else "뉴스"
         }
 
         val receiptNo = first(obj, arrayOf("receiptNo", "rceptNo", "rcept_no", "reportNo"))
@@ -224,10 +351,8 @@ object ContextEvidenceRepository {
             ?.let(::clean)
             ?.let(::absoluteUrl)
             .orEmpty()
-        val url = when {
-            kind == EvidenceKind.DISCLOSURE && receiptNo.length >= 12 -> "$DART/dsaf001/main.do?rcpNo=$receiptNo"
-            else -> rawUrl
-        }
+        val isDirectDart = kind == EvidenceKind.DISCLOSURE && receiptNo.length >= 12
+        val url = if (isDirectDart) "$DART/dsaf001/main.do?rcpNo=$receiptNo" else rawUrl
 
         val id = buildString {
             val direct = first(obj, arrayOf("id", "articleId", "receiptNo", "rceptNo", "disclosureId", "seq"))
@@ -250,11 +375,12 @@ object ContextEvidenceRepository {
             source = source,
             publishedAt = normalizeDate(published),
             url = url,
-            sourceTier = when (kind) {
-                EvidenceKind.DISCLOSURE -> EvidenceSourceTier.DART_PRIMARY
-                EvidenceKind.IR -> EvidenceSourceTier.COMPANY_IR
-                EvidenceKind.OFFICIAL -> EvidenceSourceTier.COMPANY_OFFICIAL
-                EvidenceKind.NEWS -> EvidenceSourceTier.TRUSTED_MEDIA
+            sourceTier = when {
+                isDirectDart -> EvidenceSourceTier.DART_PRIMARY
+                kind == EvidenceKind.IR -> EvidenceSourceTier.COMPANY_IR
+                kind == EvidenceKind.OFFICIAL -> EvidenceSourceTier.COMPANY_OFFICIAL
+                kind == EvidenceKind.NEWS -> EvidenceSourceTier.TRUSTED_MEDIA
+                else -> EvidenceSourceTier.OTHER
             },
             receiptNo = receiptNo
         )
