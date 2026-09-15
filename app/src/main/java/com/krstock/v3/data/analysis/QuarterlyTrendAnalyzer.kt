@@ -24,7 +24,7 @@ object QuarterlyTrendAnalyzer {
         if (!history.loaded) return "4~8분기 시계열을 불러오는 중입니다."
         val usable = history.comparablePoints
         if (usable.size < 4) {
-            val scopeNote = history.comparisonScope.takeIf { it.isNotBlank() }?.let { " 최신 회계범위는 $it입니다." }.orEmpty()
+            val scopeNote = history.comparisonScope.takeIf { it.isNotBlank() }?.let { " 최신 회계범위는 ${it}입니다." }.orEmpty()
             return "비교 가능한 실제 분기 매출이 ${usable.size}개라 추세 판독을 보류합니다. 결측이나 CFS/OFS 범위변경을 추정으로 메우지 않습니다.$scopeNote"
         }
 
