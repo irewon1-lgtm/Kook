@@ -86,7 +86,7 @@ fun StockListScreen(
                 singleLine = true,
                 supportingText = {
                     Text(
-                        "${filteredStocks.size}개 표시 · 선택 $selectedCount개 지표 순위가능 ${eligibleShown}개",
+                        "${filteredStocks.size}개 표시 · 선택 ${selectedCount}개 지표 순위가능 ${eligibleShown}개",
                         fontSize = 10.sp
                     )
                 }
@@ -125,7 +125,7 @@ fun StockListScreen(
                 colors = CardDefaults.cardColors(containerColor = BlueAccent.copy(alpha = 0.08f))
             ) {
                 Column(modifier = Modifier.padding(horizontal = 12.dp, vertical = 9.dp)) {
-                    Text("선택 $selectedCount개 지표 종합순위", fontWeight = FontWeight.Bold, color = BlueAccent, fontSize = 13.sp)
+                    Text("선택 ${selectedCount}개 지표 종합순위", fontWeight = FontWeight.Bold, color = BlueAccent, fontSize = 13.sp)
                     Text(selectedNames, fontSize = 10.sp, color = TextSecondaryLight)
                     Text(
                         when (selectedCount) {
@@ -199,7 +199,7 @@ fun StockListScreen(
                             onClick = { onStockClick(stock.issuerId) },
                             displayRank = dynamic?.rank,
                             displayScore = dynamic?.score,
-                            scoreLabel = "선택 $selectedCount개 지표 종합 상대점수",
+                            scoreLabel = "선택 ${selectedCount}개 지표 종합 상대점수",
                             missingLabel = "선택지표 결측 · 조합순위 보류"
                         )
                     }
