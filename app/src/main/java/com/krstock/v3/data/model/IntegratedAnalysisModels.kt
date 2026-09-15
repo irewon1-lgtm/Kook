@@ -11,7 +11,8 @@ data class ContextEvidence(
     val title: String,
     val source: String,
     val publishedAt: String,
-    val url: String = ""
+    val url: String = "",
+    val receiptNo: String = ""
 )
 
 data class EvidenceBundle(

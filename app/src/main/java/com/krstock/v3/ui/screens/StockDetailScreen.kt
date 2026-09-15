@@ -336,6 +336,8 @@ private fun DetailAnalysisPage(analysis: IntegratedAnalysis, evidence: EvidenceB
             }
         }
 
+        ResearchForensicsPanel(issuerId = evidence.issuerId, evidence = evidence)
+
         AnalysisCard("OUTCOME", "이 조합이 이어질 때 생길 일") {
             Text(analysis.consequence, fontSize = 12.sp, lineHeight = 20.sp)
         }
