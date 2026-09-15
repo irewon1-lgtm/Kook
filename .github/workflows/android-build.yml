@@ -5,6 +5,7 @@ on:
     branches:
       - "main"
       - "fix/auto-update-v2"
+      - "fix/app-auto-update-v1"
   pull_request:
     branches:
       - "main"
@@ -137,6 +138,13 @@ jobs:
           grep -q 'schedule:' .github/workflows/collect-real-quant.yml
           grep -q '40 8 \* \* 1-5' .github/workflows/collect-real-quant.yml
           grep -q '30 12 \* \* 1-5' .github/workflows/collect-real-quant.yml
+          grep -q 'AppAutoUpdater.checkAndDownload' app/src/main/java/com/krstock/v3/MainActivity.kt
+          grep -q 'PeriodicWorkRequestBuilder<AppUpdateWorker>' app/src/main/java/com/krstock/v3/KR4Application.kt
+          grep -q 'REQUEST_INSTALL_PACKAGES' app/src/main/AndroidManifest.xml
+          grep -q 'FileProvider' app/src/main/AndroidManifest.xml
+          grep -q 'releases/latest/download/update.json' app/src/main/java/com/krstock/v3/update/AppAutoUpdater.kt
+          grep -q 'signerDigests(installed) == signerDigests(archive)' app/src/main/java/com/krstock/v3/update/AppAutoUpdater.kt
+          grep -q 'sha256(apk) != info.sha256' app/src/main/java/com/krstock/v3/update/AppAutoUpdater.kt
 
       - name: Upload verified APK and evidence
         uses: actions/upload-artifact@v4
