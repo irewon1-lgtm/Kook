@@ -37,4 +37,36 @@ patch(
     "v3 period normalization",
 )
 
+patch(
+    "tests/test_quarterly_history.py",
+    "      download_ext002('2025','Q1','PL','2025_Q1_PL.zip');\n      download_ext002('2025','HY','PL','2025_HY_PL.zip');\n      download_ext002('2025','Q3','PL','2025_Q3_PL.zip');\n      download_ext002('2025','FY','PL','2025_FY_PL.zip');\n",
+    "      download_ext002('2025','1Q','PL','2025_Q1_PL.zip');\n      download_ext002('2025','HY','PL','2025_HY_PL.zip');\n      download_ext002('2025','3Q','PL','2025_Q3_PL.zip');\n      download_ext002('2025','FY','PL','2025_FY_PL.zip');\n",
+    "real OpenDART quarter-code test fixture",
+)
+patch(
+    "tests/test_quarterly_history.py",
+    '    assert [row[1] for row in rows] == ["Q1", "HY", "Q3", "FY"], rows\n',
+    '    assert [row[1] for row in rows] == ["1Q", "HY", "3Q", "FY"], rows\n    assert qh.PERIOD_TO_Q["1Q"] == 1 and qh.PERIOD_TO_Q["3Q"] == 3\n    assert qh.Q_TO_PERIOD[1] == "Q1" and qh.Q_TO_PERIOD[3] == "Q3"\n',
+    "period alias assertions",
+)
+
+patch(
+    "tests/test_auto_update_pipeline.py",
+    '        ("2026", "Q1", "PL", "2026_Q1.zip"),\n        ("2026", "HY", "PL", "2026_HY.zip"),\n        ("2027", "Q1", "PL", "future.zip"),\n',
+    '        ("2026", "1Q", "PL", "2026_Q1.zip"),\n        ("2026", "HY", "PL", "2026_HY.zip"),\n        ("2027", "1Q", "PL", "future.zip"),\n',
+    "v3 1Q test fixture",
+)
+patch(
+    "tests/test_auto_update_pipeline.py",
+    '    entries.append(("2026", "Q3", "PL", "2026_Q3.zip"))\n    assert v3._select_latest_dart_entry(entries, date(2026, 11, 20)) == ("2026", "Q3", "2026_Q3.zip")\n',
+    '    entries.append(("2026", "3Q", "PL", "2026_Q3.zip"))\n    assert v3._select_latest_dart_entry(entries, date(2026, 11, 20)) == ("2026", "Q3", "2026_Q3.zip")\n',
+    "v3 3Q canonicalization test",
+)
+patch(
+    "tests/test_auto_update_pipeline.py",
+    '    assert v3._select_latest_dart_entry(entries, date(2027, 4, 1)) == ("2027", "Q1", "future.zip")\n',
+    '    assert v3._select_latest_dart_entry(entries, date(2027, 4, 1)) == ("2027", "Q1", "future.zip")\n    assert v3.DART_PERIOD_CANONICAL["1Q"] == "Q1" and v3.DART_PERIOD_CANONICAL["3Q"] == "Q3"\n',
+    "v3 alias assertion",
+)
+
 print("DART_PERIOD_ALIAS_PATCH_PASS")
