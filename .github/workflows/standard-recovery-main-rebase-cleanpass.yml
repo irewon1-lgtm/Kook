@@ -1,0 +1,118 @@
+name: KR4 Standard Recovery Main Rebase CleanPass
+
+on:
+  push:
+    branches:
+      - fix/standard-recovery-main-rebase-v1-clean
+    paths:
+      - scripts/apply_standard_actual_recovery.py
+      - .github/workflows/standard-recovery-main-rebase-cleanpass.yml
+
+permissions:
+  contents: write
+
+jobs:
+  cleanpass:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout rebased branch
+        uses: actions/checkout@v4
+        with:
+          ref: fix/standard-recovery-main-rebase-v1-clean
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -q requests pandas lxml
+
+      - name: Recovery self-tests and regressions
+        run: |
+          set -euo pipefail
+          python tests/test_auto_update_pipeline.py
+          python tests/test_quarterly_history.py
+          python scripts/apply_standard_actual_recovery.py --self-test
+
+      - name: Run standard recovery against latest-main snapshot
+        run: |
+          set -euo pipefail
+          cp evidence/real_quant_snapshot.json /tmp/before.json
+          python scripts/apply_standard_actual_recovery.py \
+            --quant evidence/real_quant_snapshot.json \
+            --out /tmp/after.json
+
+      - name: Immutable and coverage gates
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          b=json.load(open('/tmp/before.json',encoding='utf-8'))
+          a=json.load(open('/tmp/after.json',encoding='utf-8'))
+          bc=b['coverage']; ac=a['coverage']
+          expected={'m01_available':2504,'m02_available':2409,'m03_available':2639,'m04_available':2607,'complete_count':2379,'ranked_count':2379}
+          assert bc==expected,(bc,expected)
+          rec=a.get('standard_actual_recovery') or {}
+          assert rec.get('source_error_count')==0,rec.get('source_errors')
+          assert ac['m01_available']>=bc['m01_available']
+          assert ac['m02_available']>=bc['m02_available']
+          assert ac['m03_available']==bc['m03_available']==2639
+          assert ac['m04_available']==bc['m04_available']==2607
+          assert ac['complete_count']>=bc['complete_count']
+          assert ac['ranked_count']==ac['complete_count']
+          assert set(a['records'])==set(b['records'])
+          assert a['universe_count']==b['universe_count']==2649
+          for code,old in b['records'].items():
+            new=a['records'][code]
+            for mid in ('m01','m02','m03','m04'):
+              if old[mid]['raw'] is None:
+                continue
+              allow=(mid=='m02' and 'STANDARD_RECOVERY' in str(old[mid].get('basis') or ''))
+              if allow:
+                continue
+              assert new[mid]['raw']==old[mid]['raw'],(code,mid,'raw')
+              assert new[mid].get('basis')==old[mid].get('basis'),(code,mid,'basis')
+            if old['m02'].get('reason')=='FINANCIAL_SECTOR_EXCLUDED':
+              assert new['m02']['raw'] is None
+              assert new['m02'].get('reason')=='FINANCIAL_SECTOR_EXCLUDED'
+          for mid in ('m01','m02','m03','m04'):
+            counted={}
+            for row in a['records'].values():
+              m=row[mid]
+              key='AVAILABLE' if m['raw'] is not None else (m.get('reason') or 'UNKNOWN')
+              counted[key]=counted.get(key,0)+1
+            assert a['reason_counts'][mid]==counted,(mid,a['reason_counts'][mid],counted)
+          print('STANDARD_RECOVERY_MAIN_REBASE_GATE=PASS')
+          print('BEFORE',bc)
+          print('AFTER',ac)
+          print('RECOVERY',{k:rec.get(k) for k in ('candidate_count','m01_recovered','m02_recovered','m02_upgraded_count','promoted_complete_count')})
+          PY
+
+      - name: Promote validated snapshot on branch
+        run: cp /tmp/after.json evidence/real_quant_snapshot.json
+
+      - name: Commit validated operational snapshot
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add evidence/real_quant_snapshot.json
+          if git diff --cached --quiet; then
+            echo 'No snapshot changes.'
+            exit 0
+          fi
+          read M01 M02 M03 M04 COMPLETE <<EOF
+          $(python - <<'PY'
+          import json
+          d=json.load(open('evidence/real_quant_snapshot.json',encoding='utf-8'))['coverage']
+          print(d['m01_available'],d['m02_available'],d['m03_available'],d['m04_available'],d['complete_count'])
+          PY
+          )
+          EOF
+          git commit -m "Apply rebased KR4 standard recovery: M01=${M01} M02=${M02} M03=${M03} M04=${M04} complete=${COMPLETE}"
+          git push origin HEAD:fix/standard-recovery-main-rebase-v1-clean
