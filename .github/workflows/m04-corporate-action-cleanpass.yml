@@ -1,0 +1,43 @@
+name: M04 Corporate Action CleanPass
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "scripts/collect_real_quant_v2.py"
+      - "tests/test_m04_corporate_actions.py"
+      - ".github/workflows/m04-corporate-action-cleanpass.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "scripts/collect_real_quant_v2.py"
+      - "tests/test_m04_corporate_actions.py"
+      - ".github/workflows/m04-corporate-action-cleanpass.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  m04-cleanpass:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install collector dependency
+        run: pip install requests
+
+      - name: M04 split and reverse-split regression
+        run: python3 tests/test_m04_corporate_actions.py
+
+      - name: Existing automatic-update regression
+        run: python3 tests/test_auto_update_pipeline.py
