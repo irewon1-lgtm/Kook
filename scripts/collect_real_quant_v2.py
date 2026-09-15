@@ -13,6 +13,16 @@ M03 actual-earnings PER policy:
    Negative PER is a loss-state marker, not a cheap-valuation signal: its M03
    percentile is fixed at 0. Positive PER keeps the normal lower-is-better rank.
 5) Exactly zero EPS remains unavailable because price / 0 is undefined.
+
+M04 six-month price-return policy:
+1) Never divide the raw six-month start/end closes directly.
+2) Compound each trading day's KRX/Naver reference-price return instead. KRX
+   resets the reference/base price for stock splits, reverse splits, bonus
+   issues and other corporate actions, so those unit changes do not become
+   fake investment returns.
+3) If a daily reference return is missing, raw close-to-close is accepted only
+   when it is inside the normal KRX daily price-limit band. A split-like raw
+   discontinuity without adjustment metadata fails closed instead of guessing.
 """
 from __future__ import annotations
 
@@ -22,6 +32,12 @@ from datetime import date
 from typing import Any
 
 import collect_real_quant as base
+
+
+# KRX's ordinary daily price limit is +/-30%. The small buffer absorbs tick and
+# percentage rounding while still rejecting split/reverse-split discontinuities.
+_DAILY_FACTOR_MIN = 0.69
+_DAILY_FACTOR_MAX = 1.31
 
 
 def get_json(url: str, retries: int = 3) -> Any:
@@ -49,8 +65,54 @@ def get_json(url: str, retries: int = 3) -> Any:
     raise RuntimeError(type(last).__name__ if last else "NAVER_RETRY_EXHAUSTED")
 
 
-def _parse_price_bars(code: str, cutoff: date, six_month_target: date) -> tuple[dict[date, float], str | None]:
+def _valid_daily_factor(value: float | None) -> bool:
+    return value is not None and math.isfinite(value) and _DAILY_FACTOR_MIN <= value <= _DAILY_FACTOR_MAX
+
+
+def _daily_reference_factor(bar: dict[str, Any], close: float) -> float | None:
+    """Return a corporate-action-aware one-day price factor.
+
+    Naver exposes both the day's price change and percentage change relative to
+    the exchange reference/base price. KRX adjusts that base price around stock
+    splits/reverse splits/bonus issues. The integer change-derived factor is
+    preferred because it avoids compounding rounded percentages; the percentage
+    field is the fallback and also rescues corporate-action days if the textual
+    change field is not usable.
+    """
+    change = base.parse_number(bar.get("compareToPreviousClosePrice"))
+    ratio = base.parse_number(bar.get("fluctuationsRatio"))
+
+    change_factor = None
+    if change is not None:
+        reference_price = close - change
+        if reference_price > 0:
+            candidate = close / reference_price
+            if _valid_daily_factor(candidate):
+                change_factor = candidate
+
+    ratio_factor = None
+    if ratio is not None:
+        candidate = 1.0 + ratio / 100.0
+        if _valid_daily_factor(candidate):
+            ratio_factor = candidate
+
+    if change_factor is not None and ratio_factor is not None:
+        # Percentage is normally rounded to two decimals. If both fields disagree
+        # materially, prefer the exchange-style percentage factor rather than
+        # allowing a suspicious absolute-change field to contaminate M04.
+        if abs(change_factor - ratio_factor) > 0.02:
+            return ratio_factor
+        return change_factor
+    return change_factor if change_factor is not None else ratio_factor
+
+
+def _parse_price_bars(
+    code: str,
+    cutoff: date,
+    six_month_target: date,
+) -> tuple[dict[date, float], dict[date, float | None], str | None]:
     by_date: dict[date, float] = {}
+    by_factor: dict[date, float | None] = {}
     last_error: str | None = None
     for page in range(1, 5):
         try:
@@ -73,11 +135,71 @@ def _parse_price_bars(code: str, cutoff: date, six_month_target: date) -> tuple[
             p = base.parse_number(bar.get("closePrice"))
             if d and p is not None and p > 0:
                 by_date[d] = p
+                by_factor[d] = _daily_reference_factor(bar, p)
         if by_date and min(by_date) <= six_month_target:
             break
         if len(bars) < 60:
             break
-    return by_date, last_error
+    return by_date, by_factor, last_error
+
+
+def _corporate_action_adjusted_return(
+    by_date: dict[date, float],
+    by_factor: dict[date, float | None],
+    start_date: date,
+    end_date: date,
+) -> tuple[float | None, str | None, int, int]:
+    """Compound daily adjusted-reference returns from start(exclusive) to end.
+
+    Returns (percentage, reason, corporate_action_days, raw_fallback_days).
+    A raw factor is used only when it is itself inside the normal daily band.
+    Therefore an unannotated 10:1 split (raw factor ~0.1) or 1:5 reverse split
+    (raw factor ~5) fails closed instead of becoming a bogus M04 return.
+    """
+    dates = sorted(d for d in by_date if start_date <= d <= end_date)
+    if not dates or dates[0] != start_date or dates[-1] != end_date:
+        return None, "NAVER_ADJUSTED_RETURN_UNAVAILABLE", 0, 0
+    if len(dates) < 2:
+        return None, "PRICE_HISTORY_SHORTER_THAN_6M", 0, 0
+
+    growth = 1.0
+    corporate_action_days = 0
+    raw_fallback_days = 0
+    prev_date = dates[0]
+    prev_close = by_date[prev_date]
+
+    for d in dates[1:]:
+        close = by_date[d]
+        raw_factor = close / prev_close if prev_close > 0 else None
+        adjusted_factor = by_factor.get(d)
+
+        if adjusted_factor is None:
+            # Safe fallback only for a normal-size raw move. This preserves
+            # coverage if Naver omits one daily metadata field, while refusing
+            # to guess across a split/reverse-split/bonus-issue discontinuity.
+            if not _valid_daily_factor(raw_factor):
+                return None, "NAVER_CORPORATE_ACTION_ADJUSTMENT_MISSING", corporate_action_days, raw_fallback_days
+            adjusted_factor = raw_factor
+            raw_fallback_days += 1
+        elif not _valid_daily_factor(adjusted_factor):
+            return None, "NAVER_ADJUSTED_RETURN_INVALID", corporate_action_days, raw_fallback_days
+
+        # A raw jump outside the legal ordinary daily band while the reference
+        # factor is normal is the signature of an exchange reference-price reset
+        # such as a split/reverse split. Count it for provenance/regression.
+        if not _valid_daily_factor(raw_factor):
+            corporate_action_days += 1
+
+        growth *= adjusted_factor
+        if not math.isfinite(growth) or growth <= 0 or growth > 1_000_000:
+            return None, "NAVER_ADJUSTED_RETURN_INVALID", corporate_action_days, raw_fallback_days
+        prev_date = d
+        prev_close = close
+
+    value = (growth - 1.0) * 100.0
+    if not math.isfinite(value) or abs(value) > 100000:
+        return None, "NAVER_RETURN_OUTLIER_GUARD", corporate_action_days, raw_fallback_days
+    return value, None, corporate_action_days, raw_fallback_days
 
 
 def _valid_positive_per(value: float | None) -> bool:
@@ -201,7 +323,7 @@ def naver_metric_worker(issuer: base.Issuer, cutoff: date, six_month_target: dat
             eps_desc = f"ANNUAL_ACTUAL_{fallback_period}" if fallback_period else "ANNUAL_ACTUAL"
             eps_source = "NAVER_FINANCE_ANNUAL_EPS"
 
-    by_date, price_error = _parse_price_bars(code, cutoff, six_month_target)
+    by_date, by_factor, price_error = _parse_price_bars(code, cutoff, six_month_target)
     end_dates = [d for d in by_date if d <= cutoff]
     start_dates = [d for d in by_date if d <= six_month_target]
     end_date = max(end_dates) if end_dates else None
@@ -244,28 +366,33 @@ def naver_metric_worker(issuer: base.Issuer, cutoff: date, six_month_target: dat
         else:
             m03_reason = "NAVER_EPS_MISSING"
 
-    # M04: last trading close on/before the six-month target through the cutoff.
+    # M04: compound KRX-adjusted one-day reference returns. This is deliberately
+    # separate from M03, which continues to use the real cutoff close unchanged.
     m04_raw = None
     m04_reason = None
     m04_basis = ""
+    m04_adjustment_days = 0
+    m04_factor_fallback_days = 0
     if not end_dates:
         m04_reason = "NAVER_NO_PRICE_AT_CUTOFF" if not price_error else "NAVER_PRICE_ERROR"
     elif not start_dates:
         m04_reason = "PRICE_HISTORY_SHORTER_THAN_6M"
     else:
         start_date = max(start_dates)
-        start_close = by_date[start_date]
         if end_date is None or (end_date - start_date).days < 150:
             m04_reason = "PRICE_HISTORY_SHORTER_THAN_6M"
-        elif start_close <= 0 or end_close is None or end_close <= 0:
-            m04_reason = "NAVER_PRICE_MISSING"
         else:
-            m04_raw = (end_close / start_close - 1.0) * 100.0
-            if not math.isfinite(m04_raw) or abs(m04_raw) > 100000:
-                m04_raw = None
-                m04_reason = "NAVER_RETURN_OUTLIER_GUARD"
-            else:
-                m04_basis = f"{start_date.isoformat()}->{end_date.isoformat()}"
+            m04_raw, m04_reason, m04_adjustment_days, m04_factor_fallback_days = _corporate_action_adjusted_return(
+                by_date,
+                by_factor,
+                start_date,
+                end_date,
+            )
+            if m04_raw is not None:
+                m04_basis = (
+                    f"{start_date.isoformat()}->{end_date.isoformat()}_"
+                    f"KRX_ADJ_DAILY_CA{m04_adjustment_days}_FB{m04_factor_fallback_days}"
+                )
 
     return code, {
         "m03_raw": round(m03_raw, 6) if m03_raw is not None else None,
@@ -278,6 +405,8 @@ def naver_metric_worker(issuer: base.Issuer, cutoff: date, six_month_target: dat
         "naver_eps": eps,
         "naver_eps_source": eps_source,
         "naver_end_close": end_close,
+        "naver_m04_adjustment_days": m04_adjustment_days,
+        "naver_m04_factor_fallback_days": m04_factor_fallback_days,
         "integration_error": integration_error,
         "eps_fallback_error": eps_fallback_error,
         "price_error": price_error,
