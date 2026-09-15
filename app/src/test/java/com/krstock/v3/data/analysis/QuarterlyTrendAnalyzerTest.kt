@@ -54,6 +54,38 @@ class QuarterlyTrendAnalyzerTest {
     }
 
     @Test
+    fun cfsOfsScopeChangeDoesNotCountAsComparableEightQuarters() {
+        val history = QuarterlyHistory(
+            issuerId = "scope",
+            loaded = true,
+            points = (1..8).map { i ->
+                val year = if (i <= 4) 2025 else 2026
+                val quarter = if (i <= 4) i else i - 4
+                QuarterlyPoint(
+                    period = "${year}Q$quarter",
+                    fiscalYear = year,
+                    quarter = quarter,
+                    revenue = 100.0 + i,
+                    operatingIncome = 10.0,
+                    operatingMargin = 10.0,
+                    revenueYoY = 1.0,
+                    revenueQoQ = 1.0,
+                    scope = if (i <= 4) "OFS" else "CFS",
+                    basis = "DIRECT_3M"
+                )
+            }
+        )
+        assertEquals("CFS", history.comparisonScope)
+        assertEquals(4, history.availableQuarterCount)
+        val enriched = QuarterlyTrendAnalyzer.enrich(
+            IntegratedAnalysis("x", "x", "x", "x", "x", "x", emptyList(), "x"),
+            history
+        )
+        assertEquals("4/8분기 확인", enriched.quarterlyCoverage)
+        assertTrue(enriched.quarterlyTrend.contains("동일 회계범위(CFS)"))
+    }
+
+    @Test
     fun enrichmentKeepsFourDimensionsAndAddsQuarterlyFields() {
         val base = IntegratedAnalysis(
             regimeTitle = "x",
