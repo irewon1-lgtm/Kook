@@ -31,8 +31,8 @@ android {
         applicationId = "com.krstock.v3"
         minSdk = 26
         targetSdk = 34
-        versionCode = System.getenv("KR4_VERSION_CODE")?.toIntOrNull() ?: 4
-        versionName = System.getenv("KR4_VERSION_NAME") ?: "4.0.0-self-update"
+        versionCode = System.getenv("KR4_VERSION_CODE")?.toIntOrNull() ?: 5
+        versionName = System.getenv("KR4_VERSION_NAME") ?: "4.1.0-senior-ui"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
