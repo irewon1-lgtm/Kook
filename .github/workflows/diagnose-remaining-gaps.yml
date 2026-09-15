@@ -1,0 +1,50 @@
+name: KR4 Diagnose Remaining Gaps
+
+on:
+  push:
+    branches:
+      - fix/incomplete-recovery-v4-main-sync
+    paths:
+      - scripts/diagnose_remaining_gaps.py
+      - .github/workflows/diagnose-remaining-gaps.yml
+
+permissions:
+  contents: write
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/incomplete-recovery-v4-main-sync
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Classify remaining gaps
+        run: python scripts/diagnose_remaining_gaps.py
+      - name: Gate current snapshot
+        run: |
+          python - <<'PY'
+          import json
+          p=json.load(open('evidence/remaining_gap_diagnostic.json',encoding='utf-8'))
+          assert p['universe_count']==2649
+          assert p['coverage']['m01_available']==2508
+          assert p['coverage']['m02_available']==2417
+          assert p['coverage']['m03_available']==2639
+          assert p['coverage']['m04_available']==2607
+          assert p['complete_count']==2388
+          assert p['incomplete_count']==261
+          assert p['corporate_action_m04_count']==4
+          print('POST_V4_REMAINING_GAP_GATE=PASS')
+          PY
+      - name: Commit diagnostic evidence
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add evidence/remaining_gap_diagnostic.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Record post-V4 remaining 261 gap diagnostic'
+          git pull --rebase origin fix/incomplete-recovery-v4-main-sync
+          git push origin HEAD:fix/incomplete-recovery-v4-main-sync
