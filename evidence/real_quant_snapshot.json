@@ -85211,34 +85211,15 @@
   },
   "standard_actual_recovery": {
     "policy": "remaining-gap M01/M02 only; completed Naver actual periods; finite direct actual OPM authoritative regardless of magnitude; computed fallback only uses abs<=10000 guard; existing numbers preserved except prior STANDARD_RECOVERY M02 policy upgrades",
-    "candidate_count": 14,
+    "candidate_count": 4,
     "candidate_codes": [
-      "001080",
       "0120G0",
-      "082660",
-      "241820",
-      "276040",
-      "310210",
-      "358570",
       "365270",
-      "365590",
       "372320",
-      "388870",
-      "424870",
-      "475830",
-      "489460"
+      "388870"
     ],
-    "upgrade_candidate_count": 0,
-    "upgrade_candidate_codes": [],
-    "m01_recovered": 4,
-    "m02_recovered": 9,
-    "m01_codes": [
-      "001080",
-      "241820",
-      "276040",
-      "489460"
-    ],
-    "m02_codes": [
+    "upgrade_candidate_count": 9,
+    "upgrade_candidate_codes": [
       "001080",
       "082660",
       "241820",
@@ -85249,28 +85230,21 @@
       "424870",
       "475830"
     ],
+    "m01_recovered": 0,
+    "m02_recovered": 0,
+    "m01_codes": [],
+    "m02_codes": [],
     "m02_upgraded_count": 0,
     "m02_upgraded_codes": [],
-    "promoted_complete_count": 10,
-    "promoted_complete_codes": [
-      "001080",
-      "082660",
-      "241820",
-      "276040",
-      "310210",
-      "358570",
-      "365590",
-      "424870",
-      "475830",
-      "489460"
-    ],
+    "promoted_complete_count": 0,
+    "promoted_complete_codes": [],
     "coverage_before": {
-      "m01_available": 2504,
-      "m02_available": 2409,
+      "m01_available": 2508,
+      "m02_available": 2418,
       "m03_available": 2639,
       "m04_available": 2611,
-      "complete_count": 2382,
-      "ranked_count": 2382
+      "complete_count": 2392,
+      "ranked_count": 2392
     },
     "coverage_after": {
       "m01_available": 2508,
@@ -85281,28 +85255,6 @@
       "ranked_count": 2392
     },
     "details": {
-      "001080": {
-        "name": "만호제강",
-        "market": "KOSPI",
-        "m01_resolver": {
-          "key": "202603",
-          "prior_key": "202503",
-          "value": 1.617251,
-          "current_revenue": 377.0,
-          "prior_revenue": 371.0
-        },
-        "m02_resolver": {
-          "key": "202603",
-          "value": 3.35,
-          "source": "DIRECT",
-          "direct": 3.35,
-          "computed_from_rounded_cells": null,
-          "extreme_direct_actual": false,
-          "rejected_newer_periods": []
-        },
-        "missing_after": [],
-        "result": "PROMOTED_COMPLETE"
-      },
       "0120G0": {
         "name": "삼양바이오팜",
         "market": "KOSPI",
@@ -85316,95 +85268,6 @@
         ],
         "result": "PARTIAL"
       },
-      "082660": {
-        "name": "코스나인",
-        "market": "KOSDAQ",
-        "m02_resolver": {
-          "key": "202509",
-          "value": -111.16,
-          "source": "DIRECT",
-          "direct": -111.16,
-          "computed_from_rounded_cells": null,
-          "extreme_direct_actual": false,
-          "rejected_newer_periods": []
-        },
-        "missing_after": [],
-        "result": "PROMOTED_COMPLETE"
-      },
-      "241820": {
-        "name": "피씨엘",
-        "market": "KOSDAQ",
-        "m01_resolver": {
-          "key": "202509",
-          "prior_key": "202409",
-          "value": 200.0,
-          "current_revenue": 12.0,
-          "prior_revenue": 4.0
-        },
-        "m02_resolver": {
-          "key": "202509",
-          "value": 10.57,
-          "source": "DIRECT",
-          "direct": 10.57,
-          "computed_from_rounded_cells": null,
-          "extreme_direct_actual": false,
-          "rejected_newer_periods": []
-        },
-        "missing_after": [],
-        "result": "PROMOTED_COMPLETE"
-      },
-      "276040": {
-        "name": "스코넥",
-        "market": "KOSDAQ",
-        "m01_resolver": {
-          "key": "202606",
-          "prior_key": "202506",
-          "value": -12.5,
-          "current_revenue": 7.0,
-          "prior_revenue": 8.0
-        },
-        "m02_resolver": {
-          "key": "202606",
-          "value": -131.81,
-          "source": "DIRECT",
-          "direct": -131.81,
-          "computed_from_rounded_cells": null,
-          "extreme_direct_actual": false,
-          "rejected_newer_periods": []
-        },
-        "missing_after": [],
-        "result": "PROMOTED_COMPLETE"
-      },
-      "310210": {
-        "name": "보로노이",
-        "market": "KOSDAQ",
-        "m02_resolver": {
-          "key": "202512",
-          "value": -73336.04,
-          "source": "DIRECT",
-          "direct": -73336.04,
-          "computed_from_rounded_cells": null,
-          "extreme_direct_actual": true,
-          "rejected_newer_periods": []
-        },
-        "missing_after": [],
-        "result": "PROMOTED_COMPLETE"
-      },
-      "358570": {
-        "name": "지아이이노베이션",
-        "market": "KOSDAQ",
-        "m02_resolver": {
-          "key": "202512",
-          "value": -130.73,
-          "source": "DIRECT",
-          "direct": -130.73,
-          "computed_from_rounded_cells": null,
-          "extreme_direct_actual": false,
-          "rejected_newer_periods": []
-        },
-        "missing_after": [],
-        "result": "PROMOTED_COMPLETE"
-      },
       "365270": {
         "name": "큐라클",
         "market": "KOSDAQ",
@@ -85417,21 +85280,6 @@
           "M01"
         ],
         "result": "PARTIAL"
-      },
-      "365590": {
-        "name": "하이딥",
-        "market": "KOSDAQ",
-        "m02_resolver": {
-          "key": "202606",
-          "value": -11703.11,
-          "source": "DIRECT",
-          "direct": -11703.11,
-          "computed_from_rounded_cells": null,
-          "extreme_direct_actual": true,
-          "rejected_newer_periods": []
-        },
-        "missing_after": [],
-        "result": "PROMOTED_COMPLETE"
       },
       "372320": {
         "name": "큐로셀",
@@ -85455,10 +85303,108 @@
         ],
         "result": "PARTIAL"
       },
+      "001080": {
+        "name": "만호제강",
+        "market": "KOSPI",
+        "m02_upgrade_resolver": {
+          "key": "202603",
+          "value": 3.35,
+          "source": "DIRECT",
+          "direct": 3.35,
+          "computed_from_rounded_cells": null,
+          "extreme_direct_actual": false,
+          "rejected_newer_periods": []
+        },
+        "m02_upgrade_result": "ALREADY_CURRENT"
+      },
+      "082660": {
+        "name": "코스나인",
+        "market": "KOSDAQ",
+        "m02_upgrade_resolver": {
+          "key": "202509",
+          "value": -111.16,
+          "source": "DIRECT",
+          "direct": -111.16,
+          "computed_from_rounded_cells": null,
+          "extreme_direct_actual": false,
+          "rejected_newer_periods": []
+        },
+        "m02_upgrade_result": "ALREADY_CURRENT"
+      },
+      "241820": {
+        "name": "피씨엘",
+        "market": "KOSDAQ",
+        "m02_upgrade_resolver": {
+          "key": "202509",
+          "value": 10.57,
+          "source": "DIRECT",
+          "direct": 10.57,
+          "computed_from_rounded_cells": null,
+          "extreme_direct_actual": false,
+          "rejected_newer_periods": []
+        },
+        "m02_upgrade_result": "ALREADY_CURRENT"
+      },
+      "276040": {
+        "name": "스코넥",
+        "market": "KOSDAQ",
+        "m02_upgrade_resolver": {
+          "key": "202606",
+          "value": -131.81,
+          "source": "DIRECT",
+          "direct": -131.81,
+          "computed_from_rounded_cells": null,
+          "extreme_direct_actual": false,
+          "rejected_newer_periods": []
+        },
+        "m02_upgrade_result": "ALREADY_CURRENT"
+      },
+      "310210": {
+        "name": "보로노이",
+        "market": "KOSDAQ",
+        "m02_upgrade_resolver": {
+          "key": "202512",
+          "value": -73336.04,
+          "source": "DIRECT",
+          "direct": -73336.04,
+          "computed_from_rounded_cells": null,
+          "extreme_direct_actual": true,
+          "rejected_newer_periods": []
+        },
+        "m02_upgrade_result": "ALREADY_CURRENT"
+      },
+      "358570": {
+        "name": "지아이이노베이션",
+        "market": "KOSDAQ",
+        "m02_upgrade_resolver": {
+          "key": "202512",
+          "value": -130.73,
+          "source": "DIRECT",
+          "direct": -130.73,
+          "computed_from_rounded_cells": null,
+          "extreme_direct_actual": false,
+          "rejected_newer_periods": []
+        },
+        "m02_upgrade_result": "ALREADY_CURRENT"
+      },
+      "365590": {
+        "name": "하이딥",
+        "market": "KOSDAQ",
+        "m02_upgrade_resolver": {
+          "key": "202606",
+          "value": -11703.11,
+          "source": "DIRECT",
+          "direct": -11703.11,
+          "computed_from_rounded_cells": null,
+          "extreme_direct_actual": true,
+          "rejected_newer_periods": []
+        },
+        "m02_upgrade_result": "ALREADY_CURRENT"
+      },
       "424870": {
         "name": "이뮨온시아",
         "market": "KOSDAQ",
-        "m02_resolver": {
+        "m02_upgrade_resolver": {
           "key": "202506",
           "value": -5589.89,
           "source": "DIRECT",
@@ -85467,13 +85413,12 @@
           "extreme_direct_actual": false,
           "rejected_newer_periods": []
         },
-        "missing_after": [],
-        "result": "PROMOTED_COMPLETE"
+        "m02_upgrade_result": "ALREADY_CURRENT"
       },
       "475830": {
         "name": "오름테라퓨틱",
         "market": "KOSDAQ",
-        "m02_resolver": {
+        "m02_upgrade_resolver": {
           "key": "202606",
           "value": -63691.04,
           "source": "DIRECT",
@@ -85482,21 +85427,7 @@
           "extreme_direct_actual": true,
           "rejected_newer_periods": []
         },
-        "missing_after": [],
-        "result": "PROMOTED_COMPLETE"
-      },
-      "489460": {
-        "name": "바이오비쥬",
-        "market": "KOSDAQ",
-        "m01_resolver": {
-          "key": "202606",
-          "prior_key": "202506",
-          "value": 59.677419,
-          "current_revenue": 99.0,
-          "prior_revenue": 62.0
-        },
-        "missing_after": [],
-        "result": "PROMOTED_COMPLETE"
+        "m02_upgrade_result": "ALREADY_CURRENT"
       }
     },
     "source_error_count": 0,
