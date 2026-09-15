@@ -1,0 +1,83 @@
+name: Bootstrap Quarterly History Feature
+
+on:
+  push:
+    branches:
+      - "feature/quarterly-history-v1"
+    paths:
+      - ".github/workflows/bootstrap-quarterly-history-feature.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/quarterly-history-v1
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependency
+        run: pip install requests
+      - name: Unit adversarial tests
+        run: python tests/test_quarterly_history.py
+      - name: Collect real OpenDART 8-quarter history
+        run: |
+          set -euo pipefail
+          python scripts/collect_quarterly_history.py \
+            --as-of 2026-09-15 \
+            --visible-quarters 8 \
+            --support-quarters 12 \
+            --out /tmp/quarterly_history.json
+      - name: Extreme gate
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json,math
+          d=json.load(open('/tmp/quarterly_history.json',encoding='utf-8'))
+          n=2649
+          assert d['schema_version']==1
+          assert len(d['records'])==n
+          assert len(d['target_periods'])==8
+          c=d['coverage']
+          floors={
+            'stocks_with_1q':int(n*0.78),
+            'stocks_with_4q':int(n*0.62),
+            'stocks_with_8q':int(n*0.45),
+            'stocks_with_4q_margin':int(n*0.52),
+            'stocks_with_8q_margin':int(n*0.36),
+          }
+          for k,v in floors.items(): assert int(c[k])>=v,(k,c[k],v)
+          for code,r in d['records'].items():
+            assert len(r['points'])==8,(code,len(r['points']))
+            for p in r['points']:
+              for k in ('revenue','operating_income','operating_margin','revenue_yoy','revenue_qoq'):
+                v=p[k]; assert v is None or math.isfinite(float(v)),(code,p['period'],k,v)
+              if p['revenue'] is None: assert p['reason'],(code,p)
+          for code in ('005930','000660','000250'):
+            assert sum(p['revenue'] is not None for p in d['records'][code]['points'])>=4,(code,d['records'][code]['points'])
+          print('BOOTSTRAP_QUARTERLY_EXTREME_PASS',json.dumps({'periods':d['target_periods'],'coverage':c,'floors':floors},ensure_ascii=False))
+          PY
+      - name: Promote and commit generated history
+        run: |
+          set -euo pipefail
+          cp /tmp/quarterly_history.json evidence/quarterly_history.json
+          cp /tmp/quarterly_history.json app/src/main/assets/quarterly_history.json
+          git add evidence/quarterly_history.json app/src/main/assets/quarterly_history.json
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Bootstrap verified 8-quarter OpenDART history"
+          git push origin HEAD:feature/quarterly-history-v1
+      - name: Upload proof
+        uses: actions/upload-artifact@v4
+        with:
+          name: Quarterly_History_Bootstrap_Proof
+          path: /tmp/quarterly_history.json
+          retention-days: 14
