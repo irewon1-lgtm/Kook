@@ -64,7 +64,7 @@ object ContextEvidenceRepository {
             readTimeout = 6_000
             instanceFollowRedirects = true
             setRequestProperty("Accept", "application/json,text/plain,*/*")
-            setRequestProperty("User-Agent", "Mozilla/5.0 (Linux; Android 14) KR4/1.0")
+            setRequestProperty("User-Agent", "Mozilla/5.0 (Linux; Android 14) KR4/2.0")
             setRequestProperty("Referer", "https://m.stock.naver.com/")
         }
         try {
@@ -125,13 +125,22 @@ object ContextEvidenceRepository {
             if (kind == EvidenceKind.DISCLOSURE) "공시" else "뉴스"
         }
 
-        val url = first(obj, arrayOf("url", "link", "endUrl", "detailUrl", "articleUrl"))
+        val rawUrl = first(obj, arrayOf("url", "link", "endUrl", "detailUrl", "articleUrl"))
             ?.let(::clean)
-            ?.let(::absoluteUrl)
             .orEmpty()
+        val url = rawUrl.takeIf { it.isNotBlank() }?.let(::absoluteUrl).orEmpty()
+
+        val directReceipt = first(obj, arrayOf("receiptNo", "rceptNo", "rcept_no", "rcpNo"))
+            ?.let(::clean)
+            ?.let { Regex("\\d{14}").find(it)?.value }
+        val receiptNo = if (kind == EvidenceKind.DISCLOSURE) {
+            directReceipt ?: Regex("(?:rcpNo|rceptNo|receiptNo)=?(\\d{14})", RegexOption.IGNORE_CASE)
+                .find(rawUrl)?.groupValues?.getOrNull(1)
+                ?: Regex("\\b20\\d{12}\\b").find(rawUrl)?.value.orEmpty()
+        } else ""
 
         val id = buildString {
-            val direct = first(obj, arrayOf("id", "articleId", "receiptNo", "rceptNo", "disclosureId", "seq"))
+            val direct = first(obj, arrayOf("id", "articleId", "receiptNo", "rceptNo", "rcept_no", "rcpNo", "disclosureId", "seq"))
             if (!direct.isNullOrBlank()) append(clean(direct))
             val oid = obj.optString("oid", "")
             val aid = obj.optString("aid", "")
@@ -142,7 +151,7 @@ object ContextEvidenceRepository {
         // Nested metadata can contain a generic `title`; require at least one additional
         // evidence-like field so menu/header objects do not become fake news items.
         val evidenceShape = published.isNotBlank() || url.isNotBlank() ||
-            obj.has("oid") || obj.has("aid") || obj.has("receiptNo") || obj.has("rceptNo") ||
+            obj.has("oid") || obj.has("aid") || obj.has("receiptNo") || obj.has("rceptNo") || obj.has("rcpNo") ||
             obj.has("officeName") || obj.has("reportName") || obj.has("disclosureTitle")
         if (!evidenceShape) return null
 
@@ -152,7 +161,8 @@ object ContextEvidenceRepository {
             title = title,
             source = source,
             publishedAt = normalizeDate(published),
-            url = url
+            url = url,
+            receiptNo = receiptNo
         )
     }
 
