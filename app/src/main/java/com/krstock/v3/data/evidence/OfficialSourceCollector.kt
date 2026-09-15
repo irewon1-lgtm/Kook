@@ -8,7 +8,7 @@ import java.net.URI
 import java.net.URL
 import java.net.URLEncoder
 
-internal data class OfficialSourceCollection(
+data class OfficialSourceCollection(
     val corpCode: String = "",
     val homepage: String = "",
     val irHomepage: String = "",
@@ -231,11 +231,13 @@ object OfficialSourceCollector {
         return base + documentBonus + dateBonus
     }
 
-    private fun keywordScore(text: String, keywords: List<String>): Int = keywords.sumOf { keyword ->
-        when {
-            text.contains(keyword) -> if (keyword.length <= 2) 1 else 2
-            else -> 0
+    private fun keywordScore(text: String, keywords: List<String>): Int = keywords.fold(0) { acc, keyword ->
+        val score = if (text.contains(keyword)) {
+            if (keyword.length <= 2) 1 else 2
+        } else {
+            0
         }
+        acc + score
     }
 
     private fun extractRawLinks(html: String): List<String> =
