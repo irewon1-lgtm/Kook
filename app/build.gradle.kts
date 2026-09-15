@@ -33,11 +33,17 @@ android {
         targetSdk = 34
         versionCode = System.getenv("KR4_VERSION_CODE")?.toIntOrNull() ?: 5
         versionName = System.getenv("KR4_VERSION_NAME") ?: "4.1.0-senior-ui"
+        manifestPlaceholders["appLabel"] = "KR4 국내주식"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
+        debug {
+            applicationIdSuffix = ".preview"
+            versionNameSuffix = "-preview"
+            manifestPlaceholders["appLabel"] = "KR4 Preview"
+        }
         release {
             isMinifyEnabled = false
             if (releaseSigningConfig != null) {
