@@ -18,7 +18,10 @@ data class MetricValue(
     val reason: String? = null,
     val description: String = "",
     val interpretation: String = "",
-    val caution: String = ""
+    val caution: String = "",
+    val source: String = "",
+    val basis: String = "",
+    val asOfDate: String = ""
 )
 
 data class StockSummary(

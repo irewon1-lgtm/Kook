@@ -1,9 +1,9 @@
-name: KR4 KOSPI+KOSDAQ Extreme CleanPass
+name: KR4 Swipe+MultiRank Extreme CleanPass
 
 on:
   push:
     branches:
-      - "register-real-kosdaq-master"
+      - "connect-dart-price-data"
       - "main"
   pull_request:
     branches:
@@ -12,38 +12,63 @@ on:
 jobs:
   extreme-cleanpass:
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 40
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Validate committed official KOSPI and KOSDAQ masters
+      - name: Validate market masters and committed real-data snapshot
         run: |
           set -euo pipefail
           test -s evidence/kospi_master_snapshot.json
           test -s evidence/kosdaq_master_snapshot.json
-          test -s app/src/main/java/com/krstock/v3/data/generated/GeneratedKospiMaster.kt
-          test -s app/src/main/java/com/krstock/v3/data/generated/GeneratedKosdaqMaster.kt
+          test -s evidence/real_quant_snapshot.json
+          test -s app/src/main/java/com/krstock/v3/data/generated/GeneratedRealQuantSnapshot.kt
           python3 - <<'PY'
-          import json
+          import hashlib, json, math, pathlib, re
           k=json.load(open('evidence/kospi_master_snapshot.json',encoding='utf-8'))
           q=json.load(open('evidence/kosdaq_master_snapshot.json',encoding='utf-8'))
-          assert k['market']=='KOSPI' and q['market']=='KOSDAQ'
-          assert k['issuer_count']==832
-          assert q['issuer_count']==1817
-          assert k['unique_issue_codes']==832 and q['unique_issue_codes']==1817
-          assert k['six_character_krx_codes'] is True and q['six_character_krx_codes'] is True
-          assert k['snapshot_date_kst']=='2026-09-15' and q['snapshot_date_kst']=='2026-09-15'
-          print('MARKET_MASTERS_OK', k['issuer_count'], q['issuer_count'], k['issuer_count']+q['issuer_count'])
-          print('KOSPI_SHA', k['sha256_normalized_master'])
-          print('KOSDAQ_SHA', q['sha256_normalized_master'])
+          d=json.load(open('evidence/real_quant_snapshot.json',encoding='utf-8'))
+          assert k['issuer_count']==832 and q['issuer_count']==1817
+          assert d['universe_count']==2649
+          assert len(d['records'])==2649
+          assert d['snapshot_date_kst']=='2026-09-15'
+          assert d['price_cutoff_date_kst']=='2026-09-14'
+          assert d['dart_bulk_file'].startswith('2026_2Q_PL_') and d['dart_bulk_file'].endswith('.zip')
+          c=d['coverage']
+          expected={'m01_available':2469,'m02_available':2380,'m03_available':1677,'m04_available':2611,'complete_count':1462,'ranked_count':1462}
+          assert c==expected,(c,expected)
+          kt=pathlib.Path('app/src/main/java/com/krstock/v3/data/generated/GeneratedRealQuantSnapshot.kt')
+          kt_sha=hashlib.sha256(kt.read_bytes()).hexdigest()
+          assert kt_sha==d['generated_kotlin_sha256'],(kt_sha,d['generated_kotlin_sha256'])
+          assert d['dart_bulk_zip_sha256']=='8dc60f1eca38813d56b0a1bc533f8c5fc76d06014bbfeb0882dd7523fe0031b1'
+          ranks=[]
+          for code,r in d['records'].items():
+              assert re.fullmatch(r'[0-9A-Z]{6}',code),code
+              metrics=[r[f'm0{i}'] for i in range(1,5)]
+              complete=True
+              for m in metrics:
+                  if m['raw'] is None:
+                      complete=False
+                      assert m['percentile'] is None
+                      assert m['reason']
+                  else:
+                      assert math.isfinite(float(m['raw']))
+                      assert m['percentile'] is not None and 0<=float(m['percentile'])<=100
+                      assert m['basis']
+              if complete:
+                  assert r['composite'] is not None and r['rank'] is not None
+                  ranks.append(int(r['rank']))
+              else:
+                  assert r['composite'] is None and r['rank'] is None
+          assert sorted(ranks)==list(range(1,1463))
+          assert d['records']['005930']['name']=='삼성전자'
+          assert d['records']['000250']['name']=='삼천당제약'
+          print('REAL_SNAPSHOT_VALIDATED',json.dumps(c,ensure_ascii=False))
+          print('DART_BULK_SHA256',d['dart_bulk_zip_sha256'])
+          print('GENERATED_KOTLIN_SHA256',kt_sha)
           PY
-          grep -q 'const val issuerCount: Int = 832' app/src/main/java/com/krstock/v3/data/generated/GeneratedKospiMaster.kt
-          grep -q 'const val issuerCount: Int = 1817' app/src/main/java/com/krstock/v3/data/generated/GeneratedKosdaqMaster.kt
-          grep -q 'KospiIssuer(code = "005930", name = "삼성전자"' app/src/main/java/com/krstock/v3/data/generated/GeneratedKospiMaster.kt
-          grep -q 'KosdaqIssuer(code = "000250", name = "삼천당제약"' app/src/main/java/com/krstock/v3/data/generated/GeneratedKosdaqMaster.kt
-          grep -q 'KosdaqIssuer(code = "0001A0", name = "덕양에너젠"' app/src/main/java/com/krstock/v3/data/generated/GeneratedKosdaqMaster.kt
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -56,13 +81,24 @@ jobs:
         with:
           gradle-version: '8.7'
 
-      - name: Python reference-engine CLEAN tests
+      - name: Python reference and combination Extreme simulations
         run: |
           set -euo pipefail
           python3 tests/run_all.py evidence/clean_pass_results.json
           python3 tests/run_stress.py
+          python3 tests/run_combo_rank_stress.py evidence/combo_rank_stress_results.json
+          python3 - <<'PY'
+          import json
+          d=json.load(open('evidence/combo_rank_stress_results.json',encoding='utf-8'))
+          assert d['status']=='PASS'
+          assert d['all_nonempty_combinations_tested']==15
+          assert d['ten_thousand_toggle_simulation_pass'] is True
+          assert d['all_four_reproduces_committed_rank'] is True
+          assert d['selected_complete_filter_checks']==2649*15
+          print('COMBO_RANK_EXTREME_PASS', d['all_nonempty_combinations_tested'], d['selected_complete_filter_checks'])
+          PY
 
-      - name: Android repository extreme regression tests
+      - name: Android 2649-stock and dynamic-ranking extreme regression tests
         run: |
           set -euo pipefail
           gradle :app:testDebugUnitTest --stacktrace
@@ -78,7 +114,7 @@ jobs:
             sudo chmod 666 /dev/kvm
           fi
 
-      - name: Real Android emulator install and end-to-end UI smoke test
+      - name: Real Android swipe and multi-ranking end-to-end simulation
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 34
@@ -88,76 +124,113 @@ jobs:
           disable-animations: true
           script: gradle :app:connectedDebugAndroidTest --stacktrace
 
-      - name: Hard verify APK exists and is non-empty
+      - name: Hard verify APK and requested features
         run: |
           set -euo pipefail
           APK="app/build/outputs/apk/debug/app-debug.apk"
           test -f "$APK"
           test -s "$APK"
           mkdir -p dist evidence/ci
-          cp "$APK" dist/KR4_KOSPI_KOSDAQ_2649_Registered_debug.apk
+          cp "$APK" dist/KR4_SWIPE_MULTI_RANK_Extreme_CleanPass_debug.apk
           sha256sum "$APK" | tee evidence/ci/APK_SHA256.txt
           stat --printf='APK_BYTES=%s\n' "$APK" | tee evidence/ci/APK_SIZE.txt
-
-      - name: Guard against fake success and fabricated investment data
-        run: |
-          set -euo pipefail
-          test -s dist/KR4_KOSPI_KOSDAQ_2649_Registered_debug.apk
-          test -s evidence/ci/APK_SHA256.txt
-          test -s evidence/ci/APK_SIZE.txt
-          grep -q 'GeneratedKospiMaster' app/src/main/java/com/krstock/v3/data/repository/StockRepository.kt
-          grep -q 'GeneratedKosdaqMaster' app/src/main/java/com/krstock/v3/data/repository/StockRepository.kt
-          grep -q 'DataStatus.REGISTERED' app/src/main/java/com/krstock/v3/data/repository/StockRepository.kt
-          grep -q 'compositeScore = null' app/src/main/java/com/krstock/v3/data/repository/StockRepository.kt
-          grep -q 'rankOrder = null' app/src/main/java/com/krstock/v3/data/repository/StockRepository.kt
           ! grep -R "news.example.com" app/src/main || exit 1
           ! grep -R "mockStocks.first" app/src/main || exit 1
+          ! grep -R "DEMO 데이터" app/src/main || exit 1
+          ! grep -R 'snapshotDate: String = "PENDING"' app/src/main/java/com/krstock/v3/data/generated/GeneratedRealQuantSnapshot.kt || exit 1
+          grep -q 'HorizontalPager' app/src/main/java/com/krstock/v3/MainActivity.kt
+          grep -q 'HorizontalPager' app/src/main/java/com/krstock/v3/ui/screens/StockDetailScreen.kt
+          grep -q 'DynamicRankingEngine.rank' app/src/main/java/com/krstock/v3/ui/screens/StockListScreen.kt
+          grep -q 'metric_toggle_M01' app/src/main/java/com/krstock/v3/ui/screens/StockListScreen.kt
+          grep -q 'selected_metrics_complete_only' app/src/main/java/com/krstock/v3/ui/screens/StockListScreen.kt
+          grep -q 'displayRank = dynamic?.rank' app/src/main/java/com/krstock/v3/ui/screens/StockListScreen.kt
+          grep -q 'selectedMetricIds.size == 1' app/src/main/java/com/krstock/v3/ui/screens/StockListScreen.kt
 
-      - name: Write combined proof manifest
+      - name: Write machine-readable final proof
         run: |
           set -euo pipefail
           python3 - <<'PY'
-          import json, os, pathlib
-          k=json.load(open('evidence/kospi_master_snapshot.json',encoding='utf-8'))
-          q=json.load(open('evidence/kosdaq_master_snapshot.json',encoding='utf-8'))
-          apk_sha=open('evidence/ci/APK_SHA256.txt',encoding='utf-8').read().split()[0]
-          apk_bytes=int(open('evidence/ci/APK_SIZE.txt',encoding='utf-8').read().strip().split('=')[1])
+          import glob, hashlib, json, os, pathlib, xml.etree.ElementTree as ET
+          d=json.load(open('evidence/real_quant_snapshot.json',encoding='utf-8'))
+          combo=json.load(open('evidence/combo_rank_stress_results.json',encoding='utf-8'))
+          def junit_stats(pattern):
+              tests=failures=errors=skipped=0
+              files=glob.glob(pattern,recursive=True)
+              for f in files:
+                  try:
+                      root=ET.parse(f).getroot()
+                  except Exception:
+                      continue
+                  suites=[root] if root.tag=='testsuite' else list(root.findall('.//testsuite'))
+                  for s in suites:
+                      tests+=int(float(s.attrib.get('tests',0)))
+                      failures+=int(float(s.attrib.get('failures',0)))
+                      errors+=int(float(s.attrib.get('errors',0)))
+                      skipped+=int(float(s.attrib.get('skipped',0)))
+              return {'files':len(files),'tests':tests,'failures':failures,'errors':errors,'skipped':skipped}
+          unit=junit_stats('app/build/test-results/testDebugUnitTest/**/*.xml')
+          android=junit_stats('app/build/outputs/androidTest-results/**/*.xml')
+          assert unit['tests']>0 and unit['failures']==0 and unit['errors']==0,unit
+          assert android['tests']>0 and android['failures']==0 and android['errors']==0,android
+          apk=pathlib.Path('dist/KR4_SWIPE_MULTI_RANK_Extreme_CleanPass_debug.apk')
+          apk_sha=hashlib.sha256(apk.read_bytes()).hexdigest()
           proof={
-            'scope':'KOSPI + KOSDAQ registration and full Android clean-pass; financial/price metrics remain uncollected',
+            'scope':'KR4 requested fixes 1-4: swipe navigation + 1~4 metric combination ranking + matching rank badge + selected-metric completeness filter',
             'commit':os.environ.get('GITHUB_SHA'),
-            'kospi_count':k['issuer_count'],
-            'kosdaq_count':q['issuer_count'],
-            'combined_count':k['issuer_count']+q['issuer_count'],
-            'kospi_snapshot_date':k['snapshot_date_kst'],
-            'kosdaq_snapshot_date':q['snapshot_date_kst'],
-            'kospi_master_sha256':k['sha256_normalized_master'],
-            'kosdaq_master_sha256':q['sha256_normalized_master'],
-            'kosdaq_alphanumeric_codes':q['alphanumeric_issue_code_count'],
+            'universe_count':d['universe_count'],
+            'coverage':d['coverage'],
+            'requested_features':{
+              'home_list_horizontal_swipe':True,
+              'detail_four_page_horizontal_swipe':True,
+              'multi_metric_selection_1_to_4':True,
+              'active_combination_rank_and_score_badge':True,
+              'selected_metrics_complete_only_filter':True,
+              'zero_metric_selection_prevented':True,
+            },
+            'combination_extreme_simulation':{
+              'all_nonempty_combinations_tested':combo['all_nonempty_combinations_tested'],
+              'ten_thousand_toggle_simulation_pass':combo['ten_thousand_toggle_simulation_pass'],
+              'selected_complete_filter_checks':combo['selected_complete_filter_checks'],
+              'all_four_reproduces_committed_rank':combo['all_four_reproduces_committed_rank'],
+            },
             'python_clean_pass':True,
             'python_stress_pass':True,
-            'android_unit_regression_pass':True,
+            'android_unit_regression':unit,
+            'android_emulator_end_to_end':android,
             'android_apk_build_pass':True,
-            'android_emulator_install_ui_smoke_pass':True,
-            'fake_success_guard_pass':True,
+            'anti_fabrication_guard_pass':True,
             'apk_sha256':apk_sha,
-            'apk_bytes':apk_bytes,
-            'four_metrics_collected':False,
-            'ranking_generated':False,
+            'apk_bytes':apk.stat().st_size,
+            'ui_path_tested':[
+              'launch home',
+              'swipe Home -> Stock List',
+              'deselect one metric -> 3-metric combination ranking',
+              'deselect second metric -> 2-metric combination ranking',
+              'KOSDAQ filter',
+              'search 삼천당제약',
+              'open 000250 detail',
+              'swipe summary -> four metrics',
+              'swipe four metrics -> quantitative analysis',
+              'swipe analysis -> checkpoints/source'
+            ],
+            'ranking_rule':'Selected 1~4 metric percentile scores are equal-weight averaged; rank exists only when every selected metric is available.',
           }
-          pathlib.Path('evidence/ci').mkdir(parents=True,exist_ok=True)
-          pathlib.Path('evidence/ci/COMBINED_CLEANPASS_PROOF.json').write_text(json.dumps(proof,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          out=pathlib.Path('evidence/ci/SWIPE_MULTI_RANK_EXTREME_CLEANPASS_PROOF.json')
+          out.write_text(json.dumps(proof,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
           print(json.dumps(proof,ensure_ascii=False,indent=2))
           PY
 
-      - name: Upload verified APK and all evidence
+      - name: Upload verified APK and complete evidence
         uses: actions/upload-artifact@v4
         with:
-          name: KR4_KOSPI_KOSDAQ_2649_Extreme_CleanPass
+          name: KR4_SWIPE_MULTI_RANK_Extreme_CleanPass
           path: |
-            dist/KR4_KOSPI_KOSDAQ_2649_Registered_debug.apk
+            dist/KR4_SWIPE_MULTI_RANK_Extreme_CleanPass_debug.apk
             evidence/ci/APK_SHA256.txt
             evidence/ci/APK_SIZE.txt
-            evidence/ci/COMBINED_CLEANPASS_PROOF.json
+            evidence/ci/SWIPE_MULTI_RANK_EXTREME_CLEANPASS_PROOF.json
+            evidence/combo_rank_stress_results.json
+            evidence/real_quant_snapshot.json
             evidence/kospi_master_snapshot.json
             evidence/kosdaq_master_snapshot.json
             evidence/clean_pass_results.json

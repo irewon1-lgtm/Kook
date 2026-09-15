@@ -1,0 +1,129 @@
+name: Collect Real KR4 Quant Snapshot
+
+on:
+  push:
+    branches:
+      - "connect-dart-price-data"
+    paths:
+      - "scripts/collect_real_quant.py"
+      - "scripts/collect_real_quant_v2.py"
+      - ".github/workflows/collect-real-quant.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: kr4-real-quant-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install collector dependency
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          pip install requests
+
+      - name: Collect official DART and live price data
+        run: |
+          set -euo pipefail
+          python scripts/collect_real_quant_v2.py \
+            --as-of 2026-09-15 \
+            --price-cutoff 2026-09-14 \
+            --workers 14 \
+            --kotlin-out app/src/main/java/com/krstock/v3/data/generated/GeneratedRealQuantSnapshot.kt \
+            --evidence-out evidence/real_quant_snapshot.json
+
+      - name: Extreme validate generated snapshot
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, math, pathlib, re
+          p=pathlib.Path('evidence/real_quant_snapshot.json')
+          assert p.is_file() and p.stat().st_size > 1000
+          d=json.loads(p.read_text(encoding='utf-8'))
+          assert d['universe_count'] == 2649
+          c=d['coverage']
+          assert c['m01_available'] >= 1000, c
+          assert c['m02_available'] >= 900, c
+          assert c['m03_available'] >= 800, c
+          assert c['m04_available'] >= 1500, c
+          assert c['ranked_count'] == c['complete_count']
+          assert len(d['records']) == 2649
+          ranks=[]
+          for code,r in d['records'].items():
+              assert re.fullmatch(r'[0-9A-Z]{6}', code), code
+              metrics=[r[f'm0{i}'] for i in range(1,5)]
+              for m in metrics:
+                  raw=m['raw']; pct=m['percentile']; reason=m['reason']; basis=m['basis']
+                  if raw is None:
+                      assert pct is None
+                      assert reason, (code,m)
+                  else:
+                      assert math.isfinite(float(raw))
+                      assert pct is not None and 0 <= float(pct) <= 100, (code,m)
+                      assert basis, (code,m)
+              complete=all(m['raw'] is not None for m in metrics)
+              if complete:
+                  assert r['composite'] is not None and r['rank'] is not None, code
+                  ranks.append(r['rank'])
+              else:
+                  assert r['composite'] is None and r['rank'] is None, code
+          assert sorted(ranks) == list(range(1,len(ranks)+1))
+          kt=pathlib.Path('app/src/main/java/com/krstock/v3/data/generated/GeneratedRealQuantSnapshot.kt')
+          assert kt.is_file() and kt.stat().st_size > 10000
+          text=kt.read_text(encoding='utf-8')
+          assert 'const val universeCount: Int = 2649' in text
+          assert 'const val snapshotDate: String = "2026-09-15"' in text
+          assert 'const val priceCutoffDate: String = "2026-09-14"' in text
+          assert 'PENDING' not in text
+          print('REAL_QUANT_EXTREME_VALIDATION_PASS',json.dumps(c,ensure_ascii=False))
+          print('DART_FILE',d['dart_bulk_file'])
+          print('DART_ZIP_SHA256',d['dart_bulk_zip_sha256'])
+          print('KOTLIN_SHA256',d['generated_kotlin_sha256'])
+          print('REASON_COUNTS',json.dumps(d['reason_counts'],ensure_ascii=False))
+          PY
+
+      - name: Commit generated real-data snapshot
+        run: |
+          set -euo pipefail
+          git add app/src/main/java/com/krstock/v3/data/generated/GeneratedRealQuantSnapshot.kt evidence/real_quant_snapshot.json
+          if git diff --cached --quiet; then
+            echo "No real quant snapshot change"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          COV=$(python - <<'PY'
+          import json
+          c=json.load(open('evidence/real_quant_snapshot.json',encoding='utf-8'))['coverage']
+          print(f"M01={c['m01_available']} M02={c['m02_available']} M03={c['m03_available']} M04={c['m04_available']} complete={c['complete_count']}")
+          PY
+          )
+          git commit -m "Collect real KR4 snapshot: ${COV}"
+          git push origin HEAD:${{ github.ref_name }}
+
+      - name: Upload raw proof snapshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: KR4_RealQuant_Collection_Proof
+          path: |
+            evidence/real_quant_snapshot.json
+            app/src/main/java/com/krstock/v3/data/generated/GeneratedRealQuantSnapshot.kt
+          if-no-files-found: error
+          retention-days: 14
