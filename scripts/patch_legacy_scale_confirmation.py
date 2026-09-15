@@ -1,11 +1,16 @@
 #!/usr/bin/env python3
-"""Follow-up patch: only stable or notice-backed scale transitions trigger M03 CA checks."""
+"""Follow-up patch: exact scale boundary + stable/notice-backed M03 CA confirmation."""
 from pathlib import Path
+
+from patch_scale_changepoint_boundary import main as patch_boundary_main
 
 P = Path(__file__).resolve().parents[1] / "scripts/collect_real_quant_v2.py"
 
 
 def main() -> None:
+    # First remove duplicate early/late detections around one scale regime shift.
+    patch_boundary_main()
+
     s = P.read_text(encoding="utf-8")
     marker = "scale_candidates = _detect_scale_transition_events("
     start_token = s.index(marker)
