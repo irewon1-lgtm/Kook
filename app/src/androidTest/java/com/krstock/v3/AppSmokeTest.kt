@@ -18,14 +18,14 @@ class AppSmokeTest {
     val composeRule = createAndroidComposeRule<MainActivity>()
 
     @Test
-    fun appLaunchesAndCoreNavigationWorks() {
-        composeRule.onNodeWithText("KR4 국내주식 연구").assertIsDisplayed()
-        composeRule.onNodeWithText("DEMO 데이터 모드").assertIsDisplayed()
+    fun appLaunchesAndKospiMasterNavigationWorks() {
+        composeRule.onNodeWithText("KR4 국내주식").assertIsDisplayed()
+        composeRule.onNodeWithText("KOSPI 실종목 등록 완료").assertIsDisplayed()
 
-        composeRule.onNodeWithTag("home_list").performScrollToIndex(3)
+        composeRule.onNodeWithTag("home_list").performScrollToIndex(2)
         composeRule.onNodeWithText("전체보기 >").assertIsDisplayed().performClick()
 
-        composeRule.onNodeWithText("국내주식 후보 목록").assertIsDisplayed()
-        composeRule.onNodeWithText("종목명 · 코드 · 업종 검색").assertIsDisplayed()
+        composeRule.onNodeWithText("KOSPI 실종목 목록").assertIsDisplayed()
+        composeRule.onNodeWithText("회사명 · 종목코드 · 업종 검색").assertIsDisplayed()
     }
 }
