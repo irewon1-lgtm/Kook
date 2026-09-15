@@ -30,18 +30,31 @@ jobs:
           }
 
           def fetch(market,adjusted):
-              form=urllib.parse.urlencode({
+              form={
                   'bld':'dbms/MDC/STAT/standard/MDCSTAT01602',
+                  'locale':'ko_KR',
                   'mktId':market,
                   'adjStkPrc':str(adjusted),
                   'strtDd':'20260313',
                   'endDd':'20260915',
-              }).encode()
-              req=urllib.request.Request(URL,data=form,headers=HEADERS,method='POST')
+                  'share':'1',
+                  'money':'1',
+                  'csvxls_isNo':'false',
+              }
+              if market=='KSQ':
+                  form['segTpCd']='ALL'
+              if adjusted==2:
+                  form['adjStkPrc_check']='Y'
+              req=urllib.request.Request(
+                  URL,
+                  data=urllib.parse.urlencode(form).encode(),
+                  headers=HEADERS,
+                  method='POST',
+              )
               with urllib.request.urlopen(req,timeout=20) as r:
                   payload=json.loads(r.read().decode('utf-8'))
               rows=payload.get('OutBlock_1') or payload.get('output') or []
-              assert rows,(market,adjusted,payload.keys())
+              assert rows,(market,adjusted,payload)
               return {str(x.get('ISU_SRT_CD')):x for x in rows if x.get('ISU_SRT_CD')}
 
           stk_raw=fetch('STK',1)
@@ -71,9 +84,7 @@ jobs:
               print('KRX_PERIOD',json.dumps(out,ensure_ascii=False))
 
           def num(v): return float(str(v).replace(',','').strip())
-          # No split/merge in 001230: adjusted and raw start bases should agree.
           assert abs(num(stk_raw['001230']['BAS_PRC'])-num(stk_adj['001230']['BAS_PRC'])) <= 1.0
-          # Known split/reverse-split cases must materially differ under adjusted mode.
           assert abs(num(stk_raw['134380']['BAS_PRC'])/num(stk_adj['134380']['BAS_PRC'])-1.0) > 1.0
           assert abs(num(ksq_raw['331520']['BAS_PRC'])/num(ksq_adj['331520']['BAS_PRC'])-1.0) > 1.0
           print('KRX_PERIOD_ADJUSTED_PROBE_PASS')
