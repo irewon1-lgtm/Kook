@@ -8,6 +8,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.test.performTextInput
+import androidx.test.espresso.Espresso.closeSoftKeyboard
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Rule
 import org.junit.Test
@@ -30,11 +31,16 @@ class AppSmokeTest {
         composeRule.onNodeWithText("국내주식 4지표 목록").assertIsDisplayed()
         composeRule.onNodeWithText("KOSDAQ").assertIsDisplayed().performClick()
         composeRule.onNodeWithTag("stock_search").performTextInput("삼천당제약")
+        closeSoftKeyboard()
         composeRule.waitForIdle()
-        composeRule.onNodeWithTag("stock_000250").performScrollTo().assertIsDisplayed().performClick()
 
+        composeRule.onNodeWithTag("stock_000250").performScrollTo().performClick()
+        composeRule.waitForIdle()
+
+        composeRule.onNodeWithTag("detail_title").assertIsDisplayed()
         composeRule.onNodeWithText("삼천당제약 (000250)").assertIsDisplayed()
-        composeRule.onNodeWithText("4대 정량지표").performScrollTo().assertIsDisplayed()
-        composeRule.onNodeWithText("데이터 한계와 출처").performScrollTo().assertIsDisplayed()
+        composeRule.onNodeWithTag("detail_metrics_header").performScrollTo().assertIsDisplayed()
+        composeRule.onNodeWithTag("detail_source_card").performScrollTo().assertIsDisplayed()
+        composeRule.onNodeWithText("데이터 한계와 출처").assertIsDisplayed()
     }
 }
