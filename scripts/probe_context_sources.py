@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
-"""Live smoke probe for KR4 context evidence and DART primary-source resolution.
+"""Live smoke probe for KR4 context evidence and direct DART primary-source search.
 
-The probe intentionally checks only metadata and one public DART viewer path. It
-never stores third-party filing bodies in the repository. A PASS means that the
-runtime can discover current news/disclosure evidence and resolve at least one
-DART receipt number to a public filing page; it does not claim that every issuer
-has a comparable pair of periodic reports.
+Naver is used only as a recent news/disclosure index. DART receipt numbers are
+resolved independently from DART's public company-by-company search because the
+Naver disclosure payload does not expose rcept_no. The probe stores no filing
+body in the repository.
 """
 from __future__ import annotations
 
@@ -30,31 +29,30 @@ DISC_TITLE_KEYS = {"title", "reportName", "disclosureTitle", "reportNm", "subjec
 EVIDENCE_KEYS = {
     "datetime", "date", "publishedAt", "publishDate", "writeDate", "createdAt",
     "rceptDt", "receiptDate", "disclosureDate", "regDate", "url", "link", "endUrl",
-    "detailUrl", "articleUrl", "oid", "aid", "receiptNo", "rceptNo", "rcept_no", "officeName",
+    "detailUrl", "articleUrl", "oid", "aid", "receiptNo", "rceptNo", "officeName",
     "reportName", "disclosureTitle",
 }
-RECEIPT_KEYS = ("receiptNo", "rceptNo", "rcept_no", "reportNo")
 
 
-def get(url: str, *, referer: str | None = None) -> requests.Response:
+def request(method: str, url: str, *, referer: str | None = None, data: dict[str, str] | None = None) -> requests.Response:
     last = None
     for attempt in range(3):
         try:
             headers = dict(HEADERS)
             if referer:
                 headers["Referer"] = referer
-            r = requests.get(url, headers=headers, timeout=15)
+            r = requests.request(method, url, headers=headers, data=data, timeout=20)
             r.raise_for_status()
             return r
         except Exception as exc:  # noqa: BLE001 - probe reports exact class below
             last = exc
             if attempt < 2:
                 time.sleep(0.5 * (2**attempt))
-    raise RuntimeError(f"{url}: {type(last).__name__}: {last}")
+    raise RuntimeError(f"{method} {url}: {type(last).__name__}: {last}")
 
 
 def get_json(url: str) -> Any:
-    return get(url).json()
+    return request("GET", url).json()
 
 
 def objects(node: Any):
@@ -78,21 +76,31 @@ def evidence_count(payload: Any, title_keys: set[str]) -> int:
     return count
 
 
-def receipt_numbers(payload: Any) -> list[str]:
-    found: list[str] = []
-    for obj in objects(payload):
-        for key in RECEIPT_KEYS:
-            value = re.sub(r"\D", "", str(obj.get(key, "")))
-            if 12 <= len(value) <= 16 and value not in found:
-                found.append(value)
-    return found
+def dart_search_receipts(stock_code: str) -> list[str]:
+    url = f"{DART}/dsab001/search.ax"
+    data = {
+        "textCrpNm": stock_code,
+        "currentPage": "1",
+        "maxResults": "30",
+        "maxLinks": "10",
+        "sort": "date",
+        "series": "desc",
+        "finalReport": "recent",
+    }
+    r = request("POST", url, referer=f"{DART}/dsab001/main.do", data=data)
+    receipts = []
+    for receipt in re.findall(r"rcpNo=(\d{12,16})", r.text):
+        if receipt not in receipts:
+            receipts.append(receipt)
+    return receipts
 
 
 def main() -> None:
     news_success = 0
     disclosure_success = 0
+    dart_success = 0
     shapes = []
-    receipts: list[str] = []
+    sample_receipt = ""
 
     for code in CODES:
         news_url = f"{BASE}/news/list/integration?itemCode={code}&page=1&pageSize=20"
@@ -101,37 +109,36 @@ def main() -> None:
         disclosure = get_json(disc_url)
         n = evidence_count(news, NEWS_TITLE_KEYS)
         d = evidence_count(disclosure, DISC_TITLE_KEYS)
-        rs = receipt_numbers(disclosure)
+        receipts = dart_search_receipts(code)
         news_success += int(n > 0)
         disclosure_success += int(d > 0)
-        receipts.extend(r for r in rs if r not in receipts)
+        dart_success += int(bool(receipts))
+        if receipts and not sample_receipt:
+            sample_receipt = receipts[0]
         shapes.append({
             "code": code,
-            "news_root": type(news).__name__,
             "news_candidates": n,
-            "disclosure_root": type(disclosure).__name__,
-            "disclosure_candidates": d,
-            "dart_receipts": len(rs),
+            "naver_disclosure_candidates": d,
+            "direct_dart_receipts": len(receipts),
         })
 
     assert news_success >= 2, ("news endpoint shape not recognized", shapes)
     assert disclosure_success >= 1, ("disclosure endpoint shape not recognized", shapes)
-    assert receipts, ("no DART receipt number exposed by disclosure index", shapes)
+    assert dart_success >= 2 and sample_receipt, ("direct DART company search did not expose receipt numbers", shapes)
 
-    receipt = receipts[0]
-    main_url = f"{DART}/dsaf001/main.do?rcpNo={receipt}"
-    filing = get(main_url, referer=f"{DART}/")
+    main_url = f"{DART}/dsaf001/main.do?rcpNo={sample_receipt}"
+    filing = request("GET", main_url, referer=f"{DART}/")
     text = filing.text
-    assert len(text) >= 1000, ("DART filing page unexpectedly small", receipt, len(text))
+    assert len(text) >= 1000, ("DART filing page unexpectedly small", sample_receipt, len(text))
     has_viewer = "viewer.do" in text or "viewDoc(" in text
-    assert has_viewer, ("DART filing page has no recognizable viewer reference", receipt)
+    assert has_viewer, ("DART filing page has no recognizable viewer reference", sample_receipt)
 
     print(
         "CONTEXT_SOURCE_LIVE_PASS",
         json.dumps(
             {
                 "sources": shapes,
-                "dart_receipt_sample": receipt,
+                "dart_receipt_sample": sample_receipt,
                 "dart_main_bytes": len(filing.content),
                 "viewer_reference": has_viewer,
             },
