@@ -33,6 +33,9 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Install builder dependency
+        run: pip install requests
+
       - name: Stage-6/7 builder self-test
         run: |
           set -euo pipefail
