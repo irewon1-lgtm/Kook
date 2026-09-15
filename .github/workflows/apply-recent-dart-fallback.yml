@@ -62,7 +62,7 @@ jobs:
           python scripts/apply_fiscal_calendar_recovery.py \
             --quant evidence/real_quant_snapshot.json
 
-      - name: Extreme recovery quality gate
+      - name: Extreme recovery and economic-rank quality gate
         run: |
           set -euo pipefail
           python - <<'PY'
@@ -73,14 +73,25 @@ jobs:
           assert set(before['records'])==set(after['records'])
           dart=after.get('recent_dart_fallback') or {}
           fiscal=after.get('fiscal_calendar_recovery') or {}
-          assert dart.get('policy')=='one-quarter-back validated OpenDART history only; no multi-quarter skip',dart
+          assert 'final economic fail-close + full rerank' in str(dart.get('policy')),dart
+          eg=dart.get('economic_guard') or {}
+          assert eg.get('m01_range')==[-100.0,5000.0],eg
+          assert eg.get('m02_range')==[-5000.0,200.0],eg
           assert fiscal.get('policy')=='non-December fiscal issuers only; latest completed Naver actual quarter; consensus rejected; existing numeric metrics preserved',fiscal
           assert not fiscal.get('source_errors'),fiscal.get('source_errors')
+
           b=before['coverage']; a=after['coverage']
-          for key in ('m01_available','m02_available','m03_available','m04_available','complete_count','ranked_count'):
-            assert int(a[key])>=int(b[key]),(key,b[key],a[key])
+          pre_m01={code for code,r in before['records'].items() if r['m01']['raw'] is not None and not (-100.0<=float(r['m01']['raw'])<=5000.0)}
+          pre_m02={code for code,r in before['records'].items() if r['m02']['raw'] is not None and not (-5000.0<=float(r['m02']['raw'])<=200.0)}
+          pre_complete_guard={code for code in pre_m01|pre_m02 if before['records'][code].get('composite') is not None}
+          assert int(a['m01_available'])>=int(b['m01_available'])-len(pre_m01),(b,a,pre_m01)
+          assert int(a['m02_available'])>=int(b['m02_available'])-len(pre_m02),(b,a,pre_m02)
+          assert int(a['m03_available'])==int(b['m03_available']),(b,a)
+          assert int(a['m04_available'])==int(b['m04_available']),(b,a)
+          assert int(a['complete_count'])>=int(b['complete_count'])-len(pre_complete_guard),(b,a,pre_complete_guard)
           assert a['complete_count']==a['ranked_count']
-          ranks=[]
+
+          ranks=[]; guarded_m01=[]; guarded_m02=[]
           for code,r in after['records'].items():
             assert re.fullmatch(r'[0-9A-Z]{6}',code),code
             complete=True
@@ -88,14 +99,26 @@ jobs:
               m=r[f'm0{i}']; raw=m['raw']; pct=m['percentile']
               if raw is None:
                 complete=False; assert pct is None and m['reason'],(code,i,m)
+                if m['reason']=='M01_ECONOMIC_OUTLIER_GUARD': guarded_m01.append(code)
+                if m['reason']=='M02_ECONOMIC_OUTLIER_GUARD': guarded_m02.append(code)
               else:
-                assert math.isfinite(float(raw)) and pct is not None and 0<=float(pct)<=100 and m['basis'],(code,i,m)
-                if i==3 and float(raw)<0: assert float(pct)==0.0,(code,m)
+                v=float(raw)
+                assert math.isfinite(v) and pct is not None and 0<=float(pct)<=100 and m['basis'],(code,i,m)
+                if i==1: assert -100.0<=v<=5000.0,(code,m)
+                if i==2: assert -5000.0<=v<=200.0,(code,m)
+                if i==3 and v<0: assert float(pct)==0.0,(code,m)
             assert (r['composite'] is not None)==complete,(code,'composite')
             assert (r['rank'] is not None)==complete,(code,'rank')
             if r['rank'] is not None: ranks.append(int(r['rank']))
           assert sorted(ranks)==list(range(1,len(ranks)+1))
-          print('RECOVERY_CHAIN_EXTREME_PASS',json.dumps({'before':b,'after':a,'dart':dart,'fiscal':fiscal},ensure_ascii=False))
+          assert pre_m01.issubset(set(guarded_m01)),(pre_m01,guarded_m01)
+          assert pre_m02.issubset(set(guarded_m02)),(pre_m02,guarded_m02)
+          print('RECOVERY_CHAIN_EXTREME_PASS',json.dumps({
+            'before':b,'after':a,
+            'pre_guard_m01':len(pre_m01),'pre_guard_m02':len(pre_m02),
+            'guarded_m01_total':len(guarded_m01),'guarded_m02_total':len(guarded_m02),
+            'dart':dart,'fiscal':fiscal,
+          },ensure_ascii=False))
           PY
 
       - name: Commit recovered remote snapshot on main only
@@ -120,10 +143,11 @@ jobs:
           import json
           d=json.load(open('evidence/real_quant_snapshot.json',encoding='utf-8'))
           c=d['coverage']; dr=d['recent_dart_fallback']; fr=d['fiscal_calendar_recovery']
-          print(f"M01={c['m01_available']} M02={c['m02_available']} M03={c['m03_available']} M04={c['m04_available']} complete={c['complete_count']} dartM01={dr['m01_recovered']} dartM02={dr['m02_recovered']} fiscalM01={fr['m01_recovered']} fiscalM02={fr['m02_recovered']}")
+          eg=dr.get('economic_guard') or {}
+          print(f"M01={c['m01_available']} M02={c['m02_available']} M03={c['m03_available']} M04={c['m04_available']} complete={c['complete_count']} guardM01={len(eg.get('m01_excluded_codes') or [])} guardM02={len(eg.get('m02_excluded_codes') or [])} dartM01={dr['m01_recovered']} dartM02={dr['m02_recovered']} fiscalM01={fr['m01_recovered']} fiscalM02={fr['m02_recovered']}")
           PY
           )
-          git commit -m "Apply KR4 recovery chain: ${COV}"
+          git commit -m "Apply KR4 recovery + economic rank guard: ${COV}"
           git push origin HEAD:main
 
       - name: Upload recovery proof
