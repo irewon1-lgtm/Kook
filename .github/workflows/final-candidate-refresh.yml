@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - feature/final-candidate-standard-format-v1
     paths:
       - evidence/real_quant_snapshot.json
       - scripts/build_final_candidates.py
