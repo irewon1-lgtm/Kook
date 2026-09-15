@@ -29,11 +29,15 @@ fun StockListScreen(
     onBack: () -> Unit
 ) {
     var searchQuery by remember { mutableStateOf("") }
+    var selectedMarket by remember { mutableStateOf("전체") }
     var sortMode by remember { mutableStateOf(SortMode.CODE) }
 
-    val filteredStocks = remember(searchQuery, sortMode) {
+    val filteredStocks = remember(searchQuery, selectedMarket, sortMode) {
         StockRepository.searchStocks(searchQuery)
+            .asSequence()
+            .filter { selectedMarket == "전체" || it.market == selectedMarket }
             .sortedWith(sortComparator(sortMode))
+            .toList()
     }
 
     Scaffold(
@@ -41,8 +45,8 @@ fun StockListScreen(
             TopAppBar(
                 title = {
                     Column {
-                        Text("KOSPI 실종목 목록", fontWeight = FontWeight.Bold)
-                        Text("KRX KIND 등록 마스터", fontSize = 11.sp, color = TextSecondaryLight)
+                        Text("국내주식 실종목 목록", fontWeight = FontWeight.Bold)
+                        Text("KRX KIND KOSPI · KOSDAQ 등록 마스터", fontSize = 11.sp, color = TextSecondaryLight)
                     }
                 },
                 navigationIcon = {
@@ -62,11 +66,24 @@ fun StockListScreen(
                 singleLine = true,
                 supportingText = {
                     Text(
-                        "${filteredStocks.size}개 표시 · KOSPI만 등록 · 4지표는 아직 미수집",
+                        "${filteredStocks.size}개 표시 · 4지표는 아직 미수집",
                         fontSize = 10.sp
                     )
                 }
             )
+
+            Row(
+                modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                listOf("전체", "KOSPI", "KOSDAQ").forEach { market ->
+                    FilterChip(
+                        selected = selectedMarket == market,
+                        onClick = { selectedMarket = market },
+                        label = { Text(market) }
+                    )
+                }
+            }
 
             Row(
                 modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
@@ -90,7 +107,7 @@ fun StockListScreen(
                         Text("검색 결과가 없습니다.", fontWeight = FontWeight.Bold)
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
-                            "등록된 KOSPI 회사명·종목코드·업종을 기준으로 검색합니다. 없는 종목을 다른 종목으로 대신 표시하지 않습니다.",
+                            "등록된 KOSPI·KOSDAQ 회사명·종목코드·업종을 기준으로 검색합니다. 없는 종목을 다른 종목으로 대신 표시하지 않습니다.",
                             fontSize = 12.sp,
                             color = TextSecondaryLight
                         )
@@ -101,7 +118,7 @@ fun StockListScreen(
                     contentPadding = PaddingValues(bottom = 28.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    items(filteredStocks, key = { it.issuerId }) { stock ->
+                    items(filteredStocks, key = { "${it.market}:${it.issuerId}" }) { stock ->
                         StockSummaryCard(stock = stock, onClick = { onStockClick(stock.issuerId) })
                     }
                 }
@@ -111,7 +128,7 @@ fun StockListScreen(
 }
 
 private fun sortComparator(mode: SortMode): Comparator<StockSummary> = when (mode) {
-    SortMode.CODE -> compareBy { it.issuerId }
+    SortMode.CODE -> compareBy<StockSummary> { it.issuerId }.thenBy { it.market }
     SortMode.NAME -> compareBy<StockSummary> { it.name }.thenBy { it.issuerId }
     SortMode.SECTOR -> compareBy<StockSummary> { it.sector }.thenBy { it.name }
     SortMode.LISTING -> compareBy<StockSummary> { it.listingDate.isBlank() }

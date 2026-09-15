@@ -1,9 +1,9 @@
-name: KR4 KOSPI Registration CleanPass
+name: KR4 KOSPI+KOSDAQ Extreme CleanPass
 
 on:
   push:
     branches:
-      - "register-real-kospi-master"
+      - "register-real-kosdaq-master"
       - "main"
   pull_request:
     branches:
@@ -12,22 +12,38 @@ on:
 jobs:
   extreme-cleanpass:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 35
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Validate committed official KOSPI master
+      - name: Validate committed official KOSPI and KOSDAQ masters
         run: |
           set -euo pipefail
           test -s evidence/kospi_master_snapshot.json
+          test -s evidence/kosdaq_master_snapshot.json
           test -s app/src/main/java/com/krstock/v3/data/generated/GeneratedKospiMaster.kt
-          python3 -c "import json,re; d=json.load(open('evidence/kospi_master_snapshot.json',encoding='utf-8')); assert d['market']=='KOSPI'; assert 700<=d['issuer_count']<=1200; assert d['issuer_count']==d['unique_issue_codes']; assert d['six_character_krx_codes'] is True; print('KOSPI_SNAPSHOT_OK',d['issuer_count'],d['snapshot_date_kst'],d['sha256_normalized_master'])"
+          test -s app/src/main/java/com/krstock/v3/data/generated/GeneratedKosdaqMaster.kt
+          python3 - <<'PY'
+          import json
+          k=json.load(open('evidence/kospi_master_snapshot.json',encoding='utf-8'))
+          q=json.load(open('evidence/kosdaq_master_snapshot.json',encoding='utf-8'))
+          assert k['market']=='KOSPI' and q['market']=='KOSDAQ'
+          assert k['issuer_count']==832
+          assert q['issuer_count']==1817
+          assert k['unique_issue_codes']==832 and q['unique_issue_codes']==1817
+          assert k['six_character_krx_codes'] is True and q['six_character_krx_codes'] is True
+          assert k['snapshot_date_kst']=='2026-09-15' and q['snapshot_date_kst']=='2026-09-15'
+          print('MARKET_MASTERS_OK', k['issuer_count'], q['issuer_count'], k['issuer_count']+q['issuer_count'])
+          print('KOSPI_SHA', k['sha256_normalized_master'])
+          print('KOSDAQ_SHA', q['sha256_normalized_master'])
+          PY
           grep -q 'const val issuerCount: Int = 832' app/src/main/java/com/krstock/v3/data/generated/GeneratedKospiMaster.kt
+          grep -q 'const val issuerCount: Int = 1817' app/src/main/java/com/krstock/v3/data/generated/GeneratedKosdaqMaster.kt
           grep -q 'KospiIssuer(code = "005930", name = "삼성전자"' app/src/main/java/com/krstock/v3/data/generated/GeneratedKospiMaster.kt
-          grep -q 'KospiIssuer(code = "000660", name = "SK하이닉스"' app/src/main/java/com/krstock/v3/data/generated/GeneratedKospiMaster.kt
-          grep -q 'KospiIssuer(code = "0220W0", name = "한화머시너리앤서비스홀딩스"' app/src/main/java/com/krstock/v3/data/generated/GeneratedKospiMaster.kt
+          grep -q 'KosdaqIssuer(code = "000250", name = "삼천당제약"' app/src/main/java/com/krstock/v3/data/generated/GeneratedKosdaqMaster.kt
+          grep -q 'KosdaqIssuer(code = "0001A0", name = "덕양에너젠"' app/src/main/java/com/krstock/v3/data/generated/GeneratedKosdaqMaster.kt
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -46,7 +62,7 @@ jobs:
           python3 tests/run_all.py evidence/clean_pass_results.json
           python3 tests/run_stress.py
 
-      - name: Android repository regression tests
+      - name: Android repository extreme regression tests
         run: |
           set -euo pipefail
           gradle :app:testDebugUnitTest --stacktrace
@@ -62,7 +78,7 @@ jobs:
             sudo chmod 666 /dev/kvm
           fi
 
-      - name: Real Android emulator install and UI smoke test
+      - name: Real Android emulator install and end-to-end UI smoke test
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 34
@@ -79,31 +95,73 @@ jobs:
           test -f "$APK"
           test -s "$APK"
           mkdir -p dist evidence/ci
-          cp "$APK" dist/KR4_KOSPI_832_Registered_debug.apk
+          cp "$APK" dist/KR4_KOSPI_KOSDAQ_2649_Registered_debug.apk
           sha256sum "$APK" | tee evidence/ci/APK_SHA256.txt
           stat --printf='APK_BYTES=%s\n' "$APK" | tee evidence/ci/APK_SIZE.txt
 
-      - name: Guard against fake success
+      - name: Guard against fake success and fabricated investment data
         run: |
           set -euo pipefail
-          test -s dist/KR4_KOSPI_832_Registered_debug.apk
+          test -s dist/KR4_KOSPI_KOSDAQ_2649_Registered_debug.apk
           test -s evidence/ci/APK_SHA256.txt
           test -s evidence/ci/APK_SIZE.txt
+          grep -q 'GeneratedKospiMaster' app/src/main/java/com/krstock/v3/data/repository/StockRepository.kt
+          grep -q 'GeneratedKosdaqMaster' app/src/main/java/com/krstock/v3/data/repository/StockRepository.kt
           grep -q 'DataStatus.REGISTERED' app/src/main/java/com/krstock/v3/data/repository/StockRepository.kt
-          grep -q '4지표 실데이터는 아직 미수집' app/src/main/java/com/krstock/v3/data/repository/StockRepository.kt
+          grep -q 'compositeScore = null' app/src/main/java/com/krstock/v3/data/repository/StockRepository.kt
+          grep -q 'rankOrder = null' app/src/main/java/com/krstock/v3/data/repository/StockRepository.kt
           ! grep -R "news.example.com" app/src/main || exit 1
           ! grep -R "mockStocks.first" app/src/main || exit 1
-          ! grep -R 'market = "KOSDAQ"' app/src/main/java/com/krstock/v3/data/repository || exit 1
 
-      - name: Upload verified APK and evidence
+      - name: Write combined proof manifest
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, os, pathlib
+          k=json.load(open('evidence/kospi_master_snapshot.json',encoding='utf-8'))
+          q=json.load(open('evidence/kosdaq_master_snapshot.json',encoding='utf-8'))
+          apk_sha=open('evidence/ci/APK_SHA256.txt',encoding='utf-8').read().split()[0]
+          apk_bytes=int(open('evidence/ci/APK_SIZE.txt',encoding='utf-8').read().strip().split('=')[1])
+          proof={
+            'scope':'KOSPI + KOSDAQ registration and full Android clean-pass; financial/price metrics remain uncollected',
+            'commit':os.environ.get('GITHUB_SHA'),
+            'kospi_count':k['issuer_count'],
+            'kosdaq_count':q['issuer_count'],
+            'combined_count':k['issuer_count']+q['issuer_count'],
+            'kospi_snapshot_date':k['snapshot_date_kst'],
+            'kosdaq_snapshot_date':q['snapshot_date_kst'],
+            'kospi_master_sha256':k['sha256_normalized_master'],
+            'kosdaq_master_sha256':q['sha256_normalized_master'],
+            'kosdaq_alphanumeric_codes':q['alphanumeric_issue_code_count'],
+            'python_clean_pass':True,
+            'python_stress_pass':True,
+            'android_unit_regression_pass':True,
+            'android_apk_build_pass':True,
+            'android_emulator_install_ui_smoke_pass':True,
+            'fake_success_guard_pass':True,
+            'apk_sha256':apk_sha,
+            'apk_bytes':apk_bytes,
+            'four_metrics_collected':False,
+            'ranking_generated':False,
+          }
+          pathlib.Path('evidence/ci').mkdir(parents=True,exist_ok=True)
+          pathlib.Path('evidence/ci/COMBINED_CLEANPASS_PROOF.json').write_text(json.dumps(proof,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps(proof,ensure_ascii=False,indent=2))
+          PY
+
+      - name: Upload verified APK and all evidence
         uses: actions/upload-artifact@v4
         with:
-          name: KR4_KOSPI_832_Registered_APK
+          name: KR4_KOSPI_KOSDAQ_2649_Extreme_CleanPass
           path: |
-            dist/KR4_KOSPI_832_Registered_debug.apk
+            dist/KR4_KOSPI_KOSDAQ_2649_Registered_debug.apk
             evidence/ci/APK_SHA256.txt
             evidence/ci/APK_SIZE.txt
+            evidence/ci/COMBINED_CLEANPASS_PROOF.json
             evidence/kospi_master_snapshot.json
+            evidence/kosdaq_master_snapshot.json
+            evidence/clean_pass_results.json
+            evidence/stress_results.json
             app/build/reports/tests/testDebugUnitTest/
             app/build/reports/androidTests/
             app/build/outputs/androidTest-results/

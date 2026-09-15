@@ -37,7 +37,7 @@ fun StockDetailScreen(issuerId: String, onBack: () -> Unit) {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text("요청한 종목코드 '$issuerId'가 KOSPI 등록 마스터에 없습니다.", fontWeight = FontWeight.Bold)
+                Text("요청한 종목코드 '$issuerId'가 KOSPI·KOSDAQ 등록 마스터에 없습니다.", fontWeight = FontWeight.Bold)
                 Spacer(modifier = Modifier.height(8.dp))
                 Text("없는 종목을 삼성전자 등 다른 회사로 대체하지 않습니다.", fontSize = 13.sp, color = TextSecondaryLight)
                 Spacer(modifier = Modifier.height(16.dp))
@@ -56,7 +56,7 @@ fun StockDetailScreen(issuerId: String, onBack: () -> Unit) {
                 title = {
                     Column {
                         Text("${summary.name} (${summary.issuerId})", fontWeight = FontWeight.Bold)
-                        Text("KOSPI · ${summary.sector}", fontSize = 11.sp, color = TextSecondaryLight)
+                        Text("${summary.market} · ${summary.sector}", fontSize = 11.sp, color = TextSecondaryLight)
                     }
                 },
                 navigationIcon = { TextButton(onClick = onBack) { Text("< 뒤로") } }
@@ -79,12 +79,13 @@ fun StockDetailScreen(issuerId: String, onBack: () -> Unit) {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Column(modifier = Modifier.weight(1f)) {
-                            Text("KOSPI 실종목 등록", fontWeight = FontWeight.Bold, color = BlueAccent)
+                            Text("${summary.market} 실종목 등록", fontWeight = FontWeight.Bold, color = BlueAccent)
                             Text("종목 식별정보만 먼저 등록한 단계", fontSize = 12.sp, color = TextSecondaryLight)
                         }
                         StatusBadge(status = summary.status)
                     }
                     Spacer(modifier = Modifier.height(10.dp))
+                    IdentityRow("시장", summary.market)
                     IdentityRow("회사명", summary.name)
                     IdentityRow("종목코드", summary.issuerId)
                     IdentityRow("업종", summary.sector)
