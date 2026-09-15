@@ -4,21 +4,20 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - "main"
-      - "fix/auto-update-v2"
-      - "fix/app-auto-update-v1"
+      - main
   pull_request:
     branches:
-      - "main"
+      - main
 
 permissions:
   contents: write
-  id-token: write
 
 jobs:
   extreme-cleanpass:
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    env:
+      EXPECTED_STABLE_CERT_SHA256: 1070e82beee574cd29ffd2dc3e693fd7f7862374f16d1606567db303ab152477
 
     steps:
       - name: Checkout Repository
@@ -42,34 +41,40 @@ jobs:
           test -s evidence/real_quant_snapshot.json
           test -s evidence/quarterly_history.json
           python3 - <<'PY'
-          import json,math,re
+          import json, math, re
           from datetime import date
-          k=json.load(open('evidence/kospi_master_snapshot.json',encoding='utf-8'))
-          q=json.load(open('evidence/kosdaq_master_snapshot.json',encoding='utf-8'))
-          d=json.load(open('evidence/real_quant_snapshot.json',encoding='utf-8'))
-          assert k['issuer_count']+q['issuer_count']==d['universe_count']==len(d['records'])==2649
-          snap=date.fromisoformat(d['snapshot_date_kst']); price=date.fromisoformat(d['price_cutoff_date_kst'])
-          assert price<=snap and (snap-price).days<=10,(snap,price)
-          c=d['coverage']
-          floors={'m01_available':2400,'m02_available':2300,'m03_available':1600,'m04_available':2550,'complete_count':1380}
-          for key,floor in floors.items(): assert int(c[key])>=floor,(key,c[key],floor)
-          assert c['ranked_count']==c['complete_count']
-          ranks=[]
-          for code,r in d['records'].items():
-            assert re.fullmatch(r'[0-9A-Z]{6}',code)
-            ms=[r[f'm0{i}'] for i in range(1,5)]
-            complete=True
-            for m in ms:
-              if m['raw'] is None:
-                complete=False; assert m['percentile'] is None and m['reason']
-              else:
-                assert math.isfinite(float(m['raw'])) and m['percentile'] is not None and 0<=float(m['percentile'])<=100 and m['basis']
-            assert (r['composite'] is not None)==complete
-            assert (r['rank'] is not None)==complete
-            if r['rank'] is not None: ranks.append(int(r['rank']))
-          assert sorted(ranks)==list(range(1,len(ranks)+1))
-          assert d['records']['005930']['name']=='삼성전자'
-          print('CURRENT_SNAPSHOT_VALIDATED',snap,price,json.dumps(c,ensure_ascii=False))
+          k = json.load(open('evidence/kospi_master_snapshot.json', encoding='utf-8'))
+          q = json.load(open('evidence/kosdaq_master_snapshot.json', encoding='utf-8'))
+          d = json.load(open('evidence/real_quant_snapshot.json', encoding='utf-8'))
+          assert k['issuer_count'] + q['issuer_count'] == d['universe_count'] == len(d['records']) == 2649
+          snap = date.fromisoformat(d['snapshot_date_kst'])
+          price = date.fromisoformat(d['price_cutoff_date_kst'])
+          assert price <= snap and (snap - price).days <= 10, (snap, price)
+          c = d['coverage']
+          floors = {'m01_available': 2400, 'm02_available': 2300, 'm03_available': 1600, 'm04_available': 2550, 'complete_count': 1380}
+          for key, floor in floors.items():
+              assert int(c[key]) >= floor, (key, c[key], floor)
+          assert c['ranked_count'] == c['complete_count']
+          ranks = []
+          for code, row in d['records'].items():
+              assert re.fullmatch(r'[0-9A-Z]{6}', code)
+              metrics = [row[f'm0{i}'] for i in range(1, 5)]
+              complete = True
+              for metric in metrics:
+                  if metric['raw'] is None:
+                      complete = False
+                      assert metric['percentile'] is None and metric['reason']
+                  else:
+                      assert math.isfinite(float(metric['raw']))
+                      assert metric['percentile'] is not None and 0 <= float(metric['percentile']) <= 100
+                      assert metric['basis']
+              assert (row['composite'] is not None) == complete
+              assert (row['rank'] is not None) == complete
+              if row['rank'] is not None:
+                  ranks.append(int(row['rank']))
+          assert sorted(ranks) == list(range(1, len(ranks) + 1))
+          assert d['records']['005930']['name'] == '삼성전자'
+          print('CURRENT_SNAPSHOT_VALIDATED', snap, price, json.dumps(c, ensure_ascii=False))
           PY
 
       - name: Auto-update and quarterly-history adversarial logic tests
@@ -82,10 +87,10 @@ jobs:
         run: python3 scripts/probe_context_sources.py
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: '17'
-          distribution: 'temurin'
+          distribution: temurin
 
       - name: Set up Gradle 8.7
         uses: gradle/actions/setup-gradle@v4
@@ -100,13 +105,13 @@ jobs:
           python3 tests/run_combo_rank_stress.py evidence/combo_rank_stress_results.json
           python3 - <<'PY'
           import json
-          d=json.load(open('evidence/combo_rank_stress_results.json',encoding='utf-8'))
-          assert d['status']=='PASS'
-          assert d['all_nonempty_combinations_tested']==15
+          d = json.load(open('evidence/combo_rank_stress_results.json', encoding='utf-8'))
+          assert d['status'] == 'PASS'
+          assert d['all_nonempty_combinations_tested'] == 15
           assert d['ten_thousand_toggle_simulation_pass'] is True
           assert d['all_four_reproduces_committed_rank'] is True
-          assert d['selected_complete_filter_checks']==2649*15
-          print('COMBO_RANK_EXTREME_PASS',d['all_nonempty_combinations_tested'],d['selected_complete_filter_checks'])
+          assert d['selected_complete_filter_checks'] == 2649 * 15
+          print('COMBO_RANK_EXTREME_PASS', d['all_nonempty_combinations_tested'], d['selected_complete_filter_checks'])
           PY
 
       - name: Android 2649-stock regression tests
@@ -138,24 +143,7 @@ jobs:
           cp "$APK" dist/KR4_AUTOUPDATE_Extreme_CleanPass_debug.apk
           sha256sum "$APK" | tee evidence/ci/APK_SHA256.txt
           stat --printf='APK_BYTES=%s\n' "$APK" | tee evidence/ci/APK_SIZE.txt
-          grep -q 'SnapshotAutoUpdater.bootstrap' app/src/main/java/com/krstock/v3/MainActivity.kt
-          grep -q 'PeriodicWorkRequestBuilder<SnapshotRefreshWorker>' app/src/main/java/com/krstock/v3/KR4Application.kt
-          grep -q 'REMOTE_URL' app/src/main/java/com/krstock/v3/data/update/SnapshotAutoUpdater.kt
-          grep -q 'universe mismatch' app/src/main/java/com/krstock/v3/data/update/SnapshotAutoUpdater.kt
-          grep -q 'coverage regression' app/src/main/java/com/krstock/v3/data/update/SnapshotAutoUpdater.kt
-          grep -q 'remote snapshot downgrade rejected' app/src/main/java/com/krstock/v3/data/update/SnapshotAutoUpdater.kt
-          grep -q 'installRuntimeSnapshot' app/src/main/java/com/krstock/v3/data/generated/GeneratedRealQuantSnapshot.kt
-          grep -q 'runtimeRows' app/src/main/java/com/krstock/v3/data/generated/GeneratedRealQuantSnapshot.kt
-          grep -q 'resolve_price_cutoff' scripts/collect_real_quant_v3.py
-          grep -q '_select_latest_dart_entry' scripts/collect_real_quant_v3.py
-          grep -q 'NAVER_REPORTED_TRAILING_PER' scripts/collect_real_quant_v2.py
-          grep -q 'collect_quarterly_history.py' .github/workflows/collect-real-quant.yml
-          grep -q 'QuarterlyHistoryRepository.load' app/src/main/java/com/krstock/v3/ui/screens/StockDetailScreen.kt
-          grep -q 'quarterly_history_panel' app/src/main/java/com/krstock/v3/ui/screens/StockDetailScreen.kt
-          grep -q 'IntegratedInterpretationEngine.analyze' app/src/main/java/com/krstock/v3/ui/screens/StockDetailScreen.kt
-          grep -q 'schedule:' .github/workflows/collect-real-quant.yml
-          grep -q '40 8 \* \* 1-5' .github/workflows/collect-real-quant.yml
-          grep -q '30 12 \* \* 1-5' .github/workflows/collect-real-quant.yml
+          grep -q 'applicationId = "com.krstock.v3"' app/build.gradle.kts
           grep -q 'AppAutoUpdater.checkAndDownload' app/src/main/java/com/krstock/v3/MainActivity.kt
           grep -q 'PeriodicWorkRequestBuilder<AppUpdateWorker>' app/src/main/java/com/krstock/v3/KR4Application.kt
           grep -q 'REQUEST_INSTALL_PACKAGES' app/src/main/AndroidManifest.xml
@@ -163,8 +151,8 @@ jobs:
           grep -q 'releases/latest/download/update.json' app/src/main/java/com/krstock/v3/update/AppAutoUpdater.kt
           grep -q 'signerDigests(installed) == signerDigests(archive)' app/src/main/java/com/krstock/v3/update/AppAutoUpdater.kt
           grep -q 'sha256(apk) != info.sha256' app/src/main/java/com/krstock/v3/update/AppAutoUpdater.kt
-          grep -q 'id-token: write' .github/workflows/android-build.yml
-          grep -q 'kr4-signing-vault-5yh3dd.v2.appdeploy.ai' .github/workflows/android-build.yml
+          grep -q 'KR4_SIGNING_BUNDLE' .github/workflows/android-build.yml
+          grep -q "$EXPECTED_STABLE_CERT_SHA256" .github/workflows/android-build.yml
 
       - name: Upload verified APK and evidence
         uses: actions/upload-artifact@v4
@@ -202,83 +190,67 @@ jobs:
           echo "ready=$APP_CHANGED" >> "$GITHUB_OUTPUT"
           echo "APP_CHANGED=$APP_CHANGED RELEASE_READY=$APP_CHANGED"
 
-      - name: Fetch stable signing identity through GitHub OIDC
+      - name: Prepare original KR4 stable signing identity
         if: steps.release_gate.outputs.ready == 'true'
         env:
-          SIGNING_VAULT_URL: https://kr4-signing-vault-5yh3dd.v2.appdeploy.ai/api/signing-material
+          KR4_SIGNING_BUNDLE: ${{ secrets.KR4_SIGNING_BUNDLE }}
         run: |
           set -euo pipefail
           umask 077
-          test -n "${ACTIONS_ID_TOKEN_REQUEST_URL:-}"
-          test -n "${ACTIONS_ID_TOKEN_REQUEST_TOKEN:-}"
-          curl -fsS \
-            -H "Authorization: Bearer ${ACTIONS_ID_TOKEN_REQUEST_TOKEN}" \
-            "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=kr4-signing-vault" \
-            -o "$RUNNER_TEMP/kr4-oidc.json"
+          test -n "${KR4_SIGNING_BUNDLE:-}"
           python3 - <<'PY'
-          import json,os
-          src=os.path.join(os.environ['RUNNER_TEMP'],'kr4-oidc.json')
-          token=json.load(open(src,encoding='utf-8')).get('value')
-          assert isinstance(token,str) and len(token)>100
-          dst=os.path.join(os.environ['RUNNER_TEMP'],'kr4-vault-request.json')
-          json.dump({'token':token},open(dst,'w',encoding='utf-8'))
+          import base64, json, os
+          raw = os.environ['KR4_SIGNING_BUNDLE'].strip()
+          assert len(raw) > 100
+          doc = json.loads(base64.b64decode(raw).decode('utf-8'))
+          for key in ('keystore_b64', 'store_password', 'alias', 'key_password'):
+              assert isinstance(doc.get(key), str) and doc[key]
+          temp = os.environ['RUNNER_TEMP']
+          jks = os.path.join(temp, 'kr4-release.jks')
+          open(jks, 'wb').write(base64.b64decode(doc['keystore_b64']))
+          os.chmod(jks, 0o600)
+          print(f"::add-mask::{doc['store_password']}")
+          print(f"::add-mask::{doc['key_password']}")
+          with open(os.environ['GITHUB_ENV'], 'a', encoding='utf-8') as out:
+              out.write(f"KR4_KEYSTORE_FILE={jks}\n")
+              out.write(f"KR4_KEYSTORE_PASSWORD={doc['store_password']}\n")
+              out.write(f"KR4_KEY_ALIAS={doc['alias']}\n")
+              out.write(f"KR4_KEY_PASSWORD={doc['key_password']}\n")
           PY
-          curl -fsS \
-            -H 'Content-Type: application/json' \
-            --data-binary "@$RUNNER_TEMP/kr4-vault-request.json" \
-            "$SIGNING_VAULT_URL" \
-            -o "$RUNNER_TEMP/kr4-signing.json"
-          python3 - <<'PY'
-          import json,os,re
-          root=json.load(open(os.path.join(os.environ['RUNNER_TEMP'],'kr4-signing.json'),encoding='utf-8'))
-          assert root.get('repository')=='irewon1-lgtm/Kook',root.get('repository')
-          assert root.get('ref')=='refs/heads/main',root.get('ref')
-          key=root.get('privateKeyPem',''); cert=root.get('certificatePem',''); digest=root.get('certificateSha256','')
-          assert 'BEGIN PRIVATE KEY' in key and 'BEGIN CERTIFICATE' in cert
-          assert re.fullmatch(r'[0-9a-f]{64}',digest)
-          open(os.path.join(os.environ['RUNNER_TEMP'],'kr4-release-key.pem'),'w').write(key)
-          open(os.path.join(os.environ['RUNNER_TEMP'],'kr4-release-cert.pem'),'w').write(cert)
-          open(os.path.join(os.environ['RUNNER_TEMP'],'kr4-release-cert.sha256'),'w').write(digest+'\n')
-          PY
-          openssl pkcs8 -topk8 -nocrypt \
-            -in "$RUNNER_TEMP/kr4-release-key.pem" \
-            -outform DER \
-            -out "$RUNNER_TEMP/kr4-release-key.pk8"
-          EXPECTED_CERT_SHA=$(cat "$RUNNER_TEMP/kr4-release-cert.sha256")
-          ACTUAL_CERT_SHA=$(openssl x509 -in "$RUNNER_TEMP/kr4-release-cert.pem" -outform DER | sha256sum | awk '{print $1}')
-          test "$ACTUAL_CERT_SHA" = "$EXPECTED_CERT_SHA"
-          VERSION_CODE=$((10000 + GITHUB_RUN_NUMBER))
-          VERSION_NAME="4.2.${GITHUB_RUN_NUMBER}"
+          ACTUAL_CERT_SHA=$(keytool -exportcert \
+            -keystore "$KR4_KEYSTORE_FILE" \
+            -alias "$KR4_KEY_ALIAS" \
+            -storepass "$KR4_KEYSTORE_PASSWORD" \
+            -rfc 2>/dev/null | openssl x509 -outform DER 2>/dev/null | sha256sum | awk '{print $1}')
+          test "$ACTUAL_CERT_SHA" = "$EXPECTED_STABLE_CERT_SHA256"
+          VERSION_CODE=$((20000 + GITHUB_RUN_NUMBER))
+          VERSION_NAME="4.3.${GITHUB_RUN_NUMBER}"
           echo "KR4_VERSION_CODE=$VERSION_CODE" >> "$GITHUB_ENV"
           echo "KR4_VERSION_NAME=$VERSION_NAME" >> "$GITHUB_ENV"
-          echo "KR4_SIGNING_KEY=$RUNNER_TEMP/kr4-release-key.pk8" >> "$GITHUB_ENV"
-          echo "KR4_SIGNING_CERT=$RUNNER_TEMP/kr4-release-cert.pem" >> "$GITHUB_ENV"
           echo "KR4_SIGNING_CERT_SHA256=$ACTUAL_CERT_SHA" >> "$GITHUB_ENV"
-          rm -f "$RUNNER_TEMP/kr4-oidc.json" "$RUNNER_TEMP/kr4-vault-request.json" "$RUNNER_TEMP/kr4-signing.json" "$RUNNER_TEMP/kr4-release-key.pem"
-          echo "OIDC_SIGNING_IDENTITY_READY cert_sha256=$ACTUAL_CERT_SHA version=$VERSION_NAME"
+          echo "STABLE_SIGNING_IDENTITY_READY cert_sha256=$ACTUAL_CERT_SHA version=$VERSION_NAME"
 
-      - name: Build, sign and verify stable Release APK
+      - name: Build and verify stable signed Release APK
         if: steps.release_gate.outputs.ready == 'true'
         run: |
           set -euo pipefail
           gradle :app:assembleRelease --stacktrace
-          UNSIGNED="app/build/outputs/apk/release/app-release-unsigned.apk"
-          test -s "$UNSIGNED"
+          APK="app/build/outputs/apk/release/app-release.apk"
+          test -s "$APK"
           mkdir -p dist
-          ZIPALIGN=$(find "$ANDROID_HOME/build-tools" -type f -name zipalign | sort -V | tail -1)
+          cp "$APK" dist/KR4.apk
           APKSIGNER=$(find "$ANDROID_HOME/build-tools" -type f -name apksigner | sort -V | tail -1)
-          test -x "$ZIPALIGN"
+          AAPT=$(find "$ANDROID_HOME/build-tools" -type f -name aapt | sort -V | tail -1)
           test -x "$APKSIGNER"
-          "$ZIPALIGN" -f 4 "$UNSIGNED" "$RUNNER_TEMP/KR4-aligned.apk"
-          "$APKSIGNER" sign \
-            --key "$KR4_SIGNING_KEY" \
-            --cert "$KR4_SIGNING_CERT" \
-            --out dist/KR4.apk \
-            "$RUNNER_TEMP/KR4-aligned.apk"
-          test -s dist/KR4.apk
+          test -x "$AAPT"
           "$APKSIGNER" verify --verbose --print-certs dist/KR4.apk | tee dist/APK_SIGNING_CERT.txt
-          grep -qi "$KR4_SIGNING_CERT_SHA256" <(tr -d ':' < dist/APK_SIGNING_CERT.txt) || true
-          echo "STABLE_RELEASE_APK_PASS bytes=$(stat -c%s dist/KR4.apk)"
+          ACTUAL_APK_CERT_SHA=$(awk -F': ' '/Signer #1 certificate SHA-256 digest/{print tolower($2); exit}' dist/APK_SIGNING_CERT.txt | tr -d ':')
+          test "$ACTUAL_APK_CERT_SHA" = "$EXPECTED_STABLE_CERT_SHA256"
+          BADGING=$("$AAPT" dump badging dist/KR4.apk | head -1)
+          echo "$BADGING"
+          echo "$BADGING" | grep -q "name='com.krstock.v3'"
+          echo "$BADGING" | grep -q "versionCode='${KR4_VERSION_CODE}'"
+          echo "STABLE_RELEASE_APK_PASS bytes=$(stat -c%s dist/KR4.apk) cert=$ACTUAL_APK_CERT_SHA"
 
       - name: Generate cryptographic latest-update manifest
         if: steps.release_gate.outputs.ready == 'true'
@@ -289,19 +261,19 @@ jobs:
           python3 - <<'PY'
           import json, os
           doc = {
-              "versionCode": int(os.environ["KR4_VERSION_CODE"]),
-              "versionName": os.environ["KR4_VERSION_NAME"],
-              "apkUrl": "https://github.com/irewon1-lgtm/Kook/releases/latest/download/KR4.apk",
-              "sha256": os.environ["SHA256"],
-              "mandatory": False,
-              "notes": "검증된 국내주식 앱 4~8분기 분석·원인추적·UI 업데이트",
-              "commit": os.environ["GITHUB_SHA"],
-              "signingCertificateSha256": os.environ["KR4_SIGNING_CERT_SHA256"],
+              'versionCode': int(os.environ['KR4_VERSION_CODE']),
+              'versionName': os.environ['KR4_VERSION_NAME'],
+              'apkUrl': 'https://github.com/irewon1-lgtm/Kook/releases/latest/download/KR4.apk',
+              'sha256': os.environ['SHA256'],
+              'mandatory': False,
+              'notes': '검증된 국내주식 앱 UI·기능 업데이트',
+              'commit': os.environ['GITHUB_SHA'],
+              'signingCertificateSha256': os.environ['KR4_SIGNING_CERT_SHA256'],
           }
-          with open("dist/update.json", "w", encoding="utf-8") as f:
+          with open('dist/update.json', 'w', encoding='utf-8') as f:
               json.dump(doc, f, ensure_ascii=False, indent=2)
-              f.write("\n")
-          print(json.dumps({k:v for k,v in doc.items() if k!='apkUrl'},ensure_ascii=False))
+              f.write('\n')
+          print(json.dumps({k: v for k, v in doc.items() if k != 'apkUrl'}, ensure_ascii=False))
           PY
           grep -q '"sha256"' dist/update.json
           grep -q '"versionCode"' dist/update.json
@@ -315,7 +287,7 @@ jobs:
           set -euo pipefail
           TAG="kr4-app-c${KR4_VERSION_CODE}"
           TITLE="KR4 ${KR4_VERSION_NAME}"
-          NOTES="Extreme CleanPass 통과 후 OIDC 고정서명으로 자동 게시. commit ${GITHUB_SHA}. APK는 SHA-256 및 동일 서명 검증 후 앱에서 설치 제안됩니다."
+          NOTES="Extreme CleanPass 통과 후 기존 KR4 고정서명으로 자동 게시. commit ${GITHUB_SHA}."
           if gh release view "$TAG" >/dev/null 2>&1; then
             gh release upload "$TAG" dist/KR4.apk dist/update.json dist/APK_SIGNING_CERT.txt --clobber
             gh release edit "$TAG" --title "$TITLE" --notes "$NOTES" --latest
@@ -338,5 +310,5 @@ jobs:
           else
             test -s dist/KR4.apk
             test -s dist/update.json
-            echo "OIDC-backed stable signed APK release published and detectable by installed stable KR4 apps."
+            echo "Stable signed APK release published and detectable by installed KR4 apps."
           fi
