@@ -7,17 +7,13 @@ only the Naver daily-price semantics used by M04 corporate-action detection.
 Production guarantees:
 - Explicit Naver direction metadata normalizes change/rate signs.
 - A KOSPI trading-session calendar is loaded once for the six-month window.
-- A raw-close/reference-return mismatch is considered a corporate-action reset
-  only when the two stock bars are consecutive KRX sessions.
-- Missing intermediate stock bars are never misclassified as corporate actions.
+- Missing intermediate stock bars cannot create ordinary false CA resets.
+- Extreme unit changes across a trading gap remain detectable; ambiguous larger
+  gap mismatches fail closed rather than being silently treated as performance.
 - M04 uses six-month endpoint closes, adjusted only by verified reset ratios;
-  it no longer compounds every daily metadata row, so one missing intermediate
-  bar cannot silently delete a day's investment return.
-- Unresolved split-sized reset metadata fails closed.
-- Notice labels are accepted only when an actual date is within 7 calendar days
-  of the detected reset; stale/no-date notices cannot relabel an event.
-- M03 corporate-action EPS/PER cross-check remains the v2 fail-closed policy and
-  is invoked only for the resulting gap-safe action events.
+  missing intermediate bars therefore do not erase economic return.
+- Notice labels require an actual date within 7 days of the detected reset.
+- M03 corporate-action EPS/PER cross-check remains fail closed.
 """
 from __future__ import annotations
 
@@ -36,6 +32,9 @@ import collect_real_quant_v3 as v3
 _INDEX_PRICE_URL = "https://m.stock.naver.com/api/index/KOSPI/price"
 _MARKET_DATES: list[date] = []
 _MARKET_DATE_SET: set[date] = set()
+_GAP_AMBIGUOUS_RESET_REL_TOL = 0.08
+_GAP_EXTREME_LOW = 0.50
+_GAP_EXTREME_HIGH = 2.00
 
 _UP_CODES = {"1", "2"}
 _FLAT_CODES = {"3"}
@@ -84,7 +83,6 @@ def _direction_sign(bar: dict[str, Any]) -> int | None:
 
 
 def _daily_reference_factor(bar: dict[str, Any], close: float) -> float | None:
-    """One-session Naver reference factor with ambiguity-safe direction."""
     sign = _direction_sign(bar)
     ratio = base.parse_number(bar.get("fluctuationsRatio"))
     if ratio is not None and sign is not None:
@@ -99,8 +97,6 @@ def _daily_reference_factor(bar: dict[str, Any], close: float) -> float | None:
     if change is not None and sign is not None:
         change = 0.0 if sign == 0 else abs(change) * sign
     elif sign is None:
-        # This field can be a magnitude. Without explicit direction do not infer
-        # its sign; the already-signed percentage remains the safer source.
         change = None
 
     change_factor = None
@@ -123,7 +119,6 @@ def _set_market_calendar(days: set[date] | list[date]) -> None:
 
 
 def _load_market_calendar(cutoff: date, six_month_target: date) -> None:
-    """Load KOSPI completed-session dates once; fail closed if coverage is weak."""
     days: set[date] = set()
     for page in range(1, 6):
         bars = v2.get_json(f"{_INDEX_PRICE_URL}?pageSize=60&page={page}")
@@ -152,13 +147,22 @@ def _load_market_calendar(cutoff: date, six_month_target: date) -> None:
 
 def _is_consecutive_market_session(previous: date, current: date) -> bool:
     if not _MARKET_DATES:
-        # Deterministic unit tests that do not install a market calendar keep
-        # legacy adjacency semantics. Production v5 always loads the calendar.
         return True
     if current not in _MARKET_DATE_SET or previous not in _MARKET_DATE_SET:
         return False
     pos = bisect.bisect_left(_MARKET_DATES, current)
     return pos > 0 and _MARKET_DATES[pos - 1] == previous
+
+
+def _unresolved_event(previous: date, current: date, raw_factor: float, adjusted_factor: float | None, kind: str) -> dict[str, Any]:
+    return {
+        "date": current,
+        "previous_date": previous,
+        "reset_ratio": None,
+        "raw_factor": raw_factor,
+        "adjusted_factor": adjusted_factor,
+        "type": kind,
+    }
 
 
 def _detect_reference_reset_events(
@@ -167,7 +171,6 @@ def _detect_reference_reset_events(
     start_date: date,
     end_date: date,
 ) -> list[dict[str, Any]]:
-    """Detect reference resets only across consecutive KRX sessions."""
     dates = sorted(d for d in by_date if start_date <= d <= end_date)
     events: list[dict[str, Any]] = []
     if len(dates) < 2:
@@ -179,27 +182,18 @@ def _detect_reference_reset_events(
         close = by_date[current]
         raw_factor = close / prev_close if prev_close > 0 else None
         adjusted_factor = by_factor.get(current)
-
-        # Critical guard: a one-session Naver ratio cannot be compared with a
-        # multi-session raw close ratio. This was the source of the 2026-09-15
-        # 546-stock false-positive cluster when an intermediate bar was absent.
-        if not _is_consecutive_market_session(previous, current):
-            previous = current
-            continue
-
         if raw_factor is None or not math.isfinite(raw_factor) or raw_factor <= 0:
             previous = current
             continue
+
+        consecutive = _is_consecutive_market_session(previous, current)
         if adjusted_factor is None:
+            # Preserve old fail-closed protection for large unexplained moves,
+            # even across a trading gap (important for liquidation/suspension).
             if not v2._valid_daily_factor(raw_factor):
-                events.append({
-                    "date": current,
-                    "previous_date": previous,
-                    "reset_ratio": None,
-                    "raw_factor": raw_factor,
-                    "adjusted_factor": None,
-                    "type": "UNRESOLVED_REFERENCE_RESET",
-                })
+                events.append(_unresolved_event(
+                    previous, current, raw_factor, None, "UNRESOLVED_REFERENCE_RESET"
+                ))
             previous = current
             continue
         if not v2._valid_daily_factor(adjusted_factor):
@@ -207,7 +201,35 @@ def _detect_reference_reset_events(
             continue
 
         reset_ratio = raw_factor / adjusted_factor
-        if math.isfinite(reset_ratio) and reset_ratio > 0 and abs(reset_ratio - 1.0) >= v2._REFERENCE_RESET_REL_TOL:
+        if not math.isfinite(reset_ratio) or reset_ratio <= 0:
+            previous = current
+            continue
+        deviation = abs(reset_ratio - 1.0)
+
+        if not consecutive:
+            # Small multi-session mismatches are normal return over the omitted
+            # session(s), not evidence of a corporate action. Extreme unit
+            # changes remain actionable; intermediate-size discrepancies become
+            # HOLD rather than a guessed adjusted return.
+            if reset_ratio <= _GAP_EXTREME_LOW or reset_ratio >= _GAP_EXTREME_HIGH:
+                family = "SPLIT_OR_BONUS_ISSUE" if reset_ratio < 1.0 else "REVERSE_SPLIT_OR_CAPITAL_REDUCTION"
+                events.append({
+                    "date": current,
+                    "previous_date": previous,
+                    "reset_ratio": reset_ratio,
+                    "raw_factor": raw_factor,
+                    "adjusted_factor": adjusted_factor,
+                    "type": family,
+                    "gap_verified_extreme": True,
+                })
+            elif deviation >= _GAP_AMBIGUOUS_RESET_REL_TOL:
+                events.append(_unresolved_event(
+                    previous, current, raw_factor, adjusted_factor, "UNRESOLVED_GAP_REFERENCE_RESET"
+                ))
+            previous = current
+            continue
+
+        if deviation >= v2._REFERENCE_RESET_REL_TOL:
             family = "SPLIT_OR_BONUS_ISSUE" if reset_ratio < 1.0 else "REVERSE_SPLIT_OR_CAPITAL_REDUCTION"
             events.append({
                 "date": current,
@@ -222,7 +244,6 @@ def _detect_reference_reset_events(
 
 
 def _annotate_action_types(code: str, events: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """Tightly label a reset; stale/no-date notices are never accepted."""
     if not events:
         return events
     try:
@@ -266,13 +287,6 @@ def _corporate_action_adjusted_return(
     start_date: date,
     end_date: date,
 ) -> tuple[float | None, str | None, int, int]:
-    """Endpoint close return adjusted only by verified reference resets.
-
-    Missing intermediate bars no longer erase their economic returns. A reset
-    ratio is raw one-session factor / Naver reference-return factor, therefore
-    dividing endpoint raw growth by each reset ratio removes split/merge unit
-    changes while preserving actual investment performance.
-    """
     if start_date not in by_date or end_date not in by_date:
         return None, "NAVER_ADJUSTED_RETURN_UNAVAILABLE", 0, 0
     start_close = by_date[start_date]
@@ -307,8 +321,6 @@ def _install_patches() -> None:
 
 
 def main() -> None:
-    # Resolve the same auto dates v3 will use, then install a six-month KRX
-    # calendar before the 2,649 worker pool starts.
     args = v3.parse_args_auto_cached()
     cutoff = date.fromisoformat(str(args.price_cutoff))
     six_month_target = _six_month_target(cutoff)
@@ -316,8 +328,6 @@ def main() -> None:
     _load_market_calendar(cutoff, six_month_target)
     v3.main()
 
-    # Extra provenance is ignored by old APKs but makes the remote engine audit
-    # explicit without changing the app's required collector=v3 compatibility.
     evidence = Path(base.ROOT) / args.evidence_out
     payload = json.loads(evidence.read_text(encoding="utf-8"))
     payload.setdefault("auto_update", {})["m04_engine"] = "collect_real_quant_v5_gap_aware_endpoint_close"
