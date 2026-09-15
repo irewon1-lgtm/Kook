@@ -143,7 +143,7 @@ fun HomeScreen(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp)
                 ) {
-                    Text("2,649종목 검색 · 필터 · 정렬")
+                    Text("2,649종목 검색 · 필터 · 조합순위")
                 }
             }
 
@@ -198,7 +198,14 @@ private fun MetricGuideRow(title: String, meaning: String, direction: String) {
 }
 
 @Composable
-fun StockSummaryCard(stock: StockSummary, onClick: () -> Unit) {
+fun StockSummaryCard(
+    stock: StockSummary,
+    onClick: () -> Unit,
+    displayRank: Int? = stock.rankOrder,
+    displayScore: Double? = stock.compositeScore,
+    scoreLabel: String = "4지표 종합 상대점수",
+    missingLabel: String = "실데이터 ${availableMetricCount(stock)}/4 · 순위 보류"
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -215,10 +222,10 @@ fun StockSummaryCard(stock: StockSummary, onClick: () -> Unit) {
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        if (stock.rankOrder != null) {
+                        if (displayRank != null) {
                             Surface(shape = RoundedCornerShape(7.dp), color = BlueAccent.copy(alpha = 0.12f)) {
                                 Text(
-                                    "${stock.rankOrder}위",
+                                    "${displayRank}위",
                                     modifier = Modifier.padding(horizontal = 7.dp, vertical = 3.dp),
                                     color = BlueAccent,
                                     fontSize = 11.sp,
@@ -252,15 +259,15 @@ fun StockSummaryCard(stock: StockSummary, onClick: () -> Unit) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    if (stock.isCompositeComplete) "4지표 종합 상대점수" else "실데이터 ${availableMetricCount(stock)}/4 · 순위 보류",
+                    if (displayScore != null) scoreLabel else missingLabel,
                     fontSize = 11.sp,
                     color = TextSecondaryLight
                 )
                 Text(
-                    stock.compositeScore?.let { String.format("%.1f점", it) } ?: "미산출",
+                    displayScore?.let { String.format("%.1f점", it) } ?: "미산출",
                     fontWeight = FontWeight.Bold,
                     fontSize = 15.sp,
-                    color = if (stock.compositeScore != null) BlueAccent else TextSecondaryLight
+                    color = if (displayScore != null) BlueAccent else TextSecondaryLight
                 )
             }
         }
