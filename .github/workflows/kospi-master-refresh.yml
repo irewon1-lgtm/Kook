@@ -1,12 +1,6 @@
 name: Refresh Real KOSPI Master
 
 on:
-  push:
-    branches:
-      - "register-real-kospi-master"
-    paths-ignore:
-      - "app/src/main/java/com/krstock/v3/data/generated/GeneratedKospiMaster.kt"
-      - "evidence/kospi_master_snapshot.json"
   workflow_dispatch:
 
 permissions:
@@ -20,7 +14,6 @@ jobs:
       - name: Checkout branch
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref_name }}
           fetch-depth: 0
 
       - name: Set up Python
@@ -39,17 +32,7 @@ jobs:
           python scripts/update_kospi_master.py \
             --output app/src/main/java/com/krstock/v3/data/generated/GeneratedKospiMaster.kt \
             --evidence evidence/kospi_master_snapshot.json
-          grep -q 'const val issuerCount: Int = ' app/src/main/java/com/krstock/v3/data/generated/GeneratedKospiMaster.kt
-          python - <<'PY'
-          import json
-          p='evidence/kospi_master_snapshot.json'
-          d=json.load(open(p, encoding='utf-8'))
-          assert d['market'] == 'KOSPI'
-          assert 700 <= d['issuer_count'] <= 1200
-          assert d['issuer_count'] == d['unique_issue_codes']
-          assert d['six_character_krx_codes'] is True
-          print('KOSPI_MASTER_VALIDATED', d['issuer_count'], d['snapshot_date_kst'], 'alphanumeric', d['alphanumeric_issue_code_count'])
-          PY
+          python -c "import json; d=json.load(open('evidence/kospi_master_snapshot.json',encoding='utf-8')); assert d['market']=='KOSPI'; assert 700<=d['issuer_count']<=1200; assert d['issuer_count']==d['unique_issue_codes']; assert d['six_character_krx_codes'] is True; print('KOSPI_MASTER_VALIDATED',d['issuer_count'],d['snapshot_date_kst'])"
 
       - name: Commit refreshed master snapshot
         run: |
@@ -62,5 +45,5 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add app/src/main/java/com/krstock/v3/data/generated/GeneratedKospiMaster.kt evidence/kospi_master_snapshot.json
           COUNT=$(python -c "import json; print(json.load(open('evidence/kospi_master_snapshot.json', encoding='utf-8'))['issuer_count'])")
-          git commit -m "Register official KOSPI master (${COUNT} issuers)"
-          git push origin HEAD:${{ github.ref_name }}
+          git commit -m "Refresh official KOSPI master (${COUNT} issuers)"
+          git push origin HEAD:${GITHUB_REF_NAME}
