@@ -37,27 +37,48 @@ jobs:
               print('NAVER_OK', u.split('?')[0], len(body))
           PY
 
-      - name: Probe official OpenDART bulk-download route without API key
+      - name: Discover official OpenDART bulk download implementation
         run: |
           set -euo pipefail
           python3 - <<'PY'
           import re, urllib.request, urllib.parse
           base='https://opendart.fss.or.kr'
           url=base+'/disclosureinfo/fnltt/dwld/list.do'
-          req=urllib.request.Request(url,headers={'User-Agent':'Mozilla/5.0 KR4/1.0','Referer':base+'/disclosureinfo/fnltt/dwld/main.do'})
-          with urllib.request.urlopen(req,timeout=30) as r:
-              html=r.read().decode('utf-8','replace')
+          headers={'User-Agent':'Mozilla/5.0 KR4/1.0','Referer':base+'/disclosureinfo/fnltt/dwld/main.do'}
+          def get(u):
+              req=urllib.request.Request(u,headers=headers)
+              with urllib.request.urlopen(req,timeout=30) as r:
+                  return r.read().decode('utf-8','replace')
+          html=get(url)
           print('DART_BULK_LIST_OK bytes='+str(len(html)))
-          # Print only endpoint structure and parameter names, never downloaded financial values.
-          for pat in [r'href=[\"\']([^\"\']+)[\"\']', r'action=[\"\']([^\"\']+)[\"\']', r'url\s*[:=]\s*[\"\']([^\"\']+)[\"\']']:
-              for x in re.findall(pat, html, flags=re.I):
-                  if 'dwld' in x.lower() or 'download' in x.lower() or 'file' in x.lower():
-                      print('DART_BULK_ENDPOINT', x[:500])
-          # Also show nearby JavaScript function names/parameter keys used for file download.
-          for line in html.splitlines():
-              low=line.lower()
-              if ('download' in low or 'dwld' in low) and ('function' in low or 'onclick' in low or '$.ajax' in low or 'location' in low):
-                  print('DART_BULK_JS', re.sub(r'\s+',' ',line.strip())[:800])
+          script_srcs=[]
+          for src in re.findall(r'<script[^>]+src=["\']([^"\']+)["\']', html, flags=re.I):
+              full=urllib.parse.urljoin(base,src)
+              script_srcs.append(full)
+              print('SCRIPT_SRC',full)
+          blobs=[('PAGE',html)]
+          for src in script_srcs:
+              try:
+                  txt=get(src)
+                  blobs.append((src,txt))
+              except Exception as e:
+                  print('SCRIPT_FETCH_FAIL',src,type(e).__name__)
+          found=False
+          for name,txt in blobs:
+              for m in re.finditer(r'(?:function\s+download_ext002\s*\([^)]*\)|download_ext002\s*=)',txt,re.I):
+                  found=True
+                  a=max(0,m.start()-800); b=min(len(txt),m.start()+3500)
+                  snippet=re.sub(r'\s+',' ',txt[a:b])
+                  print('DOWNLOAD_EXT002_DEF_SOURCE',name)
+                  print('DOWNLOAD_EXT002_SNIPPET',snippet)
+          if not found:
+              # generic endpoint clues including form target and ext002 references
+              for name,txt in blobs:
+                  if 'download_ext002' in txt:
+                      pos=txt.find('download_ext002')
+                      print('EXT002_REFERENCE_SOURCE',name)
+                      print('EXT002_REFERENCE_SNIPPET',re.sub(r'\s+',' ',txt[max(0,pos-1000):pos+3000]))
+          assert '2026_2Q_PL_20260915030641.zip' in html
           PY
 
       - name: Verify OpenDART secret if present
@@ -65,7 +86,7 @@ jobs:
           set -euo pipefail
           KEY="${OPEN_DART_API_KEY:-${DART_API_KEY:-}}"
           if [ -z "$KEY" ]; then
-            echo "OPEN_DART_KEY_MISSING_BUT_BULK_PROBE_COMPLETED"
+            echo "OPEN_DART_KEY_MISSING_BULK_ROUTE_DISCOVERY_USED"
             exit 0
           fi
           python3 - <<'PY'
@@ -75,8 +96,7 @@ jobs:
           req=urllib.request.Request('https://opendart.fss.or.kr/api/corpCode.xml?'+q, headers={'User-Agent':'KR4/1.0'})
           with urllib.request.urlopen(req, timeout=30) as r: raw=r.read()
           z=zipfile.ZipFile(io.BytesIO(raw))
-          xml=z.read(z.namelist()[0])
-          root=ET.fromstring(xml)
+          root=ET.fromstring(z.read(z.namelist()[0]))
           samsung=None
           for item in root.findall('list'):
               if (item.findtext('stock_code') or '').strip() == '005930':
