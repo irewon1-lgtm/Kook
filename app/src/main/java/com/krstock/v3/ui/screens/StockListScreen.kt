@@ -104,7 +104,7 @@ fun StockListScreen(
                             lineHeight = 27.sp
                         )
                         Text(
-                            "지표를 바꾸면 새 순위의 1위부터 바로 표시",
+                            "성장 · 수익성 · 가치 · 흐름을 원하는 조합으로 비교",
                             fontSize = 12.sp,
                             lineHeight = 17.sp,
                             color = scheme.onSurfaceVariant
@@ -135,7 +135,7 @@ fun StockListScreen(
                 textStyle = MaterialTheme.typography.bodyLarge,
                 placeholder = { Text("회사명 · 종목코드 · 업종 검색", fontSize = 15.sp) },
                 singleLine = true,
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(18.dp),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedContainerColor = scheme.surface,
                     unfocusedContainerColor = scheme.surface,
@@ -149,23 +149,24 @@ fun StockListScreen(
 
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(20.dp),
+                shape = RoundedCornerShape(22.dp),
                 colors = CardDefaults.cardColors(containerColor = scheme.surface),
                 border = BorderStroke(1.dp, scheme.outlineVariant),
                 elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
             ) {
-                Column(modifier = Modifier.padding(horizontal = 14.dp, vertical = 12.dp)) {
+                Column(modifier = Modifier.padding(horizontal = 14.dp, vertical = 13.dp)) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Column(modifier = Modifier.weight(1f)) {
-                            Text("랭킹 지표", fontWeight = FontWeight.Bold, fontSize = 17.sp)
+                            Text("비교할 지표", fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                            Spacer(Modifier.height(2.dp))
                             Text(
                                 selectedNames,
-                                fontSize = 11.sp,
-                                lineHeight = 15.sp,
+                                fontSize = 12.sp,
+                                lineHeight = 16.sp,
                                 color = scheme.onSurfaceVariant,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis
@@ -178,14 +179,14 @@ fun StockListScreen(
                         ) {
                             Text(
                                 "${selectedCount}개 · $weightLabel",
-                                modifier = Modifier.padding(horizontal = 11.dp, vertical = 6.dp),
+                                modifier = Modifier.padding(horizontal = 11.dp, vertical = 7.dp),
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 12.sp
                             )
                         }
                     }
 
-                    Spacer(modifier = Modifier.height(9.dp))
+                    Spacer(modifier = Modifier.height(10.dp))
                     RankMetric.entries.chunked(2).forEachIndexed { index, pair ->
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -204,24 +205,34 @@ fun StockListScreen(
                                     },
                                     modifier = Modifier
                                         .weight(1f)
-                                        .heightIn(min = 46.dp)
+                                        .heightIn(min = 54.dp)
                                         .testTag(metricToggleTestTag(metric.id)),
-                                    shape = RoundedCornerShape(13.dp),
+                                    shape = RoundedCornerShape(14.dp),
                                     label = {
-                                        Text(
-                                            if (selected) "✓ ${metric.label}" else metric.label,
-                                            fontSize = 13.sp,
-                                            fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
-                                            maxLines = 1,
-                                            overflow = TextOverflow.Ellipsis
-                                        )
+                                        Column {
+                                            Text(
+                                                metricAxisLabel(metric.id),
+                                                fontSize = 10.sp,
+                                                lineHeight = 13.sp,
+                                                fontWeight = FontWeight.Bold,
+                                                color = if (selected) scheme.primary else scheme.onSurfaceVariant
+                                            )
+                                            Text(
+                                                if (selected) "✓ ${metric.label}" else metric.label,
+                                                fontSize = 13.sp,
+                                                lineHeight = 17.sp,
+                                                fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
+                                                maxLines = 1,
+                                                overflow = TextOverflow.Ellipsis
+                                            )
+                                        }
                                     }
                                 )
                             }
                             if (pair.size == 1) Spacer(modifier = Modifier.weight(1f))
                         }
                         if (index < RankMetric.entries.chunked(2).lastIndex) {
-                            Spacer(modifier = Modifier.height(6.dp))
+                            Spacer(modifier = Modifier.height(7.dp))
                         }
                     }
                 }
@@ -236,6 +247,10 @@ fun StockListScreen(
                 border = BorderStroke(1.dp, scheme.outlineVariant)
             ) {
                 Column(modifier = Modifier.padding(horizontal = 14.dp, vertical = 11.dp)) {
+                    Text("보기 설정", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                    Spacer(Modifier.height(7.dp))
+                    Text("시장", fontSize = 11.sp, fontWeight = FontWeight.SemiBold, color = scheme.onSurfaceVariant)
+                    Spacer(Modifier.height(4.dp))
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(7.dp)
@@ -280,6 +295,8 @@ fun StockListScreen(
                     )
 
                     Spacer(Modifier.height(8.dp))
+                    Text("정렬", fontSize = 11.sp, fontWeight = FontWeight.SemiBold, color = scheme.onSurfaceVariant)
+                    Spacer(Modifier.height(4.dp))
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(7.dp)
@@ -312,22 +329,32 @@ fun StockListScreen(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            Row(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                shape = RoundedCornerShape(14.dp),
+                color = scheme.surfaceVariant,
+                contentColor = scheme.onSurface
             ) {
-                Text(
-                    "${filteredStocks.size}개 종목",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp
-                )
-                Text(
-                    "순위 가능 ${eligibleShown}개",
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = scheme.onSurfaceVariant
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 13.dp, vertical = 9.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column {
+                        Text("검색 결과", fontSize = 11.sp, color = scheme.onSurfaceVariant)
+                        Text(
+                            "${filteredStocks.size}개 종목",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 16.sp
+                        )
+                    }
+                    Text(
+                        "순위 가능 ${eligibleShown}개",
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = scheme.primary
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(7.dp))
@@ -382,6 +409,14 @@ private fun metricToggleTestTag(metricId: String): String = when (metricId) {
     "M03" -> "metric_toggle_M03"
     "M04" -> "metric_toggle_M04"
     else -> error("Unknown metric toggle $metricId")
+}
+
+private fun metricAxisLabel(metricId: String): String = when (metricId) {
+    "M01" -> "성장"
+    "M02" -> "수익성"
+    "M03" -> "가치"
+    "M04" -> "흐름"
+    else -> "지표"
 }
 
 private fun sortComparator(
