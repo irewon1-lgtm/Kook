@@ -1,0 +1,214 @@
+name: KR4 AutoUpdate Triple Extreme CleanPass
+
+on:
+  push:
+    branches:
+      - "fix/auto-update-v2"
+    paths:
+      - "scripts/collect_real_quant.py"
+      - "scripts/collect_real_quant_v2.py"
+      - "scripts/collect_real_quant_v3.py"
+      - "tests/**"
+      - "app/src/main/**"
+      - "app/src/test/**"
+      - "app/src/androidTest/**"
+      - "app/build.gradle.kts"
+      - ".github/workflows/collect-real-quant.yml"
+      - ".github/workflows/android-build.yml"
+      - ".github/workflows/auto-update-triple-cleanpass.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: kr4-autoupdate-triple-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  triple-cleanpass:
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        pass: [1, 2, 3]
+    name: auto-update-cleanpass-${{ matrix.pass }}-of-3
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+
+    steps:
+      - name: Checkout exact tested commit
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install collector dependency
+        run: pip install requests
+
+      - name: Adversarial automatic-update preflight
+        run: |
+          set -euo pipefail
+          python tests/test_auto_update_pipeline.py
+
+      - name: Real 2649-stock external recollection into staging
+        run: |
+          set -euo pipefail
+          cp evidence/real_quant_snapshot.json /tmp/kr4_baseline.json
+          python scripts/collect_real_quant_v3.py \
+            --as-of auto \
+            --price-cutoff auto \
+            --workers 14 \
+            --kotlin-out /tmp/GeneratedRealQuantSnapshot.kt \
+            --evidence-out /tmp/real_quant_snapshot.json
+
+      - name: Extreme fail-closed data-quality and artifact-consistency gate
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib,json,math,pathlib,re
+          from datetime import date
+          new=json.load(open('/tmp/real_quant_snapshot.json',encoding='utf-8'))
+          old=json.load(open('/tmp/kr4_baseline.json',encoding='utf-8'))
+          n=int(new['universe_count']); assert n==2649==len(new['records'])==int(old['universe_count'])
+          snap=date.fromisoformat(new['snapshot_date_kst']); price=date.fromisoformat(new['price_cutoff_date_kst'])
+          assert price<=snap and (snap-price).days<=10
+          assert new['auto_update']['collector']=='collect_real_quant_v3.py'
+          assert new['auto_update']['dart_period'] in {'Q1','HY','Q3','FY'}
+          c=new['coverage']; b=old['coverage']
+          floors={
+            'm01_available':max(int(n*.88),int(b['m01_available'])-55),
+            'm02_available':max(int(n*.84),int(b['m02_available'])-55),
+            'm03_available':max(int(n*.58),int(b['m03_available'])-80),
+            'm04_available':max(int(n*.96),int(b['m04_available'])-30),
+            'complete_count':max(int(n*.50),int(b['complete_count'])-100),
+          }
+          for k,v in floors.items(): assert int(c[k])>=v,(k,c[k],v)
+          assert c['ranked_count']==c['complete_count']
+          ranks=[]; explained=0; source_errors=0
+          for code,r in new['records'].items():
+            assert re.fullmatch(r'[0-9A-Z]{6}',code)
+            assert r['name'] and r['market'] in {'KOSPI','KOSDAQ'}
+            ms=[r[f'm0{i}'] for i in range(1,5)]
+            for m in ms:
+              raw,pct,reason,basis=m['raw'],m['percentile'],m['reason'],m['basis']
+              if raw is None: assert pct is None and reason
+              else: assert math.isfinite(float(raw)) and pct is not None and 0<=float(pct)<=100 and basis
+              if reason in {'NAVER_INTEGRATION_ERROR','NAVER_WORKER_EXCEPTION'}: source_errors+=1
+            if ms[2]['raw'] is not None or ms[2]['reason']=='NONPOSITIVE_EPS': explained+=1
+            complete=all(m['raw'] is not None for m in ms)
+            assert (r['composite'] is not None)==complete
+            assert (r['rank'] is not None)==complete
+            if r['rank'] is not None: ranks.append(int(r['rank']))
+          assert sorted(ranks)==list(range(1,len(ranks)+1))
+          assert explained>=int(n*.985),(explained,n)
+          assert source_errors<=15,source_errors
+          assert new['records']['005930']['name']=='삼성전자'
+          assert new['records']['000660']['name']=='SK하이닉스'
+          assert new['records']['000250']['name']=='삼천당제약'
+          kt_path=pathlib.Path('/tmp/GeneratedRealQuantSnapshot.kt')
+          kt_bytes=kt_path.read_bytes()
+          kt_sha=hashlib.sha256(kt_bytes).hexdigest()
+          assert new['generated_kotlin_sha256']==kt_sha,(new['generated_kotlin_sha256'],kt_sha)
+          kt=kt_bytes.decode('utf-8')
+          for token in ['fun installRuntimeSnapshot(','runtimeRows','bundledSnapshotDate','const val universeCount: Int = 2649']:
+            assert token in kt,token
+          print('TRIPLE_DATA_GATE_PASS',json.dumps({'coverage':c,'floors':floors,'explained':explained,'source_errors':source_errors,'snapshot':str(snap),'price':str(price),'generated_kotlin_sha256':kt_sha},ensure_ascii=False))
+          PY
+          cp /tmp/GeneratedRealQuantSnapshot.kt app/src/main/java/com/krstock/v3/data/generated/GeneratedRealQuantSnapshot.kt
+          cp /tmp/real_quant_snapshot.json evidence/real_quant_snapshot.json
+
+      - name: Python Extreme and CLEAN suites
+        run: |
+          set -euo pipefail
+          python tests/run_all.py evidence/triple_clean_pass_${{ matrix.pass }}.json
+          python tests/run_stress.py
+          python tests/run_combo_rank_stress.py evidence/triple_combo_${{ matrix.pass }}.json
+          python - <<'PY'
+          import json,os
+          p=os.environ['PASS_ID']
+          d=json.load(open(f'evidence/triple_combo_{p}.json',encoding='utf-8'))
+          assert d['status']=='PASS'
+          assert d['all_nonempty_combinations_tested']==15
+          assert d['ten_thousand_toggle_simulation_pass'] is True
+          assert d['selected_complete_filter_checks']==2649*15
+          assert d['all_four_reproduces_committed_rank'] is True
+          print('TRIPLE_PYTHON_EXTREME_PASS',p)
+          PY
+        env:
+          PASS_ID: ${{ matrix.pass }}
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: temurin
+
+      - name: Set up Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+
+      - name: JVM repository and ranking regression
+        run: gradle :app:testDebugUnitTest --stacktrace
+
+      - name: Build APK
+        run: gradle :app:assembleDebug --stacktrace
+
+      - name: Enable KVM
+        run: |
+          if [ -e /dev/kvm ]; then sudo chmod 666 /dev/kvm; fi
+
+      - name: Android 14 real app end-to-end CleanPass
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          target: google_apis
+          arch: x86_64
+          profile: pixel_2
+          disable-animations: true
+          script: gradle :app:connectedDebugAndroidTest --stacktrace
+
+      - name: Hard verify automatic-update architecture and APK
+        run: |
+          set -euo pipefail
+          APK=app/build/outputs/apk/debug/app-debug.apk
+          test -s "$APK"
+          mkdir -p evidence/triple dist
+          cp "$APK" "dist/KR4_AutoUpdate_CleanPass_${{ matrix.pass }}_of_3.apk"
+          sha256sum "$APK" | tee "evidence/triple/APK_${{ matrix.pass }}_SHA256.txt"
+          sha256sum app/src/main/java/com/krstock/v3/data/generated/GeneratedRealQuantSnapshot.kt | tee "evidence/triple/GENERATED_KOTLIN_${{ matrix.pass }}_SHA256.txt"
+          grep -q 'SnapshotAutoUpdater.bootstrap' app/src/main/java/com/krstock/v3/MainActivity.kt
+          grep -q 'PeriodicWorkRequestBuilder<SnapshotRefreshWorker>' app/src/main/java/com/krstock/v3/KR4Application.kt
+          grep -q 'remote snapshot downgrade rejected' app/src/main/java/com/krstock/v3/data/update/SnapshotAutoUpdater.kt
+          grep -q 'Source.BACKUP' app/src/main/java/com/krstock/v3/data/update/SnapshotAutoUpdater.kt
+          grep -q '@Synchronized' app/src/main/java/com/krstock/v3/data/update/SnapshotAutoUpdater.kt
+          grep -q 'StandardCopyOption.ATOMIC_MOVE' app/src/main/java/com/krstock/v3/data/update/SnapshotAutoUpdater.kt
+          grep -q 'untrusted collector provenance' app/src/main/java/com/krstock/v3/data/update/SnapshotAutoUpdater.kt
+          grep -q 'coverage regression' app/src/main/java/com/krstock/v3/data/update/SnapshotAutoUpdater.kt
+          grep -q 'runtimeRows' app/src/main/java/com/krstock/v3/data/generated/GeneratedRealQuantSnapshot.kt
+          grep -q 'resolve_price_cutoff' scripts/collect_real_quant_v3.py
+          grep -q '_select_latest_dart_entry' scripts/collect_real_quant_v3.py
+          grep -q '40 8 \* \* 1-5' .github/workflows/collect-real-quant.yml
+          grep -q '30 12 \* \* 1-5' .github/workflows/collect-real-quant.yml
+          echo "AUTO_UPDATE_CLEANPASS_${{ matrix.pass }}_OF_3=PASS" | tee "evidence/triple/PASS_${{ matrix.pass }}.txt"
+
+      - name: Upload independent proof
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: KR4_AutoUpdate_CleanPass_${{ matrix.pass }}_of_3
+          path: |
+            dist/
+            evidence/triple/
+            evidence/real_quant_snapshot.json
+            app/src/main/java/com/krstock/v3/data/generated/GeneratedRealQuantSnapshot.kt
+            evidence/triple_clean_pass_${{ matrix.pass }}.json
+            evidence/triple_combo_${{ matrix.pass }}.json
+            evidence/stress_results.json
+            app/build/reports/tests/testDebugUnitTest/
+            app/build/reports/androidTests/
+            app/build/outputs/androidTest-results/
+          if-no-files-found: warn
+          retention-days: 14

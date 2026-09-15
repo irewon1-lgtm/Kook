@@ -2,6 +2,7 @@ package com.krstock.v3
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -21,8 +22,19 @@ class AppSmokeTest {
     @get:Rule
     val composeRule = createAndroidComposeRule<MainActivity>()
 
+    private fun waitForDisplayedTag(tag: String, timeoutMillis: Long = 25_000L) {
+        composeRule.waitUntil(timeoutMillis = timeoutMillis) {
+            composeRule.onAllNodesWithTag(tag).fetchSemanticsNodes().isNotEmpty()
+        }
+        composeRule.onNodeWithTag(tag).assertIsDisplayed()
+    }
+
     @Test
     fun swipeNavigationAndMultiMetricRankingWorkEndToEnd() {
+        // Auto-update bootstrap is intentionally asynchronous and can take longer
+        // on a slow or partially unavailable network. Treat the loading screen as
+        // valid transient state, but fail if the safe fallback/home never appears.
+        waitForDisplayedTag("main_pager")
         composeRule.onNodeWithText("KR4 국내주식").assertIsDisplayed()
         composeRule.onNodeWithText("실데이터 4지표 연결 완료").assertIsDisplayed()
 

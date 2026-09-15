@@ -4,6 +4,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".KR4Application"
         android:allowBackup="false"
         android:enableOnBackInvokedCallback="true"
         android:icon="@drawable/ic_launcher"

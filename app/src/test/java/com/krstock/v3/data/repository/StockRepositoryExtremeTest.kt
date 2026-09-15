@@ -3,9 +3,9 @@ package com.krstock.v3.data.repository
 import com.krstock.v3.data.generated.GeneratedKosdaqMaster
 import com.krstock.v3.data.generated.GeneratedKospiMaster
 import com.krstock.v3.data.generated.GeneratedRealQuantSnapshot
-import com.krstock.v3.data.model.DataStatus
 import org.junit.Assert.*
 import org.junit.Test
+import java.time.LocalDate
 
 class StockRepositoryExtremeTest {
 
@@ -22,20 +22,23 @@ class StockRepositoryExtremeTest {
         assertEquals(2649, stocks.size)
         assertEquals(832, kospi.size)
         assertEquals(1817, kosdaq.size)
-        assertEquals(1462, GeneratedRealQuantSnapshot.completeCount)
-        assertEquals(1462, StockRepository.completeCount())
+        assertEquals(GeneratedRealQuantSnapshot.completeCount, StockRepository.completeCount())
+        assertTrue(GeneratedRealQuantSnapshot.completeCount >= 1362)
     }
 
     @Test
-    fun committedRealCoverageMatchesAuditedSnapshot() {
-        assertEquals(2469, GeneratedRealQuantSnapshot.m01Available)
-        assertEquals(2380, GeneratedRealQuantSnapshot.m02Available)
-        assertEquals(1677, GeneratedRealQuantSnapshot.m03Available)
-        assertEquals(2611, GeneratedRealQuantSnapshot.m04Available)
-        assertEquals("2026-09-15", GeneratedRealQuantSnapshot.snapshotDate)
-        assertEquals("2026-09-14", GeneratedRealQuantSnapshot.priceCutoffDate)
-        assertTrue(GeneratedRealQuantSnapshot.dartFileName.startsWith("2026_2Q_PL_"))
+    fun committedRealCoverageMeetsFailClosedFloorsAndDatesAreSane() {
+        assertTrue(GeneratedRealQuantSnapshot.m01Available >= 2414)
+        assertTrue(GeneratedRealQuantSnapshot.m02Available >= 2325)
+        assertTrue(GeneratedRealQuantSnapshot.m03Available >= 1597)
+        assertTrue(GeneratedRealQuantSnapshot.m04Available >= 2581)
+        assertTrue(GeneratedRealQuantSnapshot.completeCount >= 1362)
+        val snapshot = LocalDate.parse(GeneratedRealQuantSnapshot.snapshotDate)
+        val price = LocalDate.parse(GeneratedRealQuantSnapshot.priceCutoffDate)
+        assertFalse(price.isAfter(snapshot))
+        assertFalse(price.isBefore(snapshot.minusDays(10)))
         assertTrue(GeneratedRealQuantSnapshot.dartFileName.endsWith(".zip"))
+        assertTrue(GeneratedRealQuantSnapshot.dartFileName.contains("_PL_"))
     }
 
     @Test
@@ -94,15 +97,23 @@ class StockRepositoryExtremeTest {
     }
 
     @Test
-    fun sourceAndBasisContractsMatchMetricDefinitions() {
+    fun sourceAndBasisContractsMatchMetricDefinitionsAcrossFutureReportPeriods() {
+        val dynamicDartBasis = Regex("\\d{4}(Q1|HY|Q3|FY)_(3M|YTD|ANNUAL)_(CFS|OFS)")
+        val legacyDartBasis = Regex("\\d{4}(Q[1-4]|H1)_(3M|YTD)_(CFS|OFS)")
         stocks.forEach { stock ->
             if (stock.m01RevGrowth.isAvailable) {
                 assertTrue(stock.m01RevGrowth.source.contains("OpenDART"))
-                assertTrue(stock.m01RevGrowth.basis.startsWith("2026Q2_3M_") || stock.m01RevGrowth.basis.startsWith("2026H1_YTD_"))
+                assertTrue(
+                    dynamicDartBasis.matches(stock.m01RevGrowth.basis) ||
+                        legacyDartBasis.matches(stock.m01RevGrowth.basis)
+                )
             }
             if (stock.m02OpMargin.isAvailable) {
                 assertTrue(stock.m02OpMargin.source.contains("OpenDART"))
-                assertTrue(stock.m02OpMargin.basis.startsWith("2026Q2_3M_") || stock.m02OpMargin.basis.startsWith("2026H1_YTD_"))
+                assertTrue(
+                    dynamicDartBasis.matches(stock.m02OpMargin.basis) ||
+                        legacyDartBasis.matches(stock.m02OpMargin.basis)
+                )
             }
             if (stock.m03Per.isAvailable) {
                 assertTrue(stock.m03Per.source.contains("네이버"))
@@ -130,7 +141,7 @@ class StockRepositoryExtremeTest {
     @Test
     fun lossMakingStocksNeverGetFakePer() {
         val lossMakers = stocks.filter { it.isLossMaking }
-        assertTrue(lossMakers.size >= 900)
+        assertTrue(lossMakers.size >= 850)
         lossMakers.forEach { stock ->
             assertFalse(stock.m03Per.isAvailable)
             assertNull(stock.m03Per.rawValue)
@@ -142,7 +153,7 @@ class StockRepositoryExtremeTest {
     fun compositeAndRankExistOnlyForFourMetricCompleteStocks() {
         val complete = stocks.filter { it.isCompositeComplete }
         val incomplete = stocks.filterNot { it.isCompositeComplete }
-        assertEquals(1462, complete.size)
+        assertEquals(GeneratedRealQuantSnapshot.completeCount, complete.size)
         complete.forEach { stock ->
             val scores = listOf(
                 stock.m01RevGrowth.percentileScore,
@@ -164,7 +175,7 @@ class StockRepositoryExtremeTest {
     @Test
     fun ranksAreContiguousAndDescendingByScore() {
         val ranked = stocks.filter { it.rankOrder != null }.sortedBy { it.rankOrder }
-        assertEquals((1..1462).toList(), ranked.map { it.rankOrder })
+        assertEquals((1..GeneratedRealQuantSnapshot.completeCount).toList(), ranked.map { it.rankOrder })
         ranked.zipWithNext().forEach { (a, b) ->
             assertTrue("rank inversion ${a.issuerId}/${b.issuerId}", a.compositeScore!! >= b.compositeScore!!)
         }
