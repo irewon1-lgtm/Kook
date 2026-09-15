@@ -1,0 +1,698 @@
+{
+  "start": "20260315",
+  "end": "20260915",
+  "records": {
+    "006380": {
+      "name": "카프로",
+      "adjusted": {
+        "empty": false,
+        "row_count": 126,
+        "positive_row_count": 126,
+        "start": {
+          "date": "2026-03-16",
+          "open": 0.0,
+          "high": 0.0,
+          "low": 0.0,
+          "close": 3660.0,
+          "volume": 0.0,
+          "change_pct": 0.0
+        },
+        "end": {
+          "date": "2026-09-15",
+          "open": 71.0,
+          "high": 71.0,
+          "low": 44.0,
+          "close": 44.0,
+          "volume": 2450637.0,
+          "change_pct": -38.028169014084504
+        },
+        "simple_return_pct": -98.79781420765028,
+        "large_close_jumps": [
+          {
+            "from": "2026-09-07",
+            "to": "2026-09-08",
+            "from_close": 3660.0,
+            "to_close": 185.0,
+            "factor": 0.050546448087431695,
+            "reported_change_pct": -94.94535519125684
+          },
+          {
+            "from": "2026-09-11",
+            "to": "2026-09-14",
+            "from_close": 120.0,
+            "to_close": 71.0,
+            "factor": 0.5916666666666667,
+            "reported_change_pct": -40.833333333333336
+          },
+          {
+            "from": "2026-09-14",
+            "to": "2026-09-15",
+            "from_close": 71.0,
+            "to_close": 44.0,
+            "factor": 0.6197183098591549,
+            "reported_change_pct": -38.028169014084504
+          }
+        ],
+        "tail": [
+          {
+            "date": "2026-09-04",
+            "open": 0.0,
+            "high": 0.0,
+            "low": 0.0,
+            "close": 3660.0,
+            "volume": 0.0,
+            "change_pct": 0.0
+          },
+          {
+            "date": "2026-09-07",
+            "open": 0.0,
+            "high": 0.0,
+            "low": 0.0,
+            "close": 3660.0,
+            "volume": 0.0,
+            "change_pct": 0.0
+          },
+          {
+            "date": "2026-09-08",
+            "open": 300.0,
+            "high": 340.0,
+            "low": 185.0,
+            "close": 185.0,
+            "volume": 5215801.0,
+            "change_pct": -94.94535519125684
+          },
+          {
+            "date": "2026-09-09",
+            "open": 158.0,
+            "high": 172.0,
+            "low": 133.0,
+            "close": 147.0,
+            "volume": 4338620.0,
+            "change_pct": -20.54054054054054
+          },
+          {
+            "date": "2026-09-10",
+            "open": 181.0,
+            "high": 260.0,
+            "low": 144.0,
+            "close": 144.0,
+            "volume": 4757764.0,
+            "change_pct": -2.0408163265306123
+          },
+          {
+            "date": "2026-09-11",
+            "open": 170.0,
+            "high": 170.0,
+            "low": 113.0,
+            "close": 120.0,
+            "volume": 2396855.0,
+            "change_pct": -16.666666666666664
+          },
+          {
+            "date": "2026-09-14",
+            "open": 110.0,
+            "high": 117.0,
+            "low": 70.0,
+            "close": 71.0,
+            "volume": 2110973.0,
+            "change_pct": -40.833333333333336
+          },
+          {
+            "date": "2026-09-15",
+            "open": 71.0,
+            "high": 71.0,
+            "low": 44.0,
+            "close": 44.0,
+            "volume": 2450637.0,
+            "change_pct": -38.028169014084504
+          }
+        ]
+      },
+      "unadjusted": {
+        "empty": true
+      }
+    },
+    "008290": {
+      "name": "원풍물산",
+      "adjusted": {
+        "empty": false,
+        "row_count": 126,
+        "positive_row_count": 126,
+        "start": {
+          "date": "2026-03-16",
+          "open": 732.0,
+          "high": 770.0,
+          "low": 732.0,
+          "close": 744.0,
+          "volume": 97643.0,
+          "change_pct": 0.5405405405405406
+        },
+        "end": {
+          "date": "2026-09-15",
+          "open": 99.0,
+          "high": 99.0,
+          "low": 69.0,
+          "close": 70.0,
+          "volume": 3790908.0,
+          "change_pct": -29.292929292929294
+        },
+        "simple_return_pct": -90.59139784946237,
+        "large_close_jumps": [
+          {
+            "from": "2026-09-09",
+            "to": "2026-09-10",
+            "from_close": 248.0,
+            "to_close": 136.0,
+            "factor": 0.5483870967741935,
+            "reported_change_pct": -45.16129032258064
+          }
+        ],
+        "tail": [
+          {
+            "date": "2026-09-04",
+            "open": 659.0,
+            "high": 745.0,
+            "low": 427.0,
+            "close": 427.0,
+            "volume": 7360215.0,
+            "change_pct": -30.0
+          },
+          {
+            "date": "2026-09-07",
+            "open": 299.0,
+            "high": 299.0,
+            "low": 299.0,
+            "close": 299.0,
+            "volume": 1036353.0,
+            "change_pct": -29.97658079625293
+          },
+          {
+            "date": "2026-09-08",
+            "open": 220.0,
+            "high": 349.0,
+            "low": 220.0,
+            "close": 248.0,
+            "volume": 37174555.0,
+            "change_pct": -17.05685618729097
+          },
+          {
+            "date": "2026-09-09",
+            "open": 0.0,
+            "high": 0.0,
+            "low": 0.0,
+            "close": 248.0,
+            "volume": 0.0,
+            "change_pct": 0.0
+          },
+          {
+            "date": "2026-09-10",
+            "open": 172.0,
+            "high": 172.0,
+            "low": 135.0,
+            "close": 136.0,
+            "volume": 8691425.0,
+            "change_pct": -45.16129032258064
+          },
+          {
+            "date": "2026-09-11",
+            "open": 139.0,
+            "high": 139.0,
+            "low": 121.0,
+            "close": 134.0,
+            "volume": 4282516.0,
+            "change_pct": -1.4705882352941175
+          },
+          {
+            "date": "2026-09-14",
+            "open": 134.0,
+            "high": 134.0,
+            "low": 99.0,
+            "close": 99.0,
+            "volume": 3768890.0,
+            "change_pct": -26.119402985074625
+          },
+          {
+            "date": "2026-09-15",
+            "open": 99.0,
+            "high": 99.0,
+            "low": 69.0,
+            "close": 70.0,
+            "volume": 3790908.0,
+            "change_pct": -29.292929292929294
+          }
+        ]
+      },
+      "unadjusted": {
+        "empty": true
+      }
+    },
+    "046070": {
+      "name": "코다코",
+      "adjusted": {
+        "empty": false,
+        "row_count": 126,
+        "positive_row_count": 126,
+        "start": {
+          "date": "2026-03-16",
+          "open": 82300.0,
+          "high": 82300.0,
+          "low": 82300.0,
+          "close": 82300.0,
+          "volume": 0.0,
+          "change_pct": 0.0
+        },
+        "end": {
+          "date": "2026-09-15",
+          "open": 302.0,
+          "high": 341.0,
+          "low": 228.0,
+          "close": 229.0,
+          "volume": 2977385.0,
+          "change_pct": -23.666666666666668
+        },
+        "simple_return_pct": -99.7217496962333,
+        "large_close_jumps": [
+          {
+            "from": "2026-09-09",
+            "to": "2026-09-10",
+            "from_close": 82300.0,
+            "to_close": 410.0,
+            "factor": 0.004981773997569866,
+            "reported_change_pct": -99.50182260024302
+          },
+          {
+            "from": "2026-09-11",
+            "to": "2026-09-14",
+            "from_close": 452.0,
+            "to_close": 300.0,
+            "factor": 0.6637168141592921,
+            "reported_change_pct": -33.6283185840708
+          }
+        ],
+        "tail": [
+          {
+            "date": "2026-09-04",
+            "open": 82300.0,
+            "high": 82300.0,
+            "low": 82300.0,
+            "close": 82300.0,
+            "volume": 0.0,
+            "change_pct": 0.0
+          },
+          {
+            "date": "2026-09-07",
+            "open": 0.0,
+            "high": 0.0,
+            "low": 0.0,
+            "close": 82300.0,
+            "volume": 0.0,
+            "change_pct": 0.0
+          },
+          {
+            "date": "2026-09-08",
+            "open": 0.0,
+            "high": 0.0,
+            "low": 0.0,
+            "close": 82300.0,
+            "volume": 0.0,
+            "change_pct": 0.0
+          },
+          {
+            "date": "2026-09-09",
+            "open": 0.0,
+            "high": 0.0,
+            "low": 0.0,
+            "close": 82300.0,
+            "volume": 0.0,
+            "change_pct": 0.0
+          },
+          {
+            "date": "2026-09-10",
+            "open": 800.0,
+            "high": 800.0,
+            "low": 400.0,
+            "close": 410.0,
+            "volume": 6380367.0,
+            "change_pct": -99.50182260024302
+          },
+          {
+            "date": "2026-09-11",
+            "open": 481.0,
+            "high": 550.0,
+            "low": 405.0,
+            "close": 452.0,
+            "volume": 3782127.0,
+            "change_pct": 10.24390243902439
+          },
+          {
+            "date": "2026-09-14",
+            "open": 462.0,
+            "high": 510.0,
+            "low": 280.0,
+            "close": 300.0,
+            "volume": 4048600.0,
+            "change_pct": -33.6283185840708
+          },
+          {
+            "date": "2026-09-15",
+            "open": 302.0,
+            "high": 341.0,
+            "low": 228.0,
+            "close": 229.0,
+            "volume": 2977385.0,
+            "change_pct": -23.666666666666668
+          }
+        ]
+      },
+      "unadjusted": {
+        "empty": true
+      }
+    },
+    "082660": {
+      "name": "코스나인",
+      "adjusted": {
+        "empty": false,
+        "row_count": 126,
+        "positive_row_count": 126,
+        "start": {
+          "date": "2026-03-16",
+          "open": 0.0,
+          "high": 0.0,
+          "low": 0.0,
+          "close": 480.0,
+          "volume": 0.0,
+          "change_pct": 0.0
+        },
+        "end": {
+          "date": "2026-09-15",
+          "open": 7.0,
+          "high": 7.0,
+          "low": 4.0,
+          "close": 5.0,
+          "volume": 25397492.0,
+          "change_pct": -28.57142857142857
+        },
+        "simple_return_pct": -98.95833333333334,
+        "large_close_jumps": [
+          {
+            "from": "2026-09-09",
+            "to": "2026-09-10",
+            "from_close": 480.0,
+            "to_close": 13.0,
+            "factor": 0.027083333333333334,
+            "reported_change_pct": -97.29166666666667
+          }
+        ],
+        "tail": [
+          {
+            "date": "2026-09-04",
+            "open": 0.0,
+            "high": 0.0,
+            "low": 0.0,
+            "close": 480.0,
+            "volume": 0.0,
+            "change_pct": 0.0
+          },
+          {
+            "date": "2026-09-07",
+            "open": 0.0,
+            "high": 0.0,
+            "low": 0.0,
+            "close": 480.0,
+            "volume": 0.0,
+            "change_pct": 0.0
+          },
+          {
+            "date": "2026-09-08",
+            "open": 0.0,
+            "high": 0.0,
+            "low": 0.0,
+            "close": 480.0,
+            "volume": 0.0,
+            "change_pct": 0.0
+          },
+          {
+            "date": "2026-09-09",
+            "open": 0.0,
+            "high": 0.0,
+            "low": 0.0,
+            "close": 480.0,
+            "volume": 0.0,
+            "change_pct": 0.0
+          },
+          {
+            "date": "2026-09-10",
+            "open": 16.0,
+            "high": 16.0,
+            "low": 12.0,
+            "close": 13.0,
+            "volume": 46035714.0,
+            "change_pct": -97.29166666666667
+          },
+          {
+            "date": "2026-09-11",
+            "open": 13.0,
+            "high": 15.0,
+            "low": 9.0,
+            "close": 10.0,
+            "volume": 31580306.0,
+            "change_pct": -23.076923076923077
+          },
+          {
+            "date": "2026-09-14",
+            "open": 10.0,
+            "high": 10.0,
+            "low": 7.0,
+            "close": 7.0,
+            "volume": 30529911.0,
+            "change_pct": -30.0
+          },
+          {
+            "date": "2026-09-15",
+            "open": 7.0,
+            "high": 7.0,
+            "low": 4.0,
+            "close": 5.0,
+            "volume": 25397492.0,
+            "change_pct": -28.57142857142857
+          }
+        ]
+      },
+      "unadjusted": {
+        "empty": true
+      }
+    },
+    "134380": {
+      "name": "미원화학",
+      "adjusted": {
+        "empty": false,
+        "row_count": 126,
+        "positive_row_count": 126,
+        "start": {
+          "date": "2026-03-16",
+          "open": 10930.0,
+          "high": 11050.0,
+          "low": 10930.0,
+          "close": 11050.0,
+          "volume": 4120.0,
+          "change_pct": 1.0978956999085088
+        },
+        "end": {
+          "date": "2026-09-15",
+          "open": 10170.0,
+          "high": 10880.0,
+          "low": 10170.0,
+          "close": 10440.0,
+          "volume": 2897.0,
+          "change_pct": 3.1620553359683794
+        },
+        "simple_return_pct": -5.520361990950229,
+        "large_close_jumps": [],
+        "tail": [
+          {
+            "date": "2026-09-04",
+            "open": 10350.0,
+            "high": 10500.0,
+            "low": 10290.0,
+            "close": 10290.0,
+            "volume": 6411.0,
+            "change_pct": -0.5797101449275363
+          },
+          {
+            "date": "2026-09-07",
+            "open": 10290.0,
+            "high": 10330.0,
+            "low": 10290.0,
+            "close": 10290.0,
+            "volume": 1713.0,
+            "change_pct": 0.0
+          },
+          {
+            "date": "2026-09-08",
+            "open": 10290.0,
+            "high": 10290.0,
+            "low": 10100.0,
+            "close": 10100.0,
+            "volume": 6250.0,
+            "change_pct": -1.84645286686103
+          },
+          {
+            "date": "2026-09-09",
+            "open": 10100.0,
+            "high": 10240.0,
+            "low": 10100.0,
+            "close": 10100.0,
+            "volume": 8140.0,
+            "change_pct": 0.0
+          },
+          {
+            "date": "2026-09-10",
+            "open": 10100.0,
+            "high": 10120.0,
+            "low": 10000.0,
+            "close": 10120.0,
+            "volume": 5771.0,
+            "change_pct": 0.19801980198019803
+          },
+          {
+            "date": "2026-09-11",
+            "open": 10120.0,
+            "high": 10120.0,
+            "low": 9950.0,
+            "close": 9950.0,
+            "volume": 17064.0,
+            "change_pct": -1.6798418972332017
+          },
+          {
+            "date": "2026-09-14",
+            "open": 9960.0,
+            "high": 10120.0,
+            "low": 9950.0,
+            "close": 10120.0,
+            "volume": 2456.0,
+            "change_pct": 1.7085427135678393
+          },
+          {
+            "date": "2026-09-15",
+            "open": 10170.0,
+            "high": 10880.0,
+            "low": 10170.0,
+            "close": 10440.0,
+            "volume": 2897.0,
+            "change_pct": 3.1620553359683794
+          }
+        ]
+      },
+      "unadjusted": {
+        "empty": true
+      }
+    },
+    "331520": {
+      "name": "밸로프",
+      "adjusted": {
+        "empty": false,
+        "row_count": 126,
+        "positive_row_count": 126,
+        "start": {
+          "date": "2026-03-16",
+          "open": 2800.0,
+          "high": 2830.0,
+          "low": 2750.0,
+          "close": 2765.0,
+          "volume": 12415.0,
+          "change_pct": -1.25
+        },
+        "end": {
+          "date": "2026-09-15",
+          "open": 2320.0,
+          "high": 2550.0,
+          "low": 2275.0,
+          "close": 2290.0,
+          "volume": 23079.0,
+          "change_pct": -3.375527426160337
+        },
+        "simple_return_pct": -17.179023508137437,
+        "large_close_jumps": [],
+        "tail": [
+          {
+            "date": "2026-09-04",
+            "open": 2425.0,
+            "high": 2425.0,
+            "low": 2375.0,
+            "close": 2405.0,
+            "volume": 13703.0,
+            "change_pct": -0.8247422680412372
+          },
+          {
+            "date": "2026-09-07",
+            "open": 2405.0,
+            "high": 2480.0,
+            "low": 2295.0,
+            "close": 2310.0,
+            "volume": 46569.0,
+            "change_pct": -3.9501039501039505
+          },
+          {
+            "date": "2026-09-08",
+            "open": 2495.0,
+            "high": 2495.0,
+            "low": 2205.0,
+            "close": 2235.0,
+            "volume": 66059.0,
+            "change_pct": -3.2467532467532463
+          },
+          {
+            "date": "2026-09-09",
+            "open": 2235.0,
+            "high": 2440.0,
+            "low": 2235.0,
+            "close": 2350.0,
+            "volume": 32187.0,
+            "change_pct": 5.1454138702460845
+          },
+          {
+            "date": "2026-09-10",
+            "open": 2465.0,
+            "high": 2465.0,
+            "low": 2290.0,
+            "close": 2345.0,
+            "volume": 13073.0,
+            "change_pct": -0.2127659574468085
+          },
+          {
+            "date": "2026-09-11",
+            "open": 2455.0,
+            "high": 2455.0,
+            "low": 2280.0,
+            "close": 2300.0,
+            "volume": 15484.0,
+            "change_pct": -1.9189765458422177
+          },
+          {
+            "date": "2026-09-14",
+            "open": 2345.0,
+            "high": 2990.0,
+            "low": 2225.0,
+            "close": 2370.0,
+            "volume": 11781.0,
+            "change_pct": 3.0434782608695654
+          },
+          {
+            "date": "2026-09-15",
+            "open": 2320.0,
+            "high": 2550.0,
+            "low": 2275.0,
+            "close": 2290.0,
+            "volume": 23079.0,
+            "change_pct": -3.375527426160337
+          }
+        ]
+      },
+      "unadjusted": {
+        "empty": true
+      }
+    }
+  },
+  "errors": {},
+  "error_count": 0
+}
