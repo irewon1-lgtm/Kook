@@ -6,14 +6,18 @@ and non-December fiscal-calendar recovery.
 
 Safety contract
 ---------------
-- Only issuers whose remaining missing metrics are M01/M02 are candidates.
-- Existing numeric values are never overwritten.
+- Only issuers whose remaining missing metrics are M01/M02 are new candidates.
+- Existing numeric values are never overwritten except an M02 value previously
+  produced by this exact STANDARD_RECOVERY stage; those values may be upgraded
+  when a newer authoritative actual-period direct OPM is now available.
 - Financial-sector M02 exclusion is never overridden.
 - Naver finance periods must be completed, actual (non-consensus) periods.
 - M01 requires revenue plus prior-year same-calendar-month actual revenue.
-- M02 prefers Naver's published actual operating-margin row. Only if absent is
-  actual operating-income/revenue used.
-- abs(M02) > 10,000% is rejected and the next older actual period is tried.
+- M02 prefers Naver's published actual operating-margin row. A finite direct
+  actual OPM is authoritative regardless of magnitude. Only if direct OPM is
+  absent is actual operating-income/revenue used.
+- The +/-10,000% outlier guard applies only to the computed fallback because
+  the displayed revenue/operating-income cells are rounded.
 - M03/M04 are never modified.
 - Any live source error fails closed before output is written.
 - Percentiles/composite/ranks and metadata are rebuilt from the resulting rows.
@@ -39,6 +43,8 @@ M02_RECOVERABLE = {
     "DART_NO_COMPARABLE_OPERATING_MARGIN",
     "DART_OPERATING_MARGIN_OUTLIER_GUARD",
 }
+STANDARD_RECOVERY_MARKER = "STANDARD_RECOVERY"
+COMPUTED_OPM_ABS_LIMIT = 10000.0
 
 
 def parse_args() -> argparse.Namespace:
@@ -50,6 +56,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def target_codes(quant: dict[str, Any]) -> list[str]:
+    """Missing-only candidates that can become complete in this stage."""
     result: list[str] = []
     for code, row in quant["records"].items():
         missing = [m for m in ("m01", "m02", "m03", "m04") if row[m].get("raw") is None]
@@ -62,6 +69,22 @@ def target_codes(quant: dict[str, Any]) -> list[str]:
             or (m == "m02" and row[m].get("reason") in M02_RECOVERABLE)
             for m in missing
         ):
+            result.append(code)
+    return sorted(result)
+
+
+def standard_m02_upgrade_codes(quant: dict[str, Any]) -> list[str]:
+    """Only M02 values already created by this stage may be rewritten.
+
+    This narrow allow-list lets a staged policy revision replace an older
+    STANDARD_RECOVERY value while making every primary DART/fiscal/other value
+    immutable.
+    """
+    result: list[str] = []
+    for code, row in quant["records"].items():
+        m02 = row.get("m02") or {}
+        basis = str(m02.get("basis") or "")
+        if m02.get("raw") is not None and STANDARD_RECOVERY_MARKER in basis:
             result.append(code)
     return sorted(result)
 
@@ -127,30 +150,59 @@ def resolve_m02(payload: Any, as_of: date) -> dict[str, Any] | None:
         direct = fiscal._cell_value(rows.get("영업이익률"), key)
         revenue = fiscal._cell_value(rows.get("매출액"), key)
         op_income = fiscal._cell_value(rows.get("영업이익"), key)
-        computed = None
-        if revenue not in (None, 0.0) and op_income is not None:
-            candidate = float(op_income) / float(revenue) * 100.0
-            if math.isfinite(candidate):
-                computed = candidate
 
+        # Provider-published actual OPM is authoritative. Do not impose an
+        # arbitrary magnitude cap on a directly published finite loss margin.
         if direct is not None:
-            value, source = float(direct), "DIRECT"
-        elif computed is not None:
-            value, source = float(computed), "COMPUTED"
-        else:
+            value = float(direct)
+            if math.isfinite(value):
+                return {
+                    "key": key,
+                    "value": round(value, 6),
+                    "source": "DIRECT",
+                    "direct": direct,
+                    "computed_from_rounded_cells": None,
+                    "extreme_direct_actual": abs(value) > COMPUTED_OPM_ABS_LIMIT,
+                    "rejected_newer_periods": rejected,
+                }
+            rejected.append({
+                "key": key,
+                "value": direct,
+                "source": "DIRECT",
+                "reason": "NONFINITE_DIRECT_MARGIN",
+            })
             continue
 
-        if not math.isfinite(value) or abs(value) > 10000:
-            rejected.append({"key": key, "value": value, "source": source, "reason": "MARGIN_OUTLIER_GUARD"})
-            continue
-        return {
-            "key": key,
-            "value": round(value, 6),
-            "source": source,
-            "direct": direct,
-            "computed_from_rounded_cells": computed,
-            "rejected_newer_periods": rejected,
-        }
+        # Only computed fallback values receive an outlier guard because the
+        # displayed revenue and operating-income cells can be heavily rounded.
+        if revenue not in (None, 0.0) and op_income is not None:
+            computed = float(op_income) / float(revenue) * 100.0
+            if not math.isfinite(computed):
+                rejected.append({
+                    "key": key,
+                    "value": computed,
+                    "source": "COMPUTED",
+                    "reason": "NONFINITE_COMPUTED_MARGIN",
+                })
+                continue
+            if abs(computed) > COMPUTED_OPM_ABS_LIMIT:
+                rejected.append({
+                    "key": key,
+                    "value": computed,
+                    "source": "COMPUTED",
+                    "reason": "COMPUTED_MARGIN_OUTLIER_GUARD",
+                })
+                continue
+            return {
+                "key": key,
+                "value": round(computed, 6),
+                "source": "COMPUTED",
+                "direct": None,
+                "computed_from_rounded_cells": computed,
+                "extreme_direct_actual": False,
+                "rejected_newer_periods": rejected,
+            }
+
     if rejected:
         return {"reason": "ALL_AVAILABLE_MARGINS_REJECTED", "rejected_periods": rejected}
     return None
@@ -168,14 +220,13 @@ def _rebuild_metadata(snapshot: dict[str, Any]) -> None:
         reason_counts[metric] = counts
     snapshot["reason_counts"] = reason_counts
 
-    # Keep sample cards exactly synchronized with canonical records.
     samples = snapshot.get("samples")
     if isinstance(samples, dict):
         for code in list(samples):
             if code in records:
                 samples[code] = deepcopy(records[code])
 
-    # Historical one-time scripts appended this sentence more than once.
+    # Historical one-time scripts appended the same sentence more than once.
     rules = snapshot.get("rules") or {}
     for mid in ("M01", "M02"):
         text = str(rules.get(mid) or "")
@@ -188,14 +239,22 @@ def _rebuild_metadata(snapshot: dict[str, Any]) -> None:
     snapshot["rules"] = rules
 
 
+def _m02_basis(result: dict[str, Any]) -> str:
+    return f"{result['key']}_NAVER_QUARTER_ACTUAL_OPM_{result['source']}_STANDARD_RECOVERY"
+
+
 def apply_recovery(before: dict[str, Any], payloads: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
     after = deepcopy(before)
     as_of = date.fromisoformat(str(before["snapshot_date_kst"]))
     candidates = target_codes(before)
+    upgrade_candidates = standard_m02_upgrade_codes(before)
+    upgrade_candidate_set = set(upgrade_candidates)
     details: dict[str, Any] = {}
     m01_codes: list[str] = []
     m02_codes: list[str] = []
+    m02_upgraded_codes: list[str] = []
 
+    # Fill new missing M01/M02 values first.
     for code in candidates:
         old = before["records"][code]
         row = after["records"][code]
@@ -217,11 +276,7 @@ def apply_recovery(before: dict[str, Any], payloads: dict[str, Any]) -> tuple[di
             r2 = resolve_m02(payload, as_of)
             detail["m02_resolver"] = r2
             if r2 and r2.get("value") is not None:
-                row["m02"].update(
-                    raw=r2["value"],
-                    reason=None,
-                    basis=f"{r2['key']}_NAVER_QUARTER_ACTUAL_OPM_{r2['source']}_STANDARD_RECOVERY",
-                )
+                row["m02"].update(raw=r2["value"], reason=None, basis=_m02_basis(r2))
                 m02_codes.append(code)
 
         missing_after = [m for m in ("m01", "m02", "m03", "m04") if row[m].get("raw") is None]
@@ -229,14 +284,47 @@ def apply_recovery(before: dict[str, Any], payloads: dict[str, Any]) -> tuple[di
         detail["result"] = "PROMOTED_COMPLETE" if not missing_after else "PARTIAL"
         details[code] = detail
 
-        # Per-row immutable-value gate.
+    # Re-evaluate only prior STANDARD_RECOVERY M02 values. This makes policy
+    # revision V4 safe on an already V3-promoted snapshot and idempotent later.
+    for code in upgrade_candidates:
+        old_m02 = before["records"][code]["m02"]
+        new_m02 = after["records"][code]["m02"]
+        r2 = resolve_m02(payloads.get(code), as_of)
+        d = details.setdefault(code, {
+            "name": after["records"][code].get("name"),
+            "market": after["records"][code].get("market"),
+        })
+        d["m02_upgrade_resolver"] = r2
+        if not r2 or r2.get("value") is None:
+            # Fail closed: retain the prior validated STANDARD_RECOVERY value.
+            d["m02_upgrade_result"] = "RETAINED_PRIOR_STANDARD_RECOVERY"
+            continue
+        new_basis = _m02_basis(r2)
+        new_value = r2["value"]
+        if new_m02.get("raw") != new_value or new_m02.get("basis") != new_basis:
+            new_m02.update(raw=new_value, reason=None, basis=new_basis)
+            m02_upgraded_codes.append(code)
+            d["m02_upgrade_result"] = "UPGRADED"
+            d["m02_before"] = {"raw": old_m02.get("raw"), "basis": old_m02.get("basis")}
+            d["m02_after"] = {"raw": new_value, "basis": new_basis}
+        else:
+            d["m02_upgrade_result"] = "ALREADY_CURRENT"
+
+    # Immutable-value gate: everything except a prior STANDARD_RECOVERY M02 is
+    # byte-for-byte immutable at raw/basis level.
+    for code, old in before["records"].items():
+        new = after["records"][code]
         for mid in ("m01", "m02", "m03", "m04"):
-            if old[mid].get("raw") is not None:
-                assert row[mid].get("raw") == old[mid].get("raw"), (code, mid, "raw overwrite")
-                assert row[mid].get("basis") == old[mid].get("basis"), (code, mid, "basis overwrite")
+            if old[mid].get("raw") is None:
+                continue
+            allow_standard_m02_upgrade = mid == "m02" and code in upgrade_candidate_set
+            if allow_standard_m02_upgrade:
+                continue
+            assert new[mid].get("raw") == old[mid].get("raw"), (code, mid, "raw overwrite")
+            assert new[mid].get("basis") == old[mid].get("basis"), (code, mid, "basis overwrite")
         if old["m02"].get("reason") == "FINANCIAL_SECTOR_EXCLUDED":
-            assert row["m02"].get("raw") is None
-            assert row["m02"].get("reason") == "FINANCIAL_SECTOR_EXCLUDED"
+            assert new["m02"].get("raw") is None
+            assert new["m02"].get("reason") == "FINANCIAL_SECTOR_EXCLUDED"
 
     before_coverage = dict(before["coverage"])
     after_coverage = recent.recompute_scores(after["records"])
@@ -244,15 +332,27 @@ def apply_recovery(before: dict[str, Any], payloads: dict[str, Any]) -> tuple[di
     _rebuild_metadata(after)
     recent.validate_snapshot(after)
 
-    promoted = sorted(code for code in candidates if after["records"][code].get("composite") is not None)
+    promoted = sorted(
+        code for code in candidates
+        if before["records"][code].get("composite") is None
+        and after["records"][code].get("composite") is not None
+    )
     recovery = {
-        "policy": "remaining-gap M01/M02 only; completed Naver actual periods; direct OPM preferred; computed fallback; abs OPM<=10000; existing numbers preserved",
+        "policy": (
+            "remaining-gap M01/M02 only; completed Naver actual periods; finite direct actual OPM authoritative "
+            "regardless of magnitude; computed fallback only uses abs<=10000 guard; existing numbers preserved "
+            "except prior STANDARD_RECOVERY M02 policy upgrades"
+        ),
         "candidate_count": len(candidates),
         "candidate_codes": candidates,
+        "upgrade_candidate_count": len(upgrade_candidates),
+        "upgrade_candidate_codes": upgrade_candidates,
         "m01_recovered": len(m01_codes),
         "m02_recovered": len(m02_codes),
         "m01_codes": m01_codes,
         "m02_codes": m02_codes,
+        "m02_upgraded_count": len(m02_upgraded_codes),
+        "m02_upgraded_codes": sorted(m02_upgraded_codes),
         "promoted_complete_count": len(promoted),
         "promoted_complete_codes": promoted,
         "coverage_before": before_coverage,
@@ -292,12 +392,28 @@ def self_test() -> None:
     assert m1 and m1["key"] == "202603" and m1["value"] == 25.0, m1
     assert m2 and m2["key"] == "202603" and m2["value"] == 8.0, m2
 
-    outlier = {"financeInfo": {
+    # A direct actual margin is authoritative even when its magnitude is huge.
+    direct_extreme = {"financeInfo": {
         "trTitleList": [{"key": "202603", "isConsensus": "N"}, {"key": "202606", "isConsensus": "N"}],
         "rowList": [{"title": "영업이익률", "columns": {"202603": {"value": "-250"}, "202606": {"value": "-12000"}}}],
     }}
-    m2b = resolve_m02(outlier, as_of)
-    assert m2b and m2b["key"] == "202603" and m2b["value"] == -250.0, m2b
+    m2b = resolve_m02(direct_extreme, as_of)
+    assert m2b and m2b["key"] == "202606" and m2b["value"] == -12000.0, m2b
+    assert m2b["source"] == "DIRECT" and m2b["extreme_direct_actual"] is True
+
+    # A computed fallback from rounded cells still gets the outlier guard, then
+    # falls back to the next older completed actual period.
+    computed_extreme = {"financeInfo": {
+        "trTitleList": [{"key": "202603", "isConsensus": "N"}, {"key": "202606", "isConsensus": "N"}],
+        "rowList": [
+            {"title": "매출액", "columns": {"202603": {"value": "100"}, "202606": {"value": "1"}}},
+            {"title": "영업이익", "columns": {"202603": {"value": "-250"}, "202606": {"value": "-120"}}},
+        ],
+    }}
+    m2c = resolve_m02(computed_extreme, as_of)
+    assert m2c and m2c["key"] == "202603" and m2c["value"] == -250.0, m2c
+    assert m2c["source"] == "COMPUTED"
+    assert m2c["rejected_newer_periods"][0]["reason"] == "COMPUTED_MARGIN_OUTLIER_GUARD"
     print("STANDARD_ACTUAL_RECOVERY_SELF_TEST_PASS")
 
 
@@ -309,11 +425,11 @@ def main() -> None:
     quant_path = Path(args.quant)
     out_path = Path(args.out) if args.out else quant_path
     before = json.loads(quant_path.read_text(encoding="utf-8"))
-    candidates = target_codes(before)
+    fetch_codes = sorted(set(target_codes(before)) | set(standard_m02_upgrade_codes(before)))
 
     payloads: dict[str, Any] = {}
     errors: dict[str, str] = {}
-    for code in candidates:
+    for code in fetch_codes:
         try:
             payloads[code] = v2.get_json(f"{base.NAVER_BASE}/{code}/finance/quarter")
         except Exception as exc:
@@ -325,13 +441,14 @@ def main() -> None:
     recovery["source_error_count"] = 0
     recovery["source_errors"] = {}
     after["standard_actual_recovery"] = recovery
-    # Validate once more after metadata insertion, before touching output.
     recent.validate_snapshot(after)
     out_path.write_text(json.dumps(after, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print("STANDARD_ACTUAL_RECOVERY_PASS", json.dumps({
         "candidate_count": recovery["candidate_count"],
+        "upgrade_candidate_count": recovery["upgrade_candidate_count"],
         "m01_recovered": recovery["m01_recovered"],
         "m02_recovered": recovery["m02_recovered"],
+        "m02_upgraded_count": recovery["m02_upgraded_count"],
         "promoted_complete_count": recovery["promoted_complete_count"],
         "coverage_before": recovery["coverage_before"],
         "coverage_after": recovery["coverage_after"],
