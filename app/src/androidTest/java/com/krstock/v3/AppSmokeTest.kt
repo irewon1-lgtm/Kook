@@ -7,6 +7,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeLeft
@@ -52,18 +53,31 @@ class AppSmokeTest {
         composeRule.waitForIdle()
         composeRule.onNodeWithText("국내주식 조합순위").assertIsDisplayed()
 
+        // Regression: changing a ranking metric after browsing lower ranks must return to the new #1.
+        composeRule.onNodeWithTag("stock_rank_list").performScrollToIndex(12)
+        composeRule.waitForIdle()
         composeRule.onNodeWithTag("metric_toggle_M02").performClick()
         composeRule.waitForIdle()
+        composeRule.onNodeWithText("1위").assertIsDisplayed()
         composeRule.onNodeWithText("선택 3개 지표 종합순위").assertIsDisplayed()
-        composeRule.onNodeWithText("각 지표 약 33.3%").assertIsDisplayed()
+        composeRule.onNodeWithText("각 33.3%").assertIsDisplayed()
 
         composeRule.onNodeWithTag("metric_toggle_M04").performClick()
         composeRule.waitForIdle()
+        composeRule.onNodeWithText("1위").assertIsDisplayed()
         composeRule.onNodeWithText("선택 2개 지표 종합순위").assertIsDisplayed()
-        composeRule.onNodeWithText("각 지표 50%").assertIsDisplayed()
+        composeRule.onNodeWithText("각 50%").assertIsDisplayed()
         composeRule.onNodeWithTag("metric_toggle_M04").performClick()
         composeRule.waitForIdle()
         composeRule.onNodeWithText("선택 3개 지표 종합순위").assertIsDisplayed()
+
+        // Sort-mode changes must also restart from the beginning rather than preserving stale scroll position.
+        composeRule.onNodeWithTag("stock_rank_list").performScrollToIndex(10)
+        composeRule.onNodeWithTag("sort_CODE").performClick()
+        composeRule.waitForIdle()
+        composeRule.onNodeWithTag("sort_COMBINATION").performClick()
+        composeRule.waitForIdle()
+        composeRule.onNodeWithText("1위").assertIsDisplayed()
 
         composeRule.onNodeWithTag("market_KOSDAQ").performClick()
         composeRule.onNodeWithTag("stock_search").performTextInput("삼천당제약")
