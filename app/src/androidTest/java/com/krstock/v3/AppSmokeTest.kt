@@ -81,11 +81,15 @@ class AppSmokeTest {
         composeRule.onNodeWithTag("stock_search").performTextInput("삼천당제약")
         closeSoftKeyboard()
         composeRule.waitForIdle()
-        // Bring the lazy item into composition first, then scroll its lower comparison region
-        // into the actual viewport. The visual card is intentionally taller than the list viewport.
+        // The whole stock card is clickable, so Compose merges descendant semantics in the
+        // default test tree. Bring the card into composition, then inspect its visual-only
+        // comparison region through the unmerged semantics tree.
         composeRule.onNodeWithTag("stock_000250").performScrollTo()
-        composeRule.onNodeWithTag("comparison_000250").performScrollTo().assertIsDisplayed()
-        composeRule.onNodeWithText("한눈 비교").assertIsDisplayed()
+        composeRule.onNodeWithTag("comparison_000250", useUnmergedTree = true)
+            .performScrollTo()
+            .assertIsDisplayed()
+        composeRule.onNodeWithText("한눈 비교", useUnmergedTree = true).assertIsDisplayed()
+        composeRule.onNodeWithText("시장 내 상대위치", useUnmergedTree = true).assertIsDisplayed()
         composeRule.onNodeWithTag("stock_000250").performScrollTo().performClick()
         composeRule.waitForIdle()
 
