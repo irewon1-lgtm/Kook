@@ -30,8 +30,8 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install required dependency
-        run: pip install requests
+      - name: Install required dependencies
+        run: pip install requests pandas
 
       - name: Freeze current main snapshot
         run: |
@@ -85,17 +85,14 @@ jobs:
             assert re.fullmatch(r'[0-9A-Z]{6}',code),code
             oldrow=old['records'][code]
 
-            # M03 is intentionally immutable: unsafe/mathematically undefined PER stays excluded.
             assert row['m03'].get('raw')==oldrow['m03'].get('raw'),(code,'m03 raw changed')
             assert row['m03'].get('reason')==oldrow['m03'].get('reason'),(code,'m03 reason changed')
             assert row['m03'].get('basis')==oldrow['m03'].get('basis'),(code,'m03 basis changed')
 
-            # Existing M01/M04 numbers may never be overwritten by this recovery.
             if oldrow['m01'].get('raw') is not None and row['m01'].get('raw')!=oldrow['m01'].get('raw'):
               changed_existing_m01.append(code)
             if oldrow['m04'].get('raw') is not None and row['m04'].get('raw')!=oldrow['m04'].get('raw'):
               changed_existing_m04.append(code)
-            # M02 may only change when upgrading this exact prior STANDARD_RECOVERY source.
             if oldrow['m02'].get('raw') is not None and row['m02'].get('raw')!=oldrow['m02'].get('raw'):
               assert 'STANDARD_RECOVERY' in str(oldrow['m02'].get('basis') or ''),(code,oldrow['m02'])
               assert 'STANDARD_RECOVERY' in str(row['m02'].get('basis') or ''),(code,row['m02'])
@@ -127,7 +124,6 @@ jobs:
           assert not changed_existing_m04,changed_existing_m04
           assert sorted(ranks)==list(range(1,len(ranks)+1))
 
-          # Proven unsafe/undefined PER tail remains deliberately excluded.
           assert new['coverage']['m03_available']==2638,new['coverage']
           assert m03_reasons==Counter({
             'NAVER_EPS_MISSING':9,
@@ -135,7 +131,6 @@ jobs:
             'CORPORATE_ACTION_PER_XCHECK_PER_MISMATCH':1,
           }),m03_reasons
 
-          # The four verified liquidation-trading gaps must be recovered; only <6m history gaps remain.
           assert new['coverage']['m04_available']==2611,new['coverage']
           assert m04_reasons==Counter({'PRICE_HISTORY_SHORTER_THAN_6M':38}),m04_reasons
 
