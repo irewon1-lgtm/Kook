@@ -33,7 +33,7 @@ jobs:
       - name: Install only collector dependencies
         run: pip install requests pandas lxml
 
-      - name: Freeze current main and reject stale branch inputs
+      - name: Freeze current main and reject stale code inputs
         run: |
           set -euo pipefail
           git fetch origin main
@@ -42,6 +42,7 @@ jobs:
           echo "BASE_MAIN_SHA=$BASE_MAIN_SHA" >> "$GITHUB_ENV"
           echo "BASE_SNAPSHOT_SHA=$BASE_SNAPSHOT_SHA" >> "$GITHUB_ENV"
           git show origin/main:evidence/real_quant_snapshot.json > /tmp/kr4_baseline.json
+          git show origin/main:evidence/quarterly_history.json > /tmp/quarterly_history.json
 
           : > /tmp/critical-shas.txt
           for path in \
@@ -52,19 +53,20 @@ jobs:
             scripts/apply_fiscal_calendar_recovery.py \
             scripts/apply_standard_actual_recovery.py \
             scripts/standard_actual_core.py \
-            evidence/quarterly_history.json \
             app/src/main/java/com/krstock/v3/data/generated/GeneratedKospiMaster.kt \
             app/src/main/java/com/krstock/v3/data/generated/GeneratedKosdaqMaster.kt
           do
             MAIN_BLOB=$(git rev-parse "origin/main:$path")
             BRANCH_BLOB=$(git hash-object "$path")
             test "$MAIN_BLOB" = "$BRANCH_BLOB" || {
-              echo "STALE_BRANCH_INPUT $path main=$MAIN_BLOB branch=$BRANCH_BLOB"
+              echo "STALE_BRANCH_CODE $path main=$MAIN_BLOB branch=$BRANCH_BLOB"
               exit 1
             }
             echo "$MAIN_BLOB $path" >> /tmp/critical-shas.txt
           done
-          echo "BASELINE_INPUT_GATE_PASS main=$BASE_MAIN_SHA snapshot=$BASE_SNAPSHOT_SHA"
+          QUARTERLY_BLOB=$(git rev-parse origin/main:evidence/quarterly_history.json)
+          echo "$QUARTERLY_BLOB evidence/quarterly_history.json" >> /tmp/critical-shas.txt
+          echo "BASELINE_INPUT_GATE_PASS main=$BASE_MAIN_SHA snapshot=$BASE_SNAPSHOT_SHA quarterly=$QUARTERLY_BLOB"
 
       - name: Patch permanent v2 and run deterministic regressions
         run: |
@@ -89,7 +91,6 @@ jobs:
           import sys
           from datetime import date
           sys.path.insert(0,'scripts')
-          import collect_real_quant as base
           import collect_real_quant_v2 as v2
           import collect_real_quant_v3 as v3
 
@@ -148,7 +149,7 @@ jobs:
           set -euo pipefail
           python scripts/apply_recent_dart_fallback.py \
             --quant /tmp/real_quant_snapshot.json \
-            --history evidence/quarterly_history.json \
+            --history /tmp/quarterly_history.json \
             --out /tmp/real_quant_snapshot.json
           python scripts/apply_fiscal_calendar_recovery.py \
             --quant /tmp/real_quant_snapshot.json \
@@ -242,7 +243,6 @@ jobs:
           assert -80.0<miwon<200.0,miwon
           assert -90.0<valof<300.0,valof
 
-          # Recompute reason counters exactly; published metadata must match rows.
           for mid in ('m01','m02','m03','m04'):
             counted=Counter(
               'AVAILABLE' if row[mid]['raw'] is not None else (row[mid]['reason'] or 'UNKNOWN')
