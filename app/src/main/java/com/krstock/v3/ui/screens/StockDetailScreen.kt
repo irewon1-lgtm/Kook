@@ -469,7 +469,12 @@ private fun EvidenceRow(item: ContextEvidence) {
     Column(modifier = Modifier.fillMaxWidth().padding(vertical = 5.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
-                if (item.kind == EvidenceKind.DISCLOSURE) "공시" else "뉴스",
+                when (item.kind) {
+                    EvidenceKind.DISCLOSURE -> "공시"
+                    EvidenceKind.IR -> "IR"
+                    EvidenceKind.OFFICIAL -> "공식자료"
+                    EvidenceKind.NEWS -> "뉴스"
+                },
                 fontSize = 9.sp,
                 fontWeight = FontWeight.Bold,
                 color = scheme.primary
