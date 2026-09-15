@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.krstock.v3.data.model.DataStatus
 import com.krstock.v3.ui.theme.AmberWarning
+import com.krstock.v3.ui.theme.BlueAccent
 import com.krstock.v3.ui.theme.EmeraldGreen
 import com.krstock.v3.ui.theme.RoseError
 
@@ -19,6 +20,7 @@ import com.krstock.v3.ui.theme.RoseError
 fun StatusBadge(status: DataStatus, modifier: Modifier = Modifier) {
     val (bgColor, textColor, label) = when (status) {
         DataStatus.REAL -> Triple(EmeraldGreen.copy(alpha = 0.15f), EmeraldGreen, "REAL")
+        DataStatus.REGISTERED -> Triple(BlueAccent.copy(alpha = 0.13f), BlueAccent, "REGISTERED")
         DataStatus.DEMO -> Triple(Color.Gray.copy(alpha = 0.15f), Color.DarkGray, "DEMO")
         DataStatus.MISSING -> Triple(RoseError.copy(alpha = 0.15f), RoseError, "MISSING")
         DataStatus.WAITING_FOR_AUTH -> Triple(AmberWarning.copy(alpha = 0.15f), AmberWarning, "WAITING_FOR_AUTH")
@@ -32,7 +34,7 @@ fun StatusBadge(status: DataStatus, modifier: Modifier = Modifier) {
         Text(
             text = label,
             color = textColor,
-            fontSize = 11.sp,
+            fontSize = 10.sp,
             fontWeight = FontWeight.Bold
         )
     }
