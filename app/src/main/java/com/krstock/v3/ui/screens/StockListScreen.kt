@@ -114,7 +114,7 @@ fun StockListScreen(
                                 else -> selectedMetricIds + metric.id
                             }
                         },
-                        modifier = Modifier.testTag("metric_toggle_${metric.id}"),
+                        modifier = Modifier.testTag(metricToggleTestTag(metric.id)),
                         label = { Text(if (selected) "✓ ${metric.label}" else metric.label, fontSize = 11.sp) }
                     )
                 }
@@ -207,6 +207,14 @@ fun StockListScreen(
             }
         }
     }
+}
+
+private fun metricToggleTestTag(metricId: String): String = when (metricId) {
+    "M01" -> "metric_toggle_M01"
+    "M02" -> "metric_toggle_M02"
+    "M03" -> "metric_toggle_M03"
+    "M04" -> "metric_toggle_M04"
+    else -> error("Unknown metric toggle $metricId")
 }
 
 private fun sortComparator(
