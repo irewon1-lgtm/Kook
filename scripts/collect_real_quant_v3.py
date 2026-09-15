@@ -9,6 +9,8 @@ Key guarantees:
   Q1/HY/Q3/FY periods.
 - DART period columns are discovered by semantics (당기/전기, 3개월/누적/연간)
   instead of being frozen to 2026 H1 headers.
+- DART rows that miss an exact issue-code join can be recovered only through a
+  deterministic company-name match or an exact preferred/common share sibling.
 - Generated Kotlin keeps a bundled fallback but exposes a guarded runtime
   install hook so an already-installed APK can adopt a newer validated JSON
   snapshot without reinstalling the APK.
@@ -204,6 +206,26 @@ def _revenue_period_candidates(row: dict[str, str] | None) -> list[tuple[int, st
     return out
 
 
+def _normalize_company_name(value: str) -> str:
+    s = re.sub(r"\s+", "", value or "")
+    s = s.replace("㈜", "").replace("(주)", "").replace("（주）", "")
+    if s.startswith("주식회사"):
+        s = s[len("주식회사"):]
+    return s.strip()
+
+
+def _preferred_parent_name(value: str) -> str | None:
+    """Return the exact common-share company name for a preferred issue name.
+
+    We intentionally accept only terminal Korean preferred-share patterns and
+    later require exactly one populated common-share sibling. This prevents
+    fuzzy company-name joins from contaminating financial data.
+    """
+    name = _normalize_company_name(value)
+    parent = re.sub(r"(?:\d*우(?:B|C)?(?:\(전환\))?|우(?:B|C)?(?:\(전환\))?)$", "", name)
+    return parent if parent and parent != name else None
+
+
 def parse_dart_metrics_dynamic(issuers: list[base.Issuer], zip_bytes: bytes) -> dict[str, dict[str, Any]]:
     year = _SELECTED_DART_YEAR
     period = _SELECTED_DART_PERIOD
@@ -211,7 +233,12 @@ def parse_dart_metrics_dynamic(issuers: list[base.Issuer], zip_bytes: bytes) -> 
         raise RuntimeError("DART period metadata not initialized")
 
     universe = {i.code: i for i in issuers}
+    issuer_name_codes: dict[str, list[str]] = defaultdict(list)
+    for issuer in issuers:
+        issuer_name_codes[_normalize_company_name(issuer.name)].append(issuer.code)
+
     groups: dict[str, dict[str, list[dict[str, str]]]] = defaultdict(lambda: defaultdict(list))
+    mapping_source: dict[str, str] = {}
     zf = zipfile.ZipFile(io.BytesIO(zip_bytes))
     for member in zf.namelist():
         raw = zf.read(member)
@@ -222,11 +249,43 @@ def parse_dart_metrics_dynamic(issuers: list[base.Issuer], zip_bytes: bytes) -> 
         reader.fieldnames = [x.strip() for x in reader.fieldnames]
         for row0 in reader:
             row = {(k or "").strip(): (v or "").strip() for k, v in row0.items()}
-            code = re.sub(r"[^0-9A-Z]", "", (row.get("종목코드") or "").upper())
-            if code not in universe:
+            source_code = re.sub(r"[^0-9A-Z]", "", (row.get("종목코드") or "").upper())
+            targets: list[str] = []
+            if source_code in universe:
+                targets = [source_code]
+            else:
+                company_name = _normalize_company_name(row.get("회사명") or row.get("법인명") or "")
+                name_matches = issuer_name_codes.get(company_name, []) if company_name else []
+                if len(name_matches) == 1:
+                    targets = name_matches
+                    mapping_source[targets[0]] = f"NAME_{source_code or 'NO_CODE'}"
+            if not targets:
                 continue
             statement = row.get("재무제표종류") or ""
-            groups[code][statement].append(row)
+            for target in targets:
+                groups[target][statement].append(row)
+
+    # Preferred shares belong to the same reporting entity as their common
+    # share. If OpenDART emits only the common issue code, reuse that exact
+    # sibling's statement only when the normalized parent name has one unique
+    # populated match. No broad fuzzy matching is allowed.
+    normalized_issuers = {i.code: _normalize_company_name(i.name) for i in issuers}
+    for issuer in issuers:
+        if groups.get(issuer.code):
+            continue
+        parent = _preferred_parent_name(issuer.name)
+        if not parent:
+            continue
+        candidates = [
+            other.code
+            for other in issuers
+            if other.code != issuer.code and normalized_issuers[other.code] == parent and groups.get(other.code)
+        ]
+        if len(candidates) == 1:
+            source = candidates[0]
+            for statement, rows in groups[source].items():
+                groups[issuer.code][statement].extend(rows)
+            mapping_source[issuer.code] = source
 
     out: dict[str, dict[str, Any]] = {}
     for issuer in issuers:
@@ -301,13 +360,15 @@ def parse_dart_metrics_dynamic(issuers: list[base.Issuer], zip_bytes: bytes) -> 
             m02_basis = ""
 
         scope = "CFS" if "연결" in statement else "OFS"
+        alias = mapping_source.get(issuer.code)
+        alias_suffix = f"_ALIAS_{alias}" if alias else ""
         out[issuer.code] = {
             "m01_raw": round(m01, 6) if m01 is not None else None,
             "m01_reason": m01_reason,
-            "m01_basis": f"{m01_basis}_{scope}" if m01_basis else "",
+            "m01_basis": f"{m01_basis}_{scope}{alias_suffix}" if m01_basis else "",
             "m02_raw": round(m02, 6) if m02 is not None else None,
             "m02_reason": m02_reason,
-            "m02_basis": f"{m02_basis}_{scope}" if m02_basis else "",
+            "m02_basis": f"{m02_basis}_{scope}{alias_suffix}" if m02_basis else "",
             "dart_statement": statement,
         }
     return out
@@ -421,16 +482,16 @@ def _postprocess_evidence(path: Path) -> None:
         "collector": "collect_real_quant_v3.py",
         "timezone": "Asia/Seoul",
         "price_cutoff_policy": "multi-symbol quorum; same-day bar rejected before 16:00 KST",
-        "dart_policy": "latest available Q1/HY/Q3/FY PL bulk period selected dynamically",
+        "dart_policy": "latest available Q1/HY/Q3/FY PL bulk period selected dynamically; exact name/preferred-share sibling recovery only",
         "dart_year": _SELECTED_DART_YEAR,
         "dart_period": _SELECTED_DART_PERIOD,
         "dart_period_label": DART_PERIOD_LABEL.get(_SELECTED_DART_PERIOD or "", ""),
     }
-    d["sources"]["M03"] = "Naver Finance reported positive trailing PER; actual EPS + completed-session close fallback"
+    d["sources"]["M03"] = "Naver Finance reported trailing PER; actual EPS + completed-session close fallback; annual actual EPS fallback when integration EPS is missing"
     d["sources"]["naver_price_pattern"] = base.NAVER_BASE + "/{code}/price?pageSize=60&page={page}"
-    d["rules"]["M01"] = "latest OpenDART PL period; 3-month YoY preferred, YTD/annual comparable fallback; CFS preferred to OFS"
-    d["rules"]["M02"] = "same latest OpenDART PL period; operating income/revenue on a matched period column; financial/insurance sectors excluded"
-    d["rules"]["M03"] = "Naver reported positive trailing PER preferred; completed-session close / actual non-consensus EPS fallback; EPS <= 0 remains unavailable"
+    d["rules"]["M01"] = "latest OpenDART PL period; 3-month YoY preferred, YTD/annual comparable fallback; CFS preferred to OFS; deterministic name/preferred-share alias recovery"
+    d["rules"]["M02"] = "same latest OpenDART PL period; operating income/revenue on a matched period column; financial/insurance sectors excluded; deterministic name/preferred-share alias recovery"
+    d["rules"]["M03"] = "positive reported trailing PER preferred; otherwise completed-session close / actual non-consensus EPS; missing integration EPS may fall back to latest non-consensus annual EPS; negative EPS yields negative PER with 0 valuation percentile; zero EPS remains unavailable"
     path.write_text(json.dumps(d, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
@@ -440,6 +501,7 @@ def main() -> None:
     base.parse_args = parse_args_auto_cached
     base.get_json = v2.get_json
     base.naver_metric_worker = v2.naver_metric_worker
+    base.compute_scores = v2.compute_scores_with_loss_per
     base.download_dart_halfyear_pl = download_latest_dart_pl
     base.parse_dart_metrics = parse_dart_metrics_dynamic
     base.write_kotlin = write_kotlin_runtime_capable
