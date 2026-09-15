@@ -6,6 +6,7 @@ on:
       - fix/fiscal-calendar-aware-dart-v1
     paths:
       - "scripts/diagnose_fiscal_calendar.py"
+      - "scripts/diagnose_naver_fiscal_quarter.py"
       - ".github/workflows/fiscal-calendar-diagnostic.yml"
   workflow_dispatch:
 
@@ -29,6 +30,10 @@ jobs:
         run: |
           set -euo pipefail
           python scripts/diagnose_fiscal_calendar.py | tee fiscal-calendar-diagnostic.log
+      - name: Probe Naver actual quarter data
+        run: |
+          set -euo pipefail
+          python scripts/diagnose_naver_fiscal_quarter.py | tee -a fiscal-calendar-diagnostic.log
       - name: Upload diagnostic
         uses: actions/upload-artifact@v4
         with:
