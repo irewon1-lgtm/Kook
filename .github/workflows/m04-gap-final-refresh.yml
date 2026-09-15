@@ -120,8 +120,11 @@ jobs:
             summaries[code]=(value,len(candidates),len(confirmed),hits)
             print('FALSE_CLUSTER_PROBE',code,'m04',value,'candidates',candidates,'confirmed',confirmed)
 
+          # These names were in the old 2026-09-15 false-positive cluster.
+          # They may legitimately have a real corporate action elsewhere in the
+          # six-month window (001230 has one on 2026-05-29); only the cutoff-day
+          # false event is prohibited here.
           assert not false_cutoff,false_cutoff
-          assert summaries['001230'][2]==0,summaries['001230']
 
           for code,kind in known.items():
             value,start,end,candidates,confirmed=inspect(code)
