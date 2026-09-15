@@ -5,6 +5,9 @@ on:
     branches:
       - "feature/quarterly-history-v1"
     paths:
+      - "scripts/collect_quarterly_history.py"
+      - "scripts/collect_quarterly_history_parallel.py"
+      - "tests/test_quarterly_history.py"
       - ".github/workflows/bootstrap-quarterly-history-feature.yml"
   workflow_dispatch:
 
@@ -15,7 +18,8 @@ concurrency:
   group: kr4-quarterly-bootstrap-feature
   cancel-in-progress: true
 
-# OpenDART raw 1Q/3Q codes are normalized to Q1/Q3 before continuity validation.
+# OpenDART bulk catalog uses FQ/HY/TQ/FY for Q1/Q2/Q3/Q4.
+# The collector normalizes those codes before strict continuity validation.
 jobs:
   collect:
     runs-on: ubuntu-latest
@@ -61,6 +65,8 @@ jobs:
           assert support_indexes==list(range(support_indexes[0],support_indexes[0]+12)),('NON_CONTIGUOUS_SUPPORT_QUARTERS',support)
           assert any(p.endswith('Q1') for p in support),support
           assert any(p.endswith('Q3') for p in support),support
+          raw_codes={x['period_code'] for x in proof}
+          assert {'Q1','HY','Q3','FY'} <= raw_codes,raw_codes
           c=d['coverage']
           floors={
             'stocks_with_1q':int(n*0.78),
