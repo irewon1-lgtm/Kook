@@ -18,26 +18,23 @@ M03 actual-earnings PER policy:
    fails closed rather than combining a post-action price with stale EPS.
 
 M04 / corporate-action policy:
-1) Never divide the raw six-month start/end closes directly.
-2) Compound each trading day's KRX/Naver reference-price return instead. KRX
-   resets the reference/base price for stock splits, reverse splits, bonus
-   issues and capital reductions, so those unit changes do not become fake
-   investment returns.
-3) Detect every material reference-price reset, not only raw moves outside the
-   +/-30% daily limit. This catches smaller bonus issues/capital reductions too.
-4) Best-effort Naver notice matching labels the reset as stock split, reverse
-   split, bonus issue or capital reduction. Unclassified resets stay guarded.
-5) If a daily reference return is missing, raw close-to-close is accepted only
-   when it is inside the normal KRX daily price-limit band. A split-like raw
-   discontinuity without adjustment metadata fails closed instead of guessing.
+1) M04 is computed from Naver legacy adjusted historical closes.
+2) Mobile raw close history is used only to compare raw/adjusted price scale.
+3) A stable scale-regime change identifies split/merge/bonus/reduction effects;
+   mobile fluctuationsRatio is never treated as the corporate-action baseline.
+4) Corporate-action stocks must pass the M03 polling-EPS/PER cross-check.
+5) Legacy adjusted-price failure leaves M04 unavailable rather than guessing.
 """
 from __future__ import annotations
 
+import ast
 import math
 import re
+import statistics
 import time
-from datetime import date
+from datetime import date, timedelta
 from typing import Any
+from urllib.parse import urlencode
 
 import collect_real_quant as base
 
@@ -55,6 +52,11 @@ _M03_XCHECK_EPS_REL_TOL = 0.02
 _M03_XCHECK_PER_REL_TOL = 0.08
 _NOTICE_BASE = "https://stock.naver.com/api/domestic/detail/notice"
 _POLLING_BASE = "https://polling.finance.naver.com/api/realtime"
+_LEGACY_PRICE_BASE = "https://api.finance.naver.com/siseJson.naver"
+_SCALE_RESET_REL_TOL = 0.015
+_SCALE_STRONG_RATIO = 1.08
+_SCALE_STABILITY_REL_TOL = 0.006
+_SCALE_WINDOW = 3
 
 
 def get_json(url: str, retries: int = 3) -> Any:
@@ -81,6 +83,173 @@ def get_json(url: str, retries: int = 3) -> Any:
                 time.sleep(0.25 * (2**attempt))
     raise RuntimeError(type(last).__name__ if last else "NAVER_RETRY_EXHAUSTED")
 
+
+
+def get_text(url: str, retries: int = 3) -> str:
+    sess = base.naver_session()
+    last: Exception | None = None
+    for attempt in range(retries):
+        try:
+            r = sess.get(url, timeout=15, headers={"Referer": "https://finance.naver.com/"})
+            if r.status_code == 200:
+                return r.text
+            if r.status_code in (400, 404, 409):
+                raise LookupError(f"HTTP_{r.status_code}")
+            if r.status_code == 429 or r.status_code >= 500:
+                time.sleep(min(0.35 * (2**attempt), 3.0))
+                continue
+            r.raise_for_status()
+        except LookupError:
+            raise
+        except Exception as exc:
+            last = exc
+            if attempt + 1 < retries:
+                time.sleep(0.25 * (2**attempt))
+    raise RuntimeError(type(last).__name__ if last else "NAVER_TEXT_RETRY_EXHAUSTED")
+
+
+def _fetch_legacy_adjusted_closes(
+    code: str,
+    start: date,
+    end: date,
+) -> tuple[dict[date, float], str | None]:
+    params = urlencode({
+        "symbol": code,
+        "requestType": 1,
+        "startTime": start.strftime("%Y%m%d"),
+        "endTime": end.strftime("%Y%m%d"),
+        "timeframe": "day",
+    })
+    try:
+        raw = get_text(f"{_LEGACY_PRICE_BASE}?{params}")
+        cleaned = "\n".join(line.strip() for line in raw.splitlines() if line.strip())
+        rows = ast.literal_eval(cleaned)
+        if not isinstance(rows, list) or len(rows) < 2:
+            return {}, "LEGACY_PRICE_EMPTY"
+        header = [str(x).strip() for x in rows[0]]
+        try:
+            date_idx = header.index("날짜")
+            close_idx = header.index("종가")
+        except ValueError:
+            return {}, "LEGACY_PRICE_HEADER_MISSING"
+        out: dict[date, float] = {}
+        for row in rows[1:]:
+            if not isinstance(row, (list, tuple)) or len(row) <= max(date_idx, close_idx):
+                continue
+            digits = re.sub(r"\D", "", str(row[date_idx]))[:8]
+            if len(digits) != 8:
+                continue
+            try:
+                d = date(int(digits[:4]), int(digits[4:6]), int(digits[6:8]))
+            except ValueError:
+                continue
+            close = base.parse_number(row[close_idx])
+            if close is not None and math.isfinite(close) and close > 0:
+                out[d] = float(close)
+        return out, None if out else "LEGACY_PRICE_EMPTY"
+    except LookupError as exc:
+        return {}, str(exc)
+    except Exception as exc:
+        return {}, type(exc).__name__
+
+
+def _stable_scale(values: list[float], center: float) -> bool:
+    return bool(values) and all(_relative_diff(v, center) <= _SCALE_STABILITY_REL_TOL for v in values)
+
+
+def _detect_scale_transition_events(
+    raw_closes: dict[date, float],
+    adjusted_closes: dict[date, float],
+    start_date: date,
+    end_date: date,
+) -> list[dict[str, Any]]:
+    shared = []
+    for d in sorted(set(raw_closes) & set(adjusted_closes)):
+        if d < start_date or d > end_date:
+            continue
+        raw = raw_closes[d]
+        adj = adjusted_closes[d]
+        if raw <= 0 or adj <= 0:
+            continue
+        scale = raw / adj
+        if math.isfinite(scale) and scale > 0:
+            shared.append((d, scale))
+    if len(shared) < 2:
+        return []
+
+    events: list[dict[str, Any]] = []
+    last_event_index = -10
+    for i in range(1, len(shared)):
+        # Require the scale itself to jump at this exact boundary.
+        # Median windows validate regimes; they must not invent
+        # an event one day before or after a real transition.
+        immediate_reset = shared[i][1] / shared[i - 1][1]
+        if _relative_diff(immediate_reset, 1.0) < _SCALE_RESET_REL_TOL:
+            continue
+        left = [x[1] for x in shared[max(0, i - _SCALE_WINDOW):i]]
+        right = [x[1] for x in shared[i:min(len(shared), i + _SCALE_WINDOW)]]
+        if not left or not right:
+            continue
+        before = float(statistics.median(left))
+        after = float(statistics.median(right))
+        if before <= 0 or after <= 0:
+            continue
+        reset_ratio = after / before
+        if _relative_diff(reset_ratio, 1.0) < _SCALE_RESET_REL_TOL:
+            continue
+
+        before_stable = _stable_scale(left, before)
+        after_stable = _stable_scale(right, after)
+        strong = max(reset_ratio, 1.0 / reset_ratio) >= _SCALE_STRONG_RATIO
+        stable_regimes = len(left) >= 2 and len(right) >= 2 and before_stable and after_stable
+        if not strong and not stable_regimes:
+            continue
+        # Suppress repeated detections from the same transition window.
+        if i - last_event_index <= 1:
+            continue
+
+        family = "SPLIT_OR_BONUS_ISSUE" if reset_ratio < 1.0 else "REVERSE_SPLIT_OR_CAPITAL_REDUCTION"
+        events.append({
+            "date": shared[i][0],
+            "previous_date": shared[i - 1][0],
+            "reset_ratio": reset_ratio,
+            "scale_before": before,
+            "scale_after": after,
+            "scale_before_count": len(left),
+            "scale_after_count": len(right),
+            "scale_before_stable": before_stable,
+            "scale_after_stable": after_stable,
+            "scale_strong": strong,
+            "scale_stable_regimes": stable_regimes,
+            "type": family,
+        })
+        last_event_index = i
+    return events
+
+
+def _legacy_adjusted_return(
+    adjusted_closes: dict[date, float],
+    six_month_target: date,
+    cutoff: date,
+) -> tuple[float | None, str | None, date | None, date | None]:
+    end_dates = [d for d in adjusted_closes if d <= cutoff]
+    start_dates = [d for d in adjusted_closes if d <= six_month_target]
+    if not end_dates:
+        return None, "NAVER_LEGACY_NO_PRICE_AT_CUTOFF", None, None
+    if not start_dates:
+        return None, "PRICE_HISTORY_SHORTER_THAN_6M", None, max(end_dates)
+    end_date = max(end_dates)
+    start_date = max(start_dates)
+    if (end_date - start_date).days < 150:
+        return None, "PRICE_HISTORY_SHORTER_THAN_6M", start_date, end_date
+    start_close = adjusted_closes[start_date]
+    end_close = adjusted_closes[end_date]
+    if start_close <= 0 or end_close <= 0:
+        return None, "NAVER_LEGACY_ADJUSTED_RETURN_INVALID", start_date, end_date
+    value = (end_close / start_close - 1.0) * 100.0
+    if not math.isfinite(value) or abs(value) > 100000:
+        return None, "NAVER_RETURN_OUTLIER_GUARD", start_date, end_date
+    return value, None, start_date, end_date
 
 def _valid_daily_factor(value: float | None) -> bool:
     return value is not None and math.isfinite(value) and _DAILY_FACTOR_MIN <= value <= _DAILY_FACTOR_MAX
@@ -273,37 +442,38 @@ def _annotate_action_types(code: str, events: list[dict[str, Any]]) -> list[dict
     except Exception:
         return events
 
-    nodes: list[tuple[str, list[date], str]] = []
+    nodes: list[tuple[str, list[date]]] = []
     for node in _iter_dict_nodes(payload):
-        scalars = []
-        for k, v in node.items():
-            if isinstance(v, (str, int, float, bool)) or v is None:
-                scalars.append(f"{k}={v}")
+        scalars = [
+            f"{k}={v}"
+            for k, v in node.items()
+            if isinstance(v, (str, int, float, bool)) or v is None
+        ]
         text = " ".join(scalars)
         label = _notice_action_label(text)
-        if label:
-            nodes.append((label, _notice_dates(text), text))
+        dates = _notice_dates(text)
+        if label and dates:
+            nodes.append((label, dates))
 
     for event in events:
         event_date = event["date"]
         reset_ratio = event.get("reset_ratio")
         best: tuple[int, str] | None = None
-        for label, dates, _text in nodes:
+        for label, dates in nodes:
             if not _direction_compatible(label, reset_ratio):
                 continue
-            if dates:
-                distance = min(abs((dt - event_date).days) for dt in dates)
-                if distance > 90:
-                    continue
-                score = distance
-            else:
-                score = 999
-            if best is None or score < best[0]:
-                best = (score, label)
+            # Corporate-action decisions can precede the effective date by
+            # weeks. Keep a bounded window but never accept undated/stale
+            # notices as automatic evidence.
+            distance = min(abs((dt - event_date).days) for dt in dates)
+            if distance > 120:
+                continue
+            if best is None or distance < best[0]:
+                best = (distance, label)
         if best is not None:
             event["type"] = best[1]
+            event["notice_distance_days"] = best[0]
     return events
-
 
 def _format_action_event_tokens(events: list[dict[str, Any]]) -> str:
     parts = []
@@ -563,8 +733,6 @@ def naver_metric_worker(issuer: base.Issuer, cutoff: date, six_month_target: dat
     except Exception as exc:
         integration_error = type(exc).__name__
 
-    # Only pay for the second endpoint when integration did not provide actual EPS.
-    # This targets the small missing-EPS tail without multiplying all 2,649 calls.
     if eps is None:
         fallback_eps, fallback_period, eps_fallback_error = _fallback_actual_annual_eps(code)
         if fallback_eps is not None:
@@ -572,19 +740,44 @@ def naver_metric_worker(issuer: base.Issuer, cutoff: date, six_month_target: dat
             eps_desc = f"ANNUAL_ACTUAL_{fallback_period}" if fallback_period else "ANNUAL_ACTUAL"
             eps_source = "NAVER_FINANCE_ANNUAL_EPS"
 
-    by_date, by_factor, price_error = _parse_price_bars(code, cutoff, six_month_target)
-    end_dates = [d for d in by_date if d <= cutoff]
-    start_dates = [d for d in by_date if d <= six_month_target]
-    end_date = max(end_dates) if end_dates else None
-    end_close = by_date[end_date] if end_date else None
-    scan_start = max(start_dates) if start_dates else (min(by_date) if by_date else six_month_target)
-    action_events = _detect_reference_reset_events(by_date, by_factor, scan_start, end_date or cutoff)
-    action_events = _annotate_action_types(code, action_events)
+    # Mobile raw history is now used ONLY to detect raw/adjusted scale
+    # regimes. Its daily fluctuationsRatio is not used by M04.
+    raw_by_date, _unused_daily_factor, price_error = _parse_price_bars(code, cutoff, six_month_target)
+    lookup_start = six_month_target - timedelta(days=14)
+    adjusted_by_date, legacy_error = _fetch_legacy_adjusted_closes(code, lookup_start, cutoff)
+
+    m04_raw, m04_reason, start_date, end_date = _legacy_adjusted_return(
+        adjusted_by_date, six_month_target, cutoff
+    )
+    adjusted_end_close = adjusted_by_date.get(end_date) if end_date else None
+    raw_end_dates = [d for d in raw_by_date if d <= cutoff]
+    raw_end_date = max(raw_end_dates) if raw_end_dates else None
+    raw_end_close = raw_by_date.get(raw_end_date) if raw_end_date else None
+
+    scan_start = start_date or (min(adjusted_by_date) if adjusted_by_date else six_month_target)
+    scan_end = end_date or cutoff
+    scale_candidates = _detect_scale_transition_events(
+        raw_by_date, adjusted_by_date, scan_start, scan_end
+    )
+    annotated_candidates = _annotate_action_types(code, [dict(e) for e in scale_candidates])
+    # A one-day scale spike is not enough. Confirm only stable
+    # multi-day regimes or an independently dated CA notice.
+    action_events = [
+        e for e in annotated_candidates
+        if bool(e.get('scale_stable_regimes'))
+        or e.get('notice_distance_days') is not None
+    ]
     action_tokens = _format_action_event_tokens(action_events)
 
-    # M03: positive provider PER stays first priority. When it is unavailable,
-    # calculate from actual EPS. Negative EPS is intentionally retained as a
-    # negative raw PER; only exactly zero EPS is mathematically undefined.
+    # Use the adjusted/regular historical close for calculation and CA
+    # cross-check where available. Fall back to mobile/integration only
+    # when legacy history is missing, without changing M04 fail-closed.
+    per_close = adjusted_end_close or raw_end_close
+    per_close_date = end_date or raw_end_date
+    if per_close is None and integration_last_close is not None and integration_last_close > 0:
+        per_close = integration_last_close
+        per_close_date = cutoff
+
     m03_raw = None
     m03_reason = None
     m03_basis = ""
@@ -592,12 +785,6 @@ def naver_metric_worker(issuer: base.Issuer, cutoff: date, six_month_target: dat
         m03_raw = provider_per
         m03_basis = f"{cutoff.isoformat()}_NAVER_REPORTED_TRAILING_PER"
     else:
-        per_close = end_close
-        per_close_date = end_date
-        if per_close is None and integration_last_close is not None and integration_last_close > 0:
-            per_close = integration_last_close
-            per_close_date = cutoff
-
         if eps is not None and eps != 0 and per_close is not None and per_close > 0:
             calculated = per_close / eps
             if not _valid_calculated_per(calculated):
@@ -606,9 +793,10 @@ def naver_metric_worker(issuer: base.Issuer, cutoff: date, six_month_target: dat
                 m03_raw = calculated
                 eps_basis = eps_desc if eps_desc else "ACTUAL_EPS"
                 source_tag = "ANNUAL" if eps_source == "NAVER_FINANCE_ANNUAL_EPS" else "INTEGRATION"
+                price_tag = "LEGACY_ADJ_CLOSE" if adjusted_end_close is not None else "CLOSE"
                 m03_basis = (
                     f"{per_close_date.isoformat() if per_close_date else cutoff.isoformat()}_"
-                    f"CLOSE/NAVER_{source_tag}_EPS_{eps_basis}"
+                    f"{price_tag}/NAVER_{source_tag}_EPS_{eps_basis}"
                 )
         elif eps is not None and eps == 0:
             m03_reason = "ZERO_EPS"
@@ -619,35 +807,16 @@ def naver_metric_worker(issuer: base.Issuer, cutoff: date, six_month_target: dat
         else:
             m03_reason = "NAVER_EPS_MISSING"
 
-    # M04: compound KRX-adjusted one-day reference returns. This is deliberately
-    # separate from M03, which continues to use the real cutoff close unchanged.
-    m04_raw = None
-    m04_reason = None
     m04_basis = ""
-    m04_adjustment_days = len(action_events)
-    m04_factor_fallback_days = 0
-    start_date = max(start_dates) if start_dates else None
-    if not end_dates:
-        m04_reason = "NAVER_NO_PRICE_AT_CUTOFF" if not price_error else "NAVER_PRICE_ERROR"
-    elif not start_dates:
-        m04_reason = "PRICE_HISTORY_SHORTER_THAN_6M"
-    else:
-        if end_date is None or start_date is None or (end_date - start_date).days < 150:
-            m04_reason = "PRICE_HISTORY_SHORTER_THAN_6M"
-        else:
-            m04_raw, m04_reason, _action_days, m04_factor_fallback_days = _corporate_action_adjusted_return(
-                by_date,
-                by_factor,
-                start_date,
-                end_date,
-            )
-            if m04_raw is not None:
-                m04_basis = (
-                    f"{start_date.isoformat()}->{end_date.isoformat()}_"
-                    f"KRX_ADJ_DAILY_CA{m04_adjustment_days}_FB{m04_factor_fallback_days}{action_tokens}"
-                )
-    if action_events and not m04_basis:
-        m04_basis = f"{scan_start.isoformat()}->{(end_date or cutoff).isoformat()}_CA_SCAN{action_tokens}"
+    if m04_raw is not None and start_date is not None and end_date is not None:
+        m04_basis = (
+            f"{start_date.isoformat()}->{end_date.isoformat()}_"
+            f"NAVER_LEGACY_ADJUSTED_CLOSE_CA{len(action_events)}{action_tokens}"
+        )
+    elif action_events:
+        m04_basis = f"{scan_start.isoformat()}->{scan_end.isoformat()}_CA_SCALE_SCAN{action_tokens}"
+    if m04_raw is None and legacy_error and m04_reason in {None, "NAVER_LEGACY_NO_PRICE_AT_CUTOFF"}:
+        m04_reason = "NAVER_LEGACY_PRICE_ERROR"
 
     row = {
         "m03_raw": round(m03_raw, 6) if m03_raw is not None else None,
@@ -659,18 +828,21 @@ def naver_metric_worker(issuer: base.Issuer, cutoff: date, six_month_target: dat
         "naver_provider_per": provider_per,
         "naver_eps": eps,
         "naver_eps_source": eps_source,
-        "naver_end_close": end_close,
-        "naver_m04_adjustment_days": m04_adjustment_days,
-        "naver_m04_factor_fallback_days": m04_factor_fallback_days,
+        "naver_end_close": per_close,
+        "naver_mobile_end_close": raw_end_close,
+        "naver_legacy_adjusted_end_close": adjusted_end_close,
+        "naver_m04_adjustment_days": len(action_events),
+        "naver_m04_factor_fallback_days": 0,
         "naver_corporate_action_events": action_events,
+        "naver_scale_transition_candidates": scale_candidates,
         "integration_error": integration_error,
         "eps_fallback_error": eps_fallback_error,
         "price_error": price_error,
+        "legacy_price_error": legacy_error,
     }
     if action_events:
-        row = _m03_corporate_action_crosscheck(code, row, end_close)
+        row = _m03_corporate_action_crosscheck(code, row, per_close)
     return code, row
-
 
 def _apply_loss_safe_per_percentiles(records: dict[str, dict[str, Any]]) -> int:
     """Score positive PER normally while preventing negative PER rank inversion.
