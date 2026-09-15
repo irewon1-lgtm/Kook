@@ -92,8 +92,11 @@ jobs:
         if: github.event_name == 'workflow_run' || github.ref_name == 'main'
         run: |
           set -euo pipefail
+          # The previous validation step intentionally modified the working copy.
+          # Restore it before rebasing, then re-apply against the newest main so
+          # a concurrent data/signing commit cannot be overwritten or block pull.
+          git restore --source=HEAD --worktree --staged evidence/real_quant_snapshot.json
           git pull --rebase origin main
-          # Re-apply after rebase so the commit always reflects the latest validated pair.
           python scripts/apply_recent_dart_fallback.py \
             --quant evidence/real_quant_snapshot.json \
             --history evidence/quarterly_history.json
