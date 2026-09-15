@@ -61,6 +61,18 @@ def period_label(year: int, quarter: int) -> str:
     return f"{year}Q{quarter}"
 
 
+def assert_contiguous_entries(entries: list[dict[str, Any]], expected_count: int | None = None) -> None:
+    if expected_count is not None and len(entries) != expected_count:
+        raise RuntimeError(f"expected {expected_count} quarterly periods, got {len(entries)}")
+    if not entries:
+        raise RuntimeError("quarterly period list is empty")
+    indexes = [int(e["index"]) for e in entries]
+    expected = list(range(indexes[0], indexes[0] + len(indexes)))
+    if indexes != expected:
+        labels = [period_label(int(e["year"]), int(e["quarter"])) for e in entries]
+        raise RuntimeError(f"OpenDART periods are not contiguous quarters: {labels}")
+
+
 def list_pl_entries(as_of: date) -> list[dict[str, Any]]:
     s = requests.Session()
     s.headers.update(base.DART_HEADERS)
@@ -393,6 +405,7 @@ def main() -> None:
     support = entries[-args.support_quarters:]
     if len(support) < args.support_quarters:
         raise RuntimeError(f"insufficient DART quarterly support periods: {len(support)}")
+    assert_contiguous_entries(support, args.support_quarters)
 
     session = requests.Session()
     session.headers.update(base.DART_HEADERS)

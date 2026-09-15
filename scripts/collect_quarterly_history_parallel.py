@@ -64,6 +64,7 @@ def main() -> None:
     support = entries[-args.support_quarters:]
     if len(support) < args.support_quarters:
         raise RuntimeError(f"insufficient DART quarterly support periods: {len(support)}")
+    core.assert_contiguous_entries(support, args.support_quarters)
 
     parsed: dict[str, dict[str, dict[str, Any]]] = {}
     proofs: dict[str, dict[str, Any]] = {}

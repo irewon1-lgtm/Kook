@@ -58,7 +58,7 @@ MASTER_RE = re.compile(
     r'sector = "([^"]*)", listingDate = "([^"]*)"\)'
 )
 DART_ENTRY_RE = re.compile(
-    r"download_ext002\('(\d{4})','([A-Z]{2})',\s*'([A-Z]{2})',\s*'([^']+)'\)"
+    r"download_ext002\('(\d{4})','([A-Z0-9]{2})',\s*'([A-Z]{2})',\s*'([^']+)'\)"
 )
 
 REVENUE_EXACT_NAMES = {
