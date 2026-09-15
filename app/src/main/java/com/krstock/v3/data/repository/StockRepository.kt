@@ -4,13 +4,15 @@ import com.krstock.v3.data.generated.GeneratedKosdaqMaster
 import com.krstock.v3.data.generated.GeneratedKospiMaster
 import com.krstock.v3.data.generated.GeneratedRealQuantSnapshot
 import com.krstock.v3.data.model.*
+import com.krstock.v3.data.peer.PeerBenchmarkEngine
 import kotlin.math.round
 
 /**
  * KOSPI + KOSDAQ repository backed by:
- *  - KRX KIND for listing identity
+ *  - KRX KIND for listing identity and sector classification
  *  - Financial Supervisory Service OpenDART public bulk financial statements for M01/M02
  *  - Naver Finance public stock JSON for actual EPS / daily closes used by M03/M04
+ *  - Deterministic peer medians computed locally from the validated KR4 snapshot
  *
  * Missing values remain null. A stock is ranked only when all four metrics are available.
  */
@@ -182,10 +184,12 @@ object StockRepository {
         require(identityCodes.size == identities.size) { "Duplicate KRX issue code in registered masters" }
         require(quantByCode.keys == identityCodes) { "Real quant snapshot identity set differs from KRX master" }
 
-        identities.map { (issuer, market, sourceUrl) ->
+        val baseStocks = identities.map { (issuer, market, sourceUrl) ->
             val identityDate = if (market == "KOSPI") GeneratedKospiMaster.snapshotDate else GeneratedKosdaqMaster.snapshotDate
             realStock(issuer, market, identityDate, sourceUrl)
-        }.sortedWith(
+        }
+
+        PeerBenchmarkEngine.enrich(baseStocks).sortedWith(
             compareBy<StockSummary> { it.rankOrder == null }
                 .thenBy { it.rankOrder ?: Int.MAX_VALUE }
                 .thenBy { it.market }
@@ -330,7 +334,7 @@ object StockRepository {
             businessQuality = "${growthView(stock.m01RevGrowth)} ${marginView(stock.m02OpMargin)}",
             valuationView = valuationView(stock.m03Per),
             momentumView = momentumView(stock.m04Price6m),
-            dataLimitations = "M01/M02는 OpenDART 2026 반기 손익계산서, M03/M04는 네이버증권 가격·실제 EPS를 사용합니다. 금융업 영업이익률과 적자기업 PER, 상장 6개월 미만 가격은 억지로 계산하지 않습니다. 모든 상대점수는 현재 확보 가능한 종목끼리의 위치이며 투자 권유가 아닙니다."
+            dataLimitations = "M01/M02는 OpenDART 재무자료, M03/M04는 네이버증권 가격·실제 EPS를 사용합니다. 업종 피어 중앙값은 KRX KIND 업종을 우선하고 표본이 부족할 때만 명시적 표준 업종군으로 확장하며, 충분한 표본이 없으면 미산출합니다. 금융업 영업이익률과 적자기업 PER, 상장 6개월 미만 가격은 억지로 계산하지 않습니다. 모든 전체시장 상대점수와 업종 중앙값은 현재 확보 가능한 종목끼리의 비교이며 투자 권유가 아닙니다."
         )
     }
 }
