@@ -66,9 +66,10 @@ class IntegratedInterpretationEngineTest {
         )
         val result = IntegratedInterpretationEngine.analyze(stock, bundle)
 
-        assertTrue(result.causeInvestigation.contains("선투자형 패턴"))
+        assertTrue(result.causeCandidates.any { it.contains("선투자형 성장") })
         assertTrue(result.causeInvestigation.contains("공급계약"))
-        assertTrue(result.causeInvestigation.contains("확정하지"))
+        assertTrue(result.causeInvestigation.contains("확정"))
+        assertTrue(result.causeInvestigation.contains("여러 원인") || result.causeInvestigation.contains("후보"))
         assertTrue(result.evidenceHighlights.size >= 2)
     }
 
@@ -122,6 +123,11 @@ class IntegratedInterpretationEngineTest {
             }
             assertTrue("too short ${stock.issuerId}", analysis.combinationMeaning.length >= 180)
             assertTrue(analysis.falsifiers.size >= 2)
+            assertTrue(analysis.industryKpiGuide.isNotBlank())
+            assertTrue(analysis.businessState.isNotBlank())
+            assertTrue(analysis.priceBurden.isNotBlank())
+            assertTrue(analysis.causeConfidence.isNotBlank())
+            assertTrue(analysis.futureUncertainty.isNotBlank())
         }
     }
 
