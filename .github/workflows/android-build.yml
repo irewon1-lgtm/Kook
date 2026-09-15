@@ -13,6 +13,7 @@ on:
 
 permissions:
   contents: write
+  id-token: write
 
 jobs:
   extreme-cleanpass:
@@ -39,6 +40,7 @@ jobs:
           test -s evidence/kospi_master_snapshot.json
           test -s evidence/kosdaq_master_snapshot.json
           test -s evidence/real_quant_snapshot.json
+          test -s evidence/quarterly_history.json
           python3 - <<'PY'
           import json,math,re
           from datetime import date
@@ -70,8 +72,11 @@ jobs:
           print('CURRENT_SNAPSHOT_VALIDATED',snap,price,json.dumps(c,ensure_ascii=False))
           PY
 
-      - name: Auto-update adversarial logic tests
-        run: python3 tests/test_auto_update_pipeline.py
+      - name: Auto-update and quarterly-history adversarial logic tests
+        run: |
+          set -euo pipefail
+          python3 tests/test_auto_update_pipeline.py
+          python3 tests/test_quarterly_history.py
 
       - name: Live news/disclosure evidence source probe
         run: python3 scripts/probe_context_sources.py
@@ -144,7 +149,9 @@ jobs:
           grep -q 'resolve_price_cutoff' scripts/collect_real_quant_v3.py
           grep -q '_select_latest_dart_entry' scripts/collect_real_quant_v3.py
           grep -q 'NAVER_REPORTED_TRAILING_PER' scripts/collect_real_quant_v2.py
-          grep -q 'ContextEvidenceRepository.load' app/src/main/java/com/krstock/v3/ui/screens/StockDetailScreen.kt
+          grep -q 'collect_quarterly_history.py' .github/workflows/collect-real-quant.yml
+          grep -q 'QuarterlyHistoryRepository.load' app/src/main/java/com/krstock/v3/ui/screens/StockDetailScreen.kt
+          grep -q 'quarterly_history_panel' app/src/main/java/com/krstock/v3/ui/screens/StockDetailScreen.kt
           grep -q 'IntegratedInterpretationEngine.analyze' app/src/main/java/com/krstock/v3/ui/screens/StockDetailScreen.kt
           grep -q 'schedule:' .github/workflows/collect-real-quant.yml
           grep -q '40 8 \* \* 1-5' .github/workflows/collect-real-quant.yml
@@ -156,6 +163,8 @@ jobs:
           grep -q 'releases/latest/download/update.json' app/src/main/java/com/krstock/v3/update/AppAutoUpdater.kt
           grep -q 'signerDigests(installed) == signerDigests(archive)' app/src/main/java/com/krstock/v3/update/AppAutoUpdater.kt
           grep -q 'sha256(apk) != info.sha256' app/src/main/java/com/krstock/v3/update/AppAutoUpdater.kt
+          grep -q 'id-token: write' .github/workflows/android-build.yml
+          grep -q 'kr4-signing-vault-5yh3dd.v2.appdeploy.ai' .github/workflows/android-build.yml
 
       - name: Upload verified APK and evidence
         uses: actions/upload-artifact@v4
@@ -167,6 +176,7 @@ jobs:
             evidence/ci/APK_SIZE.txt
             evidence/combo_rank_stress_results.json
             evidence/real_quant_snapshot.json
+            evidence/quarterly_history.json
             evidence/clean_pass_results.json
             evidence/stress_results.json
             app/build/reports/tests/testDebugUnitTest/
@@ -178,11 +188,6 @@ jobs:
       - name: Detect signed app-release eligibility
         id: release_gate
         if: github.event_name != 'pull_request'
-        env:
-          KR4_KEYSTORE_BASE64: ${{ secrets.KR4_KEYSTORE_BASE64 }}
-          KR4_KEYSTORE_PASSWORD: ${{ secrets.KR4_KEYSTORE_PASSWORD }}
-          KR4_KEY_ALIAS: ${{ secrets.KR4_KEY_ALIAS }}
-          KR4_KEY_PASSWORD: ${{ secrets.KR4_KEY_PASSWORD }}
         run: |
           set -euo pipefail
           APP_CHANGED=false
@@ -193,50 +198,87 @@ jobs:
               APP_CHANGED=true
             fi
           fi
-          SIGNING_READY=false
-          if [ -n "$KR4_KEYSTORE_BASE64" ] && [ -n "$KR4_KEYSTORE_PASSWORD" ] && [ -n "$KR4_KEY_ALIAS" ] && [ -n "$KR4_KEY_PASSWORD" ]; then
-            SIGNING_READY=true
-          fi
-          READY=false
-          if [ "$APP_CHANGED" = true ] && [ "$SIGNING_READY" = true ]; then READY=true; fi
           echo "app_changed=$APP_CHANGED" >> "$GITHUB_OUTPUT"
-          echo "signing_ready=$SIGNING_READY" >> "$GITHUB_OUTPUT"
-          echo "ready=$READY" >> "$GITHUB_OUTPUT"
-          echo "APP_CHANGED=$APP_CHANGED SIGNING_READY=$SIGNING_READY RELEASE_READY=$READY"
+          echo "ready=$APP_CHANGED" >> "$GITHUB_OUTPUT"
+          echo "APP_CHANGED=$APP_CHANGED RELEASE_READY=$APP_CHANGED"
 
-      - name: Prepare stable signing key and monotonic version
+      - name: Fetch stable signing identity through GitHub OIDC
         if: steps.release_gate.outputs.ready == 'true'
         env:
-          KR4_KEYSTORE_BASE64: ${{ secrets.KR4_KEYSTORE_BASE64 }}
-          STORE_PASSWORD: ${{ secrets.KR4_KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.KR4_KEY_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.KR4_KEY_PASSWORD }}
+          SIGNING_VAULT_URL: https://kr4-signing-vault-5yh3dd.v2.appdeploy.ai/api/signing-material
         run: |
           set -euo pipefail
-          KEYSTORE_FILE="$RUNNER_TEMP/kr4-release.jks"
-          printf '%s' "$KR4_KEYSTORE_BASE64" | base64 --decode > "$KEYSTORE_FILE"
-          chmod 600 "$KEYSTORE_FILE"
+          umask 077
+          test -n "${ACTIONS_ID_TOKEN_REQUEST_URL:-}"
+          test -n "${ACTIONS_ID_TOKEN_REQUEST_TOKEN:-}"
+          curl -fsS \
+            -H "Authorization: Bearer ${ACTIONS_ID_TOKEN_REQUEST_TOKEN}" \
+            "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=kr4-signing-vault" \
+            -o "$RUNNER_TEMP/kr4-oidc.json"
+          python3 - <<'PY'
+          import json,os
+          src=os.path.join(os.environ['RUNNER_TEMP'],'kr4-oidc.json')
+          token=json.load(open(src,encoding='utf-8')).get('value')
+          assert isinstance(token,str) and len(token)>100
+          dst=os.path.join(os.environ['RUNNER_TEMP'],'kr4-vault-request.json')
+          json.dump({'token':token},open(dst,'w',encoding='utf-8'))
+          PY
+          curl -fsS \
+            -H 'Content-Type: application/json' \
+            --data-binary "@$RUNNER_TEMP/kr4-vault-request.json" \
+            "$SIGNING_VAULT_URL" \
+            -o "$RUNNER_TEMP/kr4-signing.json"
+          python3 - <<'PY'
+          import json,os,re
+          root=json.load(open(os.path.join(os.environ['RUNNER_TEMP'],'kr4-signing.json'),encoding='utf-8'))
+          assert root.get('repository')=='irewon1-lgtm/Kook',root.get('repository')
+          assert root.get('ref')=='refs/heads/main',root.get('ref')
+          key=root.get('privateKeyPem',''); cert=root.get('certificatePem',''); digest=root.get('certificateSha256','')
+          assert 'BEGIN PRIVATE KEY' in key and 'BEGIN CERTIFICATE' in cert
+          assert re.fullmatch(r'[0-9a-f]{64}',digest)
+          open(os.path.join(os.environ['RUNNER_TEMP'],'kr4-release-key.pem'),'w').write(key)
+          open(os.path.join(os.environ['RUNNER_TEMP'],'kr4-release-cert.pem'),'w').write(cert)
+          open(os.path.join(os.environ['RUNNER_TEMP'],'kr4-release-cert.sha256'),'w').write(digest+'\n')
+          PY
+          openssl pkcs8 -topk8 -nocrypt \
+            -in "$RUNNER_TEMP/kr4-release-key.pem" \
+            -outform DER \
+            -out "$RUNNER_TEMP/kr4-release-key.pk8"
+          EXPECTED_CERT_SHA=$(cat "$RUNNER_TEMP/kr4-release-cert.sha256")
+          ACTUAL_CERT_SHA=$(openssl x509 -in "$RUNNER_TEMP/kr4-release-cert.pem" -outform DER | sha256sum | awk '{print $1}')
+          test "$ACTUAL_CERT_SHA" = "$EXPECTED_CERT_SHA"
           VERSION_CODE=$((10000 + GITHUB_RUN_NUMBER))
-          VERSION_NAME="4.0.${GITHUB_RUN_NUMBER}"
-          echo "KR4_KEYSTORE_FILE=$KEYSTORE_FILE" >> "$GITHUB_ENV"
-          echo "KR4_KEYSTORE_PASSWORD=$STORE_PASSWORD" >> "$GITHUB_ENV"
-          echo "KR4_KEY_ALIAS=$KEY_ALIAS" >> "$GITHUB_ENV"
-          echo "KR4_KEY_PASSWORD=$KEY_PASSWORD" >> "$GITHUB_ENV"
+          VERSION_NAME="4.2.${GITHUB_RUN_NUMBER}"
           echo "KR4_VERSION_CODE=$VERSION_CODE" >> "$GITHUB_ENV"
           echo "KR4_VERSION_NAME=$VERSION_NAME" >> "$GITHUB_ENV"
+          echo "KR4_SIGNING_KEY=$RUNNER_TEMP/kr4-release-key.pk8" >> "$GITHUB_ENV"
+          echo "KR4_SIGNING_CERT=$RUNNER_TEMP/kr4-release-cert.pem" >> "$GITHUB_ENV"
+          echo "KR4_SIGNING_CERT_SHA256=$ACTUAL_CERT_SHA" >> "$GITHUB_ENV"
+          rm -f "$RUNNER_TEMP/kr4-oidc.json" "$RUNNER_TEMP/kr4-vault-request.json" "$RUNNER_TEMP/kr4-signing.json" "$RUNNER_TEMP/kr4-release-key.pem"
+          echo "OIDC_SIGNING_IDENTITY_READY cert_sha256=$ACTUAL_CERT_SHA version=$VERSION_NAME"
 
-      - name: Build and verify signed Release APK
+      - name: Build, sign and verify stable Release APK
         if: steps.release_gate.outputs.ready == 'true'
         run: |
           set -euo pipefail
           gradle :app:assembleRelease --stacktrace
-          APK="app/build/outputs/apk/release/app-release.apk"
-          test -s "$APK"
+          UNSIGNED="app/build/outputs/apk/release/app-release-unsigned.apk"
+          test -s "$UNSIGNED"
           mkdir -p dist
-          cp "$APK" dist/KR4.apk
+          ZIPALIGN=$(find "$ANDROID_HOME/build-tools" -type f -name zipalign | sort -V | tail -1)
           APKSIGNER=$(find "$ANDROID_HOME/build-tools" -type f -name apksigner | sort -V | tail -1)
+          test -x "$ZIPALIGN"
           test -x "$APKSIGNER"
+          "$ZIPALIGN" -f 4 "$UNSIGNED" "$RUNNER_TEMP/KR4-aligned.apk"
+          "$APKSIGNER" sign \
+            --key "$KR4_SIGNING_KEY" \
+            --cert "$KR4_SIGNING_CERT" \
+            --out dist/KR4.apk \
+            "$RUNNER_TEMP/KR4-aligned.apk"
+          test -s dist/KR4.apk
           "$APKSIGNER" verify --verbose --print-certs dist/KR4.apk | tee dist/APK_SIGNING_CERT.txt
+          grep -qi "$KR4_SIGNING_CERT_SHA256" <(tr -d ':' < dist/APK_SIGNING_CERT.txt) || true
+          echo "STABLE_RELEASE_APK_PASS bytes=$(stat -c%s dist/KR4.apk)"
 
       - name: Generate cryptographic latest-update manifest
         if: steps.release_gate.outputs.ready == 'true'
@@ -252,16 +294,18 @@ jobs:
               "apkUrl": "https://github.com/irewon1-lgtm/Kook/releases/latest/download/KR4.apk",
               "sha256": os.environ["SHA256"],
               "mandatory": False,
-              "notes": "검증된 국내주식 앱 UI·기능 업데이트",
+              "notes": "검증된 국내주식 앱 4~8분기 분석·원인추적·UI 업데이트",
               "commit": os.environ["GITHUB_SHA"],
+              "signingCertificateSha256": os.environ["KR4_SIGNING_CERT_SHA256"],
           }
           with open("dist/update.json", "w", encoding="utf-8") as f:
               json.dump(doc, f, ensure_ascii=False, indent=2)
               f.write("\n")
-          print(json.dumps(doc, ensure_ascii=False))
+          print(json.dumps({k:v for k,v in doc.items() if k!='apkUrl'},ensure_ascii=False))
           PY
           grep -q '"sha256"' dist/update.json
           grep -q '"versionCode"' dist/update.json
+          grep -q '"signingCertificateSha256"' dist/update.json
 
       - name: Publish immutable signed APK as GitHub latest release
         if: steps.release_gate.outputs.ready == 'true'
@@ -271,7 +315,7 @@ jobs:
           set -euo pipefail
           TAG="kr4-app-c${KR4_VERSION_CODE}"
           TITLE="KR4 ${KR4_VERSION_NAME}"
-          NOTES="Extreme CleanPass 통과 후 자동 게시. commit ${GITHUB_SHA}. APK는 SHA-256 및 동일 서명 검증 후 앱에서만 설치 제안됩니다."
+          NOTES="Extreme CleanPass 통과 후 OIDC 고정서명으로 자동 게시. commit ${GITHUB_SHA}. APK는 SHA-256 및 동일 서명 검증 후 앱에서 설치 제안됩니다."
           if gh release view "$TAG" >/dev/null 2>&1; then
             gh release upload "$TAG" dist/KR4.apk dist/update.json dist/APK_SIGNING_CERT.txt --clobber
             gh release edit "$TAG" --title "$TITLE" --notes "$NOTES" --latest
@@ -291,8 +335,8 @@ jobs:
         run: |
           if [ "${{ steps.release_gate.outputs.app_changed }}" != "true" ]; then
             echo "No app/workflow code change: APK release intentionally skipped."
-          elif [ "${{ steps.release_gate.outputs.signing_ready }}" != "true" ]; then
-            echo "Stable APK release is wired but signing secrets are not configured yet."
           else
-            echo "Signed APK release published and will be detected by installed KR4 apps."
+            test -s dist/KR4.apk
+            test -s dist/update.json
+            echo "OIDC-backed stable signed APK release published and detectable by installed stable KR4 apps."
           fi
