@@ -28,7 +28,10 @@ android {
     } else null
 
     defaultConfig {
-        applicationId = "com.krstock.v3"
+        // Stable channel uses a separate application id so the first OIDC-signed
+        // APK can be installed alongside any earlier debug-signed KR4 build.
+        // All future stable releases keep this id and the same vault-backed signer.
+        applicationId = "com.krstock.v3.stable"
         minSdk = 26
         targetSdk = 34
         versionCode = System.getenv("KR4_VERSION_CODE")?.toIntOrNull() ?: 5
