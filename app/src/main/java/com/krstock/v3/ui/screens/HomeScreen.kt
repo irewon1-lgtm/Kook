@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -236,7 +235,7 @@ private fun CoverageRow(label: String, count: Int, total: Int) {
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(label, fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        Text("$count개 · ${percentText(count, total)}", fontSize = 11.sp, fontWeight = FontWeight.Medium)
+        Text("${count}개 · ${percentText(count, total)}", fontSize = 11.sp, fontWeight = FontWeight.Medium)
     }
 }
 
