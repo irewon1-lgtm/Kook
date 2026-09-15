@@ -28,10 +28,15 @@ object ContextEvidenceRepository {
         return loaded
     }
 
+    internal fun clearCacheForTest() {
+        cache.clear()
+    }
+
     private fun fetch(issuerId: String): EvidenceBundle {
         var newsError: String? = null
         var naverDisclosureError: String? = null
         var dartError: String? = null
+        var officialError: String? = null
 
         val news = try {
             val text = get("$FRONT/news/list/integration?itemCode=$issuerId&page=1&pageSize=20")
@@ -58,6 +63,15 @@ object ContextEvidenceRepository {
             emptyList()
         }
 
+        val firstParty = try {
+            OfficialSourceCollector.collect(issuerId).also { result ->
+                if (result.error != null) officialError = result.error
+            }
+        } catch (t: Throwable) {
+            officialError = t.javaClass.simpleName
+            OfficialSourceCollection(error = officialError)
+        }
+
         val mergedDisclosures = (dartDisclosures + naverDisclosures)
             .distinctBy { "${normalize(it.title)}:${it.publishedAt.take(10)}" }
             .sortedWith(
@@ -73,12 +87,15 @@ object ContextEvidenceRepository {
             newsError?.let { add("news=$it") }
             naverDisclosureError?.let { add("naverDisclosure=$it") }
             dartError?.let { add("dart=$it") }
+            officialError?.let { add("official=$it") }
         }
 
         return EvidenceBundle(
             issuerId = issuerId,
             news = news,
             disclosures = disclosures,
+            ir = firstParty.ir,
+            official = firstParty.official,
             disclosureDiff = diff,
             loaded = true,
             error = errors.takeIf { it.isNotEmpty() }?.joinToString(", ")
@@ -150,8 +167,7 @@ object ContextEvidenceRepository {
             "전환사채", "자기주식", "현금ㆍ현물배당", "현금·현물배당",
             "영업(잠정)실적", "연결재무제표기준영업(잠정)실적"
         )
-        val hit = known.firstOrNull { cleaned.contains(it) }
-        return hit ?: cleaned.take(100)
+        return known.firstOrNull { cleaned.contains(it) } ?: cleaned.take(100)
     }
 
     private fun hydratePeriodicDartBodies(items: List<ContextEvidence>): List<ContextEvidence> {
@@ -177,7 +193,7 @@ object ContextEvidenceRepository {
 
     private fun fetchDartPrimaryText(receiptNo: String): String {
         if (!receiptNo.matches(Regex("\\d{12,16}"))) return ""
-        val mainUrl = "$DART/dsaf001/main.do?rcpNo=${URLEncoder.encode(receiptNo, "UTF-8")}" 
+        val mainUrl = "$DART/dsaf001/main.do?rcpNo=${URLEncoder.encode(receiptNo, "UTF-8")}"
         val mainHtml = get(mainUrl, referer = "$DART/")
         val candidates = viewerCandidates(mainHtml, receiptNo)
         if (candidates.isEmpty()) return cleanHtml(mainHtml).take(MAX_DART_BODY)
@@ -211,7 +227,7 @@ object ContextEvidenceRepository {
             val end = (match.range.last + 180).coerceAtMost(mainHtml.lastIndex)
             val context = mainHtml.substring(start, end + 1)
             val score = sectionScore(context)
-            val url = "$DART/report/viewer.do?rcpNo=$rcp&dcmNo=$dcm&eleId=$ele&offset=$offset&length=$length&dtd=${URLEncoder.encode(dtd, "UTF-8")}" 
+            val url = "$DART/report/viewer.do?rcpNo=$rcp&dcmNo=$dcm&eleId=$ele&offset=$offset&length=$length&dtd=${URLEncoder.encode(dtd, "UTF-8")}"
             out += Candidate(score, url)
         }
 
@@ -235,52 +251,6 @@ object ContextEvidenceRepository {
         val t = cleanHtml(context).lowercase()
         val high = listOf("사업의 내용", "위험", "연구개발", "생산", "원재료", "매출", "수주", "설비", "경영진", "영업")
         return high.count { t.contains(it) } * 3
-    }
-
-    private fun get(url: String, referer: String = "https://m.stock.naver.com/"): String {
-        val connection = (URL(url).openConnection() as HttpURLConnection).apply {
-            requestMethod = "GET"
-            connectTimeout = 5_000
-            readTimeout = 6_000
-            instanceFollowRedirects = true
-            setRequestProperty("Accept", "application/json,text/plain,text/html,*/*")
-            setRequestProperty("User-Agent", "Mozilla/5.0 (Linux; Android 14) KR4/2.0")
-            setRequestProperty("Referer", referer)
-        }
-        try {
-            val status = connection.responseCode
-            if (status !in 200..299) error("HTTP_$status")
-            return connection.inputStream.bufferedReader(Charsets.UTF_8).use { it.readText() }
-        } finally {
-            connection.disconnect()
-        }
-    }
-
-    private fun postForm(url: String, form: Map<String, String>, referer: String): String {
-        val body = form.entries.joinToString("&") { (key, value) ->
-            "${URLEncoder.encode(key, "UTF-8") }=${URLEncoder.encode(value, "UTF-8") }"
-        }
-        val bytes = body.toByteArray(Charsets.UTF_8)
-        val connection = (URL(url).openConnection() as HttpURLConnection).apply {
-            requestMethod = "POST"
-            doOutput = true
-            connectTimeout = 5_000
-            readTimeout = 7_000
-            instanceFollowRedirects = true
-            setRequestProperty("Accept", "text/html,*/*")
-            setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
-            setRequestProperty("Content-Length", bytes.size.toString())
-            setRequestProperty("User-Agent", "Mozilla/5.0 (Linux; Android 14) KR4/2.0")
-            setRequestProperty("Referer", referer)
-        }
-        try {
-            connection.outputStream.use { it.write(bytes) }
-            val status = connection.responseCode
-            if (status !in 200..299) error("HTTP_$status")
-            return connection.inputStream.bufferedReader(Charsets.UTF_8).use { it.readText() }
-        } finally {
-            connection.disconnect()
-        }
     }
 
     internal fun parse(text: String, kind: EvidenceKind): List<ContextEvidence> {
@@ -330,7 +300,12 @@ object ContextEvidenceRepository {
         val source = first(obj, arrayOf(
             "officeName", "source", "providerName", "pressName", "companyName", "corpName", "market"
         ))?.let(::clean).orEmpty().ifBlank {
-            if (kind == EvidenceKind.DISCLOSURE) "네이버 공시목록" else "뉴스"
+            when (kind) {
+                EvidenceKind.DISCLOSURE -> "네이버 공시목록"
+                EvidenceKind.IR -> "회사 IR"
+                EvidenceKind.OFFICIAL -> "회사 공식"
+                EvidenceKind.NEWS -> "뉴스"
+            }
         }
 
         val receiptNo = first(obj, arrayOf("receiptNo", "rceptNo", "rcept_no", "reportNo"))
@@ -430,5 +405,51 @@ object ContextEvidenceRepository {
     private fun isPeriodicReport(title: String): Boolean {
         val t = title.replace(" ", "")
         return t.contains("사업보고서") || t.contains("반기보고서") || t.contains("분기보고서")
+    }
+
+    private fun get(url: String, referer: String = "https://m.stock.naver.com/"): String {
+        val connection = (URL(url).openConnection() as HttpURLConnection).apply {
+            requestMethod = "GET"
+            connectTimeout = 5_000
+            readTimeout = 6_000
+            instanceFollowRedirects = true
+            setRequestProperty("Accept", "application/json,text/plain,text/html,*/*")
+            setRequestProperty("User-Agent", "Mozilla/5.0 (Linux; Android 14) KR4/3.0")
+            setRequestProperty("Referer", referer)
+        }
+        try {
+            val status = connection.responseCode
+            if (status !in 200..299) error("HTTP_$status")
+            return connection.inputStream.bufferedReader(Charsets.UTF_8).use { it.readText() }
+        } finally {
+            connection.disconnect()
+        }
+    }
+
+    private fun postForm(url: String, form: Map<String, String>, referer: String): String {
+        val body = form.entries.joinToString("&") { (key, value) ->
+            "${URLEncoder.encode(key, "UTF-8") }=${URLEncoder.encode(value, "UTF-8") }"
+        }
+        val bytes = body.toByteArray(Charsets.UTF_8)
+        val connection = (URL(url).openConnection() as HttpURLConnection).apply {
+            requestMethod = "POST"
+            doOutput = true
+            connectTimeout = 5_000
+            readTimeout = 7_000
+            instanceFollowRedirects = true
+            setRequestProperty("Accept", "text/html,*/*")
+            setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
+            setRequestProperty("Content-Length", bytes.size.toString())
+            setRequestProperty("User-Agent", "Mozilla/5.0 (Linux; Android 14) KR4/3.0")
+            setRequestProperty("Referer", referer)
+        }
+        try {
+            connection.outputStream.use { it.write(bytes) }
+            val status = connection.responseCode
+            if (status !in 200..299) error("HTTP_$status")
+            return connection.inputStream.bufferedReader(Charsets.UTF_8).use { it.readText() }
+        } finally {
+            connection.disconnect()
+        }
     }
 }
