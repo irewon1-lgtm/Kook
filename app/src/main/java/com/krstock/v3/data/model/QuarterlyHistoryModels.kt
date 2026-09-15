@@ -11,7 +11,8 @@ data class QuarterlyPoint(
     val revenueQoQ: Double?,
     val scope: String,
     val basis: String,
-    val sourceFile: String = ""
+    val sourceFile: String = "",
+    val reason: String? = null
 )
 
 data class QuarterlyHistory(
