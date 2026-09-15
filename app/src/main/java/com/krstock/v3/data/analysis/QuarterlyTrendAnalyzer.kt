@@ -1,10 +1,25 @@
 package com.krstock.v3.data.analysis
 
+import com.krstock.v3.data.model.IntegratedAnalysis
 import com.krstock.v3.data.model.QuarterlyHistory
 import com.krstock.v3.data.model.QuarterlyPoint
 import kotlin.math.abs
 
 object QuarterlyTrendAnalyzer {
+    fun enrich(analysis: IntegratedAnalysis, history: QuarterlyHistory): IntegratedAnalysis {
+        val available = history.availableQuarterCount
+        return analysis.copy(
+            quarterlyTrend = summarize(history),
+            quarterlySignal = compactSignal(history),
+            quarterlyCoverage = when {
+                !history.loaded -> "불러오는 중"
+                available >= 8 -> "8/8분기 확인"
+                available >= 4 -> "$available/8분기 확인"
+                else -> "$available/8분기 · 판독 보류"
+            }
+        )
+    }
+
     fun summarize(history: QuarterlyHistory): String {
         if (!history.loaded) return "4~8분기 시계열을 불러오는 중입니다."
         val usable = history.points.filter { it.revenue != null }
@@ -12,7 +27,6 @@ object QuarterlyTrendAnalyzer {
             return "비교 가능한 실제 분기 매출이 ${usable.size}개라 추세 판독을 보류합니다. 결측 분기를 추정으로 메우지 않습니다."
         }
 
-        val first = usable.first()
         val latest = usable.last()
         val last4 = usable.takeLast(4)
         val revenueTrend = direction(last4.mapNotNull { it.revenue })
@@ -38,9 +52,7 @@ object QuarterlyTrendAnalyzer {
             if (qoq != null) append(", 전분기 대비 $qoq")
             append("입니다. ")
             if (latestMargin != null) append("영업이익률은 $latestMargin")
-            if (marginDelta != null) {
-                append("이며 1년 전 같은 분기보다 ${formatPointDelta(marginDelta)}")
-            }
+            if (marginDelta != null) append("이며 1년 전 같은 분기보다 ${formatPointDelta(marginDelta)}")
             if (latestMargin != null) append("입니다. ")
             append(inflectionSentence(history.points))
             append(" 이 시계열은 OpenDART 실제 손익계산서에서 직접 3개월 값을 우선 사용하고, 직접값이 없을 때만 같은 CFS/OFS 범위의 누적 차감으로 복원합니다.")
@@ -99,17 +111,17 @@ object QuarterlyTrendAnalyzer {
         }
     }
 
-    private fun formatPct(value: Double): String = String.format("%+.1f%%", value)
+    fun formatPct(value: Double?): String = value?.let { String.format("%+.1f%%", it) } ?: "N/A"
 
     private fun formatPointDelta(value: Double): String = String.format("%+.1f%%p", value)
 
     fun formatAmount(value: Double?): String {
         if (value == null) return "N/A"
-        val abs = kotlin.math.abs(value)
+        val absolute = kotlin.math.abs(value)
         return when {
-            abs >= 1_000_000_000_000.0 -> String.format("%.2f조원", value / 1_000_000_000_000.0)
-            abs >= 100_000_000.0 -> String.format("%.0f억원", value / 100_000_000.0)
-            abs >= 10_000.0 -> String.format("%.0f만원", value / 10_000.0)
+            absolute >= 1_000_000_000_000.0 -> String.format("%.2f조원", value / 1_000_000_000_000.0)
+            absolute >= 100_000_000.0 -> String.format("%.0f억원", value / 100_000_000.0)
+            absolute >= 10_000.0 -> String.format("%.0f만원", value / 10_000.0)
             else -> String.format("%.0f원", value)
         }
     }
