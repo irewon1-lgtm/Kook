@@ -1,0 +1,41 @@
+name: KR4 Metric Sanity Audit
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/metric-sanity-audit.yml"
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Audit current M01 M02 distribution
+        run: |
+          python - <<'PY'
+          import json, math
+          d=json.load(open('evidence/real_quant_snapshot.json',encoding='utf-8'))
+          print('SNAPSHOT',d.get('snapshot_date_kst'),d.get('price_cutoff_date_kst'),d.get('coverage'))
+          for mid in ('m01','m02'):
+              vals=[]
+              for code,row in d['records'].items():
+                  raw=row[mid].get('raw')
+                  if raw is not None and math.isfinite(float(raw)):
+                      vals.append((float(raw),code,row.get('name',''),row[mid].get('basis','')))
+              vals.sort()
+              xs=[x[0] for x in vals]
+              print(f'--- {mid.upper()} n={len(xs)} min={xs[0]} max={xs[-1]} ---')
+              for q in (0.001,0.005,0.01,0.025,0.05,0.95,0.975,0.99,0.995,0.999):
+                  idx=round((len(xs)-1)*q)
+                  print(f'Q {q:.3f} {xs[idx]}')
+              print('BOTTOM20')
+              for x in vals[:20]: print(x)
+              print('TOP30')
+              for x in vals[-30:]: print(x)
+              for threshold in ((1000,2000,5000,10000,20000) if mid=='m01' else (200,500,1000,2000,5000)):
+                  hi=sum(v>threshold for v in xs); lo=sum(v < (-100 if mid=='m01' else -threshold) for v in xs)
+                  print(f'THRESH {threshold} HI={hi} LO={lo}')
+          PY
