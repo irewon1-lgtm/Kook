@@ -1,0 +1,296 @@
+{
+  "candidate_count": 9,
+  "records": {
+    "0164H0": {
+      "name": "한국제16호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2026-06-30",
+      "other_missing": [
+        "M01",
+        "M02",
+        "M04"
+      ],
+      "other_reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED",
+        "M04": "PRICE_HISTORY_SHORTER_THAN_6M"
+      },
+      "integration_eps_per_hits": [],
+      "annual_eps": {
+        "actual_keys": [],
+        "eps_rows": [
+          {
+            "title": "EPS",
+            "actual_values": {}
+          },
+          {
+            "title": "주당배당금",
+            "actual_values": {}
+          }
+        ]
+      },
+      "quarter_eps": {
+        "actual_keys": [
+          "202603",
+          "202606"
+        ],
+        "eps_rows": [
+          {
+            "title": "EPS",
+            "actual_values": {
+              "202603": -15.0,
+              "202606": -7.0
+            }
+          },
+          {
+            "title": "주당배당금",
+            "actual_values": {}
+          }
+        ]
+      }
+    },
+    "0165X0": {
+      "name": "메리츠제2호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2026-06-19",
+      "other_missing": [
+        "M01",
+        "M02",
+        "M04"
+      ],
+      "other_reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED",
+        "M04": "PRICE_HISTORY_SHORTER_THAN_6M"
+      },
+      "integration_eps_per_hits": [],
+      "annual_eps": {
+        "actual_keys": [],
+        "eps_rows": [
+          {
+            "title": "EPS",
+            "actual_values": {}
+          },
+          {
+            "title": "주당배당금",
+            "actual_values": {}
+          }
+        ]
+      },
+      "quarter_eps": {
+        "actual_keys": [
+          "202603",
+          "202606"
+        ],
+        "eps_rows": [
+          {
+            "title": "EPS",
+            "actual_values": {
+              "202603": -147.0,
+              "202606": -5.0
+            }
+          },
+          {
+            "title": "주당배당금",
+            "actual_values": {}
+          }
+        ]
+      }
+    },
+    "0197V0": {
+      "name": "엔에이치스팩34호",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2026-09-10",
+      "other_missing": [
+        "M01",
+        "M02",
+        "M04"
+      ],
+      "other_reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED",
+        "M04": "PRICE_HISTORY_SHORTER_THAN_6M"
+      },
+      "integration_eps_per_hits": [],
+      "annual_eps": {
+        "actual_keys": [],
+        "eps_rows": [
+          {
+            "title": "EPS",
+            "actual_values": {}
+          },
+          {
+            "title": "주당배당금",
+            "actual_values": {}
+          }
+        ]
+      },
+      "quarter_eps": {
+        "actual_keys": [
+          "202606"
+        ],
+        "eps_rows": [
+          {
+            "title": "EPS",
+            "actual_values": {
+              "202606": -90.0
+            }
+          },
+          {
+            "title": "주당배당금",
+            "actual_values": {}
+          }
+        ]
+      }
+    },
+    "0218L0": {
+      "name": "네오뷰",
+      "market": "KOSDAQ",
+      "sector": "영상 및 음향기기 제조업",
+      "listing_date": "2026-07-27",
+      "other_missing": [
+        "M01",
+        "M02",
+        "M04"
+      ],
+      "other_reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "DART_NO_OPERATING_INCOME",
+        "M04": "PRICE_HISTORY_SHORTER_THAN_6M"
+      },
+      "integration_eps_per_hits": [],
+      "annual_eps": {
+        "actual_keys": [],
+        "eps_rows": []
+      },
+      "quarter_eps": {
+        "actual_keys": [],
+        "eps_rows": []
+      }
+    },
+    "0220W0": {
+      "name": "한화머시너리앤서비스홀딩스",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "2026-08-25",
+      "other_missing": [
+        "M01",
+        "M02",
+        "M04"
+      ],
+      "other_reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED",
+        "M04": "PRICE_HISTORY_SHORTER_THAN_6M"
+      },
+      "integration_eps_per_hits": [],
+      "annual_eps": {
+        "actual_keys": [],
+        "eps_rows": []
+      },
+      "quarter_eps": {
+        "actual_keys": [],
+        "eps_rows": []
+      }
+    },
+    "088980": {
+      "name": "맥쿼리인프라",
+      "market": "KOSPI",
+      "sector": "신탁업 및 집합투자업",
+      "listing_date": "2006-03-15",
+      "other_missing": [
+        "M01",
+        "M02"
+      ],
+      "other_reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "integration_eps_per_hits": [],
+      "annual_eps": {
+        "actual_keys": [],
+        "eps_rows": []
+      },
+      "quarter_eps": {
+        "actual_keys": [],
+        "eps_rows": []
+      }
+    },
+    "094800": {
+      "name": "맵스리얼티",
+      "market": "KOSPI",
+      "sector": "신탁업 및 집합투자업",
+      "listing_date": "2007-04-09",
+      "other_missing": [
+        "M01",
+        "M02"
+      ],
+      "other_reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "integration_eps_per_hits": [],
+      "annual_eps": {
+        "actual_keys": [],
+        "eps_rows": []
+      },
+      "quarter_eps": {
+        "actual_keys": [],
+        "eps_rows": []
+      }
+    },
+    "386380": {
+      "name": "스카이랩스",
+      "market": "KOSDAQ",
+      "sector": "의료용 기기 제조업",
+      "listing_date": "2026-09-04",
+      "other_missing": [
+        "M01",
+        "M02",
+        "M04"
+      ],
+      "other_reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "DART_NO_OPERATING_INCOME",
+        "M04": "PRICE_HISTORY_SHORTER_THAN_6M"
+      },
+      "integration_eps_per_hits": [],
+      "annual_eps": {
+        "actual_keys": [],
+        "eps_rows": []
+      },
+      "quarter_eps": {
+        "actual_keys": [],
+        "eps_rows": []
+      }
+    },
+    "415640": {
+      "name": "KB발해인프라",
+      "market": "KOSPI",
+      "sector": "신탁업 및 집합투자업",
+      "listing_date": "2024-11-29",
+      "other_missing": [
+        "M01",
+        "M02"
+      ],
+      "other_reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "integration_eps_per_hits": [],
+      "annual_eps": {
+        "actual_keys": [],
+        "eps_rows": []
+      },
+      "quarter_eps": {
+        "actual_keys": [],
+        "eps_rows": []
+      }
+    }
+  },
+  "errors": {},
+  "error_count": 0
+}
