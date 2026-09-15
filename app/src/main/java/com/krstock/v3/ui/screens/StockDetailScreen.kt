@@ -8,9 +8,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -19,11 +17,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.krstock.v3.data.model.CompanyReport
-import com.krstock.v3.data.model.MetricValue
-import com.krstock.v3.data.model.PeerComparison
-import com.krstock.v3.data.model.PeerGroupBasis
-import com.krstock.v3.data.model.StockSummary
+import com.krstock.v3.data.analysis.IntegratedInterpretationEngine
+import com.krstock.v3.data.evidence.ContextEvidenceRepository
+import com.krstock.v3.data.model.*
 import com.krstock.v3.data.repository.StockRepository
 import com.krstock.v3.ui.components.StatusBadge
 import kotlinx.coroutines.launch
@@ -63,9 +59,17 @@ fun StockDetailScreen(issuerId: String, onBack: () -> Unit) {
 
     val summary = stockDetail.summary
     val report = stockDetail.report
+    var evidence by remember(issuerId) { mutableStateOf(EvidenceBundle(issuerId = issuerId)) }
+    LaunchedEffect(issuerId) {
+        evidence = ContextEvidenceRepository.load(issuerId)
+    }
+    val integrated = remember(summary, evidence) {
+        IntegratedInterpretationEngine.analyze(summary, evidence)
+    }
+
     val pagerState = rememberPagerState(initialPage = 0, pageCount = { 4 })
     val scope = rememberCoroutineScope()
-    val tabs = listOf("요약", "4지표", "정량분석", "체크·출처")
+    val tabs = listOf("요약", "4지표", "종합해석", "체크·출처")
 
     Scaffold(
         containerColor = scheme.background,
@@ -127,10 +131,10 @@ fun StockDetailScreen(issuerId: String, onBack: () -> Unit) {
                 modifier = Modifier.fillMaxSize().testTag("detail_pager")
             ) { page ->
                 when (page) {
-                    0 -> DetailSummaryPage(summary = summary, report = report)
+                    0 -> DetailSummaryPage(summary = summary, analysis = integrated)
                     1 -> DetailMetricsPage(summary = summary)
-                    2 -> DetailAnalysisPage(report = report)
-                    else -> DetailCheckSourcePage(report = report)
+                    2 -> DetailAnalysisPage(analysis = integrated, evidence = evidence)
+                    else -> DetailCheckSourcePage(report = report, evidence = evidence)
                 }
             }
         }
@@ -138,7 +142,7 @@ fun StockDetailScreen(issuerId: String, onBack: () -> Unit) {
 }
 
 @Composable
-private fun DetailSummaryPage(summary: StockSummary, report: CompanyReport) {
+private fun DetailSummaryPage(summary: StockSummary, analysis: IntegratedAnalysis) {
     val scheme = MaterialTheme.colorScheme
     val availableCount = listOf(summary.m01RevGrowth, summary.m02OpMargin, summary.m03Per, summary.m04Price6m)
         .count { it.isAvailable }
@@ -188,10 +192,10 @@ private fun DetailSummaryPage(summary: StockSummary, report: CompanyReport) {
             }
         }
 
-        FinanceSectionCard(title = "한눈에 보기") {
-            Text(report.oneLineView, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, lineHeight = 21.sp)
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(report.quantSummary, fontSize = 12.sp, lineHeight = 19.sp, color = scheme.onSurfaceVariant)
+        FinanceSectionCard(title = "핵심 판독") {
+            Text(analysis.regimeTitle, fontSize = 14.sp, fontWeight = FontWeight.Bold, color = scheme.primary)
+            Spacer(modifier = Modifier.height(7.dp))
+            Text(analysis.thesis, fontSize = 12.sp, lineHeight = 20.sp)
         }
 
         Card(
@@ -250,34 +254,144 @@ private fun DetailMetricsPage(summary: StockSummary) {
         MetricCard(summary.m02OpMargin)
         MetricCard(summary.m03Per, lossMaking = summary.isLossMaking)
         MetricCard(summary.m04Price6m)
-        SwipeHint("← 밀어서 정량분석 보기")
+        SwipeHint("← 밀어서 4지표 종합해석 보기")
     }
 }
 
 @Composable
-private fun DetailAnalysisPage(report: CompanyReport) {
+private fun DetailAnalysisPage(analysis: IntegratedAnalysis, evidence: EvidenceBundle) {
+    val scheme = MaterialTheme.colorScheme
     PageColumn("detail_analysis_page") {
-        Text("정량 분석", fontWeight = FontWeight.Bold, fontSize = 18.sp)
-        AnalysisCard("GROWTH & PROFITABILITY", "성장·수익성") {
-            InfoSection("사업 성장·수익성", report.businessQuality)
+        Text(
+            "4지표 종합해석",
+            modifier = Modifier.testTag("integrated_analysis"),
+            fontWeight = FontWeight.Bold,
+            fontSize = 18.sp
+        )
+        Text(
+            "숫자를 다시 읽지 않고, 네 지표가 함께 만드는 사업의 의미와 최근 근거를 해석합니다.",
+            fontSize = 11.sp,
+            color = scheme.onSurfaceVariant,
+            lineHeight = 17.sp
+        )
+
+        AnalysisCard("CORE READ", analysis.regimeTitle) {
+            Text(analysis.thesis, fontSize = 12.sp, lineHeight = 20.sp)
         }
-        AnalysisCard("VALUATION", "밸류에이션") {
-            InfoSection("밸류에이션", report.valuationView)
+
+        AnalysisCard("INDUSTRY MAP", "이 산업에서 숫자를 읽는 법") {
+            Text(analysis.industryContext, fontSize = 12.sp, lineHeight = 20.sp)
         }
-        AnalysisCard("MOMENTUM", "가격 흐름") {
-            InfoSection("가격 흐름", report.momentumView)
+
+        AnalysisCard("HIDDEN MEANING", "네 지표 조합의 숨은 뜻") {
+            Text(analysis.combinationMeaning, fontSize = 12.sp, lineHeight = 20.sp)
+        }
+
+        Card(
+            modifier = Modifier.fillMaxWidth().testTag("evidence_panel"),
+            shape = RoundedCornerShape(15.dp),
+            colors = CardDefaults.cardColors(containerColor = scheme.surface),
+            border = BorderStroke(1.dp, scheme.outlineVariant)
+        ) {
+            Column(modifier = Modifier.padding(15.dp)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text("NEWS & DISCLOSURE CHECK", fontSize = 9.sp, fontWeight = FontWeight.Bold, color = scheme.primary)
+                        Text("왜 이런 숫자가 나왔는지 최근 근거 점검", fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                    }
+                    if (!evidence.loaded) {
+                        CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp)
+                    } else {
+                        Surface(
+                            shape = RoundedCornerShape(999.dp),
+                            color = if (evidence.error == null) scheme.secondaryContainer else scheme.errorContainer
+                        ) {
+                            Text(
+                                if (evidence.error == null) "확인 완료" else "부분 확인",
+                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                                fontSize = 9.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = if (evidence.error == null) scheme.onSecondaryContainer else scheme.onErrorContainer
+                            )
+                        }
+                    }
+                }
+                Spacer(Modifier.height(10.dp))
+                Text(analysis.causeInvestigation, fontSize = 12.sp, lineHeight = 20.sp)
+
+                if (analysis.evidenceHighlights.isNotEmpty()) {
+                    Spacer(Modifier.height(12.dp))
+                    HorizontalDivider(color = scheme.outlineVariant)
+                    Spacer(Modifier.height(9.dp))
+                    Text("해석에 실제로 사용한 최근 단서", fontSize = 11.sp, fontWeight = FontWeight.SemiBold, color = scheme.primary)
+                    Spacer(Modifier.height(6.dp))
+                    analysis.evidenceHighlights.forEach { item ->
+                        EvidenceRow(item)
+                    }
+                }
+            }
+        }
+
+        AnalysisCard("OUTCOME", "이 조합이 이어질 때 생길 일") {
+            Text(analysis.consequence, fontSize = 12.sp, lineHeight = 20.sp)
+        }
+
+        AnalysisCard("FALSIFIERS", "이 해석이 틀렸다고 볼 조건") {
+            analysis.falsifiers.forEach { item ->
+                Text("• $item", fontSize = 12.sp, lineHeight = 19.sp, modifier = Modifier.padding(bottom = 4.dp))
+            }
+        }
+
+        Surface(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(12.dp),
+            color = scheme.surfaceVariant,
+            contentColor = scheme.onSurfaceVariant
+        ) {
+            Text(
+                analysis.confidenceNote,
+                modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
+                fontSize = 10.sp,
+                lineHeight = 16.sp
+            )
         }
         SwipeHint("← 밀어서 체크포인트·출처 보기")
     }
 }
 
 @Composable
-private fun DetailCheckSourcePage(report: CompanyReport) {
+private fun EvidenceRow(item: ContextEvidence) {
+    val scheme = MaterialTheme.colorScheme
+    Column(modifier = Modifier.fillMaxWidth().padding(vertical = 5.dp)) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                if (item.kind == EvidenceKind.DISCLOSURE) "공시" else "뉴스",
+                fontSize = 9.sp,
+                fontWeight = FontWeight.Bold,
+                color = scheme.primary
+            )
+            Spacer(Modifier.width(7.dp))
+            Text(
+                listOf(item.publishedAt, item.source).filter { it.isNotBlank() }.joinToString(" · "),
+                fontSize = 9.sp,
+                color = scheme.onSurfaceVariant
+            )
+        }
+        Spacer(Modifier.height(2.dp))
+        Text(item.title, fontSize = 11.sp, lineHeight = 17.sp, fontWeight = FontWeight.Medium)
+    }
+}
+
+@Composable
+private fun DetailCheckSourcePage(report: CompanyReport, evidence: EvidenceBundle) {
     val scheme = MaterialTheme.colorScheme
     PageColumn("detail_source_page") {
         Text("조사 체크포인트", fontWeight = FontWeight.Bold, fontSize = 18.sp)
-        AnalysisCard("RESEARCH CHECK", "판단 보조") {
-            BulletSection("우호 요인", report.positiveFactors)
+        AnalysisCard("RESEARCH CHECK", "정량 밖에서 반드시 확인할 것") {
             BulletSection("위험·결측", report.riskFactors)
             InfoSection("반대 근거", report.counterArguments)
             BulletSection("다음 확인 조건", report.nextVerificationConditions)
@@ -304,10 +418,20 @@ private fun DetailCheckSourcePage(report: CompanyReport) {
                 Spacer(modifier = Modifier.height(11.dp))
                 HorizontalDivider(color = scheme.onPrimaryContainer.copy(alpha = 0.12f))
                 Spacer(modifier = Modifier.height(7.dp))
-                SourceRow("종목", "KRX KIND")
-                SourceRow("재무", "OpenDART")
-                SourceRow("PER·가격", "네이버증권")
+                SourceRow("종목·업종", "KRX KIND")
+                SourceRow("재무", "금융감독원 OpenDART")
+                SourceRow("PER·가격", "네이버증권 공개 데이터")
+                SourceRow("뉴스·공시", if (evidence.loaded) "네이버증권 공개 목록 · 실시간 확인" else "불러오는 중")
                 SourceRow("주가 마감", StockRepository.priceCutoffDate())
+                if (!evidence.error.isNullOrBlank()) {
+                    Spacer(Modifier.height(6.dp))
+                    Text(
+                        "최근 근거 연결 상태: ${evidence.error}",
+                        fontSize = 9.sp,
+                        lineHeight = 14.sp,
+                        color = scheme.onPrimaryContainer.copy(alpha = 0.72f)
+                    )
+                }
             }
         }
     }
@@ -358,7 +482,7 @@ private fun SourceRow(label: String, value: String) {
     ) {
         Text(label, fontSize = 10.sp, color = LocalContentColor.current.copy(alpha = 0.68f))
         Spacer(Modifier.width(12.dp))
-        Text(value, fontSize = 10.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+        Text(value, fontSize = 10.sp, fontWeight = FontWeight.SemiBold, maxLines = 2, overflow = TextOverflow.Ellipsis)
     }
 }
 
@@ -509,7 +633,7 @@ private fun formatMetricValue(metricId: String, value: Double): String =
     if (metricId == "M03") String.format("%.2f배", value) else String.format("%.1f%%", value)
 
 private fun peerComparisonText(metric: MetricValue, peer: PeerComparison): String {
-    val raw = metric.rawValue ?: return "현재 종목 값이 없어 업종 중앙값과의 직접 비교는 보류합니다."
+    metric.rawValue ?: return "현재 종목 값이 없어 업종 중앙값과의 직접 비교는 보류합니다."
     val delta = peer.deltaFromMedian ?: return "업종 중앙값과의 직접 비교를 계산하지 못했습니다."
     if (abs(delta) <= 1e-12) return "업종 중앙값과 동일한 수준입니다."
 
