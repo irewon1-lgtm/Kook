@@ -54,9 +54,16 @@ def classify(d:dict[str,Any])->dict[str,Any]:
         if not ms: continue
         combos["+".join(x.upper() for x in ms)]+=1
         cv=list(cs.values())
-        if cv and all(x.startswith("STRUCTURAL_NA_") for x in cv): bucket="STRUCTURAL_ONLY"
-        elif any(x.startswith("RECOVERABLE_") for x in cv): bucket="RECOVERABLE"
-        else: bucket="INVESTIGATE"
+        structural=[x.startswith("STRUCTURAL_NA_") for x in cv]
+        recoverable=[x.startswith("RECOVERABLE_") for x in cv]
+        if cv and all(structural):
+            bucket="STRUCTURAL_ONLY"
+        elif cv and all(recoverable):
+            bucket="RECOVERABLE_ONLY"
+        elif any(structural) and any(recoverable):
+            bucket="MIXED_STRUCTURAL_RECOVERABLE"
+        else:
+            bucket="INVESTIGATE"
         buckets[bucket]+=1
         rows.append({"code":code,"name":row.get("name"),"market":row.get("market"),"sector":row.get("sector"),"listing_date":row.get("listing_date"),"missing_metrics":[m.upper() for m in ms],"reasons":{m.upper():rs[m] for m in ms},"classes":{m.upper():cs[m] for m in ms},"issuer_bucket":bucket})
     result={
