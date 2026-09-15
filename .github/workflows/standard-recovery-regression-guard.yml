@@ -93,22 +93,65 @@ jobs:
           print('STANDARD_RECOVERY_REGRESSION_GUARD_PASS',json.dumps({'before':bc,'after':ac},ensure_ascii=False))
           PY
 
-      - name: Commit repair only when needed
+      - name: Commit repair with race-safe latest-head retry
         run: |
           set -euo pipefail
-          git add evidence/real_quant_snapshot.json
-          if git diff --cached --quiet; then
-            echo 'Snapshot already conforms to latest standard recovery policy.'
-            exit 0
-          fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          COV=$(python - <<'PY'
+          BRANCH="${GITHUB_REF_NAME}"
+
+          for attempt in 1 2 3 4; do
+            echo "RACE_SAFE_ATTEMPT=${attempt}"
+            git fetch origin "$BRANCH"
+            git reset --hard "origin/$BRANCH"
+            cp evidence/real_quant_snapshot.json /tmp/retry_before.json
+
+            (
+              cd scripts
+              python apply_standard_actual_recovery.py \
+                --quant ../evidence/real_quant_snapshot.json \
+                --out ../evidence/real_quant_snapshot.json
+            )
+
+            python - <<'PY'
+          import json
+          b=json.load(open('/tmp/retry_before.json',encoding='utf-8'))
+          a=json.load(open('evidence/real_quant_snapshot.json',encoding='utf-8'))
+          bc=b['coverage']; ac=a['coverage']
+          assert a['universe_count']==b['universe_count']==2649
+          assert set(a['records'])==set(b['records'])
+          assert ac['m01_available']>=bc['m01_available'],(bc,ac)
+          assert ac['m02_available']>=bc['m02_available'],(bc,ac)
+          assert ac['m03_available']==bc['m03_available'],(bc,ac)
+          assert ac['m04_available']==bc['m04_available'],(bc,ac)
+          assert ac['complete_count']>=bc['complete_count'],(bc,ac)
+          assert ac['ranked_count']==ac['complete_count']
+          assert (a.get('standard_actual_recovery') or {}).get('source_error_count')==0
+          print('RACE_SAFE_REAPPLY_GATE_PASS',json.dumps({'before':bc,'after':ac},ensure_ascii=False))
+          PY
+
+            git add evidence/real_quant_snapshot.json
+            if git diff --cached --quiet; then
+              echo 'Latest branch snapshot already conforms to the latest recovery policy.'
+              exit 0
+            fi
+
+            COV=$(python - <<'PY'
           import json
           d=json.load(open('evidence/real_quant_snapshot.json',encoding='utf-8')); c=d['coverage']
           print(f"M01={c['m01_available']} M02={c['m02_available']} M03={c['m03_available']} M04={c['m04_available']} complete={c['complete_count']}")
           PY
           )
-          git commit -m "Repair KR4 snapshot to latest standard recovery policy: ${COV}"
-          git pull --rebase origin "${{ github.ref_name }}"
-          git push origin HEAD:${{ github.ref_name }}
+            git commit -m "Repair KR4 snapshot to latest standard recovery policy: ${COV}"
+
+            if git push origin "HEAD:${BRANCH}"; then
+              echo "RACE_SAFE_PUSH_PASS attempt=${attempt}"
+              exit 0
+            fi
+
+            echo "Concurrent writer moved ${BRANCH}; recomputing from newest remote head."
+            sleep $((attempt * 2))
+          done
+
+          echo 'Failed to converge after four race-safe attempts.' >&2
+          exit 1
