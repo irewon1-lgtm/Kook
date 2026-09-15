@@ -18,11 +18,14 @@ M04 six-month price-return policy:
 1) Never divide the raw six-month start/end closes directly.
 2) Compound each trading day's KRX/Naver reference-price return instead. KRX
    resets the reference/base price for stock splits, reverse splits, bonus
-   issues and other corporate actions, so those unit changes do not become
-   fake investment returns.
-3) If a daily reference return is missing, raw close-to-close is accepted only
-   when it is inside the normal KRX daily price-limit band. A split-like raw
-   discontinuity without adjustment metadata fails closed instead of guessing.
+   issues, capital reductions and other corporate actions, so unit changes do
+   not become fake investment returns.
+3) Trust exchange-reference daily return metadata even when the real market move
+   exceeds the ordinary +/-30% price band (for example liquidation trading or
+   special restart sessions). The +/-30% band is used only as a last-resort raw
+   close fallback when reference metadata itself is absent.
+4) If reference metadata is absent across a split-like raw discontinuity, fail
+   closed instead of guessing.
 """
 from __future__ import annotations
 
@@ -34,10 +37,14 @@ from typing import Any
 import collect_real_quant as base
 
 
-# KRX's ordinary daily price limit is +/-30%. The small buffer absorbs tick and
-# percentage rounding while still rejecting split/reverse-split discontinuities.
+# Ordinary KRX daily price band. This is NOT used to reject exchange-reported
+# returns: special sessions can legitimately move more than +/-30%. It is only
+# the safe boundary for a raw close-to-close fallback when reference metadata
+# is missing altogether.
 _DAILY_FACTOR_MIN = 0.69
 _DAILY_FACTOR_MAX = 1.31
+_REFERENCE_FACTOR_MAX = 1001.0
+_REFERENCE_RESET_REL_DIFF = 0.05
 
 
 def get_json(url: str, retries: int = 3) -> Any:
@@ -66,18 +73,39 @@ def get_json(url: str, retries: int = 3) -> Any:
 
 
 def _valid_daily_factor(value: float | None) -> bool:
+    """Whether a raw close factor is safe to use without exchange metadata."""
     return value is not None and math.isfinite(value) and _DAILY_FACTOR_MIN <= value <= _DAILY_FACTOR_MAX
 
 
-def _daily_reference_factor(bar: dict[str, Any], close: float) -> float | None:
-    """Return a corporate-action-aware one-day price factor.
+def _valid_reference_factor(value: float | None) -> bool:
+    """Whether an exchange-reference return factor is economically usable.
 
-    Naver exposes both the day's price change and percentage change relative to
-    the exchange reference/base price. KRX adjusts that base price around stock
-    splits/reverse splits/bonus issues. The integer change-derived factor is
-    preferred because it avoids compounding rounded percentages; the percentage
-    field is the fallback and also rescues corporate-action days if the textual
-    change field is not usable.
+    Special KRX sessions such as liquidation trading or restart after a long
+    suspension can legitimately exceed the ordinary +/-30% band. The broad
+    ceiling only guards obviously corrupt payloads; the six-month cumulative
+    outlier guard still applies later.
+    """
+    return value is not None and math.isfinite(value) and 0.0 < value <= _REFERENCE_FACTOR_MAX
+
+
+def _material_reference_reset(raw_factor: float | None, adjusted_factor: float | None) -> bool:
+    """Detect a reference/base-price reset without mistaking a huge real move for one."""
+    if not _valid_reference_factor(raw_factor) or not _valid_reference_factor(adjusted_factor):
+        return False
+    return abs(raw_factor / adjusted_factor - 1.0) > _REFERENCE_RESET_REL_DIFF
+
+
+def _daily_reference_factor(bar: dict[str, Any], close: float) -> float | None:
+    """Return a corporate-action-aware one-day economic price factor.
+
+    Naver exposes both the absolute change and percentage change relative to the
+    exchange reference/base price. That base price is adjusted by KRX around
+    splits/reverse splits/capital reductions and also remains the correct anchor
+    for special sessions whose real return can exceed +/-30%.
+
+    The absolute-change factor is normally a little more precise than the rounded
+    percentage. If the two metadata fields materially disagree, the explicit
+    percentage factor wins rather than allowing a suspect absolute field through.
     """
     change = base.parse_number(bar.get("compareToPreviousClosePrice"))
     ratio = base.parse_number(bar.get("fluctuationsRatio"))
@@ -87,20 +115,18 @@ def _daily_reference_factor(bar: dict[str, Any], close: float) -> float | None:
         reference_price = close - change
         if reference_price > 0:
             candidate = close / reference_price
-            if _valid_daily_factor(candidate):
+            if _valid_reference_factor(candidate):
                 change_factor = candidate
 
     ratio_factor = None
     if ratio is not None:
         candidate = 1.0 + ratio / 100.0
-        if _valid_daily_factor(candidate):
+        if _valid_reference_factor(candidate):
             ratio_factor = candidate
 
     if change_factor is not None and ratio_factor is not None:
-        # Percentage is normally rounded to two decimals. If both fields disagree
-        # materially, prefer the exchange-style percentage factor rather than
-        # allowing a suspicious absolute-change field to contaminate M04.
-        if abs(change_factor - ratio_factor) > 0.02:
+        tolerance = max(0.0005, abs(ratio_factor) * 0.02)
+        if abs(change_factor - ratio_factor) > tolerance:
             return ratio_factor
         return change_factor
     return change_factor if change_factor is not None else ratio_factor
@@ -149,12 +175,14 @@ def _corporate_action_adjusted_return(
     start_date: date,
     end_date: date,
 ) -> tuple[float | None, str | None, int, int]:
-    """Compound daily adjusted-reference returns from start(exclusive) to end.
+    """Compound daily exchange-reference returns from start(exclusive) to end.
 
-    Returns (percentage, reason, corporate_action_days, raw_fallback_days).
-    A raw factor is used only when it is itself inside the normal daily band.
-    Therefore an unannotated 10:1 split (raw factor ~0.1) or 1:5 reverse split
-    (raw factor ~5) fails closed instead of becoming a bogus M04 return.
+    Returns (percentage, reason, reference_reset_days, raw_fallback_days).
+
+    A raw factor is used only when reference metadata is missing AND the raw move
+    sits inside the ordinary KRX band. Therefore an unannotated 10:1 split or
+    1:5 reverse split still fails closed, while an exchange-reported -97% real
+    liquidation move is retained as a genuine economic return.
     """
     dates = sorted(d for d in by_date if start_date <= d <= end_date)
     if not dates or dates[0] != start_date or dates[-1] != end_date:
@@ -174,20 +202,20 @@ def _corporate_action_adjusted_return(
         adjusted_factor = by_factor.get(d)
 
         if adjusted_factor is None:
-            # Safe fallback only for a normal-size raw move. This preserves
-            # coverage if Naver omits one daily metadata field, while refusing
-            # to guess across a split/reverse-split/bonus-issue discontinuity.
+            # Safe fallback only for an ordinary-sized raw move. A large raw gap
+            # without exchange reference metadata is ambiguous (corporate action,
+            # special restart, bad feed), so fail closed instead of guessing.
             if not _valid_daily_factor(raw_factor):
                 return None, "NAVER_CORPORATE_ACTION_ADJUSTMENT_MISSING", corporate_action_days, raw_fallback_days
             adjusted_factor = raw_factor
             raw_fallback_days += 1
-        elif not _valid_daily_factor(adjusted_factor):
+        elif not _valid_reference_factor(adjusted_factor):
             return None, "NAVER_ADJUSTED_RETURN_INVALID", corporate_action_days, raw_fallback_days
 
-        # A raw jump outside the legal ordinary daily band while the reference
-        # factor is normal is the signature of an exchange reference-price reset
-        # such as a split/reverse split. Count it for provenance/regression.
-        if not _valid_daily_factor(raw_factor):
+        # Count only a MATERIAL mismatch between raw close movement and the KRX
+        # reference-based economic return. A huge move where both factors agree
+        # is a real market return, not a split/reverse-split adjustment.
+        if _material_reference_reset(raw_factor, adjusted_factor):
             corporate_action_days += 1
 
         growth *= adjusted_factor
