@@ -1,5 +1,6 @@
 package com.krstock.v3
 
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.krstock.v3.update.AppAutoUpdater
 import org.junit.Assert.assertEquals
@@ -12,13 +13,20 @@ import org.junit.runner.RunWith
 class AppAutoUpdaterInstrumentedTest {
 
     @Test
+    fun stableChannelUsesDedicatedPermanentPackageId() {
+        val context = ApplicationProvider.getApplicationContext<android.content.Context>()
+        assertEquals("com.krstock.v3.stable", context.packageName)
+    }
+
+    @Test
     fun validSignedReleaseManifestParsesExactly() {
         val json = """
             {
               "versionCode": 10088,
-              "versionName": "4.0.88",
+              "versionName": "4.2.88",
               "apkUrl": "https://github.com/irewon1-lgtm/Kook/releases/latest/download/KR4.apk",
               "sha256": "${"a".repeat(64)}",
+              "signingCertificateSha256": "${"c".repeat(64)}",
               "mandatory": false,
               "notes": "검증 업데이트"
             }
@@ -26,7 +34,7 @@ class AppAutoUpdaterInstrumentedTest {
 
         val parsed = AppAutoUpdater.parseManifest(json)
         assertEquals(10088L, parsed.versionCode)
-        assertEquals("4.0.88", parsed.versionName)
+        assertEquals("4.2.88", parsed.versionName)
         assertEquals("a".repeat(64), parsed.sha256)
         assertEquals("검증 업데이트", parsed.notes)
         assertFalse(parsed.mandatory)
@@ -37,7 +45,7 @@ class AppAutoUpdaterInstrumentedTest {
         val json = """
             {
               "versionCode": 10089,
-              "versionName": "4.0.89",
+              "versionName": "4.2.89",
               "apkUrl": "https://example.com/KR4.apk",
               "sha256": "${"b".repeat(64)}"
             }
@@ -56,7 +64,7 @@ class AppAutoUpdaterInstrumentedTest {
         val json = """
             {
               "versionCode": 10090,
-              "versionName": "4.0.90",
+              "versionName": "4.2.90",
               "apkUrl": "https://github.com/irewon1-lgtm/Kook/releases/latest/download/KR4.apk",
               "sha256": "1234"
             }

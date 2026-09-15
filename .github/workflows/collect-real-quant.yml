@@ -13,7 +13,10 @@ on:
       - "scripts/collect_real_quant.py"
       - "scripts/collect_real_quant_v2.py"
       - "scripts/collect_real_quant_v3.py"
+      - "scripts/collect_quarterly_history.py"
+      - "scripts/collect_quarterly_history_parallel.py"
       - "tests/test_auto_update_pipeline.py"
+      - "tests/test_quarterly_history.py"
       - ".github/workflows/collect-real-quant.yml"
   workflow_dispatch:
 
@@ -50,13 +53,14 @@ jobs:
         run: |
           set -euo pipefail
           python tests/test_auto_update_pipeline.py
+          python tests/test_quarterly_history.py
 
       - name: Preserve previous known-good baseline
         run: |
           set -euo pipefail
           cp evidence/real_quant_snapshot.json /tmp/kr4_baseline.json
 
-      - name: Collect into staging only
+      - name: Collect four-metric snapshot into staging only
         run: |
           set -euo pipefail
           python scripts/collect_real_quant_v3.py \
@@ -66,7 +70,22 @@ jobs:
             --kotlin-out /tmp/GeneratedRealQuantSnapshot.kt \
             --evidence-out /tmp/real_quant_snapshot.json
 
-      - name: Extreme fail-closed quality gate
+      - name: Collect 8-quarter operating history into staging only
+        run: |
+          set -euo pipefail
+          AS_OF=$(python - <<'PY'
+          import json
+          print(json.load(open('/tmp/real_quant_snapshot.json',encoding='utf-8'))['snapshot_date_kst'])
+          PY
+          )
+          python scripts/collect_quarterly_history_parallel.py \
+            --as-of "$AS_OF" \
+            --visible-quarters 8 \
+            --support-quarters 12 \
+            --period-workers 3 \
+            --out /tmp/quarterly_history.json
+
+      - name: Extreme fail-closed four-metric quality gate
         run: |
           set -euo pipefail
           python - <<'PY'
@@ -116,6 +135,43 @@ jobs:
           print('AUTO_UPDATE_EXTREME_GATE_PASS',json.dumps({'coverage':c,'floors':floors,'per_explained':per_explained,'source_errors':source_errors,'snapshot':str(snap),'price':str(price)},ensure_ascii=False))
           PY
 
+      - name: Extreme fail-closed 8-quarter history quality gate
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, math
+          d=json.load(open('/tmp/quarterly_history.json',encoding='utf-8'))
+          q=json.load(open('/tmp/real_quant_snapshot.json',encoding='utf-8'))
+          n=q['universe_count']
+          assert d['schema_version']==1
+          assert len(d['records'])==n==2649,(len(d['records']),n)
+          periods=d['target_periods']
+          assert len(periods)==8 and len(set(periods))==8,periods
+          assert periods==sorted(periods,key=lambda s:(int(s[:4]),int(s[-1]))),periods
+          c=d['coverage']
+          floors={
+            'stocks_with_1q':int(n*0.78),
+            'stocks_with_4q':int(n*0.62),
+            'stocks_with_8q':int(n*0.45),
+            'stocks_with_4q_margin':int(n*0.52),
+            'stocks_with_8q_margin':int(n*0.36),
+          }
+          for key,floor in floors.items(): assert int(c[key])>=floor,(key,c[key],floor)
+          for code,r in d['records'].items():
+            assert len(r['points'])==8,(code,len(r['points']))
+            for p in r['points']:
+              assert p['period'] in periods,(code,p['period'])
+              assert p['scope'] in {'','CFS','OFS'},(code,p['scope'])
+              for key in ('revenue','operating_income','operating_margin','revenue_yoy','revenue_qoq'):
+                v=p[key]
+                assert v is None or math.isfinite(float(v)),(code,p['period'],key,v)
+              if p['revenue'] is None: assert p['reason'],(code,p)
+              if p['basis']=='FY_MINUS_Q3': assert p['quarter']==4,(code,p)
+          for code in ('005930','000660','000250'):
+            assert sum(p['revenue'] is not None for p in d['records'][code]['points'])>=4,(code,d['records'][code]['points'])
+          print('QUARTERLY_HISTORY_EXTREME_GATE_PASS',json.dumps({'periods':periods,'coverage':c,'floors':floors},ensure_ascii=False))
+          PY
+
       - name: Rebase before promotion and recheck identity set
         run: |
           set -euo pipefail
@@ -125,16 +181,20 @@ jobs:
           sys.path.insert(0,'scripts')
           import collect_real_quant as base
           staged=set(json.load(open('/tmp/real_quant_snapshot.json',encoding='utf-8'))['records'])
+          history=set(json.load(open('/tmp/quarterly_history.json',encoding='utf-8'))['records'])
           current={x.code for x in base.load_issuers()}
           assert staged==current,('master changed during collection',len(staged),len(current),sorted(staged^current)[:20])
+          assert history==current,('history identity mismatch',len(history),len(current),sorted(history^current)[:20])
           print('POST_REBASE_IDENTITY_GATE_PASS',len(current))
           PY
 
-      - name: Promote staged snapshot atomically in workspace
+      - name: Promote validated remote snapshots only
         run: |
           set -euo pipefail
-          cp /tmp/GeneratedRealQuantSnapshot.kt app/src/main/java/com/krstock/v3/data/generated/GeneratedRealQuantSnapshot.kt
+          # Runtime data refreshes are remote JSON updates, not APK releases.
+          # Bundled Kotlin/asset fallbacks are updated only on deliberate app releases.
           cp /tmp/real_quant_snapshot.json evidence/real_quant_snapshot.json
+          cp /tmp/quarterly_history.json evidence/quarterly_history.json
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -147,17 +207,17 @@ jobs:
         with:
           gradle-version: '8.7'
 
-      - name: Compile and regression-check promoted snapshot
+      - name: Compile and regression-check app against validated remote schema
         run: |
           set -euo pipefail
           gradle :app:testDebugUnitTest :app:assembleDebug --stacktrace
 
-      - name: Commit only after every gate passes
+      - name: Commit remote data only after every gate passes
         run: |
           set -euo pipefail
-          git add app/src/main/java/com/krstock/v3/data/generated/GeneratedRealQuantSnapshot.kt evidence/real_quant_snapshot.json
+          git add evidence/real_quant_snapshot.json evidence/quarterly_history.json
           if git diff --cached --quiet; then
-            echo "No real quant snapshot change"
+            echo "No quant/history remote snapshot change"
             exit 0
           fi
           git config user.name "github-actions[bot]"
@@ -165,13 +225,11 @@ jobs:
           COV=$(python - <<'PY'
           import json
           d=json.load(open('evidence/real_quant_snapshot.json',encoding='utf-8')); c=d['coverage']
-          print(f"{d['snapshot_date_kst']} price={d['price_cutoff_date_kst']} M01={c['m01_available']} M02={c['m02_available']} M03={c['m03_available']} M04={c['m04_available']} complete={c['complete_count']}")
+          h=json.load(open('evidence/quarterly_history.json',encoding='utf-8')); hc=h['coverage']
+          print(f"{d['snapshot_date_kst']} price={d['price_cutoff_date_kst']} M01={c['m01_available']} M02={c['m02_available']} M03={c['m03_available']} M04={c['m04_available']} complete={c['complete_count']} history4q={hc['stocks_with_4q']} history8q={hc['stocks_with_8q']}")
           PY
           )
-          git commit -m "Auto-refresh KR4 validated snapshot: ${COV}"
-          # A code-only commit may land during the long external collection/build.
-          # Rebase the generated-data commit one final time before push; if any
-          # conflict occurs, fail closed and leave main/branch at the last good snapshot.
+          git commit -m "Auto-refresh KR4 remote quant + 8Q history: ${COV}"
           git pull --rebase origin "${{ github.ref_name }}"
           git push origin HEAD:${{ github.ref_name }}
 
@@ -181,6 +239,6 @@ jobs:
           name: KR4_AutoUpdate_Collection_Proof
           path: |
             evidence/real_quant_snapshot.json
-            app/src/main/java/com/krstock/v3/data/generated/GeneratedRealQuantSnapshot.kt
+            evidence/quarterly_history.json
           if-no-files-found: error
           retention-days: 14

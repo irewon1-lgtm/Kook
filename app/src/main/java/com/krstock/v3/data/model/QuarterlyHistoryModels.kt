@@ -1,0 +1,48 @@
+package com.krstock.v3.data.model
+
+data class QuarterlyPoint(
+    val period: String,
+    val fiscalYear: Int,
+    val quarter: Int,
+    val revenue: Double?,
+    val operatingIncome: Double?,
+    val operatingMargin: Double?,
+    val revenueYoY: Double?,
+    val revenueQoQ: Double?,
+    val scope: String,
+    val basis: String,
+    val sourceFile: String = "",
+    val reason: String? = null
+)
+
+data class QuarterlyHistory(
+    val issuerId: String,
+    val points: List<QuarterlyPoint> = emptyList(),
+    val loaded: Boolean = false,
+    val source: String = "",
+    val generatedAt: String = "",
+    val error: String? = null
+) {
+    val comparisonScope: String
+        get() = points.lastOrNull { it.revenue != null && it.scope.isNotBlank() }?.scope.orEmpty()
+
+    val comparablePoints: List<QuarterlyPoint>
+        get() = if (comparisonScope.isBlank()) {
+            points.filter { it.revenue != null }
+        } else {
+            points.filter { it.revenue != null && it.scope == comparisonScope }
+        }
+
+    val availableQuarterCount: Int
+        get() = comparablePoints.size
+
+    val hasFourQuarters: Boolean
+        get() = availableQuarterCount >= 4
+
+    val hasEightQuarters: Boolean
+        get() = availableQuarterCount >= 8
+
+    companion object {
+        fun empty(issuerId: String) = QuarterlyHistory(issuerId = issuerId)
+    }
+}

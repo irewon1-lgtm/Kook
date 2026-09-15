@@ -39,6 +39,7 @@ import collect_real_quant as base
 import collect_real_quant_v2 as v2
 
 KST = ZoneInfo("Asia/Seoul")
+DART_PERIOD_CANONICAL = {"Q1": "Q1", "1Q": "Q1", "HY": "HY", "Q3": "Q3", "3Q": "Q3", "FY": "FY"}
 DART_PERIOD_RANK = {"Q1": 1, "HY": 2, "Q3": 3, "FY": 4}
 DART_PERIOD_LABEL = {"Q1": "1분기", "HY": "반기", "Q3": "3분기", "FY": "사업연도"}
 PRICE_PROBES = ("005930", "000660", "035420")
@@ -122,6 +123,7 @@ def parse_args_auto() -> argparse.Namespace:
 def _select_latest_dart_entry(entries: list[tuple[str, str, str, str]], as_of: date) -> tuple[str, str, str]:
     candidates = []
     for year, period, statement, fname in entries:
+        period = DART_PERIOD_CANONICAL.get(period, period)
         if statement != "PL" or period not in DART_PERIOD_RANK:
             continue
         y = int(year)
