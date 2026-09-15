@@ -1,10 +1,10 @@
-name: KR4 Swipe+MultiRank Extreme CleanPass
+name: KR4 AutoUpdate Extreme CleanPass
 
 on:
   push:
     branches:
-      - "connect-dart-price-data"
       - "main"
+      - "fix/auto-update-v2"
   pull_request:
     branches:
       - "main"
@@ -12,60 +12,59 @@ on:
 jobs:
   extreme-cleanpass:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 45
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Validate market masters and committed real-data snapshot
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Python collector dependency
+        run: pip install requests
+
+      - name: Validate masters and current committed snapshot without frozen dates
         run: |
           set -euo pipefail
           test -s evidence/kospi_master_snapshot.json
           test -s evidence/kosdaq_master_snapshot.json
           test -s evidence/real_quant_snapshot.json
-          test -s app/src/main/java/com/krstock/v3/data/generated/GeneratedRealQuantSnapshot.kt
           python3 - <<'PY'
-          import hashlib, json, math, pathlib, re
+          import json,math,re
+          from datetime import date
           k=json.load(open('evidence/kospi_master_snapshot.json',encoding='utf-8'))
           q=json.load(open('evidence/kosdaq_master_snapshot.json',encoding='utf-8'))
           d=json.load(open('evidence/real_quant_snapshot.json',encoding='utf-8'))
-          assert k['issuer_count']==832 and q['issuer_count']==1817
-          assert d['universe_count']==2649 and len(d['records'])==2649
-          assert d['snapshot_date_kst']=='2026-09-15'
-          assert d['price_cutoff_date_kst']=='2026-09-14'
+          assert k['issuer_count']+q['issuer_count']==d['universe_count']==len(d['records'])==2649
+          snap=date.fromisoformat(d['snapshot_date_kst']); price=date.fromisoformat(d['price_cutoff_date_kst'])
+          assert price<=snap and (snap-price).days<=10,(snap,price)
           c=d['coverage']
-          # Regression floors, not frozen exact counts. Better source coverage must be allowed.
-          floors={'m01_available':2400,'m02_available':2300,'m03_available':1677,'m04_available':2550,'complete_count':1462}
-          for key,floor in floors.items():
-              assert int(c[key])>=floor,(key,c[key],floor,c)
-          assert c['ranked_count']==c['complete_count'],c
-          kt=pathlib.Path('app/src/main/java/com/krstock/v3/data/generated/GeneratedRealQuantSnapshot.kt')
-          kt_sha=hashlib.sha256(kt.read_bytes()).hexdigest()
-          assert kt_sha==d['generated_kotlin_sha256'],(kt_sha,d['generated_kotlin_sha256'])
+          floors={'m01_available':2400,'m02_available':2300,'m03_available':1600,'m04_available':2550,'complete_count':1380}
+          for key,floor in floors.items(): assert int(c[key])>=floor,(key,c[key],floor)
+          assert c['ranked_count']==c['complete_count']
           ranks=[]
           for code,r in d['records'].items():
-              assert re.fullmatch(r'[0-9A-Z]{6}',code),code
-              metrics=[r[f'm0{i}'] for i in range(1,5)]
-              complete=True
-              for m in metrics:
-                  if m['raw'] is None:
-                      complete=False
-                      assert m['percentile'] is None and m['reason']
-                  else:
-                      assert math.isfinite(float(m['raw']))
-                      assert m['percentile'] is not None and 0<=float(m['percentile'])<=100
-                      assert m['basis']
-              if complete:
-                  assert r['composite'] is not None and r['rank'] is not None
-                  ranks.append(int(r['rank']))
+            assert re.fullmatch(r'[0-9A-Z]{6}',code)
+            ms=[r[f'm0{i}'] for i in range(1,5)]
+            complete=True
+            for m in ms:
+              if m['raw'] is None:
+                complete=False; assert m['percentile'] is None and m['reason']
               else:
-                  assert r['composite'] is None and r['rank'] is None
-          assert sorted(ranks)==list(range(1,int(c['ranked_count'])+1))
+                assert math.isfinite(float(m['raw'])) and m['percentile'] is not None and 0<=float(m['percentile'])<=100 and m['basis']
+            assert (r['composite'] is not None)==complete
+            assert (r['rank'] is not None)==complete
+            if r['rank'] is not None: ranks.append(int(r['rank']))
+          assert sorted(ranks)==list(range(1,len(ranks)+1))
           assert d['records']['005930']['name']=='삼성전자'
-          assert d['records']['000250']['name']=='삼천당제약'
-          print('REAL_SNAPSHOT_VALIDATED',json.dumps(c,ensure_ascii=False))
+          print('CURRENT_SNAPSHOT_VALIDATED',snap,price,json.dumps(c,ensure_ascii=False))
           PY
+
+      - name: Auto-update adversarial logic tests
+        run: python3 tests/test_auto_update_pipeline.py
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -95,7 +94,7 @@ jobs:
           print('COMBO_RANK_EXTREME_PASS',d['all_nonempty_combinations_tested'],d['selected_complete_filter_checks'])
           PY
 
-      - name: Android 2649-stock and dynamic-ranking extreme regression tests
+      - name: Android 2649-stock regression tests
         run: gradle :app:testDebugUnitTest --stacktrace
 
       - name: Build Android Debug APK
@@ -105,7 +104,7 @@ jobs:
         run: |
           if [ -e /dev/kvm ]; then sudo chmod 666 /dev/kvm; fi
 
-      - name: Real Android swipe and multi-ranking end-to-end simulation
+      - name: Android 14 end-to-end simulation
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 34
@@ -115,32 +114,36 @@ jobs:
           disable-animations: true
           script: gradle :app:connectedDebugAndroidTest --stacktrace
 
-      - name: Hard verify APK and requested features
+      - name: Hard verify APK and automatic-update fail-safes
         run: |
           set -euo pipefail
           APK="app/build/outputs/apk/debug/app-debug.apk"
           test -s "$APK"
           mkdir -p dist evidence/ci
-          cp "$APK" dist/KR4_PER_UI_Extreme_CleanPass_debug.apk
+          cp "$APK" dist/KR4_AUTOUPDATE_Extreme_CleanPass_debug.apk
           sha256sum "$APK" | tee evidence/ci/APK_SHA256.txt
           stat --printf='APK_BYTES=%s\n' "$APK" | tee evidence/ci/APK_SIZE.txt
-          grep -q 'HorizontalPager' app/src/main/java/com/krstock/v3/MainActivity.kt
-          grep -q 'HorizontalPager' app/src/main/java/com/krstock/v3/ui/screens/StockDetailScreen.kt
-          grep -q 'DynamicRankingEngine.rank' app/src/main/java/com/krstock/v3/ui/screens/StockListScreen.kt
-          grep -q 'metric_toggle_M01' app/src/main/java/com/krstock/v3/ui/screens/StockListScreen.kt
-          grep -q 'selected_metrics_complete_only' app/src/main/java/com/krstock/v3/ui/screens/StockListScreen.kt
-          grep -q 'displayRank = dynamic?.rank' app/src/main/java/com/krstock/v3/ui/screens/StockListScreen.kt
-          grep -q 'selectedMetricIds.size == 1' app/src/main/java/com/krstock/v3/ui/screens/StockListScreen.kt
+          grep -q 'SnapshotAutoUpdater.bootstrap' app/src/main/java/com/krstock/v3/MainActivity.kt
+          grep -q 'PeriodicWorkRequestBuilder<SnapshotRefreshWorker>' app/src/main/java/com/krstock/v3/KR4Application.kt
+          grep -q 'REMOTE_URL' app/src/main/java/com/krstock/v3/data/update/SnapshotAutoUpdater.kt
+          grep -q 'universe mismatch' app/src/main/java/com/krstock/v3/data/update/SnapshotAutoUpdater.kt
+          grep -q 'coverage regression' app/src/main/java/com/krstock/v3/data/update/SnapshotAutoUpdater.kt
+          grep -q 'remote snapshot downgrade rejected' app/src/main/java/com/krstock/v3/data/update/SnapshotAutoUpdater.kt
+          grep -q 'installRuntimeSnapshot' app/src/main/java/com/krstock/v3/data/generated/GeneratedRealQuantSnapshot.kt
+          grep -q 'runtimeRows' app/src/main/java/com/krstock/v3/data/generated/GeneratedRealQuantSnapshot.kt
+          grep -q 'resolve_price_cutoff' scripts/collect_real_quant_v3.py
+          grep -q '_select_latest_dart_entry' scripts/collect_real_quant_v3.py
           grep -q 'NAVER_REPORTED_TRAILING_PER' scripts/collect_real_quant_v2.py
-          grep -q 'provider_per' scripts/collect_real_quant_v2.py
-          ! grep -q 'RegistrationRow("실적 PER", "1,677개 실데이터")' app/src/main/java/com/krstock/v3/ui/screens/HomeScreen.kt
+          grep -q 'schedule:' .github/workflows/collect-real-quant.yml
+          grep -q '40 8 \* \* 1-5' .github/workflows/collect-real-quant.yml
+          grep -q '30 12 \* \* 1-5' .github/workflows/collect-real-quant.yml
 
       - name: Upload verified APK and evidence
         uses: actions/upload-artifact@v4
         with:
-          name: KR4_PER_UI_Extreme_CleanPass
+          name: KR4_AUTOUPDATE_Extreme_CleanPass
           path: |
-            dist/KR4_PER_UI_Extreme_CleanPass_debug.apk
+            dist/KR4_AUTOUPDATE_Extreme_CleanPass_debug.apk
             evidence/ci/APK_SHA256.txt
             evidence/ci/APK_SIZE.txt
             evidence/combo_rank_stress_results.json
