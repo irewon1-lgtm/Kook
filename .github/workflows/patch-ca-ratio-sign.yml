@@ -1,0 +1,138 @@
+name: Patch Corporate Action Ratio Sign
+
+on:
+  push:
+    branches:
+      - fix/corporate-action-ratio-sign-cleanpass
+    paths:
+      - .github/workflows/patch-ca-ratio-sign.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/corporate-action-ratio-sign-cleanpass
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Patch price-history factor and regression
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          p = Path('scripts/collect_real_quant_v2.py')
+          s = p.read_text(encoding='utf-8')
+          start = s.index('def _daily_reference_factor(')
+          end = s.index('\ndef _parse_price_bars(', start)
+          new = '''def _daily_reference_factor(bar: dict[str, Any], close: float) -> float | None:
+              """Return the KRX-reference one-day factor without direction ambiguity.
+
+              ``fluctuationsRatio`` is signed and already measured from the exchange
+              reference/base price, so it is the authoritative fallback. When Naver
+              also supplies ``compareToPreviousPrice.name`` we normalize the absolute
+              change amount to that direction and use the more precise KRW change.
+              A positive change amount without direction is never assumed to mean a
+              rise; that exact ambiguity caused false corporate-action detections.
+              """
+              ratio = base.parse_number(bar.get("fluctuationsRatio"))
+              ratio_factor = None
+              if ratio is not None:
+                  candidate = 1.0 + ratio / 100.0
+                  if _valid_daily_factor(candidate):
+                      ratio_factor = candidate
+
+              change = base.parse_number(bar.get("compareToPreviousClosePrice"))
+              direction_raw = bar.get("compareToPreviousPrice")
+              if isinstance(direction_raw, dict):
+                  direction = str(direction_raw.get("name") or "").strip().upper()
+              else:
+                  direction = str(direction_raw or "").strip().upper()
+
+              change_factor = None
+              if change is not None and direction:
+                  if direction in {"FALLING", "LOWER", "DOWN"}:
+                      change = -abs(change)
+                  elif direction in {"RISING", "HIGHER", "UP"}:
+                      change = abs(change)
+                  elif direction in {"UNCHANGED", "SAME", "FLAT"}:
+                      change = 0.0
+                  reference_price = close - change
+                  if reference_price > 0:
+                      candidate = close / reference_price
+                      if _valid_daily_factor(candidate):
+                          change_factor = candidate
+
+              if change_factor is not None and ratio_factor is not None:
+                  # The percentage is rounded, while the KRW change is exact. They
+                  # should agree closely once direction is normalized. If not, the
+                  # signed percentage is safer than an ambiguous absolute change.
+                  if abs(change_factor - ratio_factor) <= 0.005:
+                      return change_factor
+                  return ratio_factor
+              if ratio_factor is not None:
+                  return ratio_factor
+              return change_factor
+          '''
+          # Remove indentation introduced by embedding above.
+          import textwrap
+          new = textwrap.dedent(new)
+          p.write_text(s[:start] + new + s[end:], encoding='utf-8')
+
+          t = Path('tests/test_m04_corporate_actions.py')
+          ts = t.read_text(encoding='utf-8')
+          marker = '\ndef test_small_bonus_issue_inside_daily_limit_is_still_detected() -> None:\n'
+          assert marker in ts
+          regression = r'''
+
+def test_falling_bar_direction_or_signed_ratio_does_not_fake_reference_reset() -> None:
+    falling = {
+        "localTradedAt": "2026-09-15",
+        "closePrice": "10,000",
+        # Some price-history payloads expose change magnitude separately from
+        # direction. The old logic could treat this as +100 and invent a reset.
+        "compareToPreviousClosePrice": "100",
+        "compareToPreviousPrice": {"name": "FALLING"},
+        "fluctuationsRatio": "-0.99",
+    }
+    factor = v2._daily_reference_factor(falling, 10000.0)
+    assert factor is not None
+    assert abs(factor - (10000.0 / 10100.0)) < 1e-12, factor
+    by_date = {date(2026, 9, 14): 10100.0, date(2026, 9, 15): 10000.0}
+    by_factor = {date(2026, 9, 14): 1.0, date(2026, 9, 15): factor}
+    assert v2._detect_reference_reset_events(
+        by_date, by_factor, date(2026, 9, 14), date(2026, 9, 15)
+    ) == []
+
+
+def test_falling_bar_without_direction_prefers_signed_fluctuation_ratio() -> None:
+    falling = {
+        "localTradedAt": "2026-09-15",
+        "closePrice": "10,000",
+        "compareToPreviousClosePrice": "100",
+        "fluctuationsRatio": "-0.99",
+    }
+    factor = v2._daily_reference_factor(falling, 10000.0)
+    assert factor is not None and abs(factor - 0.9901) < 1e-12, factor
+    raw = 10000.0 / 10100.0
+    assert abs(raw / factor - 1.0) < v2._REFERENCE_RESET_REL_TOL
+'''
+          t.write_text(ts.replace(marker, regression + marker, 1), encoding='utf-8')
+          PY
+          python tests/test_m04_corporate_actions.py
+          python tests/test_auto_update_pipeline.py
+      - name: Commit patch and remove temporary workflow
+        run: |
+          set -euo pipefail
+          rm .github/workflows/patch-ca-ratio-sign.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Fix Naver price-history sign handling in corporate-action scan"
+          git push origin HEAD:fix/corporate-action-ratio-sign-cleanpass
