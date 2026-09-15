@@ -8,6 +8,27 @@ enum class DataStatus {
     WAITING_FOR_AUTH
 }
 
+enum class PeerGroupBasis {
+    KRX_EXACT_SECTOR,
+    STANDARD_SECTOR_FAMILY,
+    INSUFFICIENT
+}
+
+data class PeerComparison(
+    val groupLabel: String,
+    val basis: PeerGroupBasis,
+    val sampleSize: Int,
+    val median: Double?,
+    val deltaFromMedian: Double?,
+    val relativeToMedianPct: Double?,
+    val betterThanMedian: Boolean?,
+    val higherIsBetter: Boolean,
+    val reason: String? = null
+) {
+    val isSufficient: Boolean
+        get() = basis != PeerGroupBasis.INSUFFICIENT && median != null
+}
+
 data class MetricValue(
     val id: String,
     val nameKo: String,
@@ -21,7 +42,8 @@ data class MetricValue(
     val caution: String = "",
     val source: String = "",
     val basis: String = "",
-    val asOfDate: String = ""
+    val asOfDate: String = "",
+    val peerComparison: PeerComparison? = null
 )
 
 data class StockSummary(
