@@ -25,9 +25,16 @@ class StockRepositoryExtremeTest {
     }
 
     @Test
-    fun issuerIdsAreUniqueAndSixDigits() {
+    fun issuerIdsAreUniqueSixCharacterKrxCodes() {
         assertEquals(stocks.size, stocks.map { it.issuerId }.toSet().size)
-        assertTrue(stocks.all { it.issuerId.matches(Regex("\\d{6}")) })
+        assertTrue(stocks.all { it.issuerId.matches(Regex("[0-9A-Z]{6}")) })
+    }
+
+    @Test
+    fun modernAlphanumericKrxCodesArePreserved() {
+        val modernCodes = stocks.filter { !it.issuerId.all(Char::isDigit) }
+        assertTrue("expected at least one modern alphanumeric KRX code", modernCodes.isNotEmpty())
+        modernCodes.forEach { assertTrue(it.issuerId.matches(Regex("[0-9A-Z]{6}"))) }
     }
 
     @Test
