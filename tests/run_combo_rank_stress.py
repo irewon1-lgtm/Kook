@@ -57,7 +57,7 @@ assert combo_results["m04"]["eligible_count"] == coverage["m04_available"]
 # composite is rounded during snapshot generation, so score comparison uses the
 # persisted precision rather than an unrealistic nanoscopic tolerance.
 all4 = cache[frozenset(metric_ids)]
-assert len(all4) == coverage["complete_count"] == 1462
+assert len(all4) == coverage["complete_count"] == coverage["ranked_count"]
 for code, rec in records.items():
     committed_rank = rec["rank"]
     committed_score = rec["composite"]
