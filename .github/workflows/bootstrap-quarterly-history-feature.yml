@@ -67,6 +67,7 @@ jobs:
       - name: Promote and commit generated history
         run: |
           set -euo pipefail
+          git pull --rebase origin feature/quarterly-history-v1
           cp /tmp/quarterly_history.json evidence/quarterly_history.json
           cp /tmp/quarterly_history.json app/src/main/assets/quarterly_history.json
           git add evidence/quarterly_history.json app/src/main/assets/quarterly_history.json
