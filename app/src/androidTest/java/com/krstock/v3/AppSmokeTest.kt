@@ -81,17 +81,17 @@ class AppSmokeTest {
         composeRule.onNodeWithTag("stock_search").performTextInput("삼천당제약")
         closeSoftKeyboard()
         composeRule.waitForIdle()
-        // A stock card is taller than the remaining list viewport. Verify each visual section
-        // in the same order a user reaches it instead of requiring the whole card at once.
+        // A stock card is taller than the remaining list viewport. Verify the unique visual
+        // comparison region instead of ambiguous axis text such as "성장", which also appears
+        // elsewhere on the screen.
         composeRule.onNodeWithTag("stock_000250").performScrollTo()
         composeRule.onNodeWithText("한눈 비교", useUnmergedTree = true)
             .performScrollTo()
             .assertIsDisplayed()
         composeRule.onNodeWithText("시장 내 상대위치", useUnmergedTree = true).assertIsDisplayed()
-        composeRule.onNodeWithText("성장", useUnmergedTree = true)
+        composeRule.onNodeWithTag("comparison_000250", useUnmergedTree = true)
             .performScrollTo()
             .assertIsDisplayed()
-        composeRule.onNodeWithText("수익성", useUnmergedTree = true).assertIsDisplayed()
         composeRule.onNodeWithTag("stock_000250").performScrollTo().performClick()
         composeRule.waitForIdle()
 
