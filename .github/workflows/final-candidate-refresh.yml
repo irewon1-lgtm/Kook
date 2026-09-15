@@ -1,0 +1,114 @@
+name: Refresh KR4 Final Candidates
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - evidence/real_quant_snapshot.json
+      - scripts/build_final_candidates.py
+      - .github/workflows/final-candidate-refresh.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: kr4-final-candidates-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build-final-candidates:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout current main
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install builder dependency
+        run: pip install requests
+
+      - name: Stage-6/7 builder self-test
+        run: |
+          set -euo pipefail
+          python scripts/build_final_candidates.py --self-test
+
+      - name: Build standard final-candidate snapshot
+        run: |
+          set -euo pipefail
+          python scripts/build_final_candidates.py \
+            --quant evidence/real_quant_snapshot.json \
+            --out /tmp/final_candidates.json \
+            --limit 10
+
+      - name: Extreme fail-closed candidate gate
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          q=json.load(open('evidence/real_quant_snapshot.json',encoding='utf-8'))
+          d=json.load(open('/tmp/final_candidates.json',encoding='utf-8'))
+          assert d['schema_version']=='KR4_FINAL_CANDIDATE_V1'
+          assert d['policy_version']=='STAGE6_POSITIVE_PER_COMPLETE_TOP_RANK_V1'
+          assert d['snapshot_date_kst']==q['snapshot_date_kst']
+          assert d['price_cutoff_date_kst']==q['price_cutoff_date_kst']
+          assert d['universe_count']==q['universe_count']==2649
+          assert d['candidate_count']==10,(d['candidate_count'],d['eligible_count'])
+          rows=d['candidates']
+          assert len({r['code'] for r in rows})==10
+          assert [r['candidate_rank'] for r in rows]==list(range(1,11))
+          assert [r['source_rank'] for r in rows]==sorted(r['source_rank'] for r in rows)
+          for r in rows:
+            src=q['records'][r['code']]
+            assert src['rank']==r['source_rank']
+            assert abs(float(src['composite'])-float(r['composite_score']))<1e-9
+            assert src['m03']['raw'] is not None and float(src['m03']['raw'])>0
+            assert all(src[m]['raw'] is not None and src[m]['percentile'] is not None for m in ('m01','m02','m03','m04'))
+            assert r['research_status']=='FINAL_RESEARCH_CANDIDATE'
+          print('FINAL_CANDIDATE_EXTREME_GATE_PASS', json.dumps({
+            'snapshot':d['snapshot_date_kst'],
+            'eligible':d['eligible_count'],
+            'candidates':[r['code'] for r in rows],
+          },ensure_ascii=False))
+          PY
+
+      - name: Promote standard snapshot
+        run: |
+          set -euo pipefail
+          cp /tmp/final_candidates.json evidence/final_candidates.json
+
+      - name: Commit only if candidate snapshot changed
+        run: |
+          set -euo pipefail
+          git add evidence/final_candidates.json
+          if git diff --cached --quiet; then
+            echo "No final-candidate change"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          META=$(python - <<'PY'
+          import json
+          d=json.load(open('evidence/final_candidates.json',encoding='utf-8'))
+          print(f"{d['snapshot_date_kst']} candidates={d['candidate_count']} eligible={d['eligible_count']}")
+          PY
+          )
+          git commit -m "Auto-refresh KR4 final candidates: ${META}"
+          git pull --rebase origin "${{ github.ref_name }}"
+          git push origin HEAD:${{ github.ref_name }}
+
+      - name: Upload final-candidate proof
+        uses: actions/upload-artifact@v4
+        with:
+          name: KR4_Final_Candidates_Proof
+          path: evidence/final_candidates.json
+          if-no-files-found: error
+          retention-days: 14

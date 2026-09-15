@@ -17,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.krstock.v3.data.candidate.FinalCandidateRepository
 import com.krstock.v3.data.model.MetricValue
 import com.krstock.v3.data.model.StockSummary
 import com.krstock.v3.data.repository.StockRepository
@@ -29,12 +30,12 @@ fun HomeScreen(
     onNavigateToList: () -> Unit
 ) {
     val stocks = remember { StockRepository.getAllStocks() }
+    val stockByCode = remember(stocks) { stocks.associateBy { it.issuerId } }
     val rankedStocks = remember(stocks) { stocks.filter { it.rankOrder != null }.sortedBy { it.rankOrder } }
-    val previewStocks = remember(stocks, rankedStocks) {
-        if (rankedStocks.isNotEmpty()) rankedStocks.take(5)
-        else {
-            val preferred = listOf("005930", "000660", "035420", "005380", "000250")
-            preferred.mapNotNull { code -> stocks.find { it.issuerId == code } }.take(5)
+    val finalCandidates = remember(stocks) { FinalCandidateRepository.getFinalCandidates() }
+    val previewStocks = remember(finalCandidates, stockByCode) {
+        finalCandidates.take(5).mapNotNull { candidate ->
+            stockByCode[candidate.issuerId]?.let { stock -> candidate to stock }
         }
     }
     val m01Count = remember(stocks) { stocks.count { it.m01RevGrowth.isAvailable } }
@@ -77,6 +78,7 @@ fun HomeScreen(
                 PrimaryStockExplorer(
                     total = stocks.size,
                     rankedCount = rankedStocks.size,
+                    candidateCount = finalCandidates.size,
                     onClick = onNavigateToList
                 )
             }
@@ -97,10 +99,10 @@ fun HomeScreen(
                     verticalAlignment = Alignment.Bottom
                 ) {
                     Column(modifier = Modifier.weight(1f)) {
-                        Text("상위 조사 후보", fontWeight = FontWeight.Bold, fontSize = 22.sp)
+                        Text("최종 조사 후보", fontWeight = FontWeight.Bold, fontSize = 22.sp)
                         Spacer(Modifier.height(3.dp))
                         Text(
-                            "성장 · 수익성 · 가치 · 흐름을 한눈에 비교",
+                            "4지표 검증 완료 · 실적 PER 양수 · 기존 종합순위 기준",
                             fontSize = 13.sp,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -111,7 +113,7 @@ fun HomeScreen(
                         contentColor = MaterialTheme.colorScheme.onSurfaceVariant
                     ) {
                         Text(
-                            "TOP ${previewStocks.size}",
+                            "FINAL ${finalCandidates.size}",
                             modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
                             fontSize = 11.sp,
                             fontWeight = FontWeight.Bold
@@ -120,8 +122,14 @@ fun HomeScreen(
                 }
             }
 
-            items(previewStocks, key = { "${it.market}:${it.issuerId}" }) { stock ->
-                StockSummaryCard(stock = stock, onClick = { onStockClick(stock.issuerId) })
+            items(previewStocks, key = { (_, stock) -> "${stock.market}:${stock.issuerId}" }) { (candidate, stock) ->
+                StockSummaryCard(
+                    stock = stock,
+                    onClick = { onStockClick(stock.issuerId) },
+                    displayRank = candidate.candidateRank,
+                    displayScore = candidate.compositeScore,
+                    scoreLabel = "최종 후보 · 기존 종합 ${candidate.sourceRank}위"
+                )
             }
 
             item {
@@ -148,7 +156,7 @@ fun HomeScreen(
 }
 
 @Composable
-private fun PrimaryStockExplorer(total: Int, rankedCount: Int, onClick: () -> Unit) {
+private fun PrimaryStockExplorer(total: Int, rankedCount: Int, candidateCount: Int, onClick: () -> Unit) {
     val scheme = MaterialTheme.colorScheme
     Card(
         modifier = Modifier
@@ -189,7 +197,7 @@ private fun PrimaryStockExplorer(total: Int, rankedCount: Int, onClick: () -> Un
                 )
                 Spacer(Modifier.height(5.dp))
                 Text(
-                    "${total}종목 검색 · 필터 · 조합순위  |  현재 순위 ${rankedCount}종목",
+                    "${total}종목 검색 · 최종 후보 ${candidateCount}종목  |  전체 순위 ${rankedCount}종목",
                     fontSize = 13.sp,
                     lineHeight = 19.sp,
                     color = scheme.onPrimary.copy(alpha = 0.88f)
