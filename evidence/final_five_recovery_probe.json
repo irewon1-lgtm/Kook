@@ -1,0 +1,855 @@
+{
+  "codes": [
+    "0120G0",
+    "365270",
+    "372320",
+    "388870",
+    "475830"
+  ],
+  "records": {
+    "0120G0": {
+      "name": "삼양바이오팜",
+      "listing_date": "2025-11-24",
+      "sector": "의약품 제조업",
+      "missing": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE"
+      },
+      "dart_history_points": [
+        {
+          "period": "2024Q3",
+          "fiscal_year": 2024,
+          "quarter": 3,
+          "revenue": null,
+          "operating_income": null,
+          "operating_margin": null,
+          "scope": "",
+          "basis": "",
+          "source_file": "2024_3Q_PL_20260909032827.zip",
+          "reason": "DART_NO_REVENUE",
+          "revenue_yoy": null,
+          "revenue_qoq": null
+        },
+        {
+          "period": "2024Q4",
+          "fiscal_year": 2024,
+          "quarter": 4,
+          "revenue": null,
+          "operating_income": null,
+          "operating_margin": null,
+          "scope": "",
+          "basis": "",
+          "source_file": "2024_4Q_PL_20260819030822.zip",
+          "reason": "DART_NO_REVENUE",
+          "revenue_yoy": null,
+          "revenue_qoq": null
+        },
+        {
+          "period": "2025Q1",
+          "fiscal_year": 2025,
+          "quarter": 1,
+          "revenue": null,
+          "operating_income": null,
+          "operating_margin": null,
+          "scope": "",
+          "basis": "",
+          "source_file": "2025_1Q_PL_20260814065133.zip",
+          "reason": "DART_NO_REVENUE",
+          "revenue_yoy": null,
+          "revenue_qoq": null
+        },
+        {
+          "period": "2025Q2",
+          "fiscal_year": 2025,
+          "quarter": 2,
+          "revenue": null,
+          "operating_income": null,
+          "operating_margin": null,
+          "scope": "",
+          "basis": "",
+          "source_file": "2025_2Q_PL_20260909034944.zip",
+          "reason": "DART_NO_REVENUE",
+          "revenue_yoy": null,
+          "revenue_qoq": null
+        },
+        {
+          "period": "2025Q3",
+          "fiscal_year": 2025,
+          "quarter": 3,
+          "revenue": null,
+          "operating_income": null,
+          "operating_margin": null,
+          "scope": "",
+          "basis": "",
+          "source_file": "2025_3Q_PL_20260909041158.zip",
+          "reason": "DART_NO_REVENUE",
+          "revenue_yoy": null,
+          "revenue_qoq": null
+        },
+        {
+          "period": "2025Q4",
+          "fiscal_year": 2025,
+          "quarter": 4,
+          "revenue": null,
+          "operating_income": null,
+          "operating_margin": null,
+          "scope": "OFS",
+          "basis": "",
+          "source_file": "2025_4Q_PL_20260902030713.zip",
+          "reason": "CFS_OFS_SCOPE_MISMATCH",
+          "revenue_yoy": null,
+          "revenue_qoq": null
+        },
+        {
+          "period": "2026Q1",
+          "fiscal_year": 2026,
+          "quarter": 1,
+          "revenue": 31173917568.0,
+          "operating_income": 1386436905.0,
+          "operating_margin": 4.447426,
+          "scope": "OFS",
+          "basis": "DIRECT_3M",
+          "source_file": "2026_1Q_PL_20260826033803.zip",
+          "reason": null,
+          "revenue_yoy": null,
+          "revenue_qoq": null
+        },
+        {
+          "period": "2026Q2",
+          "fiscal_year": 2026,
+          "quarter": 2,
+          "revenue": 35859168673.0,
+          "operating_income": 746349826.0,
+          "operating_margin": 2.081336,
+          "scope": "OFS",
+          "basis": "DIRECT_3M",
+          "source_file": "2026_2Q_PL_20260915030641.zip",
+          "reason": null,
+          "revenue_yoy": null,
+          "revenue_qoq": 15.029395
+        }
+      ],
+      "naver_annual_actual": {
+        "actual_keys": [
+          "202512"
+        ],
+        "rows": {
+          "매출액": {
+            "202512": 286.0
+          },
+          "영업이익": {
+            "202512": 27.0
+          },
+          "영업이익률": {
+            "202512": 9.41
+          }
+        }
+      },
+      "naver_quarter_actual": {
+        "actual_keys": [
+          "202512",
+          "202603",
+          "202606"
+        ],
+        "rows": {
+          "매출액": {
+            "202512": 286.0,
+            "202603": 312.0,
+            "202606": 359.0
+          },
+          "영업이익": {
+            "202512": 27.0,
+            "202603": 14.0,
+            "202606": 7.0
+          },
+          "영업이익률": {
+            "202512": 9.41,
+            "202603": 4.45,
+            "202606": 2.08
+          }
+        }
+      }
+    },
+    "365270": {
+      "name": "큐라클",
+      "listing_date": "2021-07-22",
+      "sector": "자연과학 및 공학 연구개발업",
+      "missing": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE"
+      },
+      "dart_history_points": [
+        {
+          "period": "2024Q3",
+          "fiscal_year": 2024,
+          "quarter": 3,
+          "revenue": 0.0,
+          "operating_income": -3276471937.0,
+          "operating_margin": null,
+          "scope": "OFS",
+          "basis": "CUMULATIVE_DELTA",
+          "source_file": "2024_3Q_PL_20260909032827.zip",
+          "reason": "OPERATING_MARGIN_UNAVAILABLE",
+          "revenue_yoy": -100.0,
+          "revenue_qoq": null
+        },
+        {
+          "period": "2024Q4",
+          "fiscal_year": 2024,
+          "quarter": 4,
+          "revenue": 1132679308.0,
+          "operating_income": -2416402244.0,
+          "operating_margin": -213.335074,
+          "scope": "OFS",
+          "basis": "FY_MINUS_Q3",
+          "source_file": "2024_4Q_PL_20260819030822.zip",
+          "reason": null,
+          "revenue_yoy": -10.988043,
+          "revenue_qoq": null
+        },
+        {
+          "period": "2025Q1",
+          "fiscal_year": 2025,
+          "quarter": 1,
+          "revenue": null,
+          "operating_income": -3648605528.0,
+          "operating_margin": null,
+          "scope": "OFS",
+          "basis": "",
+          "source_file": "2025_1Q_PL_20260814065133.zip",
+          "reason": "NO_DIRECT_OR_DERIVABLE_QUARTER_VALUE",
+          "revenue_yoy": null,
+          "revenue_qoq": null
+        },
+        {
+          "period": "2025Q2",
+          "fiscal_year": 2025,
+          "quarter": 2,
+          "revenue": null,
+          "operating_income": -5315952908.0,
+          "operating_margin": null,
+          "scope": "OFS",
+          "basis": "",
+          "source_file": "2025_2Q_PL_20260909034944.zip",
+          "reason": "NO_DIRECT_OR_DERIVABLE_QUARTER_VALUE",
+          "revenue_yoy": null,
+          "revenue_qoq": null
+        },
+        {
+          "period": "2025Q3",
+          "fiscal_year": 2025,
+          "quarter": 3,
+          "revenue": 7101468.0,
+          "operating_income": -2853187922.0,
+          "operating_margin": null,
+          "scope": "OFS",
+          "basis": "DIRECT_3M",
+          "source_file": "2025_3Q_PL_20260909041158.zip",
+          "reason": "OPERATING_MARGIN_UNAVAILABLE",
+          "revenue_yoy": null,
+          "revenue_qoq": null
+        },
+        {
+          "period": "2025Q4",
+          "fiscal_year": 2025,
+          "quarter": 4,
+          "revenue": 0.0,
+          "operating_income": -4685622933.0,
+          "operating_margin": null,
+          "scope": "OFS",
+          "basis": "FY_MINUS_Q3",
+          "source_file": "2025_4Q_PL_20260902030713.zip",
+          "reason": "OPERATING_MARGIN_UNAVAILABLE",
+          "revenue_yoy": -100.0,
+          "revenue_qoq": -100.0
+        },
+        {
+          "period": "2026Q1",
+          "fiscal_year": 2026,
+          "quarter": 1,
+          "revenue": 1048980000.0,
+          "operating_income": -2999262717.0,
+          "operating_margin": -285.921821,
+          "scope": "OFS",
+          "basis": "DIRECT_3M",
+          "source_file": "2026_1Q_PL_20260826033803.zip",
+          "reason": null,
+          "revenue_yoy": null,
+          "revenue_qoq": null
+        },
+        {
+          "period": "2026Q2",
+          "fiscal_year": 2026,
+          "quarter": 2,
+          "revenue": 7184603330.0,
+          "operating_income": 2358590981.0,
+          "operating_margin": 32.828409,
+          "scope": "OFS",
+          "basis": "DIRECT_3M",
+          "source_file": "2026_2Q_PL_20260915030641.zip",
+          "reason": null,
+          "revenue_yoy": null,
+          "revenue_qoq": 584.913281
+        }
+      ],
+      "naver_annual_actual": {
+        "actual_keys": [
+          "202312",
+          "202412",
+          "202512"
+        ],
+        "rows": {
+          "매출액": {
+            "202312": 103.0,
+            "202412": 16.0,
+            "202512": 0.0
+          },
+          "영업이익": {
+            "202312": -105.0,
+            "202412": -126.0,
+            "202512": -165.0
+          },
+          "영업이익률": {
+            "202312": -102.08,
+            "202412": -773.92,
+            "202512": -232409.08
+          }
+        }
+      },
+      "naver_quarter_actual": {
+        "actual_keys": [
+          "202506",
+          "202509",
+          "202512",
+          "202603",
+          "202606"
+        ],
+        "rows": {
+          "매출액": {
+            "202509": 0.0,
+            "202603": 10.0,
+            "202606": 72.0
+          },
+          "영업이익": {
+            "202506": -53.0,
+            "202509": -29.0,
+            "202512": -47.0,
+            "202603": -30.0,
+            "202606": 24.0
+          },
+          "영업이익률": {
+            "202509": -40180.09,
+            "202603": -285.92,
+            "202606": 32.83
+          }
+        }
+      }
+    },
+    "372320": {
+      "name": "큐로셀",
+      "listing_date": "2023-11-09",
+      "sector": "자연과학 및 공학 연구개발업",
+      "missing": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "DART_NO_COMPARABLE_OPERATING_MARGIN"
+      },
+      "dart_history_points": [
+        {
+          "period": "2024Q3",
+          "fiscal_year": 2024,
+          "quarter": 3,
+          "revenue": 0.0,
+          "operating_income": -10037144330.0,
+          "operating_margin": null,
+          "scope": "CFS",
+          "basis": "DIRECT_3M",
+          "source_file": "2024_3Q_PL_20260909032827.zip",
+          "reason": "OPERATING_MARGIN_UNAVAILABLE",
+          "revenue_yoy": null,
+          "revenue_qoq": null
+        },
+        {
+          "period": "2024Q4",
+          "fiscal_year": 2024,
+          "quarter": 4,
+          "revenue": 0.0,
+          "operating_income": -10045070991.0,
+          "operating_margin": null,
+          "scope": "CFS",
+          "basis": "FY_MINUS_Q3",
+          "source_file": "2024_4Q_PL_20260819030822.zip",
+          "reason": "OPERATING_MARGIN_UNAVAILABLE",
+          "revenue_yoy": null,
+          "revenue_qoq": null
+        },
+        {
+          "period": "2025Q1",
+          "fiscal_year": 2025,
+          "quarter": 1,
+          "revenue": 0.0,
+          "operating_income": -6242665948.0,
+          "operating_margin": null,
+          "scope": "CFS",
+          "basis": "DIRECT_3M",
+          "source_file": "2025_1Q_PL_20260814065133.zip",
+          "reason": "OPERATING_MARGIN_UNAVAILABLE",
+          "revenue_yoy": null,
+          "revenue_qoq": null
+        },
+        {
+          "period": "2025Q2",
+          "fiscal_year": 2025,
+          "quarter": 2,
+          "revenue": 0.0,
+          "operating_income": -12149612729.0,
+          "operating_margin": null,
+          "scope": "CFS",
+          "basis": "DIRECT_3M",
+          "source_file": "2025_2Q_PL_20260909034944.zip",
+          "reason": "OPERATING_MARGIN_UNAVAILABLE",
+          "revenue_yoy": null,
+          "revenue_qoq": null
+        },
+        {
+          "period": "2025Q3",
+          "fiscal_year": 2025,
+          "quarter": 3,
+          "revenue": 0.0,
+          "operating_income": -9189281243.0,
+          "operating_margin": null,
+          "scope": "CFS",
+          "basis": "DIRECT_3M",
+          "source_file": "2025_3Q_PL_20260909041158.zip",
+          "reason": "OPERATING_MARGIN_UNAVAILABLE",
+          "revenue_yoy": null,
+          "revenue_qoq": null
+        },
+        {
+          "period": "2025Q4",
+          "fiscal_year": 2025,
+          "quarter": 4,
+          "revenue": 0.0,
+          "operating_income": -8707940614.0,
+          "operating_margin": null,
+          "scope": "CFS",
+          "basis": "FY_MINUS_Q3",
+          "source_file": "2025_4Q_PL_20260902030713.zip",
+          "reason": "OPERATING_MARGIN_UNAVAILABLE",
+          "revenue_yoy": null,
+          "revenue_qoq": null
+        },
+        {
+          "period": "2026Q1",
+          "fiscal_year": 2026,
+          "quarter": 1,
+          "revenue": 0.0,
+          "operating_income": -7799457220.0,
+          "operating_margin": null,
+          "scope": "CFS",
+          "basis": "DIRECT_3M",
+          "source_file": "2026_1Q_PL_20260826033803.zip",
+          "reason": "OPERATING_MARGIN_UNAVAILABLE",
+          "revenue_yoy": null,
+          "revenue_qoq": null
+        },
+        {
+          "period": "2026Q2",
+          "fiscal_year": 2026,
+          "quarter": 2,
+          "revenue": 0.0,
+          "operating_income": -9739048921.0,
+          "operating_margin": null,
+          "scope": "CFS",
+          "basis": "DIRECT_3M",
+          "source_file": "2026_2Q_PL_20260915030641.zip",
+          "reason": "OPERATING_MARGIN_UNAVAILABLE",
+          "revenue_yoy": null,
+          "revenue_qoq": null
+        }
+      ],
+      "naver_annual_actual": {
+        "actual_keys": [
+          "201912",
+          "202012"
+        ],
+        "rows": {
+          "매출액": {
+            "201912": 0.0,
+            "202012": 0.0
+          },
+          "영업이익": {
+            "201912": -44.0,
+            "202012": -106.0
+          },
+          "영업이익률": {
+            "201912": -1111218.0,
+            "202012": -29431.28
+          }
+        }
+      },
+      "naver_quarter_actual": {
+        "actual_keys": [
+          "202506",
+          "202509",
+          "202512",
+          "202603",
+          "202606"
+        ],
+        "rows": {
+          "매출액": {},
+          "영업이익": {
+            "202506": -122.0,
+            "202509": -92.0,
+            "202512": -87.0,
+            "202603": -78.0,
+            "202606": -97.0
+          },
+          "영업이익률": {}
+        }
+      }
+    },
+    "388870": {
+      "name": "파로스아이바이오",
+      "listing_date": "2023-07-27",
+      "sector": "자연과학 및 공학 연구개발업",
+      "missing": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "DART_NO_OPERATING_INCOME"
+      },
+      "dart_history_points": [
+        {
+          "period": "2024Q3",
+          "fiscal_year": 2024,
+          "quarter": 3,
+          "revenue": null,
+          "operating_income": null,
+          "operating_margin": null,
+          "scope": "",
+          "basis": "",
+          "source_file": "2024_3Q_PL_20260909032827.zip",
+          "reason": "DART_NO_REVENUE",
+          "revenue_yoy": null,
+          "revenue_qoq": null
+        },
+        {
+          "period": "2024Q4",
+          "fiscal_year": 2024,
+          "quarter": 4,
+          "revenue": null,
+          "operating_income": null,
+          "operating_margin": null,
+          "scope": "CFS",
+          "basis": "",
+          "source_file": "2024_4Q_PL_20260819030822.zip",
+          "reason": "NO_DIRECT_OR_DERIVABLE_QUARTER_VALUE",
+          "revenue_yoy": null,
+          "revenue_qoq": null
+        },
+        {
+          "period": "2025Q1",
+          "fiscal_year": 2025,
+          "quarter": 1,
+          "revenue": 0.0,
+          "operating_income": -3148282864.0,
+          "operating_margin": null,
+          "scope": "CFS",
+          "basis": "DIRECT_3M",
+          "source_file": "2025_1Q_PL_20260814065133.zip",
+          "reason": "OPERATING_MARGIN_UNAVAILABLE",
+          "revenue_yoy": null,
+          "revenue_qoq": null
+        },
+        {
+          "period": "2025Q2",
+          "fiscal_year": 2025,
+          "quarter": 2,
+          "revenue": null,
+          "operating_income": null,
+          "operating_margin": null,
+          "scope": "",
+          "basis": "",
+          "source_file": "2025_2Q_PL_20260909034944.zip",
+          "reason": "DART_NO_REVENUE",
+          "revenue_yoy": null,
+          "revenue_qoq": null
+        },
+        {
+          "period": "2025Q3",
+          "fiscal_year": 2025,
+          "quarter": 3,
+          "revenue": null,
+          "operating_income": null,
+          "operating_margin": null,
+          "scope": "",
+          "basis": "",
+          "source_file": "2025_3Q_PL_20260909041158.zip",
+          "reason": "DART_NO_REVENUE",
+          "revenue_yoy": null,
+          "revenue_qoq": null
+        },
+        {
+          "period": "2025Q4",
+          "fiscal_year": 2025,
+          "quarter": 4,
+          "revenue": null,
+          "operating_income": null,
+          "operating_margin": null,
+          "scope": "",
+          "basis": "",
+          "source_file": "2025_4Q_PL_20260902030713.zip",
+          "reason": "DART_NO_REVENUE",
+          "revenue_yoy": null,
+          "revenue_qoq": null
+        },
+        {
+          "period": "2026Q1",
+          "fiscal_year": 2026,
+          "quarter": 1,
+          "revenue": null,
+          "operating_income": null,
+          "operating_margin": null,
+          "scope": "",
+          "basis": "",
+          "source_file": "2026_1Q_PL_20260826033803.zip",
+          "reason": "DART_NO_REVENUE",
+          "revenue_yoy": null,
+          "revenue_qoq": null
+        },
+        {
+          "period": "2026Q2",
+          "fiscal_year": 2026,
+          "quarter": 2,
+          "revenue": null,
+          "operating_income": null,
+          "operating_margin": null,
+          "scope": "",
+          "basis": "",
+          "source_file": "2026_2Q_PL_20260915030641.zip",
+          "reason": "DART_NO_REVENUE",
+          "revenue_yoy": null,
+          "revenue_qoq": null
+        }
+      ],
+      "naver_annual_actual": {
+        "actual_keys": [
+          "202012",
+          "202112",
+          "202212"
+        ],
+        "rows": {
+          "매출액": {
+            "202012": 2.0,
+            "202112": 1.0,
+            "202212": 3.0
+          },
+          "영업이익": {
+            "202012": -60.0,
+            "202112": -84.0,
+            "202212": -106.0
+          },
+          "영업이익률": {
+            "202012": -3221.86,
+            "202112": -14747.27,
+            "202212": -3539.83
+          }
+        }
+      },
+      "naver_quarter_actual": {
+        "actual_keys": [
+          "202506",
+          "202509",
+          "202512",
+          "202603",
+          "202606"
+        ],
+        "rows": {
+          "매출액": {},
+          "영업이익": {
+            "202506": -24.0,
+            "202509": -30.0,
+            "202512": -29.0,
+            "202603": -24.0,
+            "202606": -23.0
+          },
+          "영업이익률": {}
+        }
+      }
+    },
+    "475830": {
+      "name": "오름테라퓨틱",
+      "listing_date": "2025-02-14",
+      "sector": "기초 의약물질 제조업",
+      "missing": {
+        "M02": "DART_OPERATING_MARGIN_OUTLIER_GUARD"
+      },
+      "dart_history_points": [
+        {
+          "period": "2024Q3",
+          "fiscal_year": 2024,
+          "quarter": 3,
+          "revenue": null,
+          "operating_income": null,
+          "operating_margin": null,
+          "scope": "",
+          "basis": "",
+          "source_file": "2024_3Q_PL_20260909032827.zip",
+          "reason": "DART_NO_REVENUE",
+          "revenue_yoy": null,
+          "revenue_qoq": null
+        },
+        {
+          "period": "2024Q4",
+          "fiscal_year": 2024,
+          "quarter": 4,
+          "revenue": null,
+          "operating_income": null,
+          "operating_margin": null,
+          "scope": "CFS",
+          "basis": "",
+          "source_file": "2024_4Q_PL_20260819030822.zip",
+          "reason": "CFS_OFS_SCOPE_MISMATCH",
+          "revenue_yoy": null,
+          "revenue_qoq": null
+        },
+        {
+          "period": "2025Q1",
+          "fiscal_year": 2025,
+          "quarter": 1,
+          "revenue": 2953532.0,
+          "operating_income": -9570062962.0,
+          "operating_margin": null,
+          "scope": "CFS",
+          "basis": "DIRECT_3M",
+          "source_file": "2025_1Q_PL_20260814065133.zip",
+          "reason": "OPERATING_MARGIN_UNAVAILABLE",
+          "revenue_yoy": null,
+          "revenue_qoq": null
+        },
+        {
+          "period": "2025Q2",
+          "fiscal_year": 2025,
+          "quarter": 2,
+          "revenue": 4162791.0,
+          "operating_income": -9995848525.0,
+          "operating_margin": null,
+          "scope": "CFS",
+          "basis": "DIRECT_3M",
+          "source_file": "2025_2Q_PL_20260909034944.zip",
+          "reason": "OPERATING_MARGIN_UNAVAILABLE",
+          "revenue_yoy": null,
+          "revenue_qoq": 40.94281
+        },
+        {
+          "period": "2025Q3",
+          "fiscal_year": 2025,
+          "quarter": 3,
+          "revenue": 15889734.0,
+          "operating_income": -13938750131.0,
+          "operating_margin": null,
+          "scope": "CFS",
+          "basis": "DIRECT_3M",
+          "source_file": "2025_3Q_PL_20260909041158.zip",
+          "reason": "OPERATING_MARGIN_UNAVAILABLE",
+          "revenue_yoy": null,
+          "revenue_qoq": 281.708666
+        },
+        {
+          "period": "2025Q4",
+          "fiscal_year": 2025,
+          "quarter": 4,
+          "revenue": 558176.0,
+          "operating_income": -18254515387.0,
+          "operating_margin": null,
+          "scope": "CFS",
+          "basis": "FY_MINUS_Q3",
+          "source_file": "2025_4Q_PL_20260902030713.zip",
+          "reason": "OPERATING_MARGIN_UNAVAILABLE",
+          "revenue_yoy": null,
+          "revenue_qoq": -96.487191
+        },
+        {
+          "period": "2026Q1",
+          "fiscal_year": 2026,
+          "quarter": 1,
+          "revenue": 0.0,
+          "operating_income": -18076125528.0,
+          "operating_margin": null,
+          "scope": "CFS",
+          "basis": "DIRECT_3M",
+          "source_file": "2026_1Q_PL_20260826033803.zip",
+          "reason": "OPERATING_MARGIN_UNAVAILABLE",
+          "revenue_yoy": -100.0,
+          "revenue_qoq": -100.0
+        },
+        {
+          "period": "2026Q2",
+          "fiscal_year": 2026,
+          "quarter": 2,
+          "revenue": 24105273.0,
+          "operating_income": -15352897687.0,
+          "operating_margin": null,
+          "scope": "CFS",
+          "basis": "DIRECT_3M",
+          "source_file": "2026_2Q_PL_20260915030641.zip",
+          "reason": "OPERATING_MARGIN_UNAVAILABLE",
+          "revenue_yoy": 479.065175,
+          "revenue_qoq": null
+        }
+      ],
+      "naver_annual_actual": {
+        "actual_keys": [
+          "202312",
+          "202412",
+          "202512"
+        ],
+        "rows": {
+          "매출액": {
+            "202312": 1354.0,
+            "202412": 209.0,
+            "202512": 0.0
+          },
+          "영업이익": {
+            "202312": 956.0,
+            "202412": -83.0,
+            "202512": -518.0
+          },
+          "영업이익률": {
+            "202312": 70.6,
+            "202412": -39.87,
+            "202512": -219651.47
+          }
+        }
+      },
+      "naver_quarter_actual": {
+        "actual_keys": [
+          "202506",
+          "202509",
+          "202512",
+          "202603",
+          "202606"
+        ],
+        "rows": {
+          "매출액": {
+            "202506": 0.0,
+            "202509": 0.0,
+            "202512": 0.0,
+            "202606": 0.0
+          },
+          "영업이익": {
+            "202506": -100.0,
+            "202509": -139.0,
+            "202512": -183.0,
+            "202603": -181.0,
+            "202606": -154.0
+          },
+          "영업이익률": {
+            "202506": -240123.78,
+            "202509": -87721.76,
+            "202512": -3270422.16,
+            "202606": -63691.04
+          }
+        }
+      }
+    }
+  },
+  "errors": {},
+  "error_count": 0
+}
