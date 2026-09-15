@@ -45,15 +45,19 @@ def test_nonconsecutive_ambiguous_large_mismatch_fails_closed() -> None:
     assert count==1 and fb==0
 
 
-def test_missing_intermediate_small_move_preserves_endpoint_return() -> None:
-    d0=date(2026,3,13); dm=date(2026,9,14); d1=date(2026,9,15)
-    v2._set_market_calendar([d0,dm,d1])
-    by_date={d0:10000.0,d1:12000.0}
-    by_factor={d0:1.0,d1:1.01}
-    events=v2._detect_reference_reset_events(by_date,by_factor,d0,d1)
+def test_missing_one_session_small_move_preserves_endpoint_return() -> None:
+    # Same failure shape as production: Friday bar, Monday omitted, Tuesday bar.
+    # Tuesday's daily factor is +1%, while the two-session endpoint return is +2%.
+    # The +~1% gap mismatch must NOT become a corporate action, and M04 must
+    # preserve the full +2% endpoint return rather than only Tuesday's +1%.
+    d11=date(2026,9,11); d14=date(2026,9,14); d15=date(2026,9,15)
+    v2._set_market_calendar([d11,d14,d15])
+    by_date={d11:10000.0,d15:10200.0}
+    by_factor={d11:1.0,d15:1.01}
+    events=v2._detect_reference_reset_events(by_date,by_factor,d11,d15)
     assert events==[],events
-    value,reason,count,fb=v2._corporate_action_adjusted_return(by_date,by_factor,d0,d1)
-    assert reason is None and count==0 and fb==0 and abs(value-20.0)<1e-9,value
+    value,reason,count,fb=v2._corporate_action_adjusted_return(by_date,by_factor,d11,d15)
+    assert reason is None and count==0 and fb==0 and abs(value-2.0)<1e-9,value
 
 
 def test_unresolved_split_sized_gap_without_adjustment_fails_closed() -> None:
