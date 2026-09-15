@@ -1,0 +1,46 @@
+name: KR4 EPS Missing Probe
+
+on:
+  push:
+    branches:
+      - fix/incomplete-267-recovery-v1
+    paths:
+      - scripts/probe_eps_missing.py
+      - .github/workflows/probe-eps-missing.yml
+
+permissions:
+  contents: write
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/incomplete-267-recovery-v1
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -q requests pandas lxml
+      - name: Probe nine EPS gaps
+        working-directory: scripts
+        run: python probe_eps_missing.py --quant ../evidence/real_quant_snapshot.json --out ../evidence/eps_missing_probe.json
+      - name: Verify candidate gate
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=json.loads(Path('evidence/eps_missing_probe.json').read_text(encoding='utf-8'))
+          assert p['candidate_count']==9
+          print('KR4_EPS_MISSING_PROBE_GATE=PASS errors=', p['error_count'])
+          PY
+      - name: Commit probe evidence
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add evidence/eps_missing_probe.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Record live probe for nine EPS gaps'
+          git push origin HEAD:fix/incomplete-267-recovery-v1
