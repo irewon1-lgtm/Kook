@@ -23,8 +23,18 @@ data class QuarterlyHistory(
     val generatedAt: String = "",
     val error: String? = null
 ) {
+    val comparisonScope: String
+        get() = points.lastOrNull { it.revenue != null && it.scope.isNotBlank() }?.scope.orEmpty()
+
+    val comparablePoints: List<QuarterlyPoint>
+        get() = if (comparisonScope.isBlank()) {
+            points.filter { it.revenue != null }
+        } else {
+            points.filter { it.revenue != null && it.scope == comparisonScope }
+        }
+
     val availableQuarterCount: Int
-        get() = points.count { it.revenue != null }
+        get() = comparablePoints.size
 
     val hasFourQuarters: Boolean
         get() = availableQuarterCount >= 4
