@@ -12,45 +12,53 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-      - name: Verify live Naver endpoints
+      - name: Inspect Naver valuation and chart JSON schema
         run: |
           set -euo pipefail
           python3 - <<'PY'
-          import urllib.request
-          for u in [
-            'https://m.stock.naver.com/api/stock/005930/basic',
-            'https://m.stock.naver.com/api/stock/000250/basic',
-            'https://m.stock.naver.com/api/stock/005930/integration',
-            'https://api.stock.naver.com/chart/domestic/item/005930?periodType=dayCandle&startDateTime=20260301&endDateTime=20260915']:
-              req=urllib.request.Request(u,headers={'User-Agent':'Mozilla/5.0 KR4/1.0','Referer':'https://m.stock.naver.com/'})
-              with urllib.request.urlopen(req, timeout=20) as r: body=r.read()
-              assert body
-              print('NAVER_OK',u.split('?')[0],len(body))
+          import json, urllib.request
+          hdr={'User-Agent':'Mozilla/5.0 KR4/1.0','Referer':'https://m.stock.naver.com/'}
+          def jget(u):
+              req=urllib.request.Request(u,headers=hdr)
+              with urllib.request.urlopen(req,timeout=25) as r: return json.load(r)
+          for code in ['005930','000250']:
+              d=jget(f'https://m.stock.naver.com/api/stock/{code}/integration')
+              print('INTEGRATION_CODE',code,'TOP_KEYS',sorted(d.keys()))
+              # recursively print key paths whose key contains PER/EPS/price/close only
+              def walk(x,path=''):
+                  if isinstance(x,dict):
+                      for k,v in x.items():
+                          p=f'{path}.{k}' if path else k
+                          low=k.lower()
+                          if any(t in low for t in ('per','eps','price','close')) and not isinstance(v,(dict,list)):
+                              print('FIELD',code,p,repr(v))
+                          walk(v,p)
+                  elif isinstance(x,list):
+                      for i,v in enumerate(x[:8]): walk(v,f'{path}[{i}]')
+              walk(d)
+          c=jget('https://api.stock.naver.com/chart/domestic/item/005930?periodType=dayCandle&startDateTime=20260301&endDateTime=20260915')
+          print('CHART_TYPE',type(c).__name__)
+          if isinstance(c,list):
+              print('CHART_LEN',len(c)); print('CHART_FIRST',c[0] if c else None); print('CHART_LAST',c[-1] if c else None)
+          else:
+              print('CHART_KEYS',sorted(c.keys()));
+              for k,v in c.items():
+                  if isinstance(v,list) and v:
+                      print('CHART_LIST_KEY',k,'LEN',len(v),'FIRST',v[0],'LAST',v[-1])
           PY
-      - name: Download official OpenDART bulk PL with session and inspect schema
+      - name: Verify official OpenDART public bulk PL is downloadable
         run: |
           set -euo pipefail
           python3 - <<'PY'
           import io,re,zipfile,requests
           base='https://opendart.fss.or.kr'
           hdr={'User-Agent':'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/126 Safari/537.36','Referer':base+'/disclosureinfo/fnltt/dwld/main.do'}
-          s=requests.Session()
-          r=s.get(base,headers=hdr,timeout=30); r.raise_for_status()
-          r=s.post(base+'/disclosureinfo/fnltt/dwld/list.do',headers=hdr,timeout=60); r.raise_for_status()
-          html=r.text
+          s=requests.Session(); s.get(base,headers=hdr,timeout=30).raise_for_status()
+          html=s.post(base+'/disclosureinfo/fnltt/dwld/list.do',headers=hdr,timeout=60).text
           m=re.search(r"download_ext002\('2026','HY',\s*'PL',\s*'([^']+)'\)",html); assert m
-          fn=m.group(1); print('DART_FILE',fn)
+          fn=m.group(1)
           r=s.get(base+'/cmm/downloadFnlttZip.do',params={'fl_nm':fn},headers=hdr,timeout=300)
-          print('DOWNLOAD_STATUS',r.status_code,'ctype',r.headers.get('content-type'),'bytes',len(r.content))
-          assert r.status_code==200 and r.content[:2]==b'PK', r.text[:500]
-          z=zipfile.ZipFile(io.BytesIO(r.content)); names=z.namelist(); print('DART_ZIP_OK entries',len(names),names[:5])
-          for target in names[:3]:
-              data=z.read(target); print('TXT_FILE',target,'bytes',len(data))
-              text=None
-              for enc in ('utf-8-sig','cp949','euc-kr','utf-8'):
-                  try: text=data.decode(enc); print('ENCODING',enc); break
-                  except UnicodeDecodeError: pass
-              assert text
-              lines=text.splitlines(); print('HEADER',lines[0][:4000])
-              for line in lines[1:3]: print('SAMPLE',line[:4000])
+          assert r.status_code==200 and r.content[:2]==b'PK'
+          z=zipfile.ZipFile(io.BytesIO(r.content)); print('DART_BULK_OK',fn,len(r.content),'entries',len(z.namelist()))
+          print('DART_HEADER',z.read(z.namelist()[0]).decode('cp949').splitlines()[0])
           PY
