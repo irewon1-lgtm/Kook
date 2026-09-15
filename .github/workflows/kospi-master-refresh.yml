@@ -47,8 +47,8 @@ jobs:
           assert d['market'] == 'KOSPI'
           assert 700 <= d['issuer_count'] <= 1200
           assert d['issuer_count'] == d['unique_issue_codes']
-          assert d['six_digit_codes'] is True
-          print('KOSPI_MASTER_VALIDATED', d['issuer_count'], d['snapshot_date_kst'])
+          assert d['six_character_krx_codes'] is True
+          print('KOSPI_MASTER_VALIDATED', d['issuer_count'], d['snapshot_date_kst'], 'alphanumeric', d['alphanumeric_issue_code_count'])
           PY
 
       - name: Commit refreshed master snapshot
