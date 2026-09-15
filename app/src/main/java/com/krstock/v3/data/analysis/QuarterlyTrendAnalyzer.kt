@@ -164,8 +164,8 @@ object QuarterlyTrendAnalyzer {
         val reconstructed = history.reconstructedQuarterCount
         return when {
             total == 0 -> "분기 산출 품질을 확인할 실제 값이 없습니다."
-            reconstructed == 0 -> "사용한 $total개 분기는 모두 직접 3개월 값입니다."
-            else -> "사용한 $total개 중 직접 3개월 값은 ${direct}개, 같은 회계범위의 누적 차감으로 복원한 값은 ${reconstructed}개입니다."
+            reconstructed == 0 -> "사용한 ${total}개 분기는 모두 직접 3개월 값입니다."
+            else -> "사용한 ${total}개 중 직접 3개월 값은 ${direct}개, 같은 회계범위의 누적 차감으로 복원한 값은 ${reconstructed}개입니다."
         }
     }
 
