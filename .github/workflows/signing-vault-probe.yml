@@ -9,61 +9,56 @@ on:
 
 permissions:
   contents: read
+  id-token: write
 
 jobs:
   probe:
     runs-on: ubuntu-latest
     timeout-minutes: 2
     steps:
-      - name: Discover AppDeploy frontend client transport from public bundle
+      - name: Verify OIDC encrypted signing transport only
         shell: bash
         env:
-          VAULT_ORIGIN: https://kr4-signing-vault-5yh3dd.v2.appdeploy.ai
+          SIGNING_VAULT_URL: https://api-v2.appdeploy.ai/app/kr4-signing-vault-5yh3dd/api/signing-material
         run: |
           set -euo pipefail
+          umask 077
+          test -n "${ACTIONS_ID_TOKEN_REQUEST_URL:-}"
+          test -n "${ACTIONS_ID_TOKEN_REQUEST_TOKEN:-}"
+
+          curl -fsS \
+            -H "Authorization: Bearer ${ACTIONS_ID_TOKEN_REQUEST_TOKEN}" \
+            "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=kr4-signing-vault" \
+            -o "$RUNNER_TEMP/oidc.json"
+          OIDC_TOKEN=$(python3 - <<'PY'
+          import json, os
+          p=os.path.join(os.environ['RUNNER_TEMP'],'oidc.json')
+          doc=json.load(open(p,encoding='utf-8'))
+          token=doc.get('value')
+          assert isinstance(token,str) and len(token)>100
+          print(token)
+          PY
+          )
+
+          openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:3072 \
+            -out "$RUNNER_TEMP/transport-private.pem" >/dev/null 2>&1
+          openssl pkey -in "$RUNNER_TEMP/transport-private.pem" \
+            -pubout -outform DER -out "$RUNNER_TEMP/transport-public.der"
+          TRANSPORT_KEY=$(base64 -w0 "$RUNNER_TEMP/transport-public.der" | tr '+/' '-_' | tr -d '=')
+
+          HTTP_STATUS=$(curl -sS --get -o "$RUNNER_TEMP/vault.json" -w '%{http_code}' \
+            -H "Authorization: Bearer ${OIDC_TOKEN}" \
+            --data-urlencode "transport_key=${TRANSPORT_KEY}" \
+            "$SIGNING_VAULT_URL")
+          test "$HTTP_STATUS" = "200"
           python3 - <<'PY'
-          import re, urllib.parse, urllib.request
-
-          origin = 'https://kr4-signing-vault-5yh3dd.v2.appdeploy.ai'
-          headers = {'User-Agent': 'Mozilla/5.0'}
-
-          def fetch(url):
-              req = urllib.request.Request(url, headers=headers)
-              with urllib.request.urlopen(req, timeout=20) as r:
-                  return r.status, r.headers.get('content-type',''), r.read()
-
-          status, ctype, body = fetch(origin + '/')
-          text = body.decode('utf-8', 'replace')
-          print('INDEX', status, ctype, len(body))
-          scripts = re.findall(r'<script[^>]+src=["\']([^"\']+)["\']', text, re.I)
-          print('SCRIPT_COUNT', len(scripts))
-          assert scripts, 'no_script_bundle_found'
-
-          needles = [
-              'api-v2.appdeploy.ai', 'proxy-v2.appdeploy.ai', '__appdeploy',
-              'backend', 'lambda', '/api/', 'x-appdeploy', 'appdeploy.ai'
-          ]
-          found = set()
-          urls = set()
-          for src in scripts:
-              url = urllib.parse.urljoin(origin + '/', src)
-              s, ct, b = fetch(url)
-              js = b.decode('utf-8', 'replace')
-              print('SCRIPT', urllib.parse.urlparse(url).path, s, ct, len(b))
-              for u in re.findall(r'https?://[^"\'`\\\s)]+', js):
-                  if 'appdeploy' in u.lower():
-                      urls.add(u[:300])
-              lower = js.lower()
-              for needle in needles:
-                  pos = lower.find(needle.lower())
-                  if pos >= 0:
-                      snippet = js[max(0,pos-180):min(len(js),pos+360)]
-                      snippet = re.sub(r'\s+', ' ', snippet)
-                      found.add((needle, snippet[:600]))
-
-          print('APPDEPLOY_URLS')
-          for u in sorted(urls): print(u)
-          print('TRANSPORT_SNIPPETS')
-          for needle, snippet in sorted(found): print(needle, '=>', snippet)
-          assert found or urls, 'no_transport_markers_found'
+          import json, os
+          p=os.path.join(os.environ['RUNNER_TEMP'],'vault.json')
+          root=json.load(open(p,encoding='utf-8'))
+          assert root.get('algorithm')=='RSA-OAEP-SHA256'
+          assert root.get('repository')=='irewon1-lgtm/Kook'
+          assert root.get('ref')=='refs/heads/main'
+          chunks=root.get('ciphertextChunks')
+          assert isinstance(chunks,list) and chunks and all(isinstance(x,str) and x for x in chunks)
+          print('SIGNING_VAULT_TRANSPORT_PASS', {'chunk_count':len(chunks),'repository':root['repository'],'ref':root['ref']})
           PY
