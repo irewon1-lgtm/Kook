@@ -77,8 +77,8 @@ object SnapshotAutoUpdater {
         val backup = File(context.filesDir, BACKUP_NAME)
 
         // 1) Warm start from local known-good copies. Cache is preferred when
-        // equally new, but a newer valid rollback copy can still win. Corrupt or
-        // implausibly old local files are ignored without touching them.
+        // equally new, but a strictly newer valid rollback copy can still win.
+        // Corrupt or implausibly old local files are ignored without touching them.
         val localCandidates = listOf(
             Triple(cache, Source.CACHE, "마지막 정상 자동갱신본"),
             Triple(backup, Source.BACKUP, "백업 정상본 복구"),
@@ -88,6 +88,13 @@ object SnapshotAutoUpdater {
             val parsed = runCatching { parseAndValidate(file.readText(Charsets.UTF_8)) }.getOrNull() ?: continue
             if (!isNotOlderThanBundled(parsed.snapshotDate, parsed.priceCutoffDate)) continue
             if (isOlderVersion(parsed.snapshotDate, parsed.priceCutoffDate, active.snapshotDate, active.priceCutoffDate)) continue
+            if (source == Source.BACKUP && isSameVersion(
+                    parsed.snapshotDate,
+                    parsed.priceCutoffDate,
+                    active.snapshotDate,
+                    active.priceCutoffDate,
+                )
+            ) continue
             if (installInMemory) install(parsed)
             active = Result(
                 source,
@@ -110,7 +117,9 @@ object SnapshotAutoUpdater {
                 active.snapshotDate,
                 active.priceCutoffDate,
             )) { "remote snapshot downgrade rejected" }
-            saveAtomically(context, body)
+            // Only copy cache -> backup when cache is the selected newest local
+            // normal form. If BACKUP won because it is newer, preserve it intact.
+            saveAtomically(context, body, preserveExistingCache = active.source == Source.CACHE)
             if (installInMemory) install(parsed)
             Result(
                 Source.LIVE,
@@ -343,17 +352,15 @@ object SnapshotAutoUpdater {
         return incomingSnap < activeSnap || (incomingSnap == activeSnap && incomingPrice < activePrice)
     }
 
-    private fun saveAtomically(context: Context, body: String) {
-        val cache = File(context.filesDir, CACHE_NAME)
-        val preserveExisting = if (cache.isFile && cache.length() in 1..MAX_BYTES.toLong()) {
-            runCatching {
-                val parsed = parseAndValidate(cache.readText(Charsets.UTF_8))
-                isNotOlderThanBundled(parsed.snapshotDate, parsed.priceCutoffDate)
-            }.getOrDefault(false)
-        } else {
-            false
-        }
-        writeSnapshotFilesAtomically(context.filesDir, body, preserveExisting)
+    private fun isSameVersion(
+        firstSnapshotDate: String,
+        firstPriceDate: String,
+        secondSnapshotDate: String,
+        secondPriceDate: String,
+    ): Boolean = firstSnapshotDate == secondSnapshotDate && firstPriceDate == secondPriceDate
+
+    private fun saveAtomically(context: Context, body: String, preserveExistingCache: Boolean) {
+        writeSnapshotFilesAtomically(context.filesDir, body, preserveExistingCache)
     }
 
     /**
