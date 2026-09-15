@@ -1,0 +1,68 @@
+name: KR4 Standard Actual Recovery Shadow
+
+on:
+  push:
+    branches:
+      - fix/incomplete-267-recovery-v1
+    paths:
+      - scripts/shadow_standard_actual_recovery.py
+      - .github/workflows/shadow-standard-actual-recovery.yml
+
+permissions:
+  contents: write
+
+jobs:
+  shadow:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: fix/incomplete-267-recovery-v1
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install collector dependencies
+        run: pip install -q requests pandas lxml
+
+      - name: Run shadow recovery
+        working-directory: scripts
+        run: python shadow_standard_actual_recovery.py --quant ../evidence/real_quant_snapshot.json --out ../evidence/standard_actual_recovery_shadow.json
+
+      - name: Verify safety gates
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = json.loads(Path('evidence/standard_actual_recovery_shadow.json').read_text(encoding='utf-8'))
+          b = p['coverage_before']; a = p['coverage_after_shadow']
+          assert b['m01_available'] == 2504
+          assert b['m02_available'] == 2409
+          assert b['m03_available'] == 2639
+          assert b['m04_available'] == 2611
+          assert b['complete_count'] == 2382
+          assert a['m01_available'] >= b['m01_available']
+          assert a['m02_available'] >= b['m02_available']
+          assert a['m03_available'] == b['m03_available']
+          assert a['m04_available'] == b['m04_available']
+          assert a['complete_count'] >= b['complete_count']
+          assert a['ranked_count'] == a['complete_count']
+          print('KR4_STANDARD_ACTUAL_SHADOW_GATE=PASS')
+          PY
+
+      - name: Commit shadow evidence
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add evidence/standard_actual_recovery_shadow.json
+          if git diff --cached --quiet; then
+            echo 'No shadow evidence changes.'
+            exit 0
+          fi
+          git commit -m 'Record standard actual-quarter recovery shadow'
+          git push origin HEAD:fix/incomplete-267-recovery-v1
