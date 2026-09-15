@@ -1,0 +1,80 @@
+name: KR4 KRX Period Adjusted Probe
+
+on:
+  push:
+    branches:
+      - fix/m04-gap-aware-ca-v1
+    paths:
+      - ".github/krx-period-probe-trigger"
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Four KRX POST requests only
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, urllib.parse, urllib.request
+
+          URL='https://data.krx.co.kr/comm/bldAttendant/getJsonData.cmd'
+          HEADERS={
+              'User-Agent':'Mozilla/5.0',
+              'Referer':'https://data.krx.co.kr/contents/MDC/MDI/outerLoader/index.cmd',
+              'X-Requested-With':'XMLHttpRequest',
+          }
+
+          def fetch(market,adjusted):
+              form=urllib.parse.urlencode({
+                  'bld':'dbms/MDC/STAT/standard/MDCSTAT01602',
+                  'mktId':market,
+                  'adjStkPrc':str(adjusted),
+                  'strtDd':'20260313',
+                  'endDd':'20260915',
+              }).encode()
+              req=urllib.request.Request(URL,data=form,headers=HEADERS,method='POST')
+              with urllib.request.urlopen(req,timeout=20) as r:
+                  payload=json.loads(r.read().decode('utf-8'))
+              rows=payload.get('OutBlock_1') or payload.get('output') or []
+              assert rows,(market,adjusted,payload.keys())
+              return {str(x.get('ISU_SRT_CD')):x for x in rows if x.get('ISU_SRT_CD')}
+
+          stk_raw=fetch('STK',1)
+          stk_adj=fetch('STK',2)
+          ksq_raw=fetch('KSQ',1)
+          ksq_adj=fetch('KSQ',2)
+
+          print('COUNTS',len(stk_raw),len(stk_adj),len(ksq_raw),len(ksq_adj))
+          for code,raw,adj in [
+              ('001230',stk_raw,stk_adj),
+              ('134380',stk_raw,stk_adj),
+              ('331520',ksq_raw,ksq_adj),
+          ]:
+              r=raw.get(code); a=adj.get(code)
+              assert r and a,(code,bool(r),bool(a))
+              out={
+                  'code':code,
+                  'raw_BAS_PRC':r.get('BAS_PRC'),
+                  'adj_BAS_PRC':a.get('BAS_PRC'),
+                  'raw_TDD_CLSPRC':r.get('TDD_CLSPRC'),
+                  'adj_TDD_CLSPRC':a.get('TDD_CLSPRC'),
+                  'raw_FLUC_RT':r.get('FLUC_RT'),
+                  'adj_FLUC_RT':a.get('FLUC_RT'),
+                  'raw_CMPPREVDD_PRC':r.get('CMPPREVDD_PRC'),
+                  'adj_CMPPREVDD_PRC':a.get('CMPPREVDD_PRC'),
+              }
+              print('KRX_PERIOD',json.dumps(out,ensure_ascii=False))
+
+          def num(v): return float(str(v).replace(',','').strip())
+          # No split/merge in 001230: adjusted and raw start bases should agree.
+          assert abs(num(stk_raw['001230']['BAS_PRC'])-num(stk_adj['001230']['BAS_PRC'])) <= 1.0
+          # Known split/reverse-split cases must materially differ under adjusted mode.
+          assert abs(num(stk_raw['134380']['BAS_PRC'])/num(stk_adj['134380']['BAS_PRC'])-1.0) > 1.0
+          assert abs(num(ksq_raw['331520']['BAS_PRC'])/num(ksq_adj['331520']['BAS_PRC'])-1.0) > 1.0
+          print('KRX_PERIOD_ADJUSTED_PROBE_PASS')
+          PY
