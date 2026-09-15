@@ -81,15 +81,17 @@ class AppSmokeTest {
         composeRule.onNodeWithTag("stock_search").performTextInput("삼천당제약")
         closeSoftKeyboard()
         composeRule.waitForIdle()
-        // The whole stock card is clickable, so Compose merges descendant semantics in the
-        // default test tree. Bring the card into composition, then inspect its visual-only
-        // comparison region through the unmerged semantics tree.
+        // A stock card is taller than the remaining list viewport. Verify each visual section
+        // in the same order a user reaches it instead of requiring the whole card at once.
         composeRule.onNodeWithTag("stock_000250").performScrollTo()
-        composeRule.onNodeWithTag("comparison_000250", useUnmergedTree = true)
+        composeRule.onNodeWithText("한눈 비교", useUnmergedTree = true)
             .performScrollTo()
             .assertIsDisplayed()
-        composeRule.onNodeWithText("한눈 비교", useUnmergedTree = true).assertIsDisplayed()
         composeRule.onNodeWithText("시장 내 상대위치", useUnmergedTree = true).assertIsDisplayed()
+        composeRule.onNodeWithText("성장", useUnmergedTree = true)
+            .performScrollTo()
+            .assertIsDisplayed()
+        composeRule.onNodeWithText("수익성", useUnmergedTree = true).assertIsDisplayed()
         composeRule.onNodeWithTag("stock_000250").performScrollTo().performClick()
         composeRule.waitForIdle()
 
