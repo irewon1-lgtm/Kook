@@ -1,0 +1,123 @@
+{
+  "scope": "KOSDAQ listed-company registration master only; no financial metrics or prices",
+  "source": "KRX KIND 상장법인목록",
+  "source_url": "https://kind.krx.co.kr/corpgeneral/corpList.do?method=download&searchType=13&marketType=kosdaqMkt",
+  "market": "KOSDAQ",
+  "snapshot_date_kst": "2026-09-15",
+  "source_row_count": 1839,
+  "issuer_count": 1817,
+  "unique_issue_codes": 1817,
+  "duplicate_exact_source_codes_deduplicated": [
+    "0001A0",
+    "020180",
+    "025440",
+    "037370",
+    "046970",
+    "060900",
+    "062970",
+    "067900",
+    "073560",
+    "079000",
+    "079650",
+    "091590",
+    "100660",
+    "111710",
+    "114450",
+    "138080",
+    "196300",
+    "198440",
+    "208140",
+    "323990",
+    "377460",
+    "464080"
+  ],
+  "six_character_krx_codes": true,
+  "alphanumeric_issue_code_count": 53,
+  "alphanumeric_issue_code_samples": [
+    "0001A0",
+    "0004V0",
+    "0004Y0",
+    "0007C0",
+    "0007J0",
+    "0008Z0",
+    "0009K0",
+    "0010F0",
+    "0010V0",
+    "0011A0",
+    "0011T0",
+    "0013V0",
+    "0015G0",
+    "0015N0",
+    "0015S0",
+    "0017J0",
+    "0037T0",
+    "0039P0",
+    "0041B0",
+    "0041J0"
+  ],
+  "sha256_normalized_master": "9d3bd09cf887c80492d9c7fa2d50d438de2d89f18ee375c5f2502f14cea2d3cb",
+  "sample_first_5": [
+    {
+      "code": "0001A0",
+      "name": "덕양에너젠",
+      "sector": "연료용 가스 제조 및 배관공급업",
+      "listingDate": "2026-01-30"
+    },
+    {
+      "code": "000250",
+      "name": "삼천당제약",
+      "sector": "의약품 제조업",
+      "listingDate": "2000-10-04"
+    },
+    {
+      "code": "000440",
+      "name": "중앙에너비스",
+      "sector": "기타 전문 도매업",
+      "listingDate": "1993-03-24"
+    },
+    {
+      "code": "0004V0",
+      "name": "엔비알모션",
+      "sector": "기타 금속 가공제품 제조업",
+      "listingDate": "2026-01-14"
+    },
+    {
+      "code": "0004Y0",
+      "name": "디비금융제14호스팩",
+      "sector": "기타 금융업",
+      "listingDate": "2025-07-22"
+    }
+  ],
+  "sample_last_5": [
+    {
+      "code": "950190",
+      "name": "고스트스튜디오",
+      "sector": "소프트웨어 개발 및 공급업",
+      "listingDate": "2020-08-18"
+    },
+    {
+      "code": "950200",
+      "name": "소마젠",
+      "sector": "그외 기타 전문, 과학 및 기술 서비스업",
+      "listingDate": "2020-07-13"
+    },
+    {
+      "code": "950220",
+      "name": "네오이뮨텍",
+      "sector": "자연과학 및 공학 연구개발업",
+      "listingDate": "2021-03-16"
+    },
+    {
+      "code": "950250",
+      "name": "테라뷰",
+      "sector": "기타 금융업",
+      "listingDate": "2025-12-09"
+    },
+    {
+      "code": "950260",
+      "name": "인제니아테라퓨틱스",
+      "sector": "자연과학 및 공학 연구개발업",
+      "listingDate": "2026-08-18"
+    }
+  ]
+}
