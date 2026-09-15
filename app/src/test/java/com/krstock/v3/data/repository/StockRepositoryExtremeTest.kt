@@ -107,7 +107,10 @@ class StockRepositoryExtremeTest {
             if (stock.m03Per.isAvailable) {
                 assertTrue(stock.m03Per.source.contains("네이버"))
                 assertTrue(stock.m03Per.rawValue!! > 0.0)
-                assertTrue(stock.m03Per.basis.contains("_CLOSE/NAVER_EPS_"))
+                assertTrue(
+                    stock.m03Per.basis.contains("NAVER_REPORTED_TRAILING_PER") ||
+                        stock.m03Per.basis.contains("_CLOSE/NAVER_EPS_")
+                )
             }
             if (stock.m04Price6m.isAvailable) {
                 assertTrue(stock.m04Price6m.source.contains("네이버"))
@@ -223,7 +226,7 @@ class StockRepositoryExtremeTest {
         repeat(10_000) {
             val current = StockRepository.getAllStocks()
             assertSame(first, current)
-            assertEquals(2649, current.size)
+            assertEquals(2649, first.size)
         }
         assertEquals(fingerprint, StockRepository.getAllStocks().joinToString("|") { "${it.market}:${it.issuerId}:${it.rankOrder}:${it.compositeScore}" })
     }

@@ -59,10 +59,10 @@ jobs:
           d=json.loads(p.read_text(encoding='utf-8'))
           assert d['universe_count'] == 2649
           c=d['coverage']
-          assert c['m01_available'] >= 1000, c
-          assert c['m02_available'] >= 900, c
-          assert c['m03_available'] >= 800, c
-          assert c['m04_available'] >= 1500, c
+          assert c['m01_available'] >= 2400, c
+          assert c['m02_available'] >= 2300, c
+          assert c['m03_available'] >= 1677, c
+          assert c['m04_available'] >= 2550, c
           assert c['ranked_count'] == c['complete_count']
           assert len(d['records']) == 2649
           ranks=[]
@@ -93,9 +93,6 @@ jobs:
           assert 'const val priceCutoffDate: String = "2026-09-14"' in text
           assert 'PENDING' not in text
           print('REAL_QUANT_EXTREME_VALIDATION_PASS',json.dumps(c,ensure_ascii=False))
-          print('DART_FILE',d['dart_bulk_file'])
-          print('DART_ZIP_SHA256',d['dart_bulk_zip_sha256'])
-          print('KOTLIN_SHA256',d['generated_kotlin_sha256'])
           print('REASON_COUNTS',json.dumps(d['reason_counts'],ensure_ascii=False))
           PY
 
@@ -116,6 +113,9 @@ jobs:
           PY
           )
           git commit -m "Collect real KR4 snapshot: ${COV}"
+          # The branch can advance while the 2,649-stock collection is running.
+          # Rebase the generated-data-only commit before pushing instead of failing non-fast-forward.
+          git pull --rebase origin "${{ github.ref_name }}"
           git push origin HEAD:${{ github.ref_name }}
 
       - name: Upload raw proof snapshot

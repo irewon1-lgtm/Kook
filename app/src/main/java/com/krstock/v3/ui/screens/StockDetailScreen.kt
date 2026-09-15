@@ -1,5 +1,6 @@
 package com.krstock.v3.ui.screens
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -22,7 +23,11 @@ import com.krstock.v3.data.model.StockSummary
 import com.krstock.v3.data.repository.StockRepository
 import com.krstock.v3.ui.components.StatusBadge
 import com.krstock.v3.ui.theme.BlueAccent
+import com.krstock.v3.ui.theme.BlueAccentSoft
+import com.krstock.v3.ui.theme.BorderLight
+import com.krstock.v3.ui.theme.SurfaceMuted
 import com.krstock.v3.ui.theme.TextSecondaryLight
+import com.krstock.v3.ui.theme.TextTertiaryLight
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -35,7 +40,7 @@ fun StockDetailScreen(issuerId: String, onBack: () -> Unit) {
             topBar = {
                 TopAppBar(
                     title = { Text("종목을 찾을 수 없음", fontWeight = FontWeight.Bold) },
-                    navigationIcon = { TextButton(onClick = onBack) { Text("< 뒤로") } }
+                    navigationIcon = { TextButton(onClick = onBack) { Text("‹ 뒤로") } }
                 )
             }
         ) { padding ->
@@ -46,7 +51,7 @@ fun StockDetailScreen(issuerId: String, onBack: () -> Unit) {
             ) {
                 Text("요청한 종목코드 '$issuerId'가 KOSPI·KOSDAQ 마스터에 없습니다.", fontWeight = FontWeight.Bold)
                 Spacer(modifier = Modifier.height(8.dp))
-                Text("없는 종목을 삼성전자 등 다른 회사로 대체하지 않습니다.", fontSize = 13.sp, color = TextSecondaryLight)
+                Text("없는 종목을 다른 회사로 대체하지 않습니다.", fontSize = 13.sp, color = TextSecondaryLight)
                 Spacer(modifier = Modifier.height(16.dp))
                 Button(onClick = onBack) { Text("목록으로 돌아가기") }
             }
@@ -68,12 +73,13 @@ fun StockDetailScreen(issuerId: String, onBack: () -> Unit) {
                         Text(
                             "${summary.name} (${summary.issuerId})",
                             modifier = Modifier.testTag("detail_title"),
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 18.sp
                         )
                         Text("${summary.market} · ${summary.sector}", fontSize = 11.sp, color = TextSecondaryLight)
                     }
                 },
-                navigationIcon = { TextButton(onClick = onBack) { Text("< 뒤로") } }
+                navigationIcon = { TextButton(onClick = onBack) { Text("‹ 뒤로") } }
             )
         }
     ) { padding ->
@@ -81,13 +87,14 @@ fun StockDetailScreen(issuerId: String, onBack: () -> Unit) {
             ScrollableTabRow(
                 selectedTabIndex = pagerState.currentPage,
                 edgePadding = 8.dp,
-                modifier = Modifier.fillMaxWidth().testTag("detail_tabs")
+                modifier = Modifier.fillMaxWidth().testTag("detail_tabs"),
+                divider = { HorizontalDivider(color = BorderLight) }
             ) {
                 tabs.forEachIndexed { index, title ->
                     Tab(
                         selected = pagerState.currentPage == index,
                         onClick = { scope.launch { pagerState.animateScrollToPage(index) } },
-                        text = { Text(title, fontSize = 12.sp) }
+                        text = { Text(title, fontSize = 12.sp, fontWeight = if (pagerState.currentPage == index) FontWeight.Bold else FontWeight.Medium) }
                     )
                 }
             }
@@ -115,62 +122,91 @@ private fun DetailSummaryPage(summary: StockSummary, report: CompanyReport) {
     PageColumn("detail_summary_page") {
         Card(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = BlueAccent.copy(alpha = 0.08f)),
-            shape = RoundedCornerShape(12.dp)
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+            border = BorderStroke(1.dp, BorderLight),
+            shape = RoundedCornerShape(16.dp)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.Top
                 ) {
                     Column(modifier = Modifier.weight(1f)) {
-                        Text("실데이터 $availableCount/4", fontWeight = FontWeight.Bold, color = BlueAccent)
+                        Text("데이터 상태", fontSize = 11.sp, color = TextSecondaryLight)
+                        Spacer(modifier = Modifier.height(2.dp))
+                        Text("실데이터 $availableCount/4", fontWeight = FontWeight.Bold, fontSize = 20.sp)
                         Text(
-                            if (summary.isCompositeComplete) "4지표 완성 · 기본 4지표 순위 산출 가능" else "결측 지표는 추정하지 않고 보류",
-                            fontSize = 12.sp,
+                            if (summary.isCompositeComplete) "4지표 완성 · 순위 산출 가능" else "결측 지표는 억지 추정 없이 보류",
+                            fontSize = 11.sp,
                             color = TextSecondaryLight
                         )
                     }
                     StatusBadge(status = summary.status)
                 }
-                Spacer(modifier = Modifier.height(10.dp))
+
+                Spacer(modifier = Modifier.height(14.dp))
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(9.dp)) {
+                    SummaryStat(
+                        label = "기본 4지표 순위",
+                        value = summary.rankOrder?.let { "${it}위" } ?: "보류",
+                        modifier = Modifier.weight(1f)
+                    )
+                    SummaryStat(
+                        label = "종합 상대점수",
+                        value = summary.compositeScore?.let { String.format("%.1f점", it) } ?: "미산출",
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+            }
+        }
+
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(16.dp),
+            border = BorderStroke(1.dp, BorderLight)
+        ) {
+            Column(modifier = Modifier.padding(15.dp)) {
+                Text("한눈에 보기", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(report.oneLineView, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, lineHeight = 21.sp)
+                Spacer(modifier = Modifier.height(7.dp))
+                Text(report.quantSummary, fontSize = 12.sp, lineHeight = 19.sp, color = TextSecondaryLight)
+            }
+        }
+
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(containerColor = SurfaceMuted),
+            border = BorderStroke(1.dp, BorderLight)
+        ) {
+            Column(modifier = Modifier.padding(horizontal = 15.dp, vertical = 11.dp)) {
                 IdentityRow("시장", summary.market)
                 IdentityRow("업종", summary.sector)
                 IdentityRow("상장일", summary.listingDate.ifBlank { "확인 필요" })
-                IdentityRow("재무 스냅샷", StockRepository.quantSnapshotDate())
-                IdentityRow("주가 기준일", StockRepository.priceCutoffDate())
+                IdentityRow("재무 기준", StockRepository.quantSnapshotDate())
+                IdentityRow("주가 기준", StockRepository.priceCutoffDate())
             }
         }
 
-        Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp)) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Column {
-                        Text("기본 4지표 순위", fontSize = 11.sp, color = TextSecondaryLight)
-                        Text(summary.rankOrder?.let { "${it}위" } ?: "보류", fontSize = 22.sp, fontWeight = FontWeight.Bold, color = BlueAccent)
-                    }
-                    Column(horizontalAlignment = Alignment.End) {
-                        Text("4지표 종합 상대점수", fontSize = 11.sp, color = TextSecondaryLight)
-                        Text(
-                            summary.compositeScore?.let { String.format("%.1f점", it) } ?: "미산출",
-                            fontSize = 19.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                }
-                Spacer(modifier = Modifier.height(12.dp))
-                Text(report.oneLineView, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, lineHeight = 21.sp)
-                Spacer(modifier = Modifier.height(6.dp))
-                Text(report.quantSummary, fontSize = 12.sp, lineHeight = 18.sp, color = TextSecondaryLight)
-            }
-        }
+        SwipeHint("← 밀어서 4대 정량지표 보기")
+    }
+}
 
-        SwipeHint("왼쪽으로 밀면 4대 정량지표")
+@Composable
+private fun SummaryStat(label: String, value: String, modifier: Modifier = Modifier) {
+    Surface(
+        modifier = modifier,
+        shape = RoundedCornerShape(12.dp),
+        color = BlueAccentSoft,
+        border = BorderStroke(1.dp, BorderLight)
+    ) {
+        Column(Modifier.padding(horizontal = 12.dp, vertical = 11.dp)) {
+            Text(label, fontSize = 10.sp, color = TextSecondaryLight)
+            Spacer(modifier = Modifier.height(3.dp))
+            Text(value, fontSize = 18.sp, fontWeight = FontWeight.Bold, color = BlueAccent)
+        }
     }
 }
 
@@ -184,7 +220,7 @@ private fun DetailMetricsPage(summary: StockSummary) {
             fontSize = 18.sp
         )
         Text(
-            "원값 + 전체 비교군 상대점수 + 실제 원천과 계산기준을 함께 표시합니다.",
+            "값 → 상대위치 → 해석 → 출처 순서로 바로 읽게 정리했습니다.",
             fontSize = 12.sp,
             color = TextSecondaryLight
         )
@@ -192,7 +228,7 @@ private fun DetailMetricsPage(summary: StockSummary) {
         MetricCard(summary.m02OpMargin)
         MetricCard(summary.m03Per)
         MetricCard(summary.m04Price6m)
-        SwipeHint("왼쪽으로 밀면 정량분석")
+        SwipeHint("← 밀어서 정량분석 보기")
     }
 }
 
@@ -200,12 +236,16 @@ private fun DetailMetricsPage(summary: StockSummary) {
 private fun DetailAnalysisPage(report: CompanyReport) {
     PageColumn("detail_analysis_page") {
         Text("정량 분석", fontWeight = FontWeight.Bold, fontSize = 18.sp)
-        AnalysisCard {
+        AnalysisCard("성장·수익성") {
             InfoSection("사업 성장·수익성", report.businessQuality)
+        }
+        AnalysisCard("밸류에이션") {
             InfoSection("밸류에이션", report.valuationView)
+        }
+        AnalysisCard("가격 흐름") {
             InfoSection("가격 흐름", report.momentumView)
         }
-        SwipeHint("왼쪽으로 밀면 체크포인트·출처")
+        SwipeHint("← 밀어서 체크포인트·출처 보기")
     }
 }
 
@@ -213,7 +253,7 @@ private fun DetailAnalysisPage(report: CompanyReport) {
 private fun DetailCheckSourcePage(report: CompanyReport) {
     PageColumn("detail_source_page") {
         Text("조사 체크포인트", fontWeight = FontWeight.Bold, fontSize = 18.sp)
-        AnalysisCard {
+        AnalysisCard("판단 보조") {
             BulletSection("우호 요인", report.positiveFactors)
             BulletSection("위험·결측", report.riskFactors)
             InfoSection("반대 근거", report.counterArguments)
@@ -222,17 +262,19 @@ private fun DetailCheckSourcePage(report: CompanyReport) {
 
         Card(
             modifier = Modifier.fillMaxWidth().testTag("detail_source_card"),
-            colors = CardDefaults.cardColors(containerColor = BlueAccent.copy(alpha = 0.07f)),
-            shape = RoundedCornerShape(12.dp)
+            colors = CardDefaults.cardColors(containerColor = BlueAccentSoft),
+            shape = RoundedCornerShape(16.dp),
+            border = BorderStroke(1.dp, BorderLight)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text("데이터 한계와 출처", fontWeight = FontWeight.Bold, color = BlueAccent)
-                Spacer(modifier = Modifier.height(5.dp))
+                Spacer(modifier = Modifier.height(6.dp))
                 Text(report.dataLimitations, fontSize = 12.sp, lineHeight = 18.sp)
-                Spacer(modifier = Modifier.height(7.dp))
-                Text("종목: KRX KIND", fontSize = 11.sp, color = TextSecondaryLight)
-                Text("재무: OpenDART ${StockRepository.dartFileName()}", fontSize = 11.sp, color = TextSecondaryLight)
-                Text("가격/EPS: 네이버증권 · 마감 ${StockRepository.priceCutoffDate()}", fontSize = 11.sp, color = TextSecondaryLight)
+                Spacer(modifier = Modifier.height(10.dp))
+                SourceRow("종목", "KRX KIND")
+                SourceRow("재무", "OpenDART")
+                SourceRow("PER·가격", "네이버증권")
+                SourceRow("주가 마감", StockRepository.priceCutoffDate())
             }
         }
     }
@@ -245,32 +287,49 @@ private fun PageColumn(tag: String, content: @Composable ColumnScope.() -> Unit)
             .fillMaxSize()
             .testTag(tag)
             .verticalScroll(rememberScrollState())
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(14.dp),
+            .padding(horizontal = 14.dp, vertical = 14.dp),
+        verticalArrangement = Arrangement.spacedBy(11.dp),
         content = content
     )
 }
 
 @Composable
 private fun SwipeHint(text: String) {
-    Text(text, fontSize = 11.sp, color = TextSecondaryLight, modifier = Modifier.fillMaxWidth())
+    Text(text, fontSize = 11.sp, color = TextTertiaryLight, modifier = Modifier.fillMaxWidth())
 }
 
 @Composable
 private fun IdentityRow(label: String, value: String) {
     Row(
         modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(label, fontSize = 12.sp, color = TextSecondaryLight)
+        Text(label, fontSize = 11.sp, color = TextSecondaryLight)
         Text(value, fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
     }
 }
 
 @Composable
+private fun SourceRow(label: String, value: String) {
+    Row(
+        modifier = Modifier.fillMaxWidth().padding(vertical = 3.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(label, fontSize = 11.sp, color = TextSecondaryLight)
+        Text(value, fontSize = 11.sp, fontWeight = FontWeight.SemiBold)
+    }
+}
+
+@Composable
 private fun MetricCard(metric: MetricValue) {
-    Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp)) {
-        Column(modifier = Modifier.padding(14.dp)) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        border = BorderStroke(1.dp, BorderLight),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+    ) {
+        Column(modifier = Modifier.padding(15.dp)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -278,54 +337,82 @@ private fun MetricCard(metric: MetricValue) {
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(metric.nameKo, fontWeight = FontWeight.Bold, fontSize = 15.sp)
-                    Text(metric.description, fontSize = 12.sp, lineHeight = 18.sp, color = TextSecondaryLight)
+                    Spacer(modifier = Modifier.height(2.dp))
+                    Text(metric.description, fontSize = 11.sp, lineHeight = 17.sp, color = TextSecondaryLight)
                 }
-                Spacer(modifier = Modifier.width(10.dp))
+                Spacer(modifier = Modifier.width(12.dp))
                 Column(horizontalAlignment = Alignment.End) {
                     Text(
                         metric.rawValue?.let {
                             if (metric.id == "M03") String.format("%.2f배", it) else String.format("%.1f%%", it)
                         } ?: "N/A",
                         fontWeight = FontWeight.Bold,
-                        fontSize = 17.sp
+                        fontSize = 20.sp
                     )
-                    Text(
-                        metric.percentileScore?.let { "상대 ${String.format("%.1f", it)}점" } ?: "점수 보류",
-                        fontSize = 11.sp,
-                        color = if (metric.percentileScore != null) BlueAccent else TextSecondaryLight
-                    )
+                    Surface(shape = RoundedCornerShape(999.dp), color = if (metric.percentileScore != null) BlueAccentSoft else SurfaceMuted) {
+                        Text(
+                            metric.percentileScore?.let { "상대 ${String.format("%.1f", it)}점" } ?: "점수 보류",
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
+                            fontSize = 10.sp,
+                            color = if (metric.percentileScore != null) BlueAccent else TextSecondaryLight
+                        )
+                    }
                 }
             }
-            Spacer(modifier = Modifier.height(8.dp))
+
+            Spacer(modifier = Modifier.height(10.dp))
             if (metric.isAvailable) {
-                Text("해석 기준: ${metric.interpretation}", fontSize = 12.sp, lineHeight = 18.sp)
+                Text(metric.interpretation, fontSize = 12.sp, lineHeight = 18.sp)
             } else {
                 Text(metric.reason ?: "검증 가능한 값 없음", fontSize = 12.sp, color = MaterialTheme.colorScheme.error)
             }
-            Spacer(modifier = Modifier.height(6.dp))
-            if (metric.basis.isNotBlank()) Text("계산 기준: ${metric.basis}", fontSize = 10.sp, color = TextSecondaryLight)
-            if (metric.source.isNotBlank()) Text("출처: ${metric.source}", fontSize = 10.sp, color = TextSecondaryLight)
-            if (metric.asOfDate.isNotBlank()) Text("기준일: ${metric.asOfDate}", fontSize = 10.sp, color = TextSecondaryLight)
-            Spacer(modifier = Modifier.height(4.dp))
-            Text("주의: ${metric.caution}", fontSize = 11.sp, lineHeight = 17.sp, color = TextSecondaryLight)
+
+            Spacer(modifier = Modifier.height(9.dp))
+            Surface(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(10.dp),
+                color = SurfaceMuted
+            ) {
+                Column(modifier = Modifier.padding(horizontal = 10.dp, vertical = 8.dp)) {
+                    if (metric.basis.isNotBlank()) MetaLine("계산", metric.basis)
+                    if (metric.source.isNotBlank()) MetaLine("출처", metric.source)
+                    if (metric.asOfDate.isNotBlank()) MetaLine("기준", metric.asOfDate)
+                }
+            }
+
+            Spacer(modifier = Modifier.height(7.dp))
+            Text("주의 · ${metric.caution}", fontSize = 10.sp, lineHeight = 16.sp, color = TextTertiaryLight)
         }
     }
 }
 
 @Composable
-private fun AnalysisCard(content: @Composable ColumnScope.() -> Unit) {
+private fun MetaLine(label: String, value: String) {
+    Row(modifier = Modifier.fillMaxWidth().padding(vertical = 1.dp)) {
+        Text(label, modifier = Modifier.width(36.dp), fontSize = 10.sp, color = TextTertiaryLight)
+        Text(value, modifier = Modifier.weight(1f), fontSize = 10.sp, color = TextSecondaryLight)
+    }
+}
+
+@Composable
+private fun AnalysisCard(title: String, content: @Composable ColumnScope.() -> Unit) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        border = BorderStroke(1.dp, BorderLight)
     ) {
-        Column(modifier = Modifier.padding(16.dp), content = content)
+        Column(modifier = Modifier.padding(15.dp)) {
+            Text(title, fontSize = 11.sp, color = TextTertiaryLight)
+            Spacer(modifier = Modifier.height(7.dp))
+            content()
+        }
     }
 }
 
 @Composable
 private fun InfoSection(title: String, content: String) {
-    Column(modifier = Modifier.padding(bottom = 13.dp)) {
+    Column(modifier = Modifier.padding(bottom = 4.dp)) {
         Text(title, fontWeight = FontWeight.Bold, fontSize = 13.sp, color = BlueAccent)
         Spacer(modifier = Modifier.height(3.dp))
         Text(content, fontSize = 13.sp, lineHeight = 20.sp)
@@ -334,9 +421,9 @@ private fun InfoSection(title: String, content: String) {
 
 @Composable
 private fun BulletSection(title: String, items: List<String>) {
-    Column(modifier = Modifier.padding(bottom = 13.dp)) {
+    Column(modifier = Modifier.padding(bottom = 12.dp)) {
         Text(title, fontWeight = FontWeight.Bold, fontSize = 13.sp, color = BlueAccent)
-        Spacer(modifier = Modifier.height(3.dp))
+        Spacer(modifier = Modifier.height(4.dp))
         items.forEach { item -> Text("• $item", fontSize = 13.sp, lineHeight = 20.sp) }
     }
 }

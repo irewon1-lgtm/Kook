@@ -1,10 +1,19 @@
 #!/usr/bin/env python3
 """KR4 real-data collector v2.
 
-Overrides only the Naver leg of collect_real_quant.py.  Naver's stock price
+Overrides only the Naver leg of collect_real_quant.py. Naver's stock price
 history endpoint caps pageSize at ~60, so six-month history is paged in 60-row
-chunks.  The official OpenDART bulk-financial parser/scoring/output logic remains
+chunks. The official OpenDART bulk-financial parser/scoring/output logic remains
 identical to v1.
+
+M03 trailing PER policy:
+1) Prefer Naver integration's reported ``per`` value when it is a valid positive
+   trailing PER. This is the same public valuation field shown by Naver and does
+   not depend on the price-history endpoint succeeding.
+2) If reported PER is absent, fall back to last completed-session close divided
+   by Naver's actual/non-consensus EPS.
+3) Never use consensus PER/EPS for M03. Loss-making/non-positive EPS stays
+   unavailable when there is no valid reported trailing PER.
 """
 from __future__ import annotations
 
@@ -72,6 +81,10 @@ def _parse_price_bars(code: str, cutoff: date, six_month_target: date) -> tuple[
     return by_date, last_error
 
 
+def _valid_per(value: float | None) -> bool:
+    return value is not None and math.isfinite(value) and value > 0 and value <= 100000
+
+
 def naver_metric_worker(issuer: base.Issuer, cutoff: date, six_month_target: date) -> tuple[str, dict[str, Any]]:
     code = issuer.code
     eps = None
@@ -106,33 +119,38 @@ def naver_metric_worker(issuer: base.Issuer, cutoff: date, six_month_target: dat
     end_date = max(end_dates) if end_dates else None
     end_close = by_date[end_date] if end_date else None
 
-    # M03: actual-earnings PER. Use the last completed-session close + Naver's
-    # non-consensus EPS. Integration's 'lastClosePrice' is a fallback only when
-    # the historical endpoint lacks the cutoff session.
+    # M03: prefer Naver's reported trailing PER. The previous implementation
+    # fetched this field but discarded it, unnecessarily coupling PER coverage
+    # to both EPS and the price-history request.
     m03_raw = None
     m03_reason = None
     m03_basis = ""
-    per_close = end_close
-    per_close_date = end_date
-    if per_close is None and integration_last_close is not None and integration_last_close > 0:
-        per_close = integration_last_close
-        per_close_date = cutoff
-    if eps is not None and eps > 0 and per_close is not None and per_close > 0:
-        m03_raw = per_close / eps
-        if not math.isfinite(m03_raw) or m03_raw <= 0 or m03_raw > 100000:
-            m03_raw = None
-            m03_reason = "NAVER_PER_OUTLIER_GUARD"
-        else:
-            eps_basis = eps_desc if eps_desc else "ACTUAL_EPS"
-            m03_basis = f"{per_close_date.isoformat() if per_close_date else cutoff.isoformat()}_CLOSE/NAVER_EPS_{eps_basis}"
-    elif eps is not None and eps <= 0:
-        m03_reason = "NONPOSITIVE_EPS"
-    elif integration_error:
-        m03_reason = "NAVER_INTEGRATION_ERROR"
-    elif per_close is None:
-        m03_reason = "NAVER_NO_PRICE_AT_CUTOFF"
+    if _valid_per(provider_per):
+        m03_raw = provider_per
+        m03_basis = f"{cutoff.isoformat()}_NAVER_REPORTED_TRAILING_PER"
     else:
-        m03_reason = "NAVER_EPS_MISSING"
+        per_close = end_close
+        per_close_date = end_date
+        if per_close is None and integration_last_close is not None and integration_last_close > 0:
+            per_close = integration_last_close
+            per_close_date = cutoff
+
+        if eps is not None and eps > 0 and per_close is not None and per_close > 0:
+            m03_raw = per_close / eps
+            if not _valid_per(m03_raw):
+                m03_raw = None
+                m03_reason = "NAVER_PER_OUTLIER_GUARD"
+            else:
+                eps_basis = eps_desc if eps_desc else "ACTUAL_EPS"
+                m03_basis = f"{per_close_date.isoformat() if per_close_date else cutoff.isoformat()}_CLOSE/NAVER_EPS_{eps_basis}"
+        elif eps is not None and eps <= 0:
+            m03_reason = "NONPOSITIVE_EPS"
+        elif integration_error:
+            m03_reason = "NAVER_INTEGRATION_ERROR"
+        elif per_close is None:
+            m03_reason = "NAVER_NO_PRICE_AT_CUTOFF"
+        else:
+            m03_reason = "NAVER_EPS_MISSING"
 
     # M04: last trading close on/before the six-month target through the cutoff.
     m04_raw = None
