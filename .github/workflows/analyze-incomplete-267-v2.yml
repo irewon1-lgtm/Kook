@@ -1,0 +1,56 @@
+name: KR4 Incomplete 267 Classification V2
+
+on:
+  push:
+    branches:
+      - fix/incomplete-267-recovery-v1
+    paths:
+      - scripts/classify_incomplete_267.py
+      - .github/workflows/analyze-incomplete-267-v2.yml
+
+permissions:
+  contents: write
+
+jobs:
+  classify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: fix/incomplete-267-recovery-v1
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Classify incomplete issuers
+        run: python scripts/classify_incomplete_267.py
+
+      - name: Verify hard gates
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = json.loads(Path('evidence/incomplete_267_analysis.json').read_text(encoding='utf-8'))
+          assert p['universe_count'] == 2649
+          assert p['complete_count'] == 2382
+          assert p['incomplete_count'] == 267
+          assert p['available_counts'] == {'M01': 2504, 'M02': 2409, 'M03': 2639, 'M04': 2611}
+          assert p['coverage_metadata_matches_records'] is True
+          print('KR4_INCOMPLETE_267_CLASSIFICATION_GATE=PASS')
+          PY
+
+      - name: Commit diagnostic evidence
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add evidence/incomplete_267_analysis.json evidence/incomplete_267_analysis.md
+          if git diff --cached --quiet; then
+            echo 'No diagnostic changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Record KR4 incomplete 267 root-cause classification'
+          git push origin HEAD:fix/incomplete-267-recovery-v1
