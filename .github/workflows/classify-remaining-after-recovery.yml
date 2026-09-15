@@ -5,6 +5,7 @@ on:
     branches:
       - fix/incomplete-267-recovery-v1
     paths:
+      - evidence/real_quant_snapshot.json
       - scripts/classify_remaining_after_recovery.py
       - .github/workflows/classify-remaining-after-recovery.yml
 
@@ -24,16 +25,21 @@ jobs:
           python-version: '3.12'
       - name: Classify current remaining set
         run: python scripts/classify_remaining_after_recovery.py
-      - name: Verify current recovered baseline
+      - name: Verify V4 recovered baseline
         run: |
           python - <<'PY'
           import json
           p=json.load(open('evidence/remaining_after_recovery.json',encoding='utf-8'))
           assert p['universe_count']==2649
-          assert p['complete_count']==2391
-          assert p['incomplete_count']==258
-          assert p['available_counts']=={'M01':2508,'M02':2417,'M03':2639,'M04':2611}
-          print('KR4_POST_RECOVERY_CLASSIFICATION_GATE=PASS')
+          assert p['complete_count']==2392
+          assert p['incomplete_count']==257
+          assert p['available_counts']=={'M01':2508,'M02':2418,'M03':2639,'M04':2611}
+          assert p['issuer_bucket_counts']=={
+              'MIXED_STRUCTURAL_RECOVERABLE':137,
+              'STRUCTURAL_ONLY':116,
+              'RECOVERABLE_ONLY':4,
+          },p['issuer_bucket_counts']
+          print('KR4_POST_V4_CLASSIFICATION_GATE=PASS')
           PY
       - name: Commit evidence
         run: |
@@ -41,6 +47,6 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add evidence/remaining_after_recovery.json
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'Record KR4 remaining incomplete set after recovery'
+          git commit -m 'Record KR4 remaining 257 after V4 recovery'
           git pull --rebase origin fix/incomplete-267-recovery-v1
           git push origin HEAD:fix/incomplete-267-recovery-v1
