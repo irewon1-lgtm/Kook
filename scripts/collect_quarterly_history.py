@@ -34,8 +34,8 @@ import requests
 import collect_real_quant as base
 
 KST = ZoneInfo("Asia/Seoul")
-PERIOD_TO_Q = {"Q1": 1, "HY": 2, "Q3": 3, "FY": 4}
-Q_TO_PERIOD = {v: k for k, v in PERIOD_TO_Q.items()}
+PERIOD_TO_Q = {"Q1": 1, "1Q": 1, "HY": 2, "Q3": 3, "3Q": 3, "FY": 4}
+Q_TO_PERIOD = {1: "Q1", 2: "HY", 3: "Q3", 4: "FY"}
 VISIBLE_QUARTERS = 8
 SUPPORT_QUARTERS = 12
 
@@ -93,7 +93,7 @@ def list_pl_entries(as_of: date) -> list[dict[str, Any]]:
         candidate = {
             "year": year,
             "quarter": quarter,
-            "period": period,
+            "period": Q_TO_PERIOD[quarter],
             "file": fname,
             "index": quarter_index(year, quarter),
         }

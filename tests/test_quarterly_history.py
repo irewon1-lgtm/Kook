@@ -77,14 +77,16 @@ def parsed_for(code="000001", scope="CFS"):
 def test_dart_entry_regex_accepts_q1_and_q3_period_codes():
     html = """
       <script>
-      download_ext002('2025','Q1','PL','2025_Q1_PL.zip');
+      download_ext002('2025','1Q','PL','2025_Q1_PL.zip');
       download_ext002('2025','HY','PL','2025_HY_PL.zip');
-      download_ext002('2025','Q3','PL','2025_Q3_PL.zip');
+      download_ext002('2025','3Q','PL','2025_Q3_PL.zip');
       download_ext002('2025','FY','PL','2025_FY_PL.zip');
       </script>
     """
     rows = base.DART_ENTRY_RE.findall(html)
-    assert [row[1] for row in rows] == ["Q1", "HY", "Q3", "FY"], rows
+    assert [row[1] for row in rows] == ["1Q", "HY", "3Q", "FY"], rows
+    assert qh.PERIOD_TO_Q["1Q"] == 1 and qh.PERIOD_TO_Q["3Q"] == 3
+    assert qh.Q_TO_PERIOD[1] == "Q1" and qh.Q_TO_PERIOD[3] == "Q3"
 
 
 def test_contiguous_quarter_gate_rejects_missing_q1_q3_style_gaps():

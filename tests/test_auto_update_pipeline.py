@@ -100,17 +100,18 @@ def test_price_cutoff_conflict_fails_closed() -> None:
 def test_dart_latest_period_progression_and_future_rejection() -> None:
     entries = [
         ("2025", "FY", "PL", "2025_FY.zip"),
-        ("2026", "Q1", "PL", "2026_Q1.zip"),
+        ("2026", "1Q", "PL", "2026_Q1.zip"),
         ("2026", "HY", "PL", "2026_HY.zip"),
-        ("2027", "Q1", "PL", "future.zip"),
+        ("2027", "1Q", "PL", "future.zip"),
         ("2026", "Q3", "BS", "not_pl.zip"),
     ]
     assert v3._select_latest_dart_entry(entries, date(2026, 9, 15)) == ("2026", "HY", "2026_HY.zip")
-    entries.append(("2026", "Q3", "PL", "2026_Q3.zip"))
+    entries.append(("2026", "3Q", "PL", "2026_Q3.zip"))
     assert v3._select_latest_dart_entry(entries, date(2026, 11, 20)) == ("2026", "Q3", "2026_Q3.zip")
     entries.append(("2026", "FY", "PL", "2026_FY.zip"))
     assert v3._select_latest_dart_entry(entries, date(2026, 12, 31)) == ("2026", "FY", "2026_FY.zip")
     assert v3._select_latest_dart_entry(entries, date(2027, 4, 1)) == ("2027", "Q1", "future.zip")
+    assert v3.DART_PERIOD_CANONICAL["1Q"] == "Q1" and v3.DART_PERIOD_CANONICAL["3Q"] == "Q3"
 
 
 def _make_dart_zip(period_label: str, current: int, prior: int, op: int) -> bytes:
