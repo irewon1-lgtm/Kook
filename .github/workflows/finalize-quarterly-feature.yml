@@ -27,44 +27,50 @@ jobs:
           from pathlib import Path
 
           android = Path('.github/workflows/android-build.yml')
-          text = android.read_text(encoding='utf-8')
-          old = '''          "$APKSIGNER" verify --verbose --print-certs dist/KR4.apk | tee dist/APK_SIGNING_CERT.txt
-          grep -qi "$KR4_SIGNING_CERT_SHA256" <(tr -d ':' < dist/APK_SIGNING_CERT.txt) || true
-          echo "STABLE_RELEASE_APK_PASS bytes=$(stat -c%s dist/KR4.apk)"
-'''
-          new = '''          "$APKSIGNER" verify --verbose --print-certs dist/KR4.apk | tee dist/APK_SIGNING_CERT.txt
-          CERT_SHA=$(grep -i 'Signer #1 certificate SHA-256 digest:' dist/APK_SIGNING_CERT.txt | head -1 | sed 's/.*: //; s/://g' | tr 'A-F' 'a-f')
-          test "$CERT_SHA" = "$KR4_SIGNING_CERT_SHA256"
-          AAPT2=$(find "$ANDROID_HOME/build-tools" -type f -name aapt2 | sort -V | tail -1)
-          test -x "$AAPT2"
-          PACKAGE_ID=$("$AAPT2" dump badging dist/KR4.apk | sed -n "s/package: name='\\([^']*\\)'.*/\\1/p" | head -1)
-          test "$PACKAGE_ID" = "com.krstock.v3.stable"
-          echo "STABLE_RELEASE_APK_PASS package=$PACKAGE_ID cert_sha256=$CERT_SHA bytes=$(stat -c%s dist/KR4.apk)"
-'''
-          if old not in text:
-              raise SystemExit('android release verification block not found')
-          android.write_text(text.replace(old, new), encoding='utf-8')
+          lines = android.read_text(encoding='utf-8').splitlines()
+          marker = '          grep -qi "$KR4_SIGNING_CERT_SHA256" <(tr -d \':\' < dist/APK_SIGNING_CERT.txt) || true'
+          try:
+              i = lines.index(marker)
+          except ValueError:
+              raise SystemExit('android signer marker not found')
+          if i + 1 >= len(lines) or 'STABLE_RELEASE_APK_PASS' not in lines[i + 1]:
+              raise SystemExit('unexpected android release verification layout')
+          replacement = [
+              '          CERT_SHA=$(grep -i \'Signer #1 certificate SHA-256 digest:\' dist/APK_SIGNING_CERT.txt | head -1 | sed \'s/.*: //; s/://g\' | tr \'A-F\' \'a-f\')',
+              '          test "$CERT_SHA" = "$KR4_SIGNING_CERT_SHA256"',
+              '          AAPT2=$(find "$ANDROID_HOME/build-tools" -type f -name aapt2 | sort -V | tail -1)',
+              '          test -x "$AAPT2"',
+              '          PACKAGE_ID=$("$AAPT2" dump badging dist/KR4.apk | sed -n "s/package: name=\'\\([^\']*\\)\'.*/\\1/p" | head -1)',
+              '          test "$PACKAGE_ID" = "com.krstock.v3.stable"',
+              '          echo "STABLE_RELEASE_APK_PASS package=$PACKAGE_ID cert_sha256=$CERT_SHA bytes=$(stat -c%s dist/KR4.apk)"',
+          ]
+          lines[i:i+2] = replacement
+          android.write_text('\n'.join(lines) + '\n', encoding='utf-8')
 
           collect = Path('.github/workflows/collect-real-quant.yml')
-          c = collect.read_text(encoding='utf-8')
-          c = c.replace('--period-workers 3 \\\n', '--period-workers 2 \\\n')
-          old_gate = '''          assert periods==sorted(periods,key=lambda s:(int(s[:4]),int(s[-1]))),periods
-          c=d['coverage']
-'''
-          new_gate = '''          assert periods==sorted(periods,key=lambda s:(int(s[:4]),int(s[-1]))),periods
-          indexes=[int(p[:4])*4+int(p[-1]) for p in periods]
-          assert indexes==list(range(indexes[0],indexes[0]+8)),('NON_CONTIGUOUS_VISIBLE_QUARTERS',periods)
-          proof=d['download_proof']
-          assert len(proof)==12,len(proof)
-          support=[x['period'] for x in proof]
-          support_indexes=[int(p[:4])*4+int(p[-1]) for p in support]
-          assert support_indexes==list(range(support_indexes[0],support_indexes[0]+12)),('NON_CONTIGUOUS_SUPPORT_QUARTERS',support)
-          assert {'Q1','HY','Q3','FY'} <= {x['period_code'] for x in proof},proof
-          c=d['coverage']
-'''
-          if old_gate not in c:
-              raise SystemExit('daily 8Q quality gate block not found')
-          collect.write_text(c.replace(old_gate, new_gate), encoding='utf-8')
+          clines = collect.read_text(encoding='utf-8').splitlines()
+          worker_hits = [j for j, line in enumerate(clines) if '--period-workers 3' in line]
+          if len(worker_hits) != 1:
+              raise SystemExit(f'unexpected period-worker markers: {worker_hits}')
+          clines[worker_hits[0]] = clines[worker_hits[0]].replace('--period-workers 3', '--period-workers 2')
+          gate_marker = "          assert periods==sorted(periods,key=lambda s:(int(s[:4]),int(s[-1]))),periods"
+          try:
+              g = clines.index(gate_marker)
+          except ValueError:
+              raise SystemExit('daily 8Q sorted-period gate not found')
+          guard = [
+              "          indexes=[int(p[:4])*4+int(p[-1]) for p in periods]",
+              "          assert indexes==list(range(indexes[0],indexes[0]+8)),('NON_CONTIGUOUS_VISIBLE_QUARTERS',periods)",
+              "          proof=d['download_proof']",
+              "          assert len(proof)==12,len(proof)",
+              "          support=[x['period'] for x in proof]",
+              "          support_indexes=[int(p[:4])*4+int(p[-1]) for p in support]",
+              "          assert support_indexes==list(range(support_indexes[0],support_indexes[0]+12)),('NON_CONTIGUOUS_SUPPORT_QUARTERS',support)",
+              "          assert {'Q1','HY','Q3','FY'} <= {x['period_code'] for x in proof},proof",
+          ]
+          if 'NON_CONTIGUOUS_VISIBLE_QUARTERS' not in '\n'.join(clines):
+              clines[g+1:g+1] = guard
+          collect.write_text('\n'.join(clines) + '\n', encoding='utf-8')
           PY
 
       - name: Remove temporary bootstrap diagnostics
