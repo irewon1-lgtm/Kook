@@ -1,0 +1,111 @@
+name: Finalize Quarterly Feature
+
+on:
+  push:
+    branches:
+      - "feature/quarterly-history-v1"
+    paths:
+      - ".github/workflows/finalize-quarterly-feature.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/quarterly-history-v1
+          fetch-depth: 0
+
+      - name: Harden release checks and daily 8Q gate
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          android = Path('.github/workflows/android-build.yml')
+          text = android.read_text(encoding='utf-8')
+          old = '''          "$APKSIGNER" verify --verbose --print-certs dist/KR4.apk | tee dist/APK_SIGNING_CERT.txt
+          grep -qi "$KR4_SIGNING_CERT_SHA256" <(tr -d ':' < dist/APK_SIGNING_CERT.txt) || true
+          echo "STABLE_RELEASE_APK_PASS bytes=$(stat -c%s dist/KR4.apk)"
+'''
+          new = '''          "$APKSIGNER" verify --verbose --print-certs dist/KR4.apk | tee dist/APK_SIGNING_CERT.txt
+          CERT_SHA=$(grep -i 'Signer #1 certificate SHA-256 digest:' dist/APK_SIGNING_CERT.txt | head -1 | sed 's/.*: //; s/://g' | tr 'A-F' 'a-f')
+          test "$CERT_SHA" = "$KR4_SIGNING_CERT_SHA256"
+          AAPT2=$(find "$ANDROID_HOME/build-tools" -type f -name aapt2 | sort -V | tail -1)
+          test -x "$AAPT2"
+          PACKAGE_ID=$("$AAPT2" dump badging dist/KR4.apk | sed -n "s/package: name='\\([^']*\\)'.*/\\1/p" | head -1)
+          test "$PACKAGE_ID" = "com.krstock.v3.stable"
+          echo "STABLE_RELEASE_APK_PASS package=$PACKAGE_ID cert_sha256=$CERT_SHA bytes=$(stat -c%s dist/KR4.apk)"
+'''
+          if old not in text:
+              raise SystemExit('android release verification block not found')
+          android.write_text(text.replace(old, new), encoding='utf-8')
+
+          collect = Path('.github/workflows/collect-real-quant.yml')
+          c = collect.read_text(encoding='utf-8')
+          c = c.replace('--period-workers 3 \\\n', '--period-workers 2 \\\n')
+          old_gate = '''          assert periods==sorted(periods,key=lambda s:(int(s[:4]),int(s[-1]))),periods
+          c=d['coverage']
+'''
+          new_gate = '''          assert periods==sorted(periods,key=lambda s:(int(s[:4]),int(s[-1]))),periods
+          indexes=[int(p[:4])*4+int(p[-1]) for p in periods]
+          assert indexes==list(range(indexes[0],indexes[0]+8)),('NON_CONTIGUOUS_VISIBLE_QUARTERS',periods)
+          proof=d['download_proof']
+          assert len(proof)==12,len(proof)
+          support=[x['period'] for x in proof]
+          support_indexes=[int(p[:4])*4+int(p[-1]) for p in support]
+          assert support_indexes==list(range(support_indexes[0],support_indexes[0]+12)),('NON_CONTIGUOUS_SUPPORT_QUARTERS',support)
+          assert {'Q1','HY','Q3','FY'} <= {x['period_code'] for x in proof},proof
+          c=d['coverage']
+'''
+          if old_gate not in c:
+              raise SystemExit('daily 8Q quality gate block not found')
+          collect.write_text(c.replace(old_gate, new_gate), encoding='utf-8')
+          PY
+
+      - name: Remove temporary bootstrap diagnostics
+        run: |
+          set -euo pipefail
+          rm -f \
+            .github/workflows/bootstrap-quarterly-history-feature.yml \
+            .github/workflows/apply-dart-period-code-fix.yml \
+            .github/workflows/probe-dart-bulk-catalog.yml \
+            scripts/probe_dart_bulk_catalog.py \
+            .github/workflows/finalize-quarterly-feature.yml
+
+      - name: Verify final tree invariants
+        run: |
+          set -euo pipefail
+          grep -q 'PERIOD_TO_Q = {"FQ": 1' scripts/collect_quarterly_history.py
+          grep -q '"TQ": 3' scripts/collect_quarterly_history.py
+          grep -q 'ProcessPoolExecutor' scripts/collect_quarterly_history_parallel.py
+          grep -q -- '--period-workers 2' .github/workflows/collect-real-quant.yml
+          grep -q 'NON_CONTIGUOUS_VISIBLE_QUARTERS' .github/workflows/collect-real-quant.yml
+          grep -q 'com.krstock.v3.stable' app/build.gradle.kts
+          grep -q 'test "$PACKAGE_ID" = "com.krstock.v3.stable"' .github/workflows/android-build.yml
+          grep -q 'test "$CERT_SHA" = "$KR4_SIGNING_CERT_SHA256"' .github/workflows/android-build.yml
+          test -s evidence/quarterly_history.json
+          test -s app/src/main/assets/quarterly_history.json
+          python3 - <<'PY'
+          import json
+          d=json.load(open('evidence/quarterly_history.json',encoding='utf-8'))
+          assert d['target_periods']==['2024Q3','2024Q4','2025Q1','2025Q2','2025Q3','2025Q4','2026Q1','2026Q2'],d['target_periods']
+          c=d['coverage']
+          assert c['stocks_with_8q']>=2200,c
+          assert c['stocks_with_8q_margin']>=2000,c
+          print('FINAL_8Q_TREE_GATE_PASS',c)
+          PY
+
+      - name: Commit finalized feature tree
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Finalize stable auto-update and contiguous 8Q pipeline"
+          git pull --rebase origin feature/quarterly-history-v1
+          git push origin HEAD:feature/quarterly-history-v1
