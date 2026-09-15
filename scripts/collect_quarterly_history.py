@@ -34,7 +34,7 @@ import requests
 import collect_real_quant as base
 
 KST = ZoneInfo("Asia/Seoul")
-PERIOD_TO_Q = {"Q1": 1, "1Q": 1, "HY": 2, "Q3": 3, "3Q": 3, "FY": 4}
+PERIOD_TO_Q = {"FQ": 1, "Q1": 1, "1Q": 1, "HY": 2, "TQ": 3, "Q3": 3, "3Q": 3, "FY": 4}
 Q_TO_PERIOD = {1: "Q1", 2: "HY", 3: "Q3", 4: "FY"}
 VISIBLE_QUARTERS = 8
 SUPPORT_QUARTERS = 12

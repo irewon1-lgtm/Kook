@@ -77,15 +77,15 @@ def parsed_for(code="000001", scope="CFS"):
 def test_dart_entry_regex_accepts_q1_and_q3_period_codes():
     html = """
       <script>
-      download_ext002('2025','1Q','PL','2025_Q1_PL.zip');
+      download_ext002('2025','FQ','PL','2025_Q1_PL.zip');
       download_ext002('2025','HY','PL','2025_HY_PL.zip');
-      download_ext002('2025','3Q','PL','2025_Q3_PL.zip');
+      download_ext002('2025','TQ','PL','2025_Q3_PL.zip');
       download_ext002('2025','FY','PL','2025_FY_PL.zip');
       </script>
     """
     rows = base.DART_ENTRY_RE.findall(html)
-    assert [row[1] for row in rows] == ["1Q", "HY", "3Q", "FY"], rows
-    assert qh.PERIOD_TO_Q["1Q"] == 1 and qh.PERIOD_TO_Q["3Q"] == 3
+    assert [row[1] for row in rows] == ["FQ", "HY", "TQ", "FY"], rows
+    assert qh.PERIOD_TO_Q["FQ"] == 1 and qh.PERIOD_TO_Q["TQ"] == 3
     assert qh.Q_TO_PERIOD[1] == "Q1" and qh.Q_TO_PERIOD[3] == "Q3"
 
 
