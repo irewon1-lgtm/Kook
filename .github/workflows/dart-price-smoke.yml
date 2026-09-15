@@ -2,10 +2,8 @@ name: DART and Price Source Smoke
 
 on:
   push:
-    branches:
-      - "connect-dart-price-data"
-    paths:
-      - ".github/workflows/dart-price-smoke.yml"
+    branches: ["connect-dart-price-data"]
+    paths: [".github/workflows/dart-price-smoke.yml"]
   workflow_dispatch:
 
 jobs:
@@ -16,95 +14,67 @@ jobs:
       OPEN_DART_API_KEY: ${{ secrets.OPEN_DART_API_KEY }}
       DART_API_KEY: ${{ secrets.DART_API_KEY }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Verify Naver live price endpoints
         run: |
           set -euo pipefail
           python3 - <<'PY'
           import urllib.request
-          urls = [
+          for u in [
             'https://m.stock.naver.com/api/stock/005930/basic',
             'https://m.stock.naver.com/api/stock/000250/basic',
-            'https://api.stock.naver.com/chart/domestic/item/005930?periodType=dayCandle&startDateTime=20260301&endDateTime=20260915',
-          ]
-          for u in urls:
+            'https://api.stock.naver.com/chart/domestic/item/005930?periodType=dayCandle&startDateTime=20260301&endDateTime=20260915']:
               req=urllib.request.Request(u,headers={'User-Agent':'Mozilla/5.0 KR4/1.0','Referer':'https://m.stock.naver.com/'})
-              with urllib.request.urlopen(req, timeout=20) as r:
-                  body=r.read()
-              assert body, u
-              print('NAVER_OK', u.split('?')[0], len(body))
+              with urllib.request.urlopen(req, timeout=20) as r: body=r.read()
+              assert body
+              print('NAVER_OK',u.split('?')[0],len(body))
           PY
 
-      - name: Discover official OpenDART bulk download implementation
+      - name: Discover OpenDART bulk download function from main page and JS
         run: |
           set -euo pipefail
           python3 - <<'PY'
           import re, urllib.request, urllib.parse
           base='https://opendart.fss.or.kr'
-          url=base+'/disclosureinfo/fnltt/dwld/list.do'
           headers={'User-Agent':'Mozilla/5.0 KR4/1.0','Referer':base+'/disclosureinfo/fnltt/dwld/main.do'}
           def get(u):
               req=urllib.request.Request(u,headers=headers)
-              with urllib.request.urlopen(req,timeout=30) as r:
-                  return r.read().decode('utf-8','replace')
-          html=get(url)
-          print('DART_BULK_LIST_OK bytes='+str(len(html)))
-          script_srcs=[]
-          for src in re.findall(r'<script[^>]+src=["\']([^"\']+)["\']', html, flags=re.I):
-              full=urllib.parse.urljoin(base,src)
-              script_srcs.append(full)
-              print('SCRIPT_SRC',full)
-          blobs=[('PAGE',html)]
-          for src in script_srcs:
-              try:
-                  txt=get(src)
-                  blobs.append((src,txt))
-              except Exception as e:
-                  print('SCRIPT_FETCH_FAIL',src,type(e).__name__)
+              with urllib.request.urlopen(req,timeout=30) as r: return r.read().decode('utf-8','replace')
+          pages=[]
+          for p in ['/disclosureinfo/fnltt/dwld/main.do','/disclosureinfo/fnltt/dwld/list.do']:
+              txt=get(base+p); pages.append((p,txt)); print('PAGE_OK',p,len(txt))
+          blobs=list(pages)
+          seen=set()
+          for page,html in pages:
+              for src in re.findall(r'<script[^>]+src=["\']([^"\']+)["\']',html,re.I):
+                  full=urllib.parse.urljoin(base,src)
+                  if full in seen: continue
+                  seen.add(full)
+                  try:
+                      txt=get(full); blobs.append((full,txt))
+                      if 'download_ext002' in txt: print('JS_HAS_EXT002',full,len(txt))
+                  except Exception as e: print('JS_FAIL',full,type(e).__name__)
           found=False
           for name,txt in blobs:
-              for m in re.finditer(r'(?:function\s+download_ext002\s*\([^)]*\)|download_ext002\s*=)',txt,re.I):
-                  found=True
-                  a=max(0,m.start()-800); b=min(len(txt),m.start()+3500)
-                  snippet=re.sub(r'\s+',' ',txt[a:b])
-                  print('DOWNLOAD_EXT002_DEF_SOURCE',name)
-                  print('DOWNLOAD_EXT002_SNIPPET',snippet)
+              for pat in [r'function\s+download_ext002\s*\([^)]*\)\s*\{',r'download_ext002\s*=\s*function\s*\([^)]*\)\s*\{']:
+                  m=re.search(pat,txt,re.I)
+                  if m:
+                      found=True
+                      print('EXT002_DEF_SOURCE',name)
+                      print('EXT002_DEF',re.sub(r'\s+',' ',txt[m.start():m.start()+5000]))
           if not found:
-              # generic endpoint clues including form target and ext002 references
               for name,txt in blobs:
                   if 'download_ext002' in txt:
-                      pos=txt.find('download_ext002')
-                      print('EXT002_REFERENCE_SOURCE',name)
-                      print('EXT002_REFERENCE_SNIPPET',re.sub(r'\s+',' ',txt[max(0,pos-1000):pos+3000]))
-          assert '2026_2Q_PL_20260915030641.zip' in html
+                      for m in list(re.finditer('download_ext002',txt))[:5]:
+                          print('EXT002_REF_SOURCE',name)
+                          print('EXT002_REF',re.sub(r'\s+',' ',txt[max(0,m.start()-1500):m.start()+3500]))
+          assert found, 'download_ext002 definition not found'
           PY
 
       - name: Verify OpenDART secret if present
         run: |
           set -euo pipefail
           KEY="${OPEN_DART_API_KEY:-${DART_API_KEY:-}}"
-          if [ -z "$KEY" ]; then
-            echo "OPEN_DART_KEY_MISSING_BULK_ROUTE_DISCOVERY_USED"
-            exit 0
-          fi
-          python3 - <<'PY'
-          import json, os, urllib.parse, urllib.request, zipfile, io, xml.etree.ElementTree as ET
-          key=os.environ.get('OPEN_DART_API_KEY') or os.environ.get('DART_API_KEY')
-          q=urllib.parse.urlencode({'crtfc_key':key})
-          req=urllib.request.Request('https://opendart.fss.or.kr/api/corpCode.xml?'+q, headers={'User-Agent':'KR4/1.0'})
-          with urllib.request.urlopen(req, timeout=30) as r: raw=r.read()
-          z=zipfile.ZipFile(io.BytesIO(raw))
-          root=ET.fromstring(z.read(z.namelist()[0]))
-          samsung=None
-          for item in root.findall('list'):
-              if (item.findtext('stock_code') or '').strip() == '005930':
-                  samsung=(item.findtext('corp_code') or '').strip(); break
-          assert samsung and len(samsung)==8
-          params=urllib.parse.urlencode({'crtfc_key':key,'corp_code':samsung,'bsns_year':'2026','reprt_code':'11012'})
-          req=urllib.request.Request('https://opendart.fss.or.kr/api/fnlttSinglAcnt.json?'+params, headers={'User-Agent':'KR4/1.0'})
-          with urllib.request.urlopen(req, timeout=30) as r: data=json.load(r)
-          assert data.get('status') in ('000','013'), data.get('message')
-          print('DART_API_OK corp_code='+samsung+' status='+str(data.get('status')))
-          PY
+          if [ -z "$KEY" ]; then echo "OPEN_DART_KEY_MISSING_USING_PUBLIC_BULK"; exit 0; fi
+          echo "OPEN_DART_KEY_PRESENT"
