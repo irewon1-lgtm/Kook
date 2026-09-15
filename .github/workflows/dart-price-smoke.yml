@@ -12,22 +12,24 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-      - name: Inspect exact Naver integration and price response shapes
+      - name: Verify corrected Naver 60-row pagination
         run: |
           set -euo pipefail
           python3 - <<'PY'
           import json, requests
           s=requests.Session(); s.headers.update({'User-Agent':'Mozilla/5.0 KR4/1.0','Referer':'https://m.stock.naver.com/','Accept':'application/json, text/plain, */*'})
           for code in ['005930','000250']:
-              r=s.get(f'https://m.stock.naver.com/api/stock/{code}/integration',timeout=20); print('INT_STATUS',code,r.status_code); r.raise_for_status(); d=r.json()
-              print('TOTAL_INFOS',code,json.dumps((d.get('totalInfos') or [])[:30],ensure_ascii=False))
-              r=s.get(f'https://m.stock.naver.com/api/stock/{code}/price?pageSize=200&page=1',timeout=20); print('PRICE_STATUS',code,r.status_code); r.raise_for_status(); p=r.json()
-              print('PRICE_TYPE',code,type(p).__name__)
-              if isinstance(p,list): print('PRICE_LIST',code,'len',len(p),'first',p[0] if p else None,'last',p[-1] if p else None)
-              elif isinstance(p,dict):
-                  print('PRICE_KEYS',code,sorted(p.keys()))
-                  for k,v in p.items():
-                      if isinstance(v,list): print('PRICE_NESTED_LIST',code,k,'len',len(v),'first',v[0] if v else None,'last',v[-1] if v else None)
+              r=s.get(f'https://m.stock.naver.com/api/stock/{code}/integration',timeout=20); r.raise_for_status(); d=r.json()
+              infos={x.get('code'):x.get('value') for x in d.get('totalInfos',[]) if isinstance(x,dict)}
+              print('VALUATION',code,'lastClose',infos.get('lastClosePrice'),'eps',infos.get('eps'),'per',infos.get('per'))
+              bars=[]
+              for page in (1,2,3):
+                  r=s.get(f'https://m.stock.naver.com/api/stock/{code}/price?pageSize=60&page={page}',timeout=20)
+                  print('PRICE_STATUS',code,page,r.status_code); r.raise_for_status(); x=r.json(); assert isinstance(x,list)
+                  print('PRICE_PAGE',code,page,'len',len(x),'newest',x[0].get('localTradedAt') if x else None,'oldest',x[-1].get('localTradedAt') if x else None)
+                  bars.extend(x)
+              assert len(bars) >= 120
+              assert any((b.get('localTradedAt') or '') <= '2026-03-14' for b in bars), code
           PY
       - name: Verify official OpenDART public bulk PL is downloadable
         run: |
