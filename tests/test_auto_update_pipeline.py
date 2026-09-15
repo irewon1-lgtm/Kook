@@ -3,7 +3,8 @@
 
 These tests intentionally simulate pre-close runs, weekends/holidays, one failed
 price probe, conflicting probes, future DART periods, Q1/HY/Q3/FY column shapes,
-and runtime-Kotlin generation. No external network is required.
+negative/zero/missing EPS, preferred-share DART joins, and runtime-Kotlin
+generation. No external network is required.
 """
 from __future__ import annotations
 
@@ -114,15 +115,15 @@ def test_dart_latest_period_progression_and_future_rejection() -> None:
     assert v3.DART_PERIOD_CANONICAL["1Q"] == "Q1" and v3.DART_PERIOD_CANONICAL["3Q"] == "Q3"
 
 
-def _make_dart_zip(period_label: str, current: int, prior: int, op: int) -> bytes:
+def _make_dart_zip(period_label: str, current: int, prior: int, op: int, code: str = "005930", company: str = "") -> bytes:
     if period_label == "FY":
         cur_key, prev_key = "당기", "전기"
     else:
         cur_key, prev_key = f"당기 {period_label} 3개월", f"전기 {period_label} 3개월"
-    fields = ["종목코드", "재무제표종류", "항목코드", "항목명", cur_key, prev_key]
+    fields = ["회사명", "종목코드", "재무제표종류", "항목코드", "항목명", cur_key, prev_key]
     rows = [
-        {"종목코드": "005930", "재무제표종류": "연결 손익계산서", "항목코드": "ifrs-full_Revenue", "항목명": "매출액", cur_key: str(current), prev_key: str(prior)},
-        {"종목코드": "005930", "재무제표종류": "연결 손익계산서", "항목코드": "dart_OperatingIncomeLoss", "항목명": "영업이익", cur_key: str(op), prev_key: str(op - 1)},
+        {"회사명": company, "종목코드": code, "재무제표종류": "연결 손익계산서", "항목코드": "ifrs-full_Revenue", "항목명": "매출액", cur_key: str(current), prev_key: str(prior)},
+        {"회사명": company, "종목코드": code, "재무제표종류": "연결 손익계산서", "항목코드": "dart_OperatingIncomeLoss", "항목명": "영업이익", cur_key: str(op), prev_key: str(op - 1)},
     ]
     sio = io.StringIO()
     w = csv.DictWriter(sio, fieldnames=fields, delimiter="\t", lineterminator="\n")
@@ -142,6 +143,131 @@ def test_dynamic_dart_headers_q1_hy_q3_fy() -> None:
         assert round(out["m02_raw"], 6) == 10.0, (period, out)
         assert out["m01_basis"].startswith(f"2026{period}_"), (period, out)
         assert out["m02_basis"].endswith("_CFS"), (period, out)
+
+
+def test_dart_preferred_share_recovers_exact_common_sibling() -> None:
+    common = base.Issuer("005930", "삼성전자", "전기전자", "1975-06-11", "KOSPI")
+    preferred = base.Issuer("005935", "삼성전자우", "전기전자", "1988-06-10", "KOSPI")
+    v3._SELECTED_DART_YEAR = "2026"; v3._SELECTED_DART_PERIOD = "HY"
+    out = v3.parse_dart_metrics_dynamic([common, preferred], _make_dart_zip("반기", 120, 100, 12))
+    assert out["005935"]["m01_raw"] == 20.0, out["005935"]
+    assert out["005935"]["m02_raw"] == 10.0, out["005935"]
+    assert "ALIAS_005930" in out["005935"]["m01_basis"], out["005935"]
+
+
+def test_dart_exact_company_name_recovers_code_mismatch() -> None:
+    issuer = base.Issuer("005930", "삼성전자", "전기전자", "1975-06-11", "KOSPI")
+    v3._SELECTED_DART_YEAR = "2026"; v3._SELECTED_DART_PERIOD = "HY"
+    out = v3.parse_dart_metrics_dynamic(
+        [issuer],
+        _make_dart_zip("반기", 120, 100, 12, code="999999", company="(주) 삼성전자"),
+    )["005930"]
+    assert out["m01_raw"] == 20.0, out
+    assert "ALIAS_NAME_999999" in out["m01_basis"], out
+
+
+def _fake_price_payload() -> list[dict[str, str]]:
+    return [
+        {"localTradedAt": "2026-09-14", "closePrice": "10,000"},
+        {"localTradedAt": "2026-03-13", "closePrice": "10,000"},
+    ]
+
+
+def test_negative_eps_becomes_negative_per_and_available() -> None:
+    original = v2.get_json
+    try:
+        def fake(url: str):
+            if url.endswith("/integration"):
+                return {"totalInfos": [
+                    {"code": "eps", "value": "-500", "valueDesc": "최근실적"},
+                    {"code": "per", "value": "-"},
+                    {"code": "lastClosePrice", "value": "10,000"},
+                ]}
+            if "/price?" in url:
+                return _fake_price_payload()
+            raise AssertionError(url)
+        v2.get_json = fake
+        issuer = base.Issuer("000001", "적자테스트", "서비스", "2020-01-01", "KOSDAQ")
+        _, row = v2.naver_metric_worker(issuer, date(2026, 9, 14), date(2026, 3, 14))
+        assert row["m03_raw"] == -20.0, row
+        assert row["m03_reason"] is None, row
+        assert "NAVER_INTEGRATION_EPS" not in row["m03_basis"] or row["m03_basis"], row
+    finally:
+        v2.get_json = original
+
+
+def test_zero_eps_remains_unavailable() -> None:
+    original = v2.get_json
+    try:
+        def fake(url: str):
+            if url.endswith("/integration"):
+                return {"totalInfos": [
+                    {"code": "eps", "value": "0"},
+                    {"code": "per", "value": "-"},
+                    {"code": "lastClosePrice", "value": "10,000"},
+                ]}
+            if "/price?" in url:
+                return _fake_price_payload()
+            raise AssertionError(url)
+        v2.get_json = fake
+        issuer = base.Issuer("000002", "제로EPS", "서비스", "2020-01-01", "KOSDAQ")
+        _, row = v2.naver_metric_worker(issuer, date(2026, 9, 14), date(2026, 3, 14))
+        assert row["m03_raw"] is None, row
+        assert row["m03_reason"] == "ZERO_EPS", row
+    finally:
+        v2.get_json = original
+
+
+def test_missing_integration_eps_recovers_latest_actual_annual_eps() -> None:
+    original = v2.get_json
+    try:
+        def fake(url: str):
+            if url.endswith("/integration"):
+                return {"totalInfos": [
+                    {"code": "per", "value": "-"},
+                    {"code": "lastClosePrice", "value": "10,000"},
+                ]}
+            if url.endswith("/finance/annual"):
+                return {"financeInfo": {
+                    "trTitleList": [
+                        {"title": "2025.12.", "key": "202512", "isConsensus": "N"},
+                        {"title": "2026.12.", "key": "202612", "isConsensus": "Y"},
+                    ],
+                    "rowList": [
+                        {"title": "EPS(원)", "columns": {
+                            "202512": {"value": "-400"},
+                            "202612": {"value": "800"},
+                        }}
+                    ],
+                }}
+            if "/price?" in url:
+                return _fake_price_payload()
+            raise AssertionError(url)
+        v2.get_json = fake
+        issuer = base.Issuer("000003", "EPS폴백", "서비스", "2020-01-01", "KOSDAQ")
+        _, row = v2.naver_metric_worker(issuer, date(2026, 9, 14), date(2026, 3, 14))
+        assert row["m03_raw"] == -25.0, row
+        assert row["naver_eps"] == -400.0, row
+        assert row["naver_eps_source"] == "NAVER_FINANCE_ANNUAL_EPS", row
+        assert "ANNUAL" in row["m03_basis"], row
+    finally:
+        v2.get_json = original
+
+
+def test_loss_safe_per_scoring_keeps_negative_per_at_bottom_without_dropping_record() -> None:
+    records = {
+        "LOSS00": {"m01_raw": 10.0, "m02_raw": 5.0, "m03_raw": -20.0, "m04_raw": 4.0},
+        "CHEAP0": {"m01_raw": 10.0, "m02_raw": 5.0, "m03_raw": 5.0, "m04_raw": 4.0},
+        "EXPENS": {"m01_raw": 10.0, "m02_raw": 5.0, "m03_raw": 50.0, "m04_raw": 4.0},
+    }
+    for row in records.values():
+        for i in range(1, 5):
+            row[f"m{i:02d}_pct"] = None
+    v2.compute_scores_with_loss_per(records)
+    assert records["LOSS00"]["m03_pct"] == 0.0, records
+    assert records["CHEAP0"]["m03_pct"] > records["EXPENS"]["m03_pct"] > 0.0, records
+    assert records["LOSS00"]["composite"] is not None, records
+    assert records["LOSS00"]["rank"] is not None, records
 
 
 def test_runtime_kotlin_hook_is_generated() -> None:
