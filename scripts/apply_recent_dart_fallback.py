@@ -7,7 +7,8 @@ Policy:
 - Use exactly the immediately preceding fiscal quarter from the validated
   quarterly-history snapshot; never skip back two or more quarters.
 - Never override financial-sector M02 exclusion or any existing numeric value.
-- Recompute percentiles, composite scores and contiguous ranks after recovery.
+- Fail-close economically non-comparable M01/M02 extremes before scoring.
+- Recompute all four percentiles, composite scores and contiguous ranks after recovery.
 - Record explicit HISTORY_1Q_FALLBACK basis and recovery metadata.
 """
 from __future__ import annotations
@@ -23,6 +24,17 @@ from typing import Any
 PERIOD_TO_QUARTER = {"Q1": 1, "HY": 2, "Q3": 3, "FY": 4}
 M01_RECOVERABLE_REASONS = {"DART_NO_REVENUE", "DART_NO_COMPARABLE_PRIOR_REVENUE"}
 M02_RECOVERABLE_REASONS = {"DART_NO_OPERATING_INCOME", "DART_NO_COMPARABLE_OPERATING_MARGIN"}
+
+# Final rankability bounds. These are intentionally wider than the normal live
+# distribution, so ordinary high-growth / early-stage companies stay rankable.
+# Values outside the bounds are never clipped into a percentile: they fail
+# closed to missing and preserve the rejected raw/basis as audit fields.
+M01_MIN = -100.0
+M01_MAX = 5000.0
+M02_MIN = -5000.0
+M02_MAX = 200.0
+M01_GUARD_REASON = "M01_ECONOMIC_OUTLIER_GUARD"
+M02_GUARD_REASON = "M02_ECONOMIC_OUTLIER_GUARD"
 
 
 def parse_args() -> argparse.Namespace:
@@ -49,6 +61,38 @@ def _finite(value: Any) -> float | None:
     except (TypeError, ValueError):
         return None
     return v if math.isfinite(v) else None
+
+
+def _guard_metric(metric: dict[str, Any], low: float, high: float, reason: str) -> bool:
+    raw = metric.get("raw")
+    if raw is None:
+        return False
+    value = _finite(raw)
+    if value is not None and low <= value <= high:
+        return False
+    metric["guarded_raw"] = raw
+    metric["guarded_basis"] = metric.get("basis") or ""
+    metric.update(raw=None, percentile=None, reason=reason, basis="")
+    return True
+
+
+def apply_economic_outlier_guards(records: dict[str, dict[str, Any]]) -> dict[str, list[str]]:
+    """Remove non-comparable M01/M02 extremes before any percentile calculation.
+
+    M01 lower bound follows the economic identity that revenue cannot fall by
+    more than 100% when prior-period revenue is positive. The +5,000% ceiling
+    still allows a 51x YoY revenue jump. M02 is deliberately asymmetric: large
+    early-stage loss margins remain eligible down to -5,000%, while positive
+    OPM above +200% is treated as denominator/base distortion for ranking.
+    """
+    m01_codes: list[str] = []
+    m02_codes: list[str] = []
+    for code, row in records.items():
+        if _guard_metric(row["m01"], M01_MIN, M01_MAX, M01_GUARD_REASON):
+            m01_codes.append(code)
+        if _guard_metric(row["m02"], M02_MIN, M02_MAX, M02_GUARD_REASON):
+            m02_codes.append(code)
+    return {"m01": sorted(m01_codes), "m02": sorted(m02_codes)}
 
 
 def _apply_percentile(records: dict[str, dict[str, Any]], metric_id: str, higher_better: bool) -> None:
@@ -107,6 +151,13 @@ def _apply_loss_safe_per_percentile(records: dict[str, dict[str, Any]]) -> None:
 
 
 def recompute_scores(records: dict[str, dict[str, Any]]) -> dict[str, int]:
+    # Step 4: fail-close M01/M02 economic extremes over the *entire* universe.
+    # This shared scorer is called after every recovery stage, so later fallback
+    # sources cannot re-introduce an outlier that passed an earlier stage.
+    apply_economic_outlier_guards(records)
+
+    # Step 5: full-universe percentile + composite + rank rebuild. Never retain
+    # stale percentile/rank state after a guard or recovery changes membership.
     _apply_percentile(records, "m01", True)
     _apply_percentile(records, "m02", True)
     _apply_loss_safe_per_percentile(records)
@@ -186,23 +237,35 @@ def apply_fallback(quant: dict[str, Any], history: dict[str, Any]) -> tuple[dict
             m02_recovered.append(code)
 
     old_coverage = dict(out.get("coverage") or {})
+    guard_before = {
+        "m01": sorted(code for code, row in out["records"].items() if row["m01"].get("raw") is not None and not (M01_MIN <= float(row["m01"]["raw"]) <= M01_MAX)),
+        "m02": sorted(code for code, row in out["records"].items() if row["m02"].get("raw") is not None and not (M02_MIN <= float(row["m02"]["raw"]) <= M02_MAX)),
+    }
     new_coverage = recompute_scores(out["records"])
     out["coverage"] = new_coverage
     out.setdefault("rules", {})["M01"] = (
         str(out.get("rules", {}).get("M01") or "")
         + "; if the latest DART period is unavailable, use exactly the immediately preceding validated quarter's revenue YoY"
+        + f"; final rankability guard {M01_MIN:g}%..{M01_MAX:g}% with fail-close before full rerank"
     ).lstrip("; ")
     out.setdefault("rules", {})["M02"] = (
         str(out.get("rules", {}).get("M02") or "")
         + "; if the latest DART period is unavailable, use exactly the immediately preceding validated quarter's operating margin (financial-sector exclusion unchanged)"
+        + f"; final rankability guard {M02_MIN:g}%..{M02_MAX:g}% with fail-close before full rerank"
     ).lstrip("; ")
     recovery = {
-        "policy": "one-quarter-back validated OpenDART history only; no multi-quarter skip",
+        "policy": "one-quarter-back validated OpenDART history only; no multi-quarter skip; final economic fail-close + full rerank",
         "source_period": prior,
         "m01_recovered": len(m01_recovered),
         "m02_recovered": len(m02_recovered),
         "m01_codes": m01_recovered,
         "m02_codes": m02_recovered,
+        "economic_guard": {
+            "m01_range": [M01_MIN, M01_MAX],
+            "m02_range": [M02_MIN, M02_MAX],
+            "m01_excluded_codes": guard_before["m01"],
+            "m02_excluded_codes": guard_before["m02"],
+        },
         "coverage_before": old_coverage,
         "coverage_after": new_coverage,
     }
@@ -230,6 +293,10 @@ def validate_snapshot(d: dict[str, Any]) -> None:
             else:
                 actual[f"m0{i}_available"] += 1
                 assert pct is not None and 0 <= pct <= 100 and m.get("basis"), (code, i, m)
+                if i == 1:
+                    assert M01_MIN <= raw <= M01_MAX, (code, m)
+                if i == 2:
+                    assert M02_MIN <= raw <= M02_MAX, (code, m)
                 if i == 3 and raw < 0:
                     assert pct == 0.0, (code, m)
         assert (row.get("composite") is not None) == all_raw, (code, "composite")
@@ -294,6 +361,40 @@ def self_test() -> None:
     assert out["records"]["000003"]["m02"]["reason"] == "FINANCIAL_SECTOR_EXCLUDED"
     assert out["coverage"]["complete_count"] == 2
     validate_snapshot(out)
+
+    guard_records = {
+        "G00001": {
+            "m01": {"raw": 5000.0, "percentile": 1.0, "reason": None, "basis": "M01_OK"},
+            "m02": {"raw": -5000.0, "percentile": 1.0, "reason": None, "basis": "M02_OK"},
+            "m03": {"raw": 10.0, "percentile": 1.0, "reason": None, "basis": "PER"},
+            "m04": {"raw": 1.0, "percentile": 1.0, "reason": None, "basis": "PRICE"},
+            "composite": 1.0, "rank": 1,
+        },
+        "G00002": {
+            "m01": {"raw": 5000.0001, "percentile": 99.0, "reason": None, "basis": "M01_HIGH"},
+            "m02": {"raw": 200.0001, "percentile": 99.0, "reason": None, "basis": "M02_HIGH"},
+            "m03": {"raw": 10.0, "percentile": 1.0, "reason": None, "basis": "PER"},
+            "m04": {"raw": 1.0, "percentile": 1.0, "reason": None, "basis": "PRICE"},
+            "composite": 99.0, "rank": 1,
+        },
+        "G00003": {
+            "m01": {"raw": -100.0001, "percentile": 1.0, "reason": None, "basis": "M01_LOW"},
+            "m02": {"raw": -5000.0001, "percentile": 1.0, "reason": None, "basis": "M02_LOW"},
+            "m03": {"raw": 10.0, "percentile": 1.0, "reason": None, "basis": "PER"},
+            "m04": {"raw": 1.0, "percentile": 1.0, "reason": None, "basis": "PRICE"},
+            "composite": 1.0, "rank": 1,
+        },
+    }
+    gcov = recompute_scores(guard_records)
+    assert gcov["m01_available"] == 1 and gcov["m02_available"] == 1, gcov
+    assert guard_records["G00001"]["m01"]["raw"] == 5000.0
+    assert guard_records["G00001"]["m02"]["raw"] == -5000.0
+    assert guard_records["G00002"]["m01"]["reason"] == M01_GUARD_REASON
+    assert guard_records["G00002"]["m01"]["guarded_raw"] == 5000.0001
+    assert guard_records["G00002"]["m02"]["reason"] == M02_GUARD_REASON
+    assert guard_records["G00003"]["m01"]["reason"] == M01_GUARD_REASON
+    assert guard_records["G00003"]["m02"]["reason"] == M02_GUARD_REASON
+    assert guard_records["G00002"]["composite"] is None and guard_records["G00002"]["rank"] is None
     print("RECENT_DART_FALLBACK_SELF_TEST_PASS", json.dumps(rec, ensure_ascii=False))
 
 
