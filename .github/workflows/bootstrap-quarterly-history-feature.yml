@@ -15,7 +15,7 @@ concurrency:
   group: kr4-quarterly-bootstrap-feature
   cancel-in-progress: true
 
-# Q1/Q3-capable OpenDART parser and contiguous-quarter gate are required before promotion.
+# OpenDART raw 1Q/3Q codes are normalized to Q1/Q3 before continuity validation.
 jobs:
   collect:
     runs-on: ubuntu-latest
