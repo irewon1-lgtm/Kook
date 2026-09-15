@@ -1,0 +1,79 @@
+name: Fiscal Calendar Recovery Shadow
+
+on:
+  push:
+    branches:
+      - fix/fiscal-calendar-aware-dart-v1
+    paths:
+      - "scripts/apply_fiscal_calendar_recovery.py"
+      - ".github/workflows/fiscal-calendar-recovery-shadow.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  shadow-recovery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install requests pandas lxml
+      - name: Self-test fiscal recovery
+        run: python scripts/apply_fiscal_calendar_recovery.py --self-test
+      - name: Apply live recovery to shadow snapshot
+        run: |
+          set -euo pipefail
+          python scripts/apply_fiscal_calendar_recovery.py \
+            --quant evidence/real_quant_snapshot.json \
+            --out /tmp/fiscal_recovered.json
+      - name: Extreme shadow gate
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, math, re
+          before=json.load(open('evidence/real_quant_snapshot.json',encoding='utf-8'))
+          after=json.load(open('/tmp/fiscal_recovered.json',encoding='utf-8'))
+          assert before['universe_count']==after['universe_count']==2649
+          assert set(before['records'])==set(after['records'])
+          rec=after['fiscal_calendar_recovery']
+          assert rec['candidate_count']>=rec['m01_recovered']
+          assert rec['candidate_count']>=rec['m02_recovered']
+          assert not rec['source_errors'],rec['source_errors']
+          b=before['coverage']; a=after['coverage']
+          for k in ('m01_available','m02_available','m03_available','m04_available','complete_count','ranked_count'):
+            assert int(a[k])>=int(b[k]),(k,b[k],a[k])
+          assert a['complete_count']==a['ranked_count']
+          ranks=[]
+          for code,row in after['records'].items():
+            assert re.fullmatch(r'[0-9A-Z]{6}',code)
+            complete=True
+            for i in range(1,5):
+              m=row[f'm0{i}']
+              if m['raw'] is None:
+                complete=False
+                assert m['percentile'] is None and m['reason'],(code,i,m)
+              else:
+                assert math.isfinite(float(m['raw']))
+                assert m['percentile'] is not None and 0<=float(m['percentile'])<=100
+                assert m['basis']
+                if i==3 and float(m['raw'])<0:
+                  assert float(m['percentile'])==0.0,(code,m)
+            assert (row['composite'] is not None)==complete
+            assert (row['rank'] is not None)==complete
+            if row['rank'] is not None:ranks.append(int(row['rank']))
+          assert sorted(ranks)==list(range(1,len(ranks)+1))
+          print('FISCAL_SHADOW_EXTREME_PASS',json.dumps({'before':b,'after':a,'recovery':rec},ensure_ascii=False))
+          PY
+      - name: Upload proof
+        uses: actions/upload-artifact@v4
+        with:
+          name: KR4_Fiscal_Calendar_Recovery_Shadow
+          path: /tmp/fiscal_recovered.json
+          retention-days: 14
