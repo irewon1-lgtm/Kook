@@ -186,14 +186,13 @@ jobs:
           print('POST_REBASE_IDENTITY_GATE_PASS',len(current))
           PY
 
-      - name: Promote staged snapshots atomically in workspace
+      - name: Promote validated remote snapshots only
         run: |
           set -euo pipefail
-          cp /tmp/GeneratedRealQuantSnapshot.kt app/src/main/java/com/krstock/v3/data/generated/GeneratedRealQuantSnapshot.kt
+          # Runtime data refreshes are remote JSON updates, not APK releases.
+          # Bundled Kotlin/asset fallbacks are updated only on deliberate app releases.
           cp /tmp/real_quant_snapshot.json evidence/real_quant_snapshot.json
           cp /tmp/quarterly_history.json evidence/quarterly_history.json
-          mkdir -p app/src/main/assets
-          cp /tmp/quarterly_history.json app/src/main/assets/quarterly_history.json
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -206,21 +205,17 @@ jobs:
         with:
           gradle-version: '8.7'
 
-      - name: Compile and regression-check promoted snapshots
+      - name: Compile and regression-check app against validated remote schema
         run: |
           set -euo pipefail
           gradle :app:testDebugUnitTest :app:assembleDebug --stacktrace
 
-      - name: Commit only after every gate passes
+      - name: Commit remote data only after every gate passes
         run: |
           set -euo pipefail
-          git add \
-            app/src/main/java/com/krstock/v3/data/generated/GeneratedRealQuantSnapshot.kt \
-            evidence/real_quant_snapshot.json \
-            evidence/quarterly_history.json \
-            app/src/main/assets/quarterly_history.json
+          git add evidence/real_quant_snapshot.json evidence/quarterly_history.json
           if git diff --cached --quiet; then
-            echo "No quant/history snapshot change"
+            echo "No quant/history remote snapshot change"
             exit 0
           fi
           git config user.name "github-actions[bot]"
@@ -232,7 +227,7 @@ jobs:
           print(f"{d['snapshot_date_kst']} price={d['price_cutoff_date_kst']} M01={c['m01_available']} M02={c['m02_available']} M03={c['m03_available']} M04={c['m04_available']} complete={c['complete_count']} history4q={hc['stocks_with_4q']} history8q={hc['stocks_with_8q']}")
           PY
           )
-          git commit -m "Auto-refresh KR4 validated snapshot + 8Q history: ${COV}"
+          git commit -m "Auto-refresh KR4 remote quant + 8Q history: ${COV}"
           git pull --rebase origin "${{ github.ref_name }}"
           git push origin HEAD:${{ github.ref_name }}
 
@@ -243,7 +238,5 @@ jobs:
           path: |
             evidence/real_quant_snapshot.json
             evidence/quarterly_history.json
-            app/src/main/assets/quarterly_history.json
-            app/src/main/java/com/krstock/v3/data/generated/GeneratedRealQuantSnapshot.kt
           if-no-files-found: error
           retention-days: 14
