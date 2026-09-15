@@ -1,4 +1,4 @@
-name: KR4 Lite App Data Refresh
+name: KR4 Final Safe Recovery
 
 on:
   push:
@@ -11,15 +11,15 @@ permissions:
   contents: write
 
 concurrency:
-  group: kr4-lite-app-data-refresh
-  cancel-in-progress: false
+  group: kr4-final-safe-recovery
+  cancel-in-progress: true
 
 jobs:
-  refresh:
+  recover:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 8
     steps:
-      - name: Checkout
+      - name: Checkout recovery branch
         uses: actions/checkout@v4
         with:
           ref: refresh/kr4-app-data
@@ -30,125 +30,160 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install only required dependencies
-        run: pip install requests pandas lxml
+      - name: Install required dependency
+        run: pip install requests
 
-      - name: Cheap targeted regressions
+      - name: Freeze current main snapshot
         run: |
           set -euo pipefail
-          python tests/test_m04_corporate_actions.py
-          python tests/test_auto_update_pipeline.py
+          git fetch origin main
+          BASE_SNAPSHOT_SHA=$(git rev-parse origin/main:evidence/real_quant_snapshot.json)
+          echo "BASE_SNAPSHOT_SHA=$BASE_SNAPSHOT_SHA" >> "$GITHUB_ENV"
+          git show origin/main:evidence/real_quant_snapshot.json > /tmp/kr4_baseline.json
+          cp /tmp/kr4_baseline.json /tmp/real_quant_snapshot.json
 
-      - name: Preserve baseline
-        run: cp evidence/real_quant_snapshot.json /tmp/kr4_baseline.json
-
-      - name: Collect only four-metric app snapshot
+      - name: Targeted recovery regressions
         run: |
           set -euo pipefail
-          python scripts/collect_real_quant_v3.py \
-            --as-of auto \
-            --price-cutoff auto \
-            --workers 14 \
-            --kotlin-out /tmp/GeneratedRealQuantSnapshot.kt \
-            --evidence-out /tmp/real_quant_snapshot.json
+          python scripts/apply_recent_dart_fallback.py --self-test
+          python scripts/apply_standard_actual_recovery.py --self-test
 
-      - name: Apply existing M01 M02 recovery chain without recollecting 8Q history
+      - name: Recover safe residual cells only
         run: |
           set -euo pipefail
-          python scripts/apply_recent_dart_fallback.py \
-            --quant /tmp/real_quant_snapshot.json \
-            --history evidence/quarterly_history.json \
-            --out /tmp/real_quant_snapshot.json
-          python scripts/apply_fiscal_calendar_recovery.py \
-            --quant /tmp/real_quant_snapshot.json \
-            --out /tmp/real_quant_snapshot.json \
-            --kind-retries 3
           python scripts/apply_standard_actual_recovery.py \
             --quant /tmp/real_quant_snapshot.json \
             --out /tmp/real_quant_snapshot.json
 
-      - name: Four-metric quality and corporate-action gate
+      - name: Strict final data gate
         run: |
           set -euo pipefail
           python - <<'PY'
           import json, math, re
           from collections import Counter
-          from datetime import date
 
-          new=json.load(open('/tmp/real_quant_snapshot.json',encoding='utf-8'))
           old=json.load(open('/tmp/kr4_baseline.json',encoding='utf-8'))
-          n=new['universe_count']
-          assert n==old['universe_count']==len(new['records'])==2649
-          assert new.get('auto_update',{}).get('collector')=='collect_real_quant_v3.py'
-          snap=date.fromisoformat(new['snapshot_date_kst'])
-          price=date.fromisoformat(new['price_cutoff_date_kst'])
-          assert price<=snap and (snap-price).days<=10
-          c=new['coverage']; b=old['coverage']
-          floors={
-            'm01_available':max(int(n*0.88),int(b['m01_available'])-55),
-            'm02_available':max(int(n*0.84),int(b['m02_available'])-55),
-            'm03_available':max(int(n*0.58),int(b['m03_available'])-80),
-            'm04_available':max(int(n*0.96),int(b['m04_available'])-30),
-            'complete_count':max(int(n*0.50),int(b['complete_count'])-100),
-          }
-          for k,f in floors.items(): assert int(c[k])>=f,(k,c[k],f)
+          new=json.load(open('/tmp/real_quant_snapshot.json',encoding='utf-8'))
+          assert old['universe_count']==new['universe_count']==2649
+          assert set(old['records'])==set(new['records'])
+          assert old['snapshot_date_kst']==new['snapshot_date_kst']=='2026-09-16'
+          assert old['price_cutoff_date_kst']==new['price_cutoff_date_kst']=='2026-09-15'
+
+          expected_liq={'006380','008290','046070','082660'}
+          recovery=new.get('standard_actual_recovery') or {}
+          got_liq=set(recovery.get('m04_liquidation_codes') or [])
+          assert int(recovery.get('m04_liquidation_recovered') or 0)==4,recovery
+          assert got_liq==expected_liq,(got_liq,expected_liq)
+
+          m03_reasons=Counter()
+          m04_reasons=Counter()
+          ranks=[]
+          changed_existing_m01=[]
+          changed_existing_m02=[]
+          changed_existing_m04=[]
+          for code,row in new['records'].items():
+            assert re.fullmatch(r'[0-9A-Z]{6}',code),code
+            oldrow=old['records'][code]
+
+            # M03 is intentionally immutable: unsafe/mathematically undefined PER stays excluded.
+            assert row['m03'].get('raw')==oldrow['m03'].get('raw'),(code,'m03 raw changed')
+            assert row['m03'].get('reason')==oldrow['m03'].get('reason'),(code,'m03 reason changed')
+            assert row['m03'].get('basis')==oldrow['m03'].get('basis'),(code,'m03 basis changed')
+
+            # Existing M01/M04 numbers may never be overwritten by this recovery.
+            if oldrow['m01'].get('raw') is not None and row['m01'].get('raw')!=oldrow['m01'].get('raw'):
+              changed_existing_m01.append(code)
+            if oldrow['m04'].get('raw') is not None and row['m04'].get('raw')!=oldrow['m04'].get('raw'):
+              changed_existing_m04.append(code)
+            # M02 may only change when upgrading this exact prior STANDARD_RECOVERY source.
+            if oldrow['m02'].get('raw') is not None and row['m02'].get('raw')!=oldrow['m02'].get('raw'):
+              assert 'STANDARD_RECOVERY' in str(oldrow['m02'].get('basis') or ''),(code,oldrow['m02'])
+              assert 'STANDARD_RECOVERY' in str(row['m02'].get('basis') or ''),(code,row['m02'])
+              changed_existing_m02.append(code)
+
+            for i in range(1,5):
+              m=row[f'm0{i}']; raw=m.get('raw'); pct=m.get('percentile')
+              if raw is None:
+                assert pct is None and m.get('reason'),(code,i,m)
+              else:
+                v=float(raw)
+                assert math.isfinite(v) and pct is not None and 0<=float(pct)<=100 and m.get('basis'),(code,i,m)
+                if i==1: assert -100.0<=v<=5000.0,(code,m)
+                if i==2: assert -5000.0<=v<=200.0,(code,m)
+                if i==3 and v<0: assert float(pct)==0.0,(code,m)
+
+            if row['m03'].get('raw') is None:
+              m03_reasons[str(row['m03'].get('reason'))]+=1
+            if row['m04'].get('raw') is None:
+              m04_reasons[str(row['m04'].get('reason'))]+=1
+
+            complete=all(row[f'm0{i}'].get('raw') is not None for i in range(1,5))
+            assert (row.get('composite') is not None)==complete,(code,'composite')
+            assert (row.get('rank') is not None)==complete,(code,'rank')
+            if row.get('rank') is not None:
+              ranks.append(int(row['rank']))
+
+          assert not changed_existing_m01,changed_existing_m01
+          assert not changed_existing_m04,changed_existing_m04
+          assert sorted(ranks)==list(range(1,len(ranks)+1))
+
+          # Proven unsafe/undefined PER tail remains deliberately excluded.
+          assert new['coverage']['m03_available']==2638,new['coverage']
+          assert m03_reasons==Counter({
+            'NAVER_EPS_MISSING':9,
+            'ZERO_EPS':1,
+            'CORPORATE_ACTION_PER_XCHECK_PER_MISMATCH':1,
+          }),m03_reasons
+
+          # The four verified liquidation-trading gaps must be recovered; only <6m history gaps remain.
+          assert new['coverage']['m04_available']==2611,new['coverage']
+          assert m04_reasons==Counter({'PRICE_HISTORY_SHORTER_THAN_6M':38}),m04_reasons
+
+          b=old['coverage']; c=new['coverage']
+          assert c['m01_available']>=b['m01_available'],(b,c)
+          assert c['m02_available']>=b['m02_available'],(b,c)
+          assert c['m03_available']==b['m03_available'],(b,c)
+          assert c['m04_available']==b['m04_available']+4,(b,c)
+          assert c['complete_count']>=b['complete_count'],(b,c)
           assert c['ranked_count']==c['complete_count']
 
-          ranks=[]; evt_stocks=0; evt_dates=Counter(); m03_ca_reasons=Counter()
-          for code,r in new['records'].items():
-            assert re.fullmatch(r'[0-9A-Z]{6}',code)
-            ms=[r[f'm0{i}'] for i in range(1,5)]
-            for m in ms:
-              raw,pct,reason,basis=m['raw'],m['percentile'],m['reason'],m['basis']
-              if raw is None: assert pct is None and reason,(code,m)
-              else: assert math.isfinite(float(raw)) and pct is not None and 0<=float(pct)<=100 and basis,(code,m)
-            complete=all(m['raw'] is not None for m in ms)
-            assert (r['composite'] is not None)==complete
-            assert (r['rank'] is not None)==complete
-            if r['rank'] is not None: ranks.append(int(r['rank']))
-            basis=str(r['m04'].get('basis') or '')
-            dates=re.findall(r'_EVT(20\d{6}):',basis)
-            if dates:
-              evt_stocks += 1
-              evt_dates.update(dates)
-            reason=str(r['m03'].get('reason') or '')
-            if reason.startswith('CORPORATE_ACTION_PER_XCHECK_'):
-              m03_ca_reasons[reason]+=1
-          assert sorted(ranks)==list(range(1,len(ranks)+1))
-          top_date,top_count=(evt_dates.most_common(1)[0] if evt_dates else ('NONE',0))
-          assert top_count < 200,(top_date,top_count)
           summary={
             'snapshot':new['snapshot_date_kst'],
             'price':new['price_cutoff_date_kst'],
-            'coverage':c,
-            'corporate_action_stocks':evt_stocks,
-            'top_event_date':top_date,
-            'top_event_date_count':top_count,
-            'm03_ca_block_reasons':dict(m03_ca_reasons),
+            'coverage_before':b,
+            'coverage_after':c,
+            'm01_recovered':recovery.get('m01_recovered',0),
+            'm02_recovered':recovery.get('m02_recovered',0),
+            'm02_upgraded':len(changed_existing_m02),
+            'm04_recovered_codes':sorted(got_liq),
+            'm03_excluded_reasons':dict(m03_reasons),
+            'm04_remaining_reasons':dict(m04_reasons),
           }
-          json.dump(summary,open('/tmp/kr4_lite_summary.json','w',encoding='utf-8'),ensure_ascii=False,indent=2)
-          print('KR4_LITE_GATE_PASS',json.dumps(summary,ensure_ascii=False))
+          json.dump(summary,open('/tmp/kr4_final_summary.json','w',encoding='utf-8'),ensure_ascii=False,indent=2)
+          print('KR4_FINAL_SAFE_GATE_PASS',json.dumps(summary,ensure_ascii=False))
           PY
 
-      - name: Publish JSON only to main without downstream Actions
+      - name: Publish validated JSON to current main
         run: |
           set -euo pipefail
+          git fetch origin main
+          CURRENT_SNAPSHOT_SHA=$(git rev-parse origin/main:evidence/real_quant_snapshot.json)
+          test "$CURRENT_SNAPSHOT_SHA" = "$BASE_SNAPSHOT_SHA"
           SUMMARY=$(python - <<'PY'
           import json
-          s=json.load(open('/tmp/kr4_lite_summary.json',encoding='utf-8'))
-          c=s['coverage']
-          print(f"{s['snapshot']} price={s['price']} M03={c['m03_available']} M04={c['m04_available']} complete={c['complete_count']} CA={s['corporate_action_stocks']} topCA={s['top_event_date_count']}")
+          s=json.load(open('/tmp/kr4_final_summary.json',encoding='utf-8'))
+          c=s['coverage_after']
+          print(f"M01={c['m01_available']} M02={c['m02_available']} M03={c['m03_available']} M04={c['m04_available']} complete={c['complete_count']} M04REC={len(s['m04_recovered_codes'])}")
           PY
           )
-          git fetch origin main
           git checkout -B kr4-publish origin/main
           cp /tmp/real_quant_snapshot.json evidence/real_quant_snapshot.json
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add evidence/real_quant_snapshot.json
           if git diff --cached --quiet; then
-            echo "No app snapshot change"
+            echo "No validated snapshot change"
             exit 0
           fi
-          git commit -m "[skip actions] Refresh KR4 app data: ${SUMMARY}"
+          git commit -m "[skip actions] Finalize KR4 safe recovery: ${SUMMARY}"
           git push origin HEAD:main
