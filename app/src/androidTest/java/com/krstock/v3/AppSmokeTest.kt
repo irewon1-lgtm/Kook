@@ -81,10 +81,12 @@ class AppSmokeTest {
         composeRule.onNodeWithTag("stock_search").performTextInput("삼천당제약")
         closeSoftKeyboard()
         composeRule.waitForIdle()
-        composeRule.onNodeWithTag("stock_000250").performScrollTo().assertIsDisplayed()
-        composeRule.onNodeWithTag("comparison_000250").assertIsDisplayed()
+        // Bring the lazy item into composition first, then scroll its lower comparison region
+        // into the actual viewport. The visual card is intentionally taller than the list viewport.
+        composeRule.onNodeWithTag("stock_000250").performScrollTo()
+        composeRule.onNodeWithTag("comparison_000250").performScrollTo().assertIsDisplayed()
         composeRule.onNodeWithText("한눈 비교").assertIsDisplayed()
-        composeRule.onNodeWithTag("stock_000250").performClick()
+        composeRule.onNodeWithTag("stock_000250").performScrollTo().performClick()
         composeRule.waitForIdle()
 
         composeRule.onNodeWithTag("detail_title").assertIsDisplayed()
