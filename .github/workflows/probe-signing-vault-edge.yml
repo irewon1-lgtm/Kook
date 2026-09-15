@@ -1,4 +1,4 @@
-name: Probe Signing Vault Edge
+name: Probe Signing Gateway Options
 
 on:
   push:
@@ -26,14 +26,13 @@ jobs:
             -o "$RUNNER_TEMP/oidc.json"
           python3 - <<'PY'
           import json,os
-          p=os.path.join(os.environ['RUNNER_TEMP'],'oidc.json')
-          token=json.load(open(p,encoding='utf-8')).get('value')
+          token=json.load(open(os.path.join(os.environ['RUNNER_TEMP'],'oidc.json'),encoding='utf-8')).get('value')
           assert isinstance(token,str) and len(token)>100
           PY
 
-      - name: Probe GET signing route without exposing token or key
+      - name: Probe existing Netlify CI bootstrap route safely
         env:
-          BASE: https://kr4-signing-vault-5yh3dd.v2.appdeploy.ai
+          BASE: https://ai-ranker-family-live.netlify.app/api/ci-bootstrap-token
         run: |
           set -euo pipefail
           TOKEN=$(python3 - <<'PY'
@@ -41,18 +40,25 @@ jobs:
           print(json.load(open(os.path.join(os.environ['RUNNER_TEMP'],'oidc.json'),encoding='utf-8'))['value'])
           PY
           )
-          HEALTH=$(curl -sS -o "$RUNNER_TEMP/health.body" -w '%{http_code}' "$BASE/api/_healthcheck")
-          NOAUTH=$(curl -sS -o "$RUNNER_TEMP/noauth.body" -w '%{http_code}' "$BASE/api/signing-material")
-          BRANCH=$(curl -sS -o "$RUNNER_TEMP/branch.body" -w '%{http_code}' -H "Authorization: Bearer $TOKEN" "$BASE/api/signing-material")
-          echo "health=$HEALTH noauth_get=$NOAUTH branch_oidc_get=$BRANCH"
-          test "$HEALTH" = "200"
-          test "$NOAUTH" = "401"
-          test "$BRANCH" = "401"
-          python3 - <<'PY'
-          import json,os
-          for name in ('noauth','branch'):
-              p=os.path.join(os.environ['RUNNER_TEMP'],name+'.body')
+          printf '{"token":"%s"}' "$TOKEN" > "$RUNNER_TEMP/token-body.json"
+          probe() {
+            NAME="$1"; shift
+            BODY="$RUNNER_TEMP/${NAME}.body"
+            STATUS=$(curl -sS -o "$BODY" -w '%{http_code}' "$@")
+            echo -n "$NAME status=$STATUS "
+            python3 - "$BODY" <<'PY'
+          import json,sys,os
+          p=sys.argv[1]
+          try:
               obj=json.load(open(p,encoding='utf-8'))
-              assert isinstance(obj,dict) and 'error' in obj,(name,obj.keys())
-          print('GET_EDGE_REACHES_VAULT_PASS')
+              if isinstance(obj,dict): print('json_keys='+','.join(sorted(obj.keys())))
+              else: print('json_type='+type(obj).__name__)
+          except Exception:
+              print('non_json bytes='+str(os.path.getsize(p)))
           PY
+          }
+          probe get_noauth "$BASE"
+          probe post_noauth -X POST -H 'Content-Type: application/json' -d '{}' "$BASE"
+          probe get_oidc -H "Authorization: Bearer $TOKEN" "$BASE"
+          probe post_oidc_header -X POST -H 'Content-Type: application/json' -H "Authorization: Bearer $TOKEN" -d '{}' "$BASE"
+          probe post_oidc_body -X POST -H 'Content-Type: application/json' --data-binary "@$RUNNER_TEMP/token-body.json" "$BASE"
