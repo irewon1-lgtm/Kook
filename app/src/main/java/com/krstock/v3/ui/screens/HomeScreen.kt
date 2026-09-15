@@ -14,7 +14,6 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.krstock.v3.data.model.DataStatus
 import com.krstock.v3.data.model.StockSummary
 import com.krstock.v3.data.repository.StockRepository
 import com.krstock.v3.ui.components.StatusBadge
@@ -28,25 +27,20 @@ fun HomeScreen(
     onNavigateToList: () -> Unit
 ) {
     val stocks = remember { StockRepository.getAllStocks() }
-    val completeCount = stocks.count { it.isCompositeComplete }
-    val demoCount = stocks.count { it.status == DataStatus.DEMO }
-    val topStocks = stocks.filter { it.rankOrder != null }.take(8)
+    val previewStocks = remember(stocks) {
+        val preferred = listOf("005930", "000660", "035420", "005380", "105560")
+        (preferred.mapNotNull { code -> stocks.find { it.issuerId == code } } + stocks.take(8))
+            .distinctBy { it.issuerId }
+            .take(8)
+    }
 
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
                     Column {
-                        Text(
-                            "KR4 국내주식 연구",
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 19.sp
-                        )
-                        Text(
-                            "4지표 후보 선별 · 장기 조사 우선순위",
-                            fontSize = 11.sp,
-                            color = TextSecondaryLight
-                        )
+                        Text("KR4 국내주식", fontWeight = FontWeight.Bold, fontSize = 19.sp)
+                        Text("KOSPI 실종목 등록 단계", fontSize = 11.sp, color = TextSecondaryLight)
                     }
                 }
             )
@@ -65,73 +59,39 @@ fun HomeScreen(
                 Spacer(modifier = Modifier.height(2.dp))
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.errorContainer
-                    ),
+                    colors = CardDefaults.cardColors(containerColor = BlueAccent.copy(alpha = 0.09f)),
                     shape = RoundedCornerShape(14.dp)
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
-                        Text(
-                            "DEMO 데이터 모드",
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onErrorContainer
-                        )
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(
-                            "현재 APK는 실시간 OpenDART/KRX 제공자가 연결되지 않았습니다. 내장 숫자는 화면·계산·예외처리 검증용이며 실제 투자판단에 사용하면 안 됩니다.",
-                            fontSize = 13.sp,
-                            lineHeight = 19.sp,
-                            color = MaterialTheme.colorScheme.onErrorContainer
-                        )
-                    }
-                }
-            }
-
-            item {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(containerColor = BlueAccent.copy(alpha = 0.08f)),
-                    shape = RoundedCornerShape(14.dp)
-                ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Text(
-                            text = "조사할 가치가 높은 종목을 먼저 찾는 앱",
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 16.sp,
-                            color = BlueAccent
-                        )
+                        Text("KOSPI 실종목 등록 완료", fontWeight = FontWeight.Bold, fontSize = 17.sp, color = BlueAccent)
                         Spacer(modifier = Modifier.height(6.dp))
                         Text(
-                            text = "매출 증가율 · 영업이익률 · 실적 기준 PER · 최근 6개월 주가 상승률을 각각 25%로 평가합니다. 단기 급등 예측이 아니라 수개월~1·2년 관점에서 더 조사할 후보를 좁히는 목적입니다.",
+                            "KRX KIND 유가증권시장 상장법인 목록을 기준으로 종목명 · 종목코드 · 업종 · 상장일을 등록합니다. KOSDAQ은 이번 단계에서 포함하지 않습니다.",
                             fontSize = 13.sp,
-                            lineHeight = 20.sp,
-                            color = MaterialTheme.colorScheme.onSurface
+                            lineHeight = 19.sp
                         )
                         Spacer(modifier = Modifier.height(12.dp))
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            SummaryPill("등록", "${stocks.size}개", Modifier.weight(1f))
-                            SummaryPill("4지표 완성", "${completeCount}개", Modifier.weight(1f))
-                            SummaryPill("DEMO", "${demoCount}개", Modifier.weight(1f))
+                            SummaryPill("KOSPI 등록", "${stocks.size}개", Modifier.weight(1f))
+                            SummaryPill("KOSDAQ", "0개", Modifier.weight(1f))
+                            SummaryPill("4지표 완성", "0개", Modifier.weight(1f))
                         }
                     }
                 }
             }
 
             item {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(14.dp)
-                ) {
+                Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(14.dp)) {
                     Column(modifier = Modifier.padding(16.dp)) {
-                        Text("4지표를 이렇게 읽으면 됩니다", fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                        Text("현재 단계에서 한 것", fontWeight = FontWeight.Bold, fontSize = 15.sp)
                         Spacer(modifier = Modifier.height(8.dp))
-                        MetricGuideRow("① 매출 증가율", "회사가 실제로 커지는가", "높을수록 유리")
-                        MetricGuideRow("② 영업이익률", "본업에서 이익을 남기는가", "높을수록 유리")
-                        MetricGuideRow("③ 실적 PER", "버는 돈 대비 주가가 비싼가", "동종업계 대비 낮을수록 유리")
-                        MetricGuideRow("④ 6개월 상승률", "시장 흐름이 뒷받침되는가", "과열 여부와 함께 확인")
+                        RegistrationRow("실제 상장 종목", "KRX KIND 기준 등록")
+                        RegistrationRow("종목 식별정보", "코드 · 회사명 · 업종 · 상장일")
+                        RegistrationRow("4개 정량지표", "아직 미수집 · 가짜값 입력 안 함")
+                        RegistrationRow("순위", "지표 연결 전이므로 아직 미산출")
                     }
                 }
             }
@@ -143,16 +103,14 @@ fun HomeScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Column {
-                        Text("상위 조사 후보", fontWeight = FontWeight.Bold, fontSize = 17.sp)
-                        Text("완성된 4지표 점수 기준 자동 정렬", fontSize = 11.sp, color = TextSecondaryLight)
+                        Text("등록 종목 미리보기", fontWeight = FontWeight.Bold, fontSize = 17.sp)
+                        Text("REGISTERED = 실종목 확인 · 지표 수집 전", fontSize = 11.sp, color = TextSecondaryLight)
                     }
-                    TextButton(onClick = onNavigateToList) {
-                        Text("전체보기 >")
-                    }
+                    TextButton(onClick = onNavigateToList) { Text("전체보기 >") }
                 }
             }
 
-            items(topStocks, key = { it.issuerId }) { stock ->
+            items(previewStocks, key = { it.issuerId }) { stock ->
                 StockSummaryCard(stock = stock, onClick = { onStockClick(stock.issuerId) })
             }
 
@@ -162,8 +120,16 @@ fun HomeScreen(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp)
                 ) {
-                    Text("전체 종목 검색 · 필터 · 결측 확인")
+                    Text("KOSPI 전체 실종목 검색")
                 }
+            }
+
+            item {
+                Text(
+                    "마스터 기준일: ${StockRepository.masterSnapshotDate()} · 출처: KRX KIND",
+                    fontSize = 10.sp,
+                    color = TextSecondaryLight
+                )
             }
         }
     }
@@ -171,11 +137,7 @@ fun HomeScreen(
 
 @Composable
 private fun SummaryPill(label: String, value: String, modifier: Modifier = Modifier) {
-    Surface(
-        modifier = modifier,
-        shape = RoundedCornerShape(10.dp),
-        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)
-    ) {
+    Surface(modifier = modifier, shape = RoundedCornerShape(10.dp), color = MaterialTheme.colorScheme.surface) {
         Column(
             modifier = Modifier.padding(vertical = 9.dp, horizontal = 8.dp),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -187,27 +149,20 @@ private fun SummaryPill(label: String, value: String, modifier: Modifier = Modif
 }
 
 @Composable
-private fun MetricGuideRow(title: String, meaning: String, direction: String) {
+private fun RegistrationRow(title: String, value: String) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 5.dp),
+        modifier = Modifier.fillMaxWidth().padding(vertical = 5.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Column(modifier = Modifier.weight(1f)) {
-            Text(title, fontWeight = FontWeight.SemiBold, fontSize = 13.sp)
-            Text(meaning, fontSize = 12.sp, color = TextSecondaryLight)
-        }
-        Text(direction, fontSize = 11.sp, color = BlueAccent)
+        Text(title, fontWeight = FontWeight.SemiBold, fontSize = 13.sp)
+        Text(value, fontSize = 11.sp, color = TextSecondaryLight)
     }
 }
 
 @Composable
 fun StockSummaryCard(stock: StockSummary, onClick: () -> Unit) {
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onClick() },
+        modifier = Modifier.fillMaxWidth().clickable { onClick() },
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
         shape = RoundedCornerShape(12.dp)
     ) {
@@ -219,62 +174,28 @@ fun StockSummaryCard(stock: StockSummary, onClick: () -> Unit) {
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        if (stock.rankOrder != null) {
-                            Surface(
-                                shape = RoundedCornerShape(7.dp),
-                                color = BlueAccent.copy(alpha = 0.12f)
-                            ) {
-                                Text(
-                                    "${stock.rankOrder}위",
-                                    modifier = Modifier.padding(horizontal = 7.dp, vertical = 3.dp),
-                                    color = BlueAccent,
-                                    fontSize = 11.sp,
-                                    fontWeight = FontWeight.Bold
-                                )
-                            }
-                            Spacer(modifier = Modifier.width(7.dp))
-                        }
                         Text(stock.name, fontWeight = FontWeight.Bold, fontSize = 16.sp)
                         Spacer(modifier = Modifier.width(6.dp))
                         Text(stock.issuerId, fontSize = 11.sp, color = TextSecondaryLight)
                     }
                     Spacer(modifier = Modifier.height(3.dp))
-                    Text("${stock.market} · ${stock.sector}", fontSize = 11.sp, color = TextSecondaryLight)
+                    Text("KOSPI · ${stock.sector}", fontSize = 11.sp, color = TextSecondaryLight)
+                    if (stock.listingDate.isNotBlank()) {
+                        Text("상장일 ${stock.listingDate}", fontSize = 10.sp, color = TextSecondaryLight)
+                    }
                 }
                 StatusBadge(status = stock.status)
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                CompactMetric("매출", stock.m01RevGrowth.rawValue?.let { "${it}%" } ?: "N/A")
-                CompactMetric("마진", stock.m02OpMargin.rawValue?.let { "${it}%" } ?: "N/A")
-                CompactMetric("PER", stock.m03Per.rawValue?.let { "${it}배" } ?: "N/A")
-                CompactMetric("6개월", stock.m04Price6m.rawValue?.let { "${it}%" } ?: "N/A")
-            }
-
             HorizontalDivider(modifier = Modifier.padding(vertical = 10.dp))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = if (stock.isCompositeComplete) "4지표 종합 상대점수" else "결측치로 종합점수 보류",
-                    fontSize = 12.sp,
-                    color = TextSecondaryLight
-                )
-                Text(
-                    text = stock.compositeScore?.let { String.format("%.1f점", it) } ?: "미산출",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp,
-                    color = if (stock.compositeScore != null) BlueAccent else MaterialTheme.colorScheme.error
-                )
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                CompactMetric("매출증가", "미수집")
+                CompactMetric("영업마진", "미수집")
+                CompactMetric("PER", "미수집")
+                CompactMetric("6개월", "미수집")
             }
+            Spacer(modifier = Modifier.height(8.dp))
+            Text("실종목 등록 완료 · 정량지표 연결 전", fontSize = 11.sp, color = TextSecondaryLight)
         }
     }
 }
@@ -283,6 +204,6 @@ fun StockSummaryCard(stock: StockSummary, onClick: () -> Unit) {
 private fun CompactMetric(label: String, value: String) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(label, fontSize = 10.sp, color = TextSecondaryLight)
-        Text(value, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
+        Text(value, fontSize = 11.sp, fontWeight = FontWeight.SemiBold)
     }
 }

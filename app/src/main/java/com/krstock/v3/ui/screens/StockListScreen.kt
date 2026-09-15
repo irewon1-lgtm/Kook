@@ -16,12 +16,10 @@ import com.krstock.v3.data.repository.StockRepository
 import com.krstock.v3.ui.theme.TextSecondaryLight
 
 private enum class SortMode(val label: String) {
-    RANK("종합순위"),
-    NAME("이름"),
-    GROWTH("매출성장"),
-    MARGIN("영업이익률"),
-    PER("PER 상대점수"),
-    MOMENTUM("6개월 상승률")
+    CODE("종목코드"),
+    NAME("회사명"),
+    SECTOR("업종"),
+    LISTING("상장일")
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -31,17 +29,11 @@ fun StockListScreen(
     onBack: () -> Unit
 ) {
     var searchQuery by remember { mutableStateOf("") }
-    var selectedMarket by remember { mutableStateOf("전체") }
-    var completeOnly by remember { mutableStateOf(false) }
-    var sortMode by remember { mutableStateOf(SortMode.RANK) }
+    var sortMode by remember { mutableStateOf(SortMode.CODE) }
 
-    val filteredStocks = remember(searchQuery, selectedMarket, completeOnly, sortMode) {
+    val filteredStocks = remember(searchQuery, sortMode) {
         StockRepository.searchStocks(searchQuery)
-            .asSequence()
-            .filter { selectedMarket == "전체" || it.market == selectedMarket }
-            .filter { !completeOnly || it.isCompositeComplete }
             .sortedWith(sortComparator(sortMode))
-            .toList()
     }
 
     Scaffold(
@@ -49,71 +41,42 @@ fun StockListScreen(
             TopAppBar(
                 title = {
                     Column {
-                        Text("국내주식 후보 목록", fontWeight = FontWeight.Bold)
-                        Text("검색 · 시장 · 결측 · 정렬", fontSize = 11.sp, color = TextSecondaryLight)
+                        Text("KOSPI 실종목 목록", fontWeight = FontWeight.Bold)
+                        Text("KRX KIND 등록 마스터", fontSize = 11.sp, color = TextSecondaryLight)
                     }
                 },
                 navigationIcon = {
-                    TextButton(onClick = onBack) {
-                        Text("< 뒤로")
-                    }
+                    TextButton(onClick = onBack) { Text("< 뒤로") }
                 }
             )
         }
     ) { padding ->
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .padding(horizontal = 16.dp)
+            modifier = Modifier.fillMaxSize().padding(padding).padding(horizontal = 16.dp)
         ) {
             OutlinedTextField(
                 value = searchQuery,
                 onValueChange = { searchQuery = it },
                 modifier = Modifier.fillMaxWidth(),
-                placeholder = { Text("종목명 · 코드 · 업종 검색") },
+                placeholder = { Text("회사명 · 종목코드 · 업종 검색") },
                 singleLine = true,
                 supportingText = {
-                    Text("현재 ${filteredStocks.size}개 표시 · 내장 데이터는 DEMO", fontSize = 10.sp)
+                    Text(
+                        "${filteredStocks.size}개 표시 · KOSPI만 등록 · 4지표는 아직 미수집",
+                        fontSize = 10.sp
+                    )
                 }
             )
 
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .horizontalScroll(rememberScrollState()),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                listOf("전체", "KOSPI", "KOSDAQ").forEach { market ->
-                    FilterChip(
-                        selected = selectedMarket == market,
-                        onClick = { selectedMarket = market },
-                        label = { Text(market) }
-                    )
-                }
-                FilterChip(
-                    selected = completeOnly,
-                    onClick = { completeOnly = !completeOnly },
-                    label = { Text("4지표 완성만") }
-                )
-            }
-
-            Spacer(modifier = Modifier.height(6.dp))
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .horizontalScroll(rememberScrollState()),
+                modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 SortMode.entries.forEach { mode ->
                     AssistChip(
                         onClick = { sortMode = mode },
                         label = {
-                            Text(
-                                if (sortMode == mode) "✓ ${mode.label}" else mode.label,
-                                fontSize = 11.sp
-                            )
+                            Text(if (sortMode == mode) "✓ ${mode.label}" else mode.label, fontSize = 11.sp)
                         }
                     )
                 }
@@ -127,7 +90,7 @@ fun StockListScreen(
                         Text("검색 결과가 없습니다.", fontWeight = FontWeight.Bold)
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
-                            "검색어·시장 필터·4지표 완성 조건을 바꿔보세요. 없는 종목을 다른 종목으로 대신 보여주지 않습니다.",
+                            "등록된 KOSPI 회사명·종목코드·업종을 기준으로 검색합니다. 없는 종목을 다른 종목으로 대신 표시하지 않습니다.",
                             fontSize = 12.sp,
                             color = TextSecondaryLight
                         )
@@ -147,19 +110,11 @@ fun StockListScreen(
     }
 }
 
-private fun sortComparator(mode: SortMode): Comparator<StockSummary> {
-    return when (mode) {
-        SortMode.RANK -> compareBy<StockSummary> { it.rankOrder == null }
-            .thenBy { it.rankOrder ?: Int.MAX_VALUE }
-            .thenBy { it.issuerId }
-        SortMode.NAME -> compareBy { it.name }
-        SortMode.GROWTH -> compareByDescending<StockSummary> { it.m01RevGrowth.rawValue ?: Double.NEGATIVE_INFINITY }
-            .thenBy { it.issuerId }
-        SortMode.MARGIN -> compareByDescending<StockSummary> { it.m02OpMargin.rawValue ?: Double.NEGATIVE_INFINITY }
-            .thenBy { it.issuerId }
-        SortMode.PER -> compareByDescending<StockSummary> { it.m03Per.percentileScore ?: Double.NEGATIVE_INFINITY }
-            .thenBy { it.issuerId }
-        SortMode.MOMENTUM -> compareByDescending<StockSummary> { it.m04Price6m.rawValue ?: Double.NEGATIVE_INFINITY }
-            .thenBy { it.issuerId }
-    }
+private fun sortComparator(mode: SortMode): Comparator<StockSummary> = when (mode) {
+    SortMode.CODE -> compareBy { it.issuerId }
+    SortMode.NAME -> compareBy<StockSummary> { it.name }.thenBy { it.issuerId }
+    SortMode.SECTOR -> compareBy<StockSummary> { it.sector }.thenBy { it.name }
+    SortMode.LISTING -> compareBy<StockSummary> { it.listingDate.isBlank() }
+        .thenBy { it.listingDate }
+        .thenBy { it.issuerId }
 }

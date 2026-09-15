@@ -1,10 +1,9 @@
-name: KR4 Extreme CleanPass Android CI
+name: KR4 KOSPI Registration CleanPass
 
 on:
   push:
     branches:
-      - "kr4-extreme-cleanpass-v2"
-      - "kr4-emulator-smoke"
+      - "register-real-kospi-master"
       - "main"
   pull_request:
     branches:
@@ -18,6 +17,17 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+
+      - name: Validate committed official KOSPI master
+        run: |
+          set -euo pipefail
+          test -s evidence/kospi_master_snapshot.json
+          test -s app/src/main/java/com/krstock/v3/data/generated/GeneratedKospiMaster.kt
+          python3 -c "import json,re; d=json.load(open('evidence/kospi_master_snapshot.json',encoding='utf-8')); assert d['market']=='KOSPI'; assert 700<=d['issuer_count']<=1200; assert d['issuer_count']==d['unique_issue_codes']; assert d['six_character_krx_codes'] is True; print('KOSPI_SNAPSHOT_OK',d['issuer_count'],d['snapshot_date_kst'],d['sha256_normalized_master'])"
+          grep -q 'const val issuerCount: Int = 832' app/src/main/java/com/krstock/v3/data/generated/GeneratedKospiMaster.kt
+          grep -q 'KospiIssuer(code = "005930", name = "삼성전자"' app/src/main/java/com/krstock/v3/data/generated/GeneratedKospiMaster.kt
+          grep -q 'KospiIssuer(code = "000660", name = "SK하이닉스"' app/src/main/java/com/krstock/v3/data/generated/GeneratedKospiMaster.kt
+          grep -q 'KospiIssuer(code = "0220W0", name = "한화머시너리앤서비스홀딩스"' app/src/main/java/com/krstock/v3/data/generated/GeneratedKospiMaster.kt
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -69,29 +79,31 @@ jobs:
           test -f "$APK"
           test -s "$APK"
           mkdir -p dist evidence/ci
-          cp "$APK" dist/KR4_Extreme_CleanPass_v3.1.0_debug.apk
+          cp "$APK" dist/KR4_KOSPI_832_Registered_debug.apk
           sha256sum "$APK" | tee evidence/ci/APK_SHA256.txt
           stat --printf='APK_BYTES=%s\n' "$APK" | tee evidence/ci/APK_SIZE.txt
 
       - name: Guard against fake success
         run: |
           set -euo pipefail
-          test -s dist/KR4_Extreme_CleanPass_v3.1.0_debug.apk
+          test -s dist/KR4_KOSPI_832_Registered_debug.apk
           test -s evidence/ci/APK_SHA256.txt
           test -s evidence/ci/APK_SIZE.txt
-          grep -q "KR4" app/src/main/java/com/krstock/v3/ui/screens/HomeScreen.kt
-          grep -q "DEMO" app/src/main/java/com/krstock/v3/data/repository/StockRepository.kt
+          grep -q 'DataStatus.REGISTERED' app/src/main/java/com/krstock/v3/data/repository/StockRepository.kt
+          grep -q '4지표 실데이터는 아직 미수집' app/src/main/java/com/krstock/v3/data/repository/StockRepository.kt
           ! grep -R "news.example.com" app/src/main || exit 1
           ! grep -R "mockStocks.first" app/src/main || exit 1
+          ! grep -R 'market = "KOSDAQ"' app/src/main/java/com/krstock/v3/data/repository || exit 1
 
       - name: Upload verified APK and evidence
         uses: actions/upload-artifact@v4
         with:
-          name: KR4_Extreme_CleanPass_APK
+          name: KR4_KOSPI_832_Registered_APK
           path: |
-            dist/KR4_Extreme_CleanPass_v3.1.0_debug.apk
+            dist/KR4_KOSPI_832_Registered_debug.apk
             evidence/ci/APK_SHA256.txt
             evidence/ci/APK_SIZE.txt
+            evidence/kospi_master_snapshot.json
             app/build/reports/tests/testDebugUnitTest/
             app/build/reports/androidTests/
             app/build/outputs/androidTest-results/

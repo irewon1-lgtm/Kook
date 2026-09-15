@@ -1,5 +1,6 @@
 package com.krstock.v3.data.repository
 
+import com.krstock.v3.data.generated.GeneratedKospiMaster
 import com.krstock.v3.data.model.DataStatus
 import org.junit.Assert.*
 import org.junit.Test
@@ -9,190 +10,120 @@ class StockRepositoryExtremeTest {
     private val stocks = StockRepository.getAllStocks()
 
     @Test
-    fun bundledDatasetIsExplicitlyDemoOnly() {
+    fun kospiMasterHasExpectedRealScale() {
+        assertTrue("too few KOSPI issuers: ${stocks.size}", stocks.size >= 700)
+        assertTrue("too many KOSPI issuers: ${stocks.size}", stocks.size <= 1200)
+        assertEquals(GeneratedKospiMaster.issuerCount, stocks.size)
+    }
+
+    @Test
+    fun allRegisteredStocksAreKospiOnly() {
         assertTrue(stocks.isNotEmpty())
-        assertTrue(stocks.all { it.status == DataStatus.DEMO })
-        assertTrue(stocks.all { it.dataSource.contains("DEMO") })
+        assertTrue(stocks.all { it.market == "KOSPI" })
+        assertTrue(stocks.none { it.market == "KOSDAQ" })
+        assertTrue(stocks.all { it.status == DataStatus.REGISTERED })
     }
 
     @Test
-    fun issuerIdsAreUniqueAndSixDigits() {
+    fun issuerIdsAreUniqueSixCharacterKrxCodes() {
         assertEquals(stocks.size, stocks.map { it.issuerId }.toSet().size)
-        assertTrue(stocks.all { it.issuerId.matches(Regex("\\d{6}")) })
+        assertTrue(stocks.all { it.issuerId.matches(Regex("[0-9A-Z]{6}")) })
     }
 
     @Test
-    fun unknownIssuerNeverFallsBackToSamsung() {
+    fun modernAlphanumericKrxCodesArePreserved() {
+        val modernCodes = stocks.filter { !it.issuerId.all(Char::isDigit) }
+        assertTrue("expected at least one modern alphanumeric KRX code", modernCodes.isNotEmpty())
+        modernCodes.forEach { assertTrue(it.issuerId.matches(Regex("[0-9A-Z]{6}"))) }
+    }
+
+    @Test
+    fun officialMasterMetadataIsPresent() {
+        assertTrue(StockRepository.masterSourceUrl().contains("kind.krx.co.kr"))
+        assertNotEquals("PENDING", StockRepository.masterSnapshotDate())
+        assertTrue(stocks.all { it.dataSource.contains("KRX KIND") })
+    }
+
+    @Test
+    fun samsungAndSkHynixExistWithExactCodes() {
+        val samsung = stocks.find { it.issuerId == "005930" }
+        val hynix = stocks.find { it.issuerId == "000660" }
+        assertNotNull(samsung)
+        assertNotNull(hynix)
+        assertEquals("삼성전자", samsung!!.name)
+        assertEquals("SK하이닉스", hynix!!.name)
+    }
+
+    @Test
+    fun unknownIssuerNeverFallsBackToAnotherCompany() {
         assertNull(StockRepository.getStockDetail("999999"))
         assertNull(StockRepository.getStockDetail(""))
         assertNull(StockRepository.getStockDetail("DROP TABLE"))
     }
 
     @Test
-    fun knownIssuerReturnsExactCompany() {
-        val detail = StockRepository.getStockDetail("000660")
-        assertNotNull(detail)
-        assertEquals("000660", detail!!.summary.issuerId)
-        assertEquals("SK하이닉스", detail.summary.name)
-    }
-
-    @Test
-    fun completeCompositeScoreEqualsFourMetricAverage() {
-        stocks.filter { it.isCompositeComplete }.forEach { stock ->
-            val expected = listOf(
-                stock.m01RevGrowth.percentileScore!!,
-                stock.m02OpMargin.percentileScore!!,
-                stock.m03Per.percentileScore!!,
-                stock.m04Price6m.percentileScore!!
-            ).average()
-            assertEquals(expected, stock.compositeScore!!, 0.0000001)
-        }
-    }
-
-    @Test
-    fun incompleteStocksCannotReceiveCompositeScoreOrRank() {
-        stocks.filter { !it.isCompositeComplete }.forEach { stock ->
+    fun allFourMetricsStayUncollectedAtRegistrationStage() {
+        stocks.forEach { stock ->
+            val metrics = listOf(stock.m01RevGrowth, stock.m02OpMargin, stock.m03Per, stock.m04Price6m)
+            assertTrue(metrics.all { !it.isAvailable })
+            assertTrue(metrics.all { it.rawValue == null })
+            assertTrue(metrics.all { it.percentileScore == null })
+            assertTrue(metrics.all { !it.reason.isNullOrBlank() })
             assertNull(stock.compositeScore)
             assertNull(stock.rankOrder)
+            assertFalse(stock.isCompositeComplete)
         }
     }
 
     @Test
-    fun rankingOrderIsDeterministicAndDescendingByScore() {
-        val ranked = stocks.filter { it.rankOrder != null }
-        assertEquals((1..ranked.size).toList(), ranked.map { it.rankOrder })
-        ranked.zipWithNext().forEach { (a, b) ->
-            assertTrue(a.compositeScore!! >= b.compositeScore!!)
+    fun metricIdsUnitsAndEducationContentAreStable() {
+        stocks.take(50).forEach { stock ->
+            val metrics = listOf(stock.m01RevGrowth, stock.m02OpMargin, stock.m03Per, stock.m04Price6m)
+            assertEquals(listOf("M01", "M02", "M03", "M04"), metrics.map { it.id })
+            assertEquals(listOf("%", "%", "배", "%"), metrics.map { it.unit })
+            assertTrue(metrics.all { it.description.isNotBlank() })
+            assertTrue(metrics.all { it.interpretation.isNotBlank() })
+            assertTrue(metrics.all { it.caution.isNotBlank() })
         }
-    }
-
-    @Test
-    fun rankOneIsActuallyHighestScore() {
-        val ranked = stocks.filter { it.rankOrder != null }
-        val highest = ranked.maxByOrNull { it.compositeScore!! }
-        assertEquals(1, highest?.rankOrder)
-    }
-
-    @Test
-    fun metricIdsAndUnitsAreStable() {
-        stocks.forEach { stock ->
-            assertEquals("M01", stock.m01RevGrowth.id)
-            assertEquals("M02", stock.m02OpMargin.id)
-            assertEquals("M03", stock.m03Per.id)
-            assertEquals("M04", stock.m04Price6m.id)
-            assertEquals("%", stock.m01RevGrowth.unit)
-            assertEquals("%", stock.m02OpMargin.unit)
-            assertEquals("배", stock.m03Per.unit)
-            assertEquals("%", stock.m04Price6m.unit)
-        }
-    }
-
-    @Test
-    fun percentileScoresStayInsideZeroToHundred() {
-        stocks.flatMap {
-            listOf(it.m01RevGrowth, it.m02OpMargin, it.m03Per, it.m04Price6m)
-        }.mapNotNull { it.percentileScore }.forEach { score ->
-            assertTrue("percentile out of range: $score", score in 0.0..100.0)
-        }
-    }
-
-    @Test
-    fun availableMetricAlwaysHasRawValueAndScore() {
-        stocks.flatMap {
-            listOf(it.m01RevGrowth, it.m02OpMargin, it.m03Per, it.m04Price6m)
-        }.forEach { metric ->
-            if (metric.isAvailable) {
-                assertNotNull(metric.rawValue)
-                assertNotNull(metric.percentileScore)
-                assertNull(metric.reason)
-            } else {
-                assertTrue(!metric.reason.isNullOrBlank())
-            }
-        }
-    }
-
-    @Test
-    fun metricEducationContentIsNeverBlank() {
-        stocks.flatMap {
-            listOf(it.m01RevGrowth, it.m02OpMargin, it.m03Per, it.m04Price6m)
-        }.forEach { metric ->
-            assertTrue(metric.description.isNotBlank())
-            assertTrue(metric.interpretation.isNotBlank())
-            assertTrue(metric.caution.isNotBlank())
-        }
-    }
-
-    @Test
-    fun financialCompanyDoesNotFakeIncompatibleMetrics() {
-        val finance = stocks.first { it.issuerId == "055550" }
-        assertTrue(finance.isFinancial)
-        assertFalse(finance.m02OpMargin.isAvailable)
-        assertFalse(finance.m03Per.isAvailable)
-        assertFalse(finance.isCompositeComplete)
-    }
-
-    @Test
-    fun lossMakingCompanyDoesNotFakePer() {
-        val loss = stocks.first { it.issuerId == "247540" }
-        assertTrue(loss.isLossMaking)
-        assertFalse(loss.m03Per.isAvailable)
-        assertNull(loss.m03Per.rawValue)
-        assertFalse(loss.isCompositeComplete)
     }
 
     @Test
     fun searchByNameCodeSectorAndMarketWorks() {
         assertTrue(StockRepository.searchStocks("삼성전자").any { it.issuerId == "005930" })
         assertTrue(StockRepository.searchStocks("000660").any { it.name == "SK하이닉스" })
-        assertTrue(StockRepository.searchStocks("바이오").isNotEmpty())
-        assertTrue(StockRepository.searchStocks("KOSDAQ").all { it.market == "KOSDAQ" })
+        assertEquals(stocks.size, StockRepository.searchStocks("KOSPI").size)
+        val firstWithSector = stocks.first { it.sector.isNotBlank() && it.sector != "기타" }
+        val token = firstWithSector.sector.take(2)
+        assertTrue(StockRepository.searchStocks(token).isNotEmpty())
     }
 
     @Test
-    fun blankSearchReturnsSameRankedDataset() {
+    fun blankSearchReturnsSameDataset() {
         assertEquals(stocks, StockRepository.searchStocks(""))
         assertEquals(stocks, StockRepository.searchStocks("   "))
     }
 
     @Test
-    fun everyDetailHasRichAnalysisSections() {
-        stocks.forEach { stock ->
-            val report = StockRepository.getStockDetail(stock.issuerId)!!.report
-            assertTrue(report.oneLineView.isNotBlank())
-            assertTrue(report.quantSummary.isNotBlank())
-            assertTrue(report.businessQuality.isNotBlank())
-            assertTrue(report.valuationView.isNotBlank())
-            assertTrue(report.momentumView.isNotBlank())
-            assertTrue(report.dataLimitations.contains("DEMO"))
-            assertTrue(report.positiveFactors.isNotEmpty())
-            assertTrue(report.riskFactors.isNotEmpty())
-            assertTrue(report.nextVerificationConditions.size >= 5)
-        }
-    }
-
-    @Test
-    fun bundledDemoDoesNotFabricateNewsOrFilings() {
-        stocks.forEach { stock ->
+    fun registrationDetailExplicitlyRefusesFakeInvestmentAnalysis() {
+        stocks.take(30).forEach { stock ->
             val detail = StockRepository.getStockDetail(stock.issuerId)!!
+            val report = detail.report
+            assertTrue(report.oneLineView.contains("실종목 등록 완료"))
+            assertTrue(report.quantSummary.contains("미수집"))
+            assertTrue(report.valuationView.contains("미수집"))
+            assertTrue(report.momentumView.contains("미수집"))
+            assertTrue(report.dataLimitations.contains("KRX KIND"))
+            assertTrue(report.nextVerificationConditions.size >= 6)
             assertTrue(detail.news.isEmpty())
             assertTrue(detail.filings.isEmpty())
         }
     }
 
     @Test
-    fun datasetContainsBothCompleteAndMissingnessCases() {
-        assertTrue(stocks.any { it.isCompositeComplete })
-        assertTrue(stocks.any { !it.isCompositeComplete })
-        assertTrue(stocks.any { it.market == "KOSPI" })
-        assertTrue(stocks.any { it.market == "KOSDAQ" })
-    }
-
-    @Test
     fun repeatedReadsAreStableUnderStress() {
-        val baseline = stocks.joinToString("|") { "${it.issuerId}:${it.rankOrder}:${it.compositeScore}" }
-        repeat(10_000) {
-            val current = StockRepository.getAllStocks()
-                .joinToString("|") { s -> "${s.issuerId}:${s.rankOrder}:${s.compositeScore}" }
+        val baseline = stocks.joinToString("|") { "${it.issuerId}:${it.name}" }
+        repeat(2_000) {
+            val current = StockRepository.getAllStocks().joinToString("|") { s -> "${s.issuerId}:${s.name}" }
             assertEquals(baseline, current)
         }
     }

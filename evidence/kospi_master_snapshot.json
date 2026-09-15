@@ -1,0 +1,100 @@
+{
+  "scope": "KOSPI listed-company registration master only; no financial metrics or prices",
+  "source": "KRX KIND 상장법인목록",
+  "source_url": "https://kind.krx.co.kr/corpgeneral/corpList.do?method=download&searchType=13&marketType=stockMkt",
+  "market": "KOSPI",
+  "snapshot_date_kst": "2026-09-15",
+  "source_row_count": 847,
+  "issuer_count": 832,
+  "unique_issue_codes": 832,
+  "duplicate_exact_source_codes_deduplicated": [
+    "000480",
+    "000850",
+    "000890",
+    "002880",
+    "002990",
+    "015760",
+    "026940",
+    "037710",
+    "051600",
+    "058730",
+    "069730",
+    "073240",
+    "145210",
+    "439260",
+    "462520"
+  ],
+  "six_character_krx_codes": true,
+  "alphanumeric_issue_code_count": 4,
+  "alphanumeric_issue_code_samples": [
+    "0030R0",
+    "0120G0",
+    "0126Z0",
+    "0220W0"
+  ],
+  "sha256_normalized_master": "1f53f7973a05fc559111b23b961033c472cb0168d18732da235805f593a2882b",
+  "sample_first_5": [
+    {
+      "code": "000020",
+      "name": "동화약품",
+      "sector": "의약품 제조업",
+      "listingDate": "1976-03-24"
+    },
+    {
+      "code": "000040",
+      "name": "KR모터스",
+      "sector": "그외 기타 운송장비 제조업",
+      "listingDate": "1976-05-25"
+    },
+    {
+      "code": "000050",
+      "name": "경방",
+      "sector": "종합 소매업",
+      "listingDate": "1956-03-03"
+    },
+    {
+      "code": "000070",
+      "name": "삼양홀딩스",
+      "sector": "기타 금융업",
+      "listingDate": "1968-12-27"
+    },
+    {
+      "code": "000080",
+      "name": "하이트진로",
+      "sector": "알코올음료 제조업",
+      "listingDate": "2009-10-19"
+    }
+  ],
+  "sample_last_5": [
+    {
+      "code": "487570",
+      "name": "HS효성",
+      "sector": "기타 금융업",
+      "listingDate": "2024-07-29"
+    },
+    {
+      "code": "489790",
+      "name": "한화비전",
+      "sector": "통신 및 방송 장비 제조업",
+      "listingDate": "2024-09-27"
+    },
+    {
+      "code": "499790",
+      "name": "GS피앤엘",
+      "sector": "기타 금융업",
+      "listingDate": "2024-12-23"
+    },
+    {
+      "code": "900140",
+      "name": "엘브이엠씨",
+      "sector": "자동차 판매업",
+      "listingDate": "2010-11-30"
+    },
+    {
+      "code": "950210",
+      "name": "프레스티지바이오파마",
+      "sector": "자연과학 및 공학 연구개발업",
+      "listingDate": "2021-02-05"
+    }
+  ]
+}
