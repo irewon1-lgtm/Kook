@@ -18,6 +18,10 @@ on:
       - ".github/workflows/auto-update-triple-cleanpass.yml"
   workflow_dispatch:
 
+concurrency:
+  group: kr4-autoupdate-triple-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   triple-cleanpass:
     strategy:
@@ -178,6 +182,10 @@ jobs:
           grep -q 'SnapshotAutoUpdater.bootstrap' app/src/main/java/com/krstock/v3/MainActivity.kt
           grep -q 'PeriodicWorkRequestBuilder<SnapshotRefreshWorker>' app/src/main/java/com/krstock/v3/KR4Application.kt
           grep -q 'remote snapshot downgrade rejected' app/src/main/java/com/krstock/v3/data/update/SnapshotAutoUpdater.kt
+          grep -q 'Source.BACKUP' app/src/main/java/com/krstock/v3/data/update/SnapshotAutoUpdater.kt
+          grep -q '@Synchronized' app/src/main/java/com/krstock/v3/data/update/SnapshotAutoUpdater.kt
+          grep -q 'StandardCopyOption.ATOMIC_MOVE' app/src/main/java/com/krstock/v3/data/update/SnapshotAutoUpdater.kt
+          grep -q 'untrusted collector provenance' app/src/main/java/com/krstock/v3/data/update/SnapshotAutoUpdater.kt
           grep -q 'coverage regression' app/src/main/java/com/krstock/v3/data/update/SnapshotAutoUpdater.kt
           grep -q 'runtimeRows' app/src/main/java/com/krstock/v3/data/generated/GeneratedRealQuantSnapshot.kt
           grep -q 'resolve_price_cutoff' scripts/collect_real_quant_v3.py
