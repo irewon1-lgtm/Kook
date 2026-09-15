@@ -34,7 +34,7 @@ android {
         minSdk = 26
         targetSdk = 34
         versionCode = System.getenv("KR4_VERSION_CODE")?.toIntOrNull() ?: 5
-        versionName = System.getenv("KR4_VERSION_NAME") ?: "4.1.0-senior-ui"
+        versionName = System.getenv("KR4_VERSION_NAME") ?: "4.1.1-stage45"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
