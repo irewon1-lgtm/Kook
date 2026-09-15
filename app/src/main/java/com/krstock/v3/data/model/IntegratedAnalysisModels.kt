@@ -83,5 +83,8 @@ data class IntegratedAnalysis(
     val businessState: String = "",
     val priceBurden: String = "",
     val causeConfidence: String = "",
-    val futureUncertainty: String = ""
+    val futureUncertainty: String = "",
+    val quarterlyTrend: String = "",
+    val quarterlySignal: String = "",
+    val quarterlyCoverage: String = ""
 )
