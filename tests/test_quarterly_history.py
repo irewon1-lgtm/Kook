@@ -55,9 +55,7 @@ def parsed_for(code="000001", scope="CFS"):
                     }
                 }
             else:
-                # FY intentionally has no direct 3M value; Q4 must be annual-Q3 YTD.
                 annual = annual_base.get(year, cumulative)
-                # Keep annual equal to the four quarter sum in the synthetic oracle.
                 annual = cumulative
                 annual_op = sum(vals[i] * (0.08 + (i + 1) * 0.01) for i in range(4))
                 parsed[label] = {
@@ -76,11 +74,37 @@ def parsed_for(code="000001", scope="CFS"):
     return parsed
 
 
+def test_dart_entry_regex_accepts_q1_and_q3_period_codes():
+    html = """
+      <script>
+      download_ext002('2025','Q1','PL','2025_Q1_PL.zip');
+      download_ext002('2025','HY','PL','2025_HY_PL.zip');
+      download_ext002('2025','Q3','PL','2025_Q3_PL.zip');
+      download_ext002('2025','FY','PL','2025_FY_PL.zip');
+      </script>
+    """
+    rows = base.DART_ENTRY_RE.findall(html)
+    assert [row[1] for row in rows] == ["Q1", "HY", "Q3", "FY"], rows
+
+
+def test_contiguous_quarter_gate_rejects_missing_q1_q3_style_gaps():
+    good = entries_12()
+    qh.assert_contiguous_entries(good, 12)
+    bad = [e for e in good if e["period"] not in {"Q1", "Q3"}]
+    try:
+        qh.assert_contiguous_entries(bad)
+        raise AssertionError("non-contiguous HY/FY-only timeline must fail")
+    except RuntimeError as exc:
+        assert "not contiguous" in str(exc)
+
+
 def test_q4_is_annual_minus_q3_and_yoy_uses_same_quarter():
     issuer = base.Issuer("000001", "테스트", "제조업", "2020-01-01", "KOSPI")
     records = qh.derive_visible_history([issuer], entries_12(), parsed_for(), 8)
     points = records[issuer.code]["points"]
     assert len(points) == 8
+    indexes = [qh.quarter_index(p["fiscal_year"], p["quarter"]) for p in points]
+    assert indexes == list(range(indexes[0], indexes[0] + 8)), indexes
     p_2025q4 = next(p for p in points if p["period"] == "2025Q4")
     assert p_2025q4["basis"] == "FY_MINUS_Q3"
     assert abs(p_2025q4["revenue"] - 165.0) < 1e-9
