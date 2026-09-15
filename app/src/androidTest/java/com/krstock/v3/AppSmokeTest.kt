@@ -76,6 +76,8 @@ class AppSmokeTest {
         composeRule.onNodeWithText("4지표 종합해석").assertIsDisplayed()
         composeRule.onNodeWithTag("evidence_panel").performScrollTo().assertIsDisplayed()
         composeRule.onNodeWithText("왜 이런 숫자가 나왔는지 최근 근거 점검").assertIsDisplayed()
+        composeRule.onNodeWithTag("forensics_panel").performScrollTo().assertIsDisplayed()
+        composeRule.onNodeWithText("DART 원문으로 원인 검증").assertIsDisplayed()
 
         composeRule.onNodeWithTag("detail_pager").performTouchInput { swipeLeft() }
         composeRule.waitForIdle()
