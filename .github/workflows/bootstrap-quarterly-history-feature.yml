@@ -43,7 +43,7 @@ jobs:
             --as-of 2026-09-15 \
             --visible-quarters 8 \
             --support-quarters 12 \
-            --period-workers 3 \
+            --period-workers 2 \
             --out /tmp/quarterly_history.json
       - name: Extreme gate
         run: |
@@ -65,8 +65,8 @@ jobs:
           assert support_indexes==list(range(support_indexes[0],support_indexes[0]+12)),('NON_CONTIGUOUS_SUPPORT_QUARTERS',support)
           assert any(p.endswith('Q1') for p in support),support
           assert any(p.endswith('Q3') for p in support),support
-          raw_codes={x['period_code'] for x in proof}
-          assert {'Q1','HY','Q3','FY'} <= raw_codes,raw_codes
+          normalized_codes={x['period_code'] for x in proof}
+          assert {'Q1','HY','Q3','FY'} <= normalized_codes,normalized_codes
           c=d['coverage']
           floors={
             'stocks_with_1q':int(n*0.78),
