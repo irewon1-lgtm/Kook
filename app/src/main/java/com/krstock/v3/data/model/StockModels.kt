@@ -2,16 +2,17 @@ package com.krstock.v3.data.model
 
 enum class DataStatus {
     REAL,
+    REGISTERED,
     DEMO,
     MISSING,
     WAITING_FOR_AUTH
 }
 
 data class MetricValue(
-    val id: String,          // M01, M02, M03, M04
-    val nameKo: String,      // 매출 증가율, 영업이익률, 실적 PER, 최근 6개월 주가 상승률
+    val id: String,
+    val nameKo: String,
     val rawValue: Double?,
-    val percentileScore: Double?, // 0.0 ~ 100.0 relative score
+    val percentileScore: Double?,
     val unit: String,
     val isAvailable: Boolean,
     val reason: String? = null,
@@ -21,24 +22,20 @@ data class MetricValue(
 )
 
 data class StockSummary(
-    val issuerId: String,        // e.g. "005930"
-    val name: String,            // e.g. "삼성전자"
-    val market: String,          // KOSPI / KOSDAQ
+    val issuerId: String,
+    val name: String,
+    val market: String,
     val sector: String = "기타",
+    val listingDate: String = "",
     val isFinancial: Boolean = false,
     val isLossMaking: Boolean = false,
-
-    // 4 Core Metrics
     val m01RevGrowth: MetricValue,
     val m02OpMargin: MetricValue,
     val m03Per: MetricValue,
     val m04Price6m: MetricValue,
-
-    // Candidate Investigation Priority Rank Score
-    val compositeScore: Double?, // Null if any of the 4 is missing
+    val compositeScore: Double?,
     val rankOrder: Int?,
     val isCompositeComplete: Boolean,
-
     val asOfDate: String,
     val dataSource: String,
     val status: DataStatus
@@ -85,6 +82,6 @@ data class FilingItem(
 data class StockDetail(
     val summary: StockSummary,
     val report: CompanyReport,
-    val news: List<NewsItem>,        // Max 3
-    val filings: List<FilingItem>    // Max 2
+    val news: List<NewsItem>,
+    val filings: List<FilingItem>
 )
