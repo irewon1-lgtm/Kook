@@ -72,7 +72,6 @@ jobs:
           python - <<'PY'
           import json, math, pathlib, re
           from datetime import date
-
           new=json.load(open('/tmp/real_quant_snapshot.json',encoding='utf-8'))
           old=json.load(open('/tmp/kr4_baseline.json',encoding='utf-8'))
           n=new['universe_count']
@@ -90,8 +89,7 @@ jobs:
             'm04_available':max(int(n*0.96),int(b['m04_available'])-30),
             'complete_count':max(int(n*0.50),int(b['complete_count'])-100),
           }
-          for k,floor in floors.items():
-            assert int(c[k])>=floor,(k,c[k],floor,b[k])
+          for k,floor in floors.items(): assert int(c[k])>=floor,(k,c[k],floor,b[k])
           assert c['ranked_count']==c['complete_count']
           ranks=[]; per_explained=0; source_errors=0
           for code,r in new['records'].items():
@@ -100,12 +98,9 @@ jobs:
             ms=[r[f'm0{i}'] for i in range(1,5)]
             for m in ms:
               raw,pct,reason,basis=m['raw'],m['percentile'],m['reason'],m['basis']
-              if raw is None:
-                assert pct is None and reason,(code,m)
-              else:
-                assert math.isfinite(float(raw)) and pct is not None and 0<=float(pct)<=100 and basis,(code,m)
-              if reason in {'NAVER_INTEGRATION_ERROR','NAVER_WORKER_EXCEPTION'}:
-                source_errors+=1
+              if raw is None: assert pct is None and reason,(code,m)
+              else: assert math.isfinite(float(raw)) and pct is not None and 0<=float(pct)<=100 and basis,(code,m)
+              if reason in {'NAVER_INTEGRATION_ERROR','NAVER_WORKER_EXCEPTION'}: source_errors+=1
             if ms[2]['raw'] is not None or ms[2]['reason']=='NONPOSITIVE_EPS': per_explained+=1
             complete=all(m['raw'] is not None for m in ms)
             assert (r['composite'] is not None)==complete,(code,'composite')
@@ -116,8 +111,7 @@ jobs:
           assert source_errors<=15,source_errors
           assert new['records']['005930']['name']=='삼성전자'
           kt=pathlib.Path('/tmp/GeneratedRealQuantSnapshot.kt').read_text(encoding='utf-8')
-          assert 'fun installRuntimeSnapshot(' in kt
-          assert 'runtimeRows' in kt
+          assert 'fun installRuntimeSnapshot(' in kt and 'runtimeRows' in kt
           assert f'const val universeCount: Int = {n}' in kt
           print('AUTO_UPDATE_EXTREME_GATE_PASS',json.dumps({'coverage':c,'floors':floors,'per_explained':per_explained,'source_errors':source_errors,'snapshot':str(snap),'price':str(price)},ensure_ascii=False))
           PY
@@ -170,12 +164,15 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           COV=$(python - <<'PY'
           import json
-          d=json.load(open('evidence/real_quant_snapshot.json',encoding='utf-8'))
-          c=d['coverage']
+          d=json.load(open('evidence/real_quant_snapshot.json',encoding='utf-8')); c=d['coverage']
           print(f"{d['snapshot_date_kst']} price={d['price_cutoff_date_kst']} M01={c['m01_available']} M02={c['m02_available']} M03={c['m03_available']} M04={c['m04_available']} complete={c['complete_count']}")
           PY
           )
           git commit -m "Auto-refresh KR4 validated snapshot: ${COV}"
+          # A code-only commit may land during the long external collection/build.
+          # Rebase the generated-data commit one final time before push; if any
+          # conflict occurs, fail closed and leave main/branch at the last good snapshot.
+          git pull --rebase origin "${{ github.ref_name }}"
           git push origin HEAD:${{ github.ref_name }}
 
       - name: Upload proof whether changed or unchanged
