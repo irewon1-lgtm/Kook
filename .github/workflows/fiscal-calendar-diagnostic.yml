@@ -26,15 +26,17 @@ jobs:
           python-version: '3.12'
       - name: Install dependencies
         run: pip install requests pandas lxml
-      - name: Run live KIND/DART fiscal diagnostic
-        run: |
-          set -euo pipefail
-          python scripts/diagnose_fiscal_calendar.py | tee fiscal-calendar-diagnostic.log
       - name: Probe Naver actual quarter data
         run: |
           set -euo pipefail
-          python scripts/diagnose_naver_fiscal_quarter.py | tee -a fiscal-calendar-diagnostic.log
+          python scripts/diagnose_naver_fiscal_quarter.py | tee fiscal-calendar-diagnostic.log
+      - name: Run live KIND/DART fiscal diagnostic
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          python scripts/diagnose_fiscal_calendar.py | tee -a fiscal-calendar-diagnostic.log
       - name: Upload diagnostic
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: KR4_Fiscal_Calendar_Diagnostic
