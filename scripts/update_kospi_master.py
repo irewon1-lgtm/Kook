@@ -11,6 +11,7 @@ import hashlib
 import io
 import json
 import re
+from collections import Counter, defaultdict
 from datetime import datetime
 from pathlib import Path
 from urllib.request import Request, urlopen
@@ -48,25 +49,54 @@ def fetch_table() -> pd.DataFrame:
     return df
 
 
-def normalize(df: pd.DataFrame) -> list[dict[str, str]]:
-    rows: list[dict[str, str]] = []
+def clean_text(value: object, fallback: str = "") -> str:
+    text = re.sub(r"\s+", " ", str(value)).strip()
+    return fallback if text.lower() == "nan" else text
+
+
+def normalize(df: pd.DataFrame) -> tuple[list[dict[str, str]], int, list[str]]:
+    source_rows: list[dict[str, str]] = []
     for _, row in df.iterrows():
-        raw_code = str(row["종목코드"]).strip()
+        raw_code = clean_text(row["종목코드"])
         if raw_code.endswith(".0"):
             raw_code = raw_code[:-2]
         digits = re.sub(r"\D", "", raw_code)
         code = digits.zfill(6)
-        name = str(row["회사명"]).strip()
-        sector = str(row["업종"]).strip()
-        listing_date = str(row["상장일"]).strip()
+        name = clean_text(row["회사명"])
+        sector = clean_text(row["업종"], "기타")
+        listing_date = clean_text(row["상장일"])
+
         if not re.fullmatch(r"\d{6}", code):
             raise RuntimeError(f"invalid issue code: {raw_code!r}")
-        if not name or name.lower() == "nan":
+        if not name:
             raise RuntimeError(f"empty company name for {code}")
-        if sector.lower() == "nan":
-            sector = "기타"
-        if listing_date.lower() == "nan":
-            listing_date = ""
+        source_rows.append({
+            "code": code,
+            "name": name,
+            "sector": sector,
+            "listingDate": listing_date,
+        })
+
+    grouped: dict[str, list[dict[str, str]]] = defaultdict(list)
+    for row in source_rows:
+        grouped[row["code"]].append(row)
+
+    duplicate_codes = sorted(code for code, variants in grouped.items() if len(variants) > 1)
+    rows: list[dict[str, str]] = []
+    for code, variants in grouped.items():
+        names = {v["name"] for v in variants}
+        if len(names) != 1:
+            raise RuntimeError(
+                f"same issue code maps to multiple company names: {code} -> {sorted(names)}"
+            )
+        name = next(iter(names))
+
+        sector_candidates = [v["sector"] for v in variants if v["sector"] and v["sector"] != "기타"]
+        sector = Counter(sector_candidates).most_common(1)[0][0] if sector_candidates else "기타"
+
+        date_candidates = sorted({v["listingDate"] for v in variants if v["listingDate"]})
+        listing_date = date_candidates[0] if date_candidates else ""
+
         rows.append({
             "code": code,
             "name": name,
@@ -74,18 +104,12 @@ def normalize(df: pd.DataFrame) -> list[dict[str, str]]:
             "listingDate": listing_date,
         })
 
-    unique: dict[str, dict[str, str]] = {}
-    for row in rows:
-        if row["code"] in unique and unique[row["code"]] != row:
-            raise RuntimeError(f"duplicate issue code with conflicting data: {row['code']}")
-        unique[row["code"]] = row
-    rows = sorted(unique.values(), key=lambda r: r["code"])
-
+    rows.sort(key=lambda r: r["code"])
     if not (MIN_EXPECTED <= len(rows) <= MAX_EXPECTED):
         raise RuntimeError(
             f"unexpected KOSPI company count {len(rows)}; expected {MIN_EXPECTED}..{MAX_EXPECTED}"
         )
-    return rows
+    return rows, len(source_rows), duplicate_codes
 
 
 def kt_escape(value: str) -> str:
@@ -116,7 +140,13 @@ def write_kotlin(rows: list[dict[str, str]], output: Path, snapshot_date: str) -
     output.write_text("\n".join(lines), encoding="utf-8")
 
 
-def write_evidence(rows: list[dict[str, str]], path: Path, snapshot_date: str) -> None:
+def write_evidence(
+    rows: list[dict[str, str]],
+    source_row_count: int,
+    duplicate_codes: list[str],
+    path: Path,
+    snapshot_date: str,
+) -> None:
     canonical = "\n".join(
         f"{r['code']}|{r['name']}|{r['sector']}|{r['listingDate']}" for r in rows
     ).encode("utf-8")
@@ -126,8 +156,10 @@ def write_evidence(rows: list[dict[str, str]], path: Path, snapshot_date: str) -
         "source_url": SOURCE_URL,
         "market": "KOSPI",
         "snapshot_date_kst": snapshot_date,
+        "source_row_count": source_row_count,
         "issuer_count": len(rows),
         "unique_issue_codes": len({r["code"] for r in rows}),
+        "duplicate_source_codes_deduplicated": duplicate_codes,
         "six_digit_codes": all(re.fullmatch(r"\d{6}", r["code"]) for r in rows),
         "sha256_normalized_master": hashlib.sha256(canonical).hexdigest(),
         "sample_first_5": rows[:5],
@@ -144,10 +176,13 @@ def main() -> None:
     args = parser.parse_args()
 
     snapshot_date = datetime.now(ZoneInfo("Asia/Seoul")).date().isoformat()
-    rows = normalize(fetch_table())
+    rows, source_row_count, duplicate_codes = normalize(fetch_table())
     write_kotlin(rows, Path(args.output), snapshot_date)
-    write_evidence(rows, Path(args.evidence), snapshot_date)
-    print(f"KOSPI_MASTER_OK count={len(rows)} snapshot={snapshot_date}")
+    write_evidence(rows, source_row_count, duplicate_codes, Path(args.evidence), snapshot_date)
+    print(
+        f"KOSPI_MASTER_OK count={len(rows)} source_rows={source_row_count} "
+        f"deduped_codes={len(duplicate_codes)} snapshot={snapshot_date}"
+    )
 
 
 if __name__ == "__main__":
