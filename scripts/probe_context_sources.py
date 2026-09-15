@@ -1,25 +1,38 @@
 #!/usr/bin/env python3
-"""One-shot live smoke probe for the public context endpoints used by KR4.
+"""Live smoke probe for the public context sources used by KR4.
 
-This is intentionally tiny: it verifies that the unauthenticated Naver mobile
-JSON endpoints used by the Android evidence loader still answer and contain
-recognizable evidence objects. It does not scrape full articles and does not
-store third-party content in the repository.
+Besides checking Naver's public news/disclosure shapes, this probe verifies the
+primary-source chain needed by Research Forensics v2:
+
+    Naver disclosure list -> DART receipt number -> public DART filing viewer.
+
+The production app remains fail-closed: this probe exists so a third-party shape
+change cannot silently turn a primary-source claim into an unsupported one.
 """
 from __future__ import annotations
 
+import html
 import json
+import re
 import time
 from typing import Any
+from urllib.parse import urlencode
 
 import requests
 
 BASE = "https://m.stock.naver.com/front-api"
+DART_MAIN = "https://dart.fss.or.kr/dsaf001/main.do"
+DART_VIEWER = "https://dart.fss.or.kr/report/viewer.do"
 CODES = ("005930", "000660", "000250")
 HEADERS = {
     "Accept": "application/json,text/plain,*/*",
-    "User-Agent": "Mozilla/5.0 (Linux; Android 14) KR4/1.0",
+    "User-Agent": "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 Chrome/124 Safari/537.36 KR4/2.0",
     "Referer": "https://m.stock.naver.com/",
+}
+DART_HEADERS = {
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "User-Agent": HEADERS["User-Agent"],
+    "Referer": "https://dart.fss.or.kr/",
 }
 
 NEWS_TITLE_KEYS = {"title", "articleTitle", "newsTitle", "headline", "subject"}
@@ -27,23 +40,29 @@ DISC_TITLE_KEYS = {"title", "reportName", "disclosureTitle", "reportNm", "subjec
 EVIDENCE_KEYS = {
     "datetime", "date", "publishedAt", "publishDate", "writeDate", "createdAt",
     "rceptDt", "receiptDate", "disclosureDate", "regDate", "url", "link", "endUrl",
-    "detailUrl", "articleUrl", "oid", "aid", "receiptNo", "rceptNo", "officeName",
-    "reportName", "disclosureTitle",
+    "detailUrl", "articleUrl", "oid", "aid", "receiptNo", "rceptNo", "rcept_no",
+    "rcpNo", "officeName", "reportName", "disclosureTitle",
 }
+RECEIPT_KEYS = ("rceptNo", "receiptNo", "rcept_no", "rcpNo", "rceptno", "receiptno")
+URL_KEYS = ("url", "link", "endUrl", "detailUrl", "articleUrl")
 
 
-def get_json(url: str) -> Any:
+def request(url: str, *, headers: dict[str, str], as_json: bool = False) -> Any:
     last = None
     for attempt in range(3):
         try:
-            r = requests.get(url, headers=HEADERS, timeout=10)
+            r = requests.get(url, headers=headers, timeout=12)
             r.raise_for_status()
-            return r.json()
-        except Exception as exc:  # noqa: BLE001 - probe reports exact class below
+            return r.json() if as_json else r.text
+        except Exception as exc:  # noqa: BLE001 - smoke probe reports exact class
             last = exc
             if attempt < 2:
                 time.sleep(0.5 * (2**attempt))
     raise RuntimeError(f"{url}: {type(last).__name__}: {last}")
+
+
+def get_json(url: str) -> Any:
+    return request(url, headers=HEADERS, as_json=True)
 
 
 def objects(node: Any):
@@ -67,10 +86,84 @@ def evidence_count(payload: Any, title_keys: set[str]) -> int:
     return count
 
 
+def receipt_from_object(obj: dict[str, Any]) -> str | None:
+    for key in RECEIPT_KEYS:
+        value = str(obj.get(key, "")).strip()
+        if re.fullmatch(r"\d{14}", value):
+            return value
+    for key in URL_KEYS:
+        value = html.unescape(str(obj.get(key, "")))
+        match = re.search(r"(?:rcpNo|rceptNo|receiptNo)=?(\d{14})", value, re.I)
+        if match:
+            return match.group(1)
+        match = re.search(r"\b(20\d{12})\b", value)
+        if match and "dart" in value.lower():
+            return match.group(1)
+    return None
+
+
+def disclosure_receipts(payload: Any) -> list[str]:
+    seen: set[str] = set()
+    result: list[str] = []
+    for obj in objects(payload):
+        receipt = receipt_from_object(obj)
+        if receipt and receipt not in seen:
+            seen.add(receipt)
+            result.append(receipt)
+    return result
+
+
+def public_dart_document_probe(receipt: str) -> dict[str, Any]:
+    main_url = f"{DART_MAIN}?{urlencode({'rcpNo': receipt})}"
+    main = request(main_url, headers=DART_HEADERS)
+    assert len(main) > 2_000, ("DART main document unexpectedly short", receipt, len(main))
+    assert receipt in main, ("DART main lost receipt identity", receipt)
+
+    # DART embeds document tree entries as viewDoc(...) JavaScript calls. Keep the
+    # parser deliberately tolerant of quote/space changes and HTML escaping.
+    normalized = html.unescape(main).replace("&amp;", "&")
+    patterns = [
+        re.compile(
+            r"viewDoc\(\s*['\"](?P<rcp>\d{14})['\"]\s*,\s*['\"](?P<dcm>\d+)['\"]\s*,\s*['\"](?P<ele>\d+)['\"]\s*,\s*['\"](?P<off>\d+)['\"]\s*,\s*['\"](?P<len>\d+)['\"]\s*,\s*['\"](?P<dtd>[^'\"]+)['\"]",
+            re.I,
+        ),
+        re.compile(
+            r"rcpNo['\"]?\s*[:=]\s*['\"](?P<rcp>\d{14})['\"].{0,600}?dcmNo['\"]?\s*[:=]\s*['\"](?P<dcm>\d+)['\"].{0,600}?eleId['\"]?\s*[:=]\s*['\"](?P<ele>\d+)['\"].{0,600}?offset['\"]?\s*[:=]\s*['\"](?P<off>\d+)['\"].{0,600}?length['\"]?\s*[:=]\s*['\"](?P<len>\d+)['\"]",
+            re.I | re.S,
+        ),
+    ]
+    match = next((p.search(normalized) for p in patterns if p.search(normalized)), None)
+    assert match, ("DART viewer metadata not recognized", receipt, normalized[:500])
+
+    params = match.groupdict()
+    params.setdefault("dtd", "dart3.xsd")
+    viewer_url = DART_VIEWER + "?" + urlencode({
+        "rcpNo": params["rcp"],
+        "dcmNo": params["dcm"],
+        "eleId": params["ele"],
+        "offset": params["off"],
+        "length": params["len"],
+        "dtd": params.get("dtd") or "dart3.xsd",
+    })
+    viewer = request(viewer_url, headers=DART_HEADERS)
+    text = re.sub(r"<[^>]+>", " ", html.unescape(viewer))
+    text = re.sub(r"\s+", " ", text).strip()
+    assert len(viewer) > 1_000 and len(text) > 200, ("DART viewer content too short", receipt, len(viewer), len(text))
+    assert re.search(r"[가-힣]", text), ("DART viewer lost Korean filing text", receipt)
+    return {
+        "receipt": receipt,
+        "main_bytes": len(main.encode("utf-8")),
+        "viewer_bytes": len(viewer.encode("utf-8")),
+        "text_chars": len(text),
+        "viewer_url_shape": "viewer.do?rcpNo+dcmNo+eleId+offset+length+dtd",
+    }
+
+
 def main() -> None:
     news_success = 0
     disclosure_success = 0
     shapes = []
+    receipts: list[str] = []
     for code in CODES:
         news_url = f"{BASE}/news/list/integration?itemCode={code}&page=1&pageSize=20"
         disc_url = f"{BASE}/stock/domestic/disclosure?code={code}&page=1&pageSize=20"
@@ -78,19 +171,27 @@ def main() -> None:
         disclosure = get_json(disc_url)
         n = evidence_count(news, NEWS_TITLE_KEYS)
         d = evidence_count(disclosure, DISC_TITLE_KEYS)
+        found_receipts = disclosure_receipts(disclosure)
         news_success += int(n > 0)
         disclosure_success += int(d > 0)
+        receipts.extend(found_receipts)
         shapes.append({
             "code": code,
             "news_root": type(news).__name__,
             "news_candidates": n,
             "disclosure_root": type(disclosure).__name__,
             "disclosure_candidates": d,
+            "dart_receipts": len(found_receipts),
         })
 
     assert news_success >= 2, ("news endpoint shape not recognized", shapes)
     assert disclosure_success >= 1, ("disclosure endpoint shape not recognized", shapes)
+    assert receipts, ("no DART receipt number exposed by disclosure source", shapes)
+
+    # One primary-source request is enough for CI health while keeping load tiny.
+    dart = public_dart_document_probe(receipts[0])
     print("CONTEXT_SOURCE_LIVE_PASS", json.dumps(shapes, ensure_ascii=False))
+    print("DART_PRIMARY_DOCUMENT_LIVE_PASS", json.dumps(dart, ensure_ascii=False))
 
 
 if __name__ == "__main__":
