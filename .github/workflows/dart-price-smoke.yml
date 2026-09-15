@@ -10,13 +10,9 @@ jobs:
   smoke:
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    env:
-      OPEN_DART_API_KEY: ${{ secrets.OPEN_DART_API_KEY }}
-      DART_API_KEY: ${{ secrets.DART_API_KEY }}
     steps:
       - uses: actions/checkout@v4
-
-      - name: Verify Naver live price endpoints
+      - name: Verify live Naver endpoints
         run: |
           set -euo pipefail
           python3 - <<'PY'
@@ -24,57 +20,39 @@ jobs:
           for u in [
             'https://m.stock.naver.com/api/stock/005930/basic',
             'https://m.stock.naver.com/api/stock/000250/basic',
+            'https://m.stock.naver.com/api/stock/005930/integration',
             'https://api.stock.naver.com/chart/domestic/item/005930?periodType=dayCandle&startDateTime=20260301&endDateTime=20260915']:
               req=urllib.request.Request(u,headers={'User-Agent':'Mozilla/5.0 KR4/1.0','Referer':'https://m.stock.naver.com/'})
               with urllib.request.urlopen(req, timeout=20) as r: body=r.read()
               assert body
               print('NAVER_OK',u.split('?')[0],len(body))
           PY
-
-      - name: Discover OpenDART bulk download function from main page and JS
+      - name: Download official OpenDART 2026 half-year PL and inspect schema
         run: |
           set -euo pipefail
           python3 - <<'PY'
-          import re, urllib.request, urllib.parse
+          import io, re, urllib.request, urllib.parse, zipfile
           base='https://opendart.fss.or.kr'
-          headers={'User-Agent':'Mozilla/5.0 KR4/1.0','Referer':base+'/disclosureinfo/fnltt/dwld/main.do'}
-          def get(u):
-              req=urllib.request.Request(u,headers=headers)
-              with urllib.request.urlopen(req,timeout=30) as r: return r.read().decode('utf-8','replace')
-          pages=[]
-          for p in ['/disclosureinfo/fnltt/dwld/main.do','/disclosureinfo/fnltt/dwld/list.do']:
-              txt=get(base+p); pages.append((p,txt)); print('PAGE_OK',p,len(txt))
-          blobs=list(pages)
-          seen=set()
-          for page,html in pages:
-              for src in re.findall(r'<script[^>]+src=["\']([^"\']+)["\']',html,re.I):
-                  full=urllib.parse.urljoin(base,src)
-                  if full in seen: continue
-                  seen.add(full)
-                  try:
-                      txt=get(full); blobs.append((full,txt))
-                      if 'download_ext002' in txt: print('JS_HAS_EXT002',full,len(txt))
-                  except Exception as e: print('JS_FAIL',full,type(e).__name__)
-          found=False
-          for name,txt in blobs:
-              for pat in [r'function\s+download_ext002\s*\([^)]*\)\s*\{',r'download_ext002\s*=\s*function\s*\([^)]*\)\s*\{']:
-                  m=re.search(pat,txt,re.I)
-                  if m:
-                      found=True
-                      print('EXT002_DEF_SOURCE',name)
-                      print('EXT002_DEF',re.sub(r'\s+',' ',txt[m.start():m.start()+5000]))
-          if not found:
-              for name,txt in blobs:
-                  if 'download_ext002' in txt:
-                      for m in list(re.finditer('download_ext002',txt))[:5]:
-                          print('EXT002_REF_SOURCE',name)
-                          print('EXT002_REF',re.sub(r'\s+',' ',txt[max(0,m.start()-1500):m.start()+3500]))
-          assert found, 'download_ext002 definition not found'
+          hdr={'User-Agent':'Mozilla/5.0 KR4/1.0','Referer':base+'/disclosureinfo/fnltt/dwld/main.do'}
+          req=urllib.request.Request(base+'/disclosureinfo/fnltt/dwld/list.do',headers=hdr)
+          with urllib.request.urlopen(req,timeout=30) as r: html=r.read().decode('utf-8','replace')
+          m=re.search(r"download_ext002\('2026','HY',\s*'PL',\s*'([^']+)'\)",html)
+          assert m
+          fn=m.group(1); print('DART_FILE',fn)
+          u=base+'/cmm/downloadFnlttZip.do?'+urllib.parse.urlencode({'fl_nm':fn})
+          req=urllib.request.Request(u,headers=hdr)
+          with urllib.request.urlopen(req,timeout=180) as r: raw=r.read()
+          assert raw[:2]==b'PK', raw[:100]
+          print('DART_ZIP_OK',len(raw))
+          z=zipfile.ZipFile(io.BytesIO(raw)); names=z.namelist(); print('ZIP_ENTRIES',len(names),names[:10])
+          target=names[0]; data=z.read(target)
+          print('TXT_FILE',target,'bytes',len(data))
+          text=None
+          for enc in ('utf-8-sig','cp949','euc-kr','utf-8'):
+              try: text=data.decode(enc); print('ENCODING',enc); break
+              except UnicodeDecodeError: pass
+          assert text
+          lines=text.splitlines()
+          print('HEADER',lines[0][:4000])
+          for line in lines[1:4]: print('SAMPLE',line[:4000])
           PY
-
-      - name: Verify OpenDART secret if present
-        run: |
-          set -euo pipefail
-          KEY="${OPEN_DART_API_KEY:-${DART_API_KEY:-}}"
-          if [ -z "$KEY" ]; then echo "OPEN_DART_KEY_MISSING_USING_PUBLIC_BULK"; exit 0; fi
-          echo "OPEN_DART_KEY_PRESENT"
