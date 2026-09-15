@@ -9,12 +9,16 @@ on:
     branches:
       - "main"
       - "fix/auto-update-v2"
+      - "fix/incomplete-267-recovery-v1"
     paths:
       - "scripts/collect_real_quant.py"
       - "scripts/collect_real_quant_v2.py"
       - "scripts/collect_real_quant_v3.py"
       - "scripts/collect_quarterly_history.py"
       - "scripts/collect_quarterly_history_parallel.py"
+      - "scripts/apply_recent_dart_fallback.py"
+      - "scripts/apply_fiscal_calendar_recovery.py"
+      - "scripts/apply_standard_actual_recovery.py"
       - "tests/test_auto_update_pipeline.py"
       - "tests/test_quarterly_history.py"
       - ".github/workflows/collect-real-quant.yml"
@@ -43,17 +47,20 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install collector dependency
+      - name: Install collector and recovery dependencies
         run: |
           set -euo pipefail
           python -m pip install --upgrade pip
-          pip install requests
+          pip install requests pandas lxml
 
       - name: Adversarial auto-update logic tests
         run: |
           set -euo pipefail
           python tests/test_auto_update_pipeline.py
           python tests/test_quarterly_history.py
+          python scripts/apply_recent_dart_fallback.py --self-test
+          python scripts/apply_fiscal_calendar_recovery.py --self-test
+          python scripts/apply_standard_actual_recovery.py --self-test
 
       - name: Preserve previous known-good baseline
         run: |
@@ -84,6 +91,47 @@ jobs:
             --support-quarters 12 \
             --period-workers 3 \
             --out /tmp/quarterly_history.json
+
+      - name: Apply durable fail-closed recovery chain to staging
+        run: |
+          set -euo pipefail
+          python scripts/apply_recent_dart_fallback.py \
+            --quant /tmp/real_quant_snapshot.json \
+            --history /tmp/quarterly_history.json \
+            --out /tmp/real_quant_snapshot.json
+          python scripts/apply_fiscal_calendar_recovery.py \
+            --quant /tmp/real_quant_snapshot.json \
+            --out /tmp/real_quant_snapshot.json \
+            --kind-retries 3
+          python scripts/apply_standard_actual_recovery.py \
+            --quant /tmp/real_quant_snapshot.json \
+            --out /tmp/real_quant_snapshot.json
+
+      - name: Recovery-chain integrity gate
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          d=json.load(open('/tmp/real_quant_snapshot.json',encoding='utf-8'))
+          assert 'recent_dart_fallback' in d
+          assert 'fiscal_calendar_recovery' in d
+          assert 'standard_actual_recovery' in d
+          assert not d['fiscal_calendar_recovery'].get('source_errors'), d['fiscal_calendar_recovery'].get('source_errors')
+          assert d['standard_actual_recovery'].get('source_error_count')==0
+          for mid in ('m01','m02','m03','m04'):
+            counted={}
+            for row in d['records'].values():
+              m=row[mid]
+              key='AVAILABLE' if m['raw'] is not None else (m['reason'] or 'UNKNOWN')
+              counted[key]=counted.get(key,0)+1
+            assert d['reason_counts'][mid]==counted,(mid,d['reason_counts'][mid],counted)
+          print('RECOVERY_CHAIN_INTEGRITY_GATE_PASS', json.dumps({
+            'recent': {k:d['recent_dart_fallback'].get(k) for k in ('m01_recovered','m02_recovered')},
+            'fiscal': {k:d['fiscal_calendar_recovery'].get(k) for k in ('m01_recovered','m02_recovered')},
+            'standard': {k:d['standard_actual_recovery'].get(k) for k in ('m01_recovered','m02_recovered','promoted_complete_count')},
+            'coverage': d['coverage'],
+          },ensure_ascii=False))
+          PY
 
       - name: Extreme fail-closed four-metric quality gate
         run: |
