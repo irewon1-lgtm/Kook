@@ -1,0 +1,160 @@
+name: KR4 Stage45 Release Only V5
+
+on:
+  workflow_run:
+    workflows:
+      - KR4 Signing Vault Probe
+    types:
+      - completed
+
+permissions:
+  contents: write
+  id-token: write
+
+concurrency:
+  group: kr4-stage45-release-only-v5
+  cancel-in-progress: false
+
+jobs:
+  release:
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_branch == 'fix/signing-vault-probe'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      EXPECTED_STABLE_CERT_SHA256: 1070e82beee574cd29ffd2dc3e693fd7f7862374f16d1606567db303ab152477
+      KR4_VERSION_CODE: '20201'
+      KR4_VERSION_NAME: '4.3.201'
+      SIGNING_VAULT_URL: https://api-v2.appdeploy.ai/app/kr4-signing-vault-5yh3dd/api/signing-material
+
+    steps:
+      - name: Obtain stable signing material via main OIDC
+        shell: bash
+        run: |
+          set -euo pipefail
+          umask 077
+          test "$GITHUB_REF" = 'refs/heads/main'
+          openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:3072 -out "$RUNNER_TEMP/t.pem" >/dev/null 2>&1
+          openssl pkey -in "$RUNNER_TEMP/t.pem" -pubout -outform DER -out "$RUNNER_TEMP/t.der"
+          TRANSPORT_KEY=$(base64 -w0 "$RUNNER_TEMP/t.der" | tr '+/' '-_' | tr -d '=')
+          export TRANSPORT_KEY
+          curl -fsS -H "Authorization: Bearer ${ACTIONS_ID_TOKEN_REQUEST_TOKEN}" \
+            "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=kr4-signing-vault" -o "$RUNNER_TEMP/oidc.json"
+          python3 - <<'PY'
+          import json,os
+          token=json.load(open(os.path.join(os.environ['RUNNER_TEMP'],'oidc.json'),encoding='utf-8'))['value']
+          assert len(token)>100
+          json.dump({'token':token,'transportKey':os.environ['TRANSPORT_KEY']},open(os.path.join(os.environ['RUNNER_TEMP'],'req.json'),'w',encoding='utf-8'),separators=(',',':'))
+          PY
+          STATUS=$(curl -sS -o "$RUNNER_TEMP/enc.json" -w '%{http_code}' -H 'Content-Type: application/json' --data-binary @"$RUNNER_TEMP/req.json" "$SIGNING_VAULT_URL")
+          test "$STATUS" = '200'
+          python3 - <<'PY'
+          import json,os
+          d=json.load(open(os.path.join(os.environ['RUNNER_TEMP'],'enc.json'),encoding='utf-8'))
+          assert d['algorithm']=='RSA-OAEP-SHA256' and d['repository']=='irewon1-lgtm/Kook' and d['ref']=='refs/heads/main'
+          with open(os.path.join(os.environ['RUNNER_TEMP'],'chunks.txt'),'w',encoding='utf-8') as f:
+              for x in d['ciphertextChunks']: f.write(x+'\n')
+          print('SIGNING_TRANSPORT_PASS',len(d['ciphertextChunks']))
+          PY
+          : > "$RUNNER_TEMP/bundle.txt"
+          while IFS= read -r CHUNK; do
+            printf '%s' "$CHUNK" | base64 -d > "$RUNNER_TEMP/c.bin"
+            openssl pkeyutl -decrypt -inkey "$RUNNER_TEMP/t.pem" -in "$RUNNER_TEMP/c.bin" -pkeyopt rsa_padding_mode:oaep -pkeyopt rsa_oaep_md:sha256 >> "$RUNNER_TEMP/bundle.txt"
+          done < "$RUNNER_TEMP/chunks.txt"
+          python3 - <<'PY'
+          import base64,json,os
+          d=json.loads(base64.b64decode(open(os.path.join(os.environ['RUNNER_TEMP'],'bundle.txt'),encoding='utf-8').read().strip()).decode('utf-8'))
+          for k in ('keystore_b64','store_password','alias','key_password'): assert isinstance(d.get(k),str) and d[k]
+          jks=os.path.join(os.environ['RUNNER_TEMP'],'kr4-release.jks'); open(jks,'wb').write(base64.b64decode(d['keystore_b64']))
+          os.chmod(jks,0o600)
+          print(f"::add-mask::{d['store_password']}"); print(f"::add-mask::{d['key_password']}")
+          with open(os.environ['GITHUB_ENV'],'a',encoding='utf-8') as f:
+              f.write(f"KR4_KEYSTORE_FILE={jks}\nKR4_KEYSTORE_PASSWORD={d['store_password']}\nKR4_KEY_ALIAS={d['alias']}\nKR4_KEY_PASSWORD={d['key_password']}\n")
+          PY
+          echo SIGNING_BUNDLE_PASS
+
+      - name: Checkout finalized stage 4-5 app
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+
+      - name: Verify finalized app source
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q '4–8 QUARTER TREND' app/src/main/java/com/krstock/v3/ui/screens/StockDetailScreen.kt
+          grep -q 'EvidenceKind.IR -> "IR"' app/src/main/java/com/krstock/v3/ui/screens/StockDetailScreen.kt
+          grep -q 'EvidenceKind.OFFICIAL -> "공식자료"' app/src/main/java/com/krstock/v3/ui/screens/StockDetailScreen.kt
+          APP_COMMIT=$(git rev-parse HEAD)
+          echo "APP_COMMIT=$APP_COMMIT" >> "$GITHUB_ENV"
+          echo "FINAL_APP_SOURCE_PASS=$APP_COMMIT"
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v5
+        with:
+          java-version: '17'
+          distribution: temurin
+
+      - name: Set up Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+
+      - name: Verify original stable certificate
+        shell: bash
+        run: |
+          set -euo pipefail
+          CERT=$(keytool -exportcert -keystore "$KR4_KEYSTORE_FILE" -alias "$KR4_KEY_ALIAS" -storepass "$KR4_KEYSTORE_PASSWORD" -rfc 2>/dev/null | openssl x509 -outform DER 2>/dev/null | sha256sum | awk '{print $1}')
+          test "$CERT" = "$EXPECTED_STABLE_CERT_SHA256"
+          echo "KR4_SIGNING_CERT_SHA256=$CERT" >> "$GITHUB_ENV"
+          echo STABLE_CERT_PASS
+
+      - name: Build signed Release APK without duplicate lint
+        shell: bash
+        run: |
+          set -euo pipefail
+          gradle :app:assembleRelease -x lintVitalRelease --build-cache --stacktrace
+          mkdir -p dist
+          cp app/build/outputs/apk/release/app-release.apk dist/KR4.apk
+          APKSIGNER=$(find "$ANDROID_HOME/build-tools" -type f -name apksigner | sort -V | tail -1)
+          AAPT=$(find "$ANDROID_HOME/build-tools" -type f -name aapt | sort -V | tail -1)
+          "$APKSIGNER" verify --verbose --print-certs dist/KR4.apk | tee dist/APK_SIGNING_CERT.txt
+          grep -qi "$EXPECTED_STABLE_CERT_SHA256" dist/APK_SIGNING_CERT.txt
+          BADGING=$("$AAPT" dump badging dist/KR4.apk | head -1)
+          echo "$BADGING"
+          echo "$BADGING" | grep -q "name='com.krstock.v3'"
+          echo "$BADGING" | grep -q "versionCode='${KR4_VERSION_CODE}'"
+          echo "$BADGING" | grep -q "versionName='${KR4_VERSION_NAME}'"
+          echo "SIGNED_RELEASE_APK_PASS bytes=$(stat -c%s dist/KR4.apk)"
+
+      - name: Generate update manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          SHA256=$(sha256sum dist/KR4.apk | awk '{print $1}'); export SHA256
+          python3 - <<'PY'
+          import json,os
+          d={'versionCode':int(os.environ['KR4_VERSION_CODE']),'versionName':os.environ['KR4_VERSION_NAME'],'apkUrl':'https://github.com/irewon1-lgtm/Kook/releases/latest/download/KR4.apk','sha256':os.environ['SHA256'],'mandatory':False,'notes':'4~8분기 시계열 분석 + 회사 IR/공식자료 자동수집 및 출처 구분 표시','commit':os.environ['APP_COMMIT'],'signingCertificateSha256':os.environ['KR4_SIGNING_CERT_SHA256']}
+          json.dump(d,open('dist/update.json','w',encoding='utf-8'),ensure_ascii=False,indent=2); open('dist/update.json','a',encoding='utf-8').write('\n')
+          print('UPDATE_MANIFEST_PASS',d['versionCode'],d['versionName'],d['commit'])
+          PY
+
+      - name: Publish latest release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          TAG="kr4-app-c${KR4_VERSION_CODE}"
+          TITLE="KR4 ${KR4_VERSION_NAME}"
+          NOTES="4~8분기 시계열 + DART 기반 회사 IR/공식자료 자동수집/표시. Android 14 E2E main run #201 PASS. commit ${APP_COMMIT}."
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" dist/KR4.apk dist/update.json dist/APK_SIGNING_CERT.txt --clobber
+            gh release edit "$TAG" --title "$TITLE" --notes "$NOTES" --latest
+          else
+            gh release create "$TAG" dist/KR4.apk dist/update.json dist/APK_SIGNING_CERT.txt --title "$TITLE" --notes "$NOTES" --latest
+          fi
+          gh release view "$TAG" --json tagName,name,isLatest,url
+          echo STAGE45_RELEASE_COMPLETE
