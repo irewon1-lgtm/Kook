@@ -11,6 +11,7 @@ on:
 
 permissions:
   contents: write
+  id-token: write
 
 jobs:
   extreme-cleanpass:
@@ -151,7 +152,8 @@ jobs:
           grep -q 'releases/latest/download/update.json' app/src/main/java/com/krstock/v3/update/AppAutoUpdater.kt
           grep -q 'signerDigests(installed) == signerDigests(archive)' app/src/main/java/com/krstock/v3/update/AppAutoUpdater.kt
           grep -q 'sha256(apk) != info.sha256' app/src/main/java/com/krstock/v3/update/AppAutoUpdater.kt
-          grep -q 'KR4_SIGNING_BUNDLE' .github/workflows/android-build.yml
+          grep -q 'id-token: write' .github/workflows/android-build.yml
+          grep -q 'kr4-signing-vault-5yh3dd.v2.appdeploy.ai' .github/workflows/android-build.yml
           grep -q "$EXPECTED_STABLE_CERT_SHA256" .github/workflows/android-build.yml
 
       - name: Upload verified APK and evidence
@@ -193,14 +195,71 @@ jobs:
       - name: Prepare original KR4 stable signing identity
         if: steps.release_gate.outputs.ready == 'true'
         env:
-          KR4_SIGNING_BUNDLE: ${{ secrets.KR4_SIGNING_BUNDLE }}
+          SIGNING_VAULT_URL: https://kr4-signing-vault-5yh3dd.v2.appdeploy.ai/api/signing-material
         run: |
           set -euo pipefail
           umask 077
-          test -n "${KR4_SIGNING_BUNDLE:-}"
+          test -n "${ACTIONS_ID_TOKEN_REQUEST_URL:-}"
+          test -n "${ACTIONS_ID_TOKEN_REQUEST_TOKEN:-}"
+
+          openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:3072 \
+            -out "$RUNNER_TEMP/kr4-transport-private.pem" >/dev/null 2>&1
+          openssl pkey -in "$RUNNER_TEMP/kr4-transport-private.pem" \
+            -pubout -outform DER -out "$RUNNER_TEMP/kr4-transport-public.der"
+          TRANSPORT_KEY=$(base64 -w0 "$RUNNER_TEMP/kr4-transport-public.der" | tr '+/' '-_' | tr -d '=')
+
+          curl -fsS \
+            -H "Authorization: Bearer ${ACTIONS_ID_TOKEN_REQUEST_TOKEN}" \
+            "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=kr4-signing-vault" \
+            -o "$RUNNER_TEMP/kr4-oidc.json"
+          OIDC_TOKEN=$(python3 - <<'PY'
+          import json, os
+          path = os.path.join(os.environ['RUNNER_TEMP'], 'kr4-oidc.json')
+          token = json.load(open(path, encoding='utf-8')).get('value')
+          assert isinstance(token, str) and len(token) > 100
+          print(token)
+          PY
+          )
+
+          curl -fsS --get \
+            -H "Authorization: Bearer ${OIDC_TOKEN}" \
+            --data-urlencode "transport_key=${TRANSPORT_KEY}" \
+            "$SIGNING_VAULT_URL" \
+            -o "$RUNNER_TEMP/kr4-encrypted-signing.json"
+
+          python3 - <<'PY'
+          import json, os
+          path = os.path.join(os.environ['RUNNER_TEMP'], 'kr4-encrypted-signing.json')
+          root = json.load(open(path, encoding='utf-8'))
+          assert root.get('algorithm') == 'RSA-OAEP-SHA256'
+          assert root.get('repository') == 'irewon1-lgtm/Kook'
+          assert root.get('ref') == 'refs/heads/main'
+          chunks = root.get('ciphertextChunks')
+          assert isinstance(chunks, list) and chunks and all(isinstance(x, str) and x for x in chunks)
+          out = os.path.join(os.environ['RUNNER_TEMP'], 'kr4-encrypted-chunks.txt')
+          with open(out, 'w', encoding='utf-8') as f:
+              for item in chunks:
+                  f.write(item + '\n')
+          PY
+
+          : > "$RUNNER_TEMP/kr4-signing-bundle.txt"
+          INDEX=0
+          while IFS= read -r CHUNK; do
+            printf '%s' "$CHUNK" | base64 -d > "$RUNNER_TEMP/kr4-chunk-${INDEX}.bin"
+            openssl pkeyutl -decrypt \
+              -inkey "$RUNNER_TEMP/kr4-transport-private.pem" \
+              -in "$RUNNER_TEMP/kr4-chunk-${INDEX}.bin" \
+              -pkeyopt rsa_padding_mode:oaep \
+              -pkeyopt rsa_oaep_md:sha256 \
+              >> "$RUNNER_TEMP/kr4-signing-bundle.txt"
+            INDEX=$((INDEX + 1))
+          done < "$RUNNER_TEMP/kr4-encrypted-chunks.txt"
+          test "$INDEX" -gt 0
+
           python3 - <<'PY'
           import base64, json, os
-          raw = os.environ['KR4_SIGNING_BUNDLE'].strip()
+          path = os.path.join(os.environ['RUNNER_TEMP'], 'kr4-signing-bundle.txt')
+          raw = open(path, encoding='utf-8').read().strip()
           assert len(raw) > 100
           doc = json.loads(base64.b64decode(raw).decode('utf-8'))
           for key in ('keystore_b64', 'store_password', 'alias', 'key_password'):
@@ -217,17 +276,27 @@ jobs:
               out.write(f"KR4_KEY_ALIAS={doc['alias']}\n")
               out.write(f"KR4_KEY_PASSWORD={doc['key_password']}\n")
           PY
+
           ACTUAL_CERT_SHA=$(keytool -exportcert \
             -keystore "$KR4_KEYSTORE_FILE" \
             -alias "$KR4_KEY_ALIAS" \
             -storepass "$KR4_KEYSTORE_PASSWORD" \
             -rfc 2>/dev/null | openssl x509 -outform DER 2>/dev/null | sha256sum | awk '{print $1}')
           test "$ACTUAL_CERT_SHA" = "$EXPECTED_STABLE_CERT_SHA256"
+
           VERSION_CODE=$((20000 + GITHUB_RUN_NUMBER))
           VERSION_NAME="4.3.${GITHUB_RUN_NUMBER}"
           echo "KR4_VERSION_CODE=$VERSION_CODE" >> "$GITHUB_ENV"
           echo "KR4_VERSION_NAME=$VERSION_NAME" >> "$GITHUB_ENV"
           echo "KR4_SIGNING_CERT_SHA256=$ACTUAL_CERT_SHA" >> "$GITHUB_ENV"
+          rm -f \
+            "$RUNNER_TEMP/kr4-oidc.json" \
+            "$RUNNER_TEMP/kr4-encrypted-signing.json" \
+            "$RUNNER_TEMP/kr4-encrypted-chunks.txt" \
+            "$RUNNER_TEMP/kr4-signing-bundle.txt" \
+            "$RUNNER_TEMP/kr4-transport-private.pem" \
+            "$RUNNER_TEMP/kr4-transport-public.der" \
+            "$RUNNER_TEMP"/kr4-chunk-*.bin
           echo "STABLE_SIGNING_IDENTITY_READY cert_sha256=$ACTUAL_CERT_SHA version=$VERSION_NAME"
 
       - name: Build and verify stable signed Release APK
