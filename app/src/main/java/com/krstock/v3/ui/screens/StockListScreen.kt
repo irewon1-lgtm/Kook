@@ -60,12 +60,14 @@ fun StockListScreen(
             .toList()
     }
 
+    // A ranking/filter mode change represents a new result set. Never preserve the
+    // previous rank-list viewport: show the new first row immediately.
+    // Search typing is intentionally excluded so the keyboard/input field stays stable.
     LaunchedEffect(
         selectedMetricIds,
         selectedMarket,
         selectedCompleteOnly,
-        sortMode,
-        searchQuery
+        sortMode
     ) {
         if (filteredStocks.isNotEmpty()) {
             listState.scrollToItem(0)
@@ -76,6 +78,12 @@ fun StockListScreen(
     val selectedNames = RankMetric.entries
         .filter { it.id in selectedMetricIds }
         .joinToString(" · ") { it.label }
+    val weightLabel = when (selectedCount) {
+        1 -> "100%"
+        2 -> "각 50%"
+        3 -> "각 33.3%"
+        else -> "각 25%"
+    }
     val eligibleShown = filteredStocks.count { dynamicRanks[it.issuerId]?.isEligible == true }
     val scheme = MaterialTheme.colorScheme
 
@@ -122,15 +130,10 @@ fun StockListScreen(
                 onValueChange = { searchQuery = it },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .heightIn(min = 58.dp)
+                    .heightIn(min = 56.dp)
                     .testTag("stock_search"),
                 textStyle = MaterialTheme.typography.bodyLarge,
-                placeholder = {
-                    Text(
-                        "회사명 · 종목코드 · 업종 검색",
-                        fontSize = 15.sp
-                    )
-                },
+                placeholder = { Text("회사명 · 종목코드 · 업종 검색", fontSize = 15.sp) },
                 singleLine = true,
                 shape = RoundedCornerShape(16.dp),
                 colors = OutlinedTextFieldDefaults.colors(
@@ -142,34 +145,30 @@ fun StockListScreen(
                 supportingText = null
             )
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(22.dp),
+                shape = RoundedCornerShape(20.dp),
                 colors = CardDefaults.cardColors(containerColor = scheme.surface),
                 border = BorderStroke(1.dp, scheme.outlineVariant),
                 elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
             ) {
-                Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 15.dp)) {
+                Column(modifier = Modifier.padding(horizontal = 14.dp, vertical = 12.dp)) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Column(modifier = Modifier.weight(1f)) {
+                            Text("랭킹 지표", fontWeight = FontWeight.Bold, fontSize = 17.sp)
                             Text(
-                                "랭킹 지표",
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 17.sp,
-                                lineHeight = 22.sp
-                            )
-                            Spacer(Modifier.height(2.dp))
-                            Text(
-                                "1~4개 선택 · 선택한 지표끼리 동일가중",
-                                fontSize = 12.sp,
-                                lineHeight = 17.sp,
-                                color = scheme.onSurfaceVariant
+                                selectedNames,
+                                fontSize = 11.sp,
+                                lineHeight = 15.sp,
+                                color = scheme.onSurfaceVariant,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
                             )
                         }
                         Surface(
@@ -178,19 +177,19 @@ fun StockListScreen(
                             contentColor = scheme.onPrimaryContainer
                         ) {
                             Text(
-                                "${selectedCount}개 선택",
-                                modifier = Modifier.padding(horizontal = 12.dp, vertical = 7.dp),
+                                "${selectedCount}개 · $weightLabel",
+                                modifier = Modifier.padding(horizontal = 11.dp, vertical = 6.dp),
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 12.sp
                             )
                         }
                     }
 
-                    Spacer(modifier = Modifier.height(12.dp))
-                    RankMetric.entries.chunked(2).forEach { pair ->
+                    Spacer(modifier = Modifier.height(9.dp))
+                    RankMetric.entries.chunked(2).forEachIndexed { index, pair ->
                         Row(
                             modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(9.dp)
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             pair.forEach { metric ->
                                 val selected = metric.id in selectedMetricIds
@@ -205,13 +204,13 @@ fun StockListScreen(
                                     },
                                     modifier = Modifier
                                         .weight(1f)
-                                        .heightIn(min = 50.dp)
+                                        .heightIn(min = 46.dp)
                                         .testTag(metricToggleTestTag(metric.id)),
-                                    shape = RoundedCornerShape(14.dp),
+                                    shape = RoundedCornerShape(13.dp),
                                     label = {
                                         Text(
                                             if (selected) "✓ ${metric.label}" else metric.label,
-                                            fontSize = 14.sp,
+                                            fontSize = 13.sp,
                                             fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
                                             maxLines = 1,
                                             overflow = TextOverflow.Ellipsis
@@ -221,152 +220,69 @@ fun StockListScreen(
                             }
                             if (pair.size == 1) Spacer(modifier = Modifier.weight(1f))
                         }
-                        if (pair !== RankMetric.entries.chunked(2).last()) {
-                            Spacer(modifier = Modifier.height(7.dp))
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.height(11.dp))
-                    Surface(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .testTag("active_combo_summary"),
-                        shape = RoundedCornerShape(15.dp),
-                        color = scheme.surfaceVariant,
-                        contentColor = scheme.onSurface,
-                        border = BorderStroke(1.dp, scheme.outlineVariant)
-                    ) {
-                        Row(
-                            modifier = Modifier.padding(horizontal = 14.dp, vertical = 12.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(
-                                    "선택 ${selectedCount}개 지표 종합순위",
-                                    fontWeight = FontWeight.Bold,
-                                    color = scheme.primary,
-                                    fontSize = 14.sp,
-                                    lineHeight = 19.sp
-                                )
-                                Spacer(Modifier.height(2.dp))
-                                Text(
-                                    selectedNames,
-                                    fontSize = 11.sp,
-                                    lineHeight = 16.sp,
-                                    color = scheme.onSurfaceVariant,
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis
-                                )
-                            }
-                            Spacer(Modifier.width(12.dp))
-                            Text(
-                                when (selectedCount) {
-                                    1 -> "100%"
-                                    2 -> "각 50%"
-                                    3 -> "각 33.3%"
-                                    else -> "각 25%"
-                                },
-                                fontSize = 12.sp,
-                                fontWeight = FontWeight.SemiBold,
-                                color = scheme.onSurfaceVariant
-                            )
+                        if (index < RankMetric.entries.chunked(2).lastIndex) {
+                            Spacer(modifier = Modifier.height(6.dp))
                         }
                     }
                 }
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(9.dp))
 
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(22.dp),
+                shape = RoundedCornerShape(20.dp),
                 colors = CardDefaults.cardColors(containerColor = scheme.surface),
                 border = BorderStroke(1.dp, scheme.outlineVariant)
             ) {
-                Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp)) {
-                    Text(
-                        "시장 · 데이터 조건",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 15.sp
-                    )
-                    Spacer(Modifier.height(9.dp))
+                Column(modifier = Modifier.padding(horizontal = 14.dp, vertical = 11.dp)) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        horizontalArrangement = Arrangement.spacedBy(7.dp)
                     ) {
                         listOf("전체", "KOSPI", "KOSDAQ").forEach { market ->
+                            val selected = selectedMarket == market
                             FilterChip(
-                                selected = selectedMarket == market,
+                                selected = selected,
                                 onClick = { selectedMarket = market },
                                 modifier = Modifier
                                     .weight(1f)
-                                    .heightIn(min = 48.dp)
+                                    .heightIn(min = 44.dp)
                                     .testTag("market_$market"),
-                                shape = RoundedCornerShape(14.dp),
+                                shape = RoundedCornerShape(13.dp),
                                 label = {
                                     Text(
                                         market,
-                                        fontSize = 14.sp,
-                                        fontWeight = if (selectedMarket == market) FontWeight.Bold else FontWeight.Medium
+                                        fontSize = 13.sp,
+                                        fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium
                                     )
                                 }
                             )
                         }
                     }
 
-                    Spacer(Modifier.height(7.dp))
+                    Spacer(Modifier.height(6.dp))
                     FilterChip(
                         selected = selectedCompleteOnly,
                         onClick = { selectedCompleteOnly = !selectedCompleteOnly },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .heightIn(min = 48.dp)
+                            .heightIn(min = 44.dp)
                             .testTag("selected_metrics_complete_only"),
-                        shape = RoundedCornerShape(14.dp),
+                        shape = RoundedCornerShape(13.dp),
                         label = {
                             Text(
                                 if (selectedCompleteOnly) "✓ 선택지표 완성 종목만" else "선택지표 완성 종목만",
-                                fontSize = 14.sp,
+                                fontSize = 13.sp,
                                 fontWeight = if (selectedCompleteOnly) FontWeight.Bold else FontWeight.Medium
                             )
                         }
                     )
 
-                    Spacer(Modifier.height(12.dp))
-                    HorizontalDivider(color = scheme.outlineVariant)
-                    Spacer(Modifier.height(12.dp))
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.Bottom
-                    ) {
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                "${filteredStocks.size}개 종목",
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 17.sp
-                            )
-                            Text(
-                                "현재 조합 순위 가능 ${eligibleShown}개",
-                                fontSize = 12.sp,
-                                lineHeight = 17.sp,
-                                color = scheme.onSurfaceVariant
-                            )
-                        }
-                        Text(
-                            "정렬",
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            color = scheme.onSurfaceVariant
-                        )
-                    }
-
                     Spacer(Modifier.height(8.dp))
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        horizontalArrangement = Arrangement.spacedBy(7.dp)
                     ) {
                         ListSortMode.entries.forEach { mode ->
                             val selected = sortMode == mode
@@ -375,13 +291,14 @@ fun StockListScreen(
                                 onClick = { sortMode = mode },
                                 modifier = Modifier
                                     .weight(1f)
-                                    .heightIn(min = 50.dp)
+                                    .heightIn(min = 46.dp)
                                     .testTag("sort_${mode.name}"),
-                                shape = RoundedCornerShape(14.dp),
+                                shape = RoundedCornerShape(13.dp),
                                 label = {
                                     Text(
                                         if (selected) "✓ ${mode.label}" else mode.label,
-                                        fontSize = 13.sp,
+                                        fontSize = 12.sp,
+                                        lineHeight = 15.sp,
                                         fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
                                         maxLines = 2,
                                         overflow = TextOverflow.Ellipsis
@@ -393,7 +310,27 @@ fun StockListScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    "${filteredStocks.size}개 종목",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp
+                )
+                Text(
+                    "순위 가능 ${eligibleShown}개",
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = scheme.onSurfaceVariant
+                )
+            }
+
+            Spacer(modifier = Modifier.height(7.dp))
 
             if (filteredStocks.isEmpty()) {
                 Card(
