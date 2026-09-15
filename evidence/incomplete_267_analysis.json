@@ -1,0 +1,5105 @@
+{
+  "snapshot_date_kst": "2026-09-15",
+  "universe_count": 2649,
+  "complete_count": 2382,
+  "incomplete_count": 267,
+  "available_counts": {
+    "M01": 2504,
+    "M02": 2409,
+    "M03": 2639,
+    "M04": 2611
+  },
+  "missing_counts": {
+    "M01": 145,
+    "M02": 240,
+    "M03": 10,
+    "M04": 38
+  },
+  "missing_combination_counts": {
+    "M01+M02": 124,
+    "M02": 98,
+    "M04": 23,
+    "M01+M02+M04": 7,
+    "M01+M02+M03+M04": 6,
+    "M01+M02+M03": 4,
+    "M01": 3,
+    "M02+M04": 1,
+    "M01+M04": 1
+  },
+  "missing_reason_counts_actual_records": {
+    "M01": {
+      "DART_NO_COMPARABLE_PRIOR_REVENUE": 93,
+      "DART_NO_REVENUE": 52
+    },
+    "M02": {
+      "FINANCIAL_SECTOR_EXCLUDED": 226,
+      "DART_NO_OPERATING_INCOME": 7,
+      "DART_NO_COMPARABLE_OPERATING_MARGIN": 5,
+      "DART_OPERATING_MARGIN_OUTLIER_GUARD": 2
+    },
+    "M03": {
+      "NAVER_EPS_MISSING": 9,
+      "ZERO_EPS": 1
+    },
+    "M04": {
+      "PRICE_HISTORY_SHORTER_THAN_6M": 38
+    }
+  },
+  "metric_class_counts": {
+    "STRUCTURAL_NA_FINANCIAL_M02": 226,
+    "RECOVERABLE_ACCOUNTING_SOURCE": 159,
+    "STRUCTURAL_NA_NEW_LISTING_M04": 38,
+    "RECOVERABLE_EPS_SOURCE": 9,
+    "STRUCTURAL_NA_ZERO_EPS": 1
+  },
+  "issuer_bucket_counts": {
+    "RECOVERABLE": 151,
+    "STRUCTURAL_ONLY": 116
+  },
+  "coverage_metadata_matches_records": true,
+  "coverage_expected": {
+    "M01": 2504,
+    "M02": 2409,
+    "M03": 2639,
+    "M04": 2611
+  },
+  "records": [
+    {
+      "code": "000070",
+      "name": "삼양홀딩스",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "1968-12-27",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "000140",
+      "name": "하이트진로홀딩스",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "1973-09-19",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "000240",
+      "name": "한국앤컴퍼니",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "1968-12-27",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "000320",
+      "name": "노루홀딩스",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "1973-08-10",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "000370",
+      "name": "한화손해보험",
+      "market": "KOSPI",
+      "sector": "보험업",
+      "listing_date": "1975-06-30",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "000400",
+      "name": "롯데손해보험",
+      "market": "KOSPI",
+      "sector": "보험업",
+      "listing_date": "1971-04-16",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "0004Y0",
+      "name": "디비금융제14호스팩",
+      "market": "KOSDAQ",
+      "sector": "기타 금융업",
+      "listing_date": "2025-07-22",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "000540",
+      "name": "흥국화재",
+      "market": "KOSPI",
+      "sector": "보험업",
+      "listing_date": "1974-12-05",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "000590",
+      "name": "CS홀딩스",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "1975-12-22",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "000640",
+      "name": "동아쏘시오홀딩스",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "1970-02-10",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "0007J0",
+      "name": "인벤테라",
+      "market": "KOSDAQ",
+      "sector": "자연과학 및 공학 연구개발업",
+      "listing_date": "2026-04-02",
+      "missing_metrics": [
+        "M01",
+        "M02",
+        "M04"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "DART_NO_COMPARABLE_OPERATING_MARGIN",
+        "M04": "PRICE_HISTORY_SHORTER_THAN_6M"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "000810",
+      "name": "삼성화재해상보험",
+      "market": "KOSPI",
+      "sector": "보험업",
+      "listing_date": "1975-06-30",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "001040",
+      "name": "CJ",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "1973-06-29",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "001080",
+      "name": "만호제강",
+      "market": "KOSPI",
+      "sector": "1차 철강 제조업",
+      "listing_date": "1977-06-18",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "DART_NO_OPERATING_INCOME"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "RECOVERABLE_ACCOUNTING_SOURCE"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "0010F0",
+      "name": "보원케미칼",
+      "market": "KOSDAQ",
+      "sector": "플라스틱제품 제조업",
+      "listing_date": "2026-04-03",
+      "missing_metrics": [
+        "M04"
+      ],
+      "reasons": {
+        "M04": "PRICE_HISTORY_SHORTER_THAN_6M"
+      },
+      "classes": {
+        "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "0011T0",
+      "name": "채비",
+      "market": "KOSDAQ",
+      "sector": "전동기, 발전기 및 전기 변환 · 공급 · 제어 장치 제조업",
+      "listing_date": "2026-04-29",
+      "missing_metrics": [
+        "M04"
+      ],
+      "reasons": {
+        "M04": "PRICE_HISTORY_SHORTER_THAN_6M"
+      },
+      "classes": {
+        "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "001200",
+      "name": "유진증권",
+      "market": "KOSPI",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "1987-08-24",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "001230",
+      "name": "동국홀딩스",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "1988-05-09",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "001270",
+      "name": "부국증권",
+      "market": "KOSPI",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "1988-07-19",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "001290",
+      "name": "상상인증권",
+      "market": "KOSPI",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "1988-09-23",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "001450",
+      "name": "현대해상",
+      "market": "KOSPI",
+      "sector": "보험업",
+      "listing_date": "1989-08-25",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "001500",
+      "name": "현대차증권",
+      "market": "KOSPI",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "1990-06-09",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "001510",
+      "name": "SK증권",
+      "market": "KOSPI",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "1986-09-20",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "001720",
+      "name": "신영증권",
+      "market": "KOSPI",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "1987-08-24",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "001750",
+      "name": "한양증권",
+      "market": "KOSPI",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "1988-03-04",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "0017J0",
+      "name": "세미티에스",
+      "market": "KOSDAQ",
+      "sector": "특수 목적용 기계 제조업",
+      "listing_date": "2026-06-10",
+      "missing_metrics": [
+        "M04"
+      ],
+      "reasons": {
+        "M04": "PRICE_HISTORY_SHORTER_THAN_6M"
+      },
+      "classes": {
+        "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "001800",
+      "name": "오리온홀딩스",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "1975-06-27",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "002020",
+      "name": "코오롱",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "1975-06-23",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "003030",
+      "name": "세아제강지주",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "1969-05-13",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "0030R0",
+      "name": "대신밸류리츠",
+      "market": "KOSPI",
+      "sector": "신탁업 및 집합투자업",
+      "listing_date": "2025-07-10",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "003380",
+      "name": "하림지주",
+      "market": "KOSDAQ",
+      "sector": "기타 금융업",
+      "listing_date": "2017-06-30",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "003460",
+      "name": "유화증권",
+      "market": "KOSPI",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "1987-08-24",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "003470",
+      "name": "유안타증권",
+      "market": "KOSPI",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "1988-01-21",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "003530",
+      "name": "한화투자증권",
+      "market": "KOSPI",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "1986-11-25",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "003540",
+      "name": "대신증권",
+      "market": "KOSPI",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "1975-10-01",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "003550",
+      "name": "LG",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "1970-02-13",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "003690",
+      "name": "코리안리",
+      "market": "KOSPI",
+      "sector": "재 보험업",
+      "listing_date": "1969-12-22",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "0037T0",
+      "name": "KB제32호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2025-07-04",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "0039P0",
+      "name": "매드업",
+      "market": "KOSDAQ",
+      "sector": "광고업",
+      "listing_date": "2026-07-01",
+      "missing_metrics": [
+        "M04"
+      ],
+      "reasons": {
+        "M04": "PRICE_HISTORY_SHORTER_THAN_6M"
+      },
+      "classes": {
+        "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "004150",
+      "name": "한솔홀딩스",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "1972-05-17",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "0041B0",
+      "name": "교보18호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2025-08-14",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "0041J0",
+      "name": "엘에스스팩1호",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2025-07-22",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "0041L0",
+      "name": "하나35호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2025-08-06",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "0044K0",
+      "name": "삼성스팩10호",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2025-08-21",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "004800",
+      "name": "효성",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "1973-06-30",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "004990",
+      "name": "롯데지주",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "1974-02-16",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "005440",
+      "name": "현대지에프홀딩스",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "1989-08-22",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "0054V0",
+      "name": "엔에이치스팩32호",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2025-12-05",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "005740",
+      "name": "크라운해태홀딩스",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "1976-06-30",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "005810",
+      "name": "풍산홀딩스",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "1988-07-28",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "005830",
+      "name": "DB손해보험",
+      "market": "KOSPI",
+      "sector": "보험업",
+      "listing_date": "1973-06-28",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "005940",
+      "name": "NH투자증권",
+      "market": "KOSPI",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "1975-09-30",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "006040",
+      "name": "동원산업",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "1989-03-07",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "006120",
+      "name": "SK디스커버리",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "1976-06-29",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "006200",
+      "name": "한국전자홀딩스",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "1979-11-30",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "006220",
+      "name": "제주은행",
+      "market": "KOSPI",
+      "sector": "은행 및 저축기관",
+      "listing_date": "1972-12-28",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "006260",
+      "name": "LS",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "1977-06-30",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "006800",
+      "name": "미래에셋증권",
+      "market": "KOSPI",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "1975-09-30",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "006840",
+      "name": "AK홀딩스",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "1999-08-11",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "0068Y0",
+      "name": "비엔케이제3호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2025-11-21",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "0071M0",
+      "name": "삼성스팩11호",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2025-09-30",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "0072Z0",
+      "name": "KB제33호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2025-09-30",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "007330",
+      "name": "푸른저축은행",
+      "market": "KOSDAQ",
+      "sector": "은행 및 저축기관",
+      "listing_date": "1993-12-07",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "007540",
+      "name": "샘표",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "1976-06-29",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "007700",
+      "name": "F&F 홀딩스",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "1984-10-04",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "007860",
+      "name": "서연",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "1989-09-09",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "008060",
+      "name": "대덕",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "1989-01-26",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "0082N0",
+      "name": "카나프테라퓨틱스",
+      "market": "KOSDAQ",
+      "sector": "자연과학 및 공학 연구개발업",
+      "listing_date": "2026-03-16",
+      "missing_metrics": [
+        "M04"
+      ],
+      "reasons": {
+        "M04": "PRICE_HISTORY_SHORTER_THAN_6M"
+      },
+      "classes": {
+        "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "0088D0",
+      "name": "메리츠제1호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2025-12-15",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "0088M0",
+      "name": "메쥬",
+      "market": "KOSDAQ",
+      "sector": "의료용 기기 제조업",
+      "listing_date": "2026-03-26",
+      "missing_metrics": [
+        "M04"
+      ],
+      "reasons": {
+        "M04": "PRICE_HISTORY_SHORTER_THAN_6M"
+      },
+      "classes": {
+        "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "008930",
+      "name": "한미사이언스",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "1988-06-20",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "0091W0",
+      "name": "신영스팩11호",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2025-11-24",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "0093G0",
+      "name": "미래에셋비전스팩8호",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2025-11-27",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "009440",
+      "name": "KC그린홀딩스",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "1994-11-05",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "009540",
+      "name": "HD한국조선해양",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "1999-08-24",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "0096B0",
+      "name": "삼성스팩12호",
+      "market": "KOSDAQ",
+      "sector": "기타 금융업",
+      "listing_date": "2025-11-28",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "0096D0",
+      "name": "미래에셋비전스팩9호",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2025-12-01",
+      "missing_metrics": [
+        "M01",
+        "M02",
+        "M03"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED",
+        "M03": "ZERO_EPS"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02",
+        "M03": "STRUCTURAL_NA_ZERO_EPS"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "0097F0",
+      "name": "미래에셋비전스팩10호",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2025-12-23",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "0098T0",
+      "name": "교보19호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2025-12-12",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "009970",
+      "name": "영원무역홀딩스",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "1988-11-07",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "0099W0",
+      "name": "미래에셋비전스팩11호",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2025-12-22",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "0099X0",
+      "name": "IBKS제25호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2025-12-19",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "010060",
+      "name": "OCI홀딩스",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "1985-07-09",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "0101C0",
+      "name": "하나36호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2025-12-22",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "0105P0",
+      "name": "유진스팩12호",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2025-12-11",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "0115H0",
+      "name": "삼성스팩13호",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2026-01-21",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "0117P0",
+      "name": "피스피스스튜디오",
+      "market": "KOSDAQ",
+      "sector": "섬유, 의복, 신발 및 가죽제품 소매업",
+      "listing_date": "2026-06-08",
+      "missing_metrics": [
+        "M04"
+      ],
+      "reasons": {
+        "M04": "PRICE_HISTORY_SHORTER_THAN_6M"
+      },
+      "classes": {
+        "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "0120G0",
+      "name": "삼양바이오팜",
+      "market": "KOSPI",
+      "sector": "의약품 제조업",
+      "listing_date": "2025-11-24",
+      "missing_metrics": [
+        "M01"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "012320",
+      "name": "경동인베스트",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "1997-03-07",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "012630",
+      "name": "HDC",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "1996-10-16",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "0126Z0",
+      "name": "삼성에피스홀딩스",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "2025-11-24",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "0129K0",
+      "name": "신한제18호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2026-04-30",
+      "missing_metrics": [
+        "M01",
+        "M02",
+        "M04"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED",
+        "M04": "PRICE_HISTORY_SHORTER_THAN_6M"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02",
+        "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "0130D0",
+      "name": "신한제17호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2026-04-01",
+      "missing_metrics": [
+        "M01",
+        "M02",
+        "M04"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED",
+        "M04": "PRICE_HISTORY_SHORTER_THAN_6M"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02",
+        "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "0130H0",
+      "name": "엔에이치스팩33호",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2026-03-27",
+      "missing_metrics": [
+        "M01",
+        "M02",
+        "M04"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED",
+        "M04": "PRICE_HISTORY_SHORTER_THAN_6M"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02",
+        "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "0131D0",
+      "name": "키움히어로제2호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2026-04-23",
+      "missing_metrics": [
+        "M01",
+        "M02",
+        "M04"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED",
+        "M04": "PRICE_HISTORY_SHORTER_THAN_6M"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02",
+        "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "0132G0",
+      "name": "교보20호스팩",
+      "market": "KOSDAQ",
+      "sector": "기타 금융업",
+      "listing_date": "2026-04-02",
+      "missing_metrics": [
+        "M01",
+        "M02",
+        "M04"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED",
+        "M04": "PRICE_HISTORY_SHORTER_THAN_6M"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02",
+        "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "0134X0",
+      "name": "대신밸런스제20호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2026-06-05",
+      "missing_metrics": [
+        "M01",
+        "M02",
+        "M04"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED",
+        "M04": "PRICE_HISTORY_SHORTER_THAN_6M"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02",
+        "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "013570",
+      "name": "디와이",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "1989-05-30",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "0155E0",
+      "name": "해치텍",
+      "market": "KOSDAQ",
+      "sector": "반도체 제조업",
+      "listing_date": "2026-08-25",
+      "missing_metrics": [
+        "M04"
+      ],
+      "reasons": {
+        "M04": "PRICE_HISTORY_SHORTER_THAN_6M"
+      },
+      "classes": {
+        "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "0156T0",
+      "name": "에이치엘지노믹스",
+      "market": "KOSDAQ",
+      "sector": "기초 의약물질 제조업",
+      "listing_date": "2026-07-24",
+      "missing_metrics": [
+        "M04"
+      ],
+      "reasons": {
+        "M04": "PRICE_HISTORY_SHORTER_THAN_6M"
+      },
+      "classes": {
+        "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "015860",
+      "name": "일진홀딩스",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "1990-03-22",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "016360",
+      "name": "삼성증권",
+      "market": "KOSPI",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "1988-03-28",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "0164H0",
+      "name": "한국제16호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2026-06-30",
+      "missing_metrics": [
+        "M01",
+        "M02",
+        "M03",
+        "M04"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED",
+        "M03": "NAVER_EPS_MISSING",
+        "M04": "PRICE_HISTORY_SHORTER_THAN_6M"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02",
+        "M03": "RECOVERABLE_EPS_SOURCE",
+        "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "0165X0",
+      "name": "메리츠제2호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2026-06-19",
+      "missing_metrics": [
+        "M01",
+        "M02",
+        "M03",
+        "M04"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED",
+        "M03": "NAVER_EPS_MISSING",
+        "M04": "PRICE_HISTORY_SHORTER_THAN_6M"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02",
+        "M03": "RECOVERABLE_EPS_SOURCE",
+        "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "016600",
+      "name": "큐캐피탈",
+      "market": "KOSDAQ",
+      "sector": "기타 금융업",
+      "listing_date": "1993-06-21",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "016610",
+      "name": "DB증권",
+      "market": "KOSPI",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "1988-06-27",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "016880",
+      "name": "웅진",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "1994-11-05",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "019550",
+      "name": "SBI인베스트먼트",
+      "market": "KOSDAQ",
+      "sector": "신탁업 및 집합투자업",
+      "listing_date": "1989-09-06",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "019570",
+      "name": "GMI벤처",
+      "market": "KOSDAQ",
+      "sector": "신탁업 및 집합투자업",
+      "listing_date": "1989-03-14",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "0197V0",
+      "name": "엔에이치스팩34호",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2026-09-10",
+      "missing_metrics": [
+        "M01",
+        "M02",
+        "M03",
+        "M04"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED",
+        "M03": "NAVER_EPS_MISSING",
+        "M04": "PRICE_HISTORY_SHORTER_THAN_6M"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02",
+        "M03": "RECOVERABLE_EPS_SOURCE",
+        "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "021080",
+      "name": "에이티넘인베스트",
+      "market": "KOSDAQ",
+      "sector": "신탁업 및 집합투자업",
+      "listing_date": "1991-07-12",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "021880",
+      "name": "메이슨캐피탈",
+      "market": "KOSDAQ",
+      "sector": "기타 금융업",
+      "listing_date": "1996-09-02",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "0218L0",
+      "name": "네오뷰",
+      "market": "KOSDAQ",
+      "sector": "영상 및 음향기기 제조업",
+      "listing_date": "2026-07-27",
+      "missing_metrics": [
+        "M01",
+        "M02",
+        "M03",
+        "M04"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "DART_NO_OPERATING_INCOME",
+        "M03": "NAVER_EPS_MISSING",
+        "M04": "PRICE_HISTORY_SHORTER_THAN_6M"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M03": "RECOVERABLE_EPS_SOURCE",
+        "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "0220W0",
+      "name": "한화머시너리앤서비스홀딩스",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "2026-08-25",
+      "missing_metrics": [
+        "M01",
+        "M02",
+        "M03",
+        "M04"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED",
+        "M03": "NAVER_EPS_MISSING",
+        "M04": "PRICE_HISTORY_SHORTER_THAN_6M"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02",
+        "M03": "RECOVERABLE_EPS_SOURCE",
+        "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "023760",
+      "name": "한국캐피탈",
+      "market": "KOSDAQ",
+      "sector": "기타 금융업",
+      "listing_date": "1994-11-07",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "024110",
+      "name": "기업은행",
+      "market": "KOSPI",
+      "sector": "은행 및 저축기관",
+      "listing_date": "2003-12-24",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "024720",
+      "name": "콜마홀딩스",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "2002-04-09",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "026890",
+      "name": "스틱인베스트먼트",
+      "market": "KOSPI",
+      "sector": "신탁업 및 집합투자업",
+      "listing_date": "1997-11-25",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "027360",
+      "name": "아주IB투자",
+      "market": "KOSDAQ",
+      "sector": "기타 금융업",
+      "listing_date": "2018-11-21",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "027410",
+      "name": "BGF",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "2014-05-19",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "027830",
+      "name": "대성창투",
+      "market": "KOSDAQ",
+      "sector": "신탁업 및 집합투자업",
+      "listing_date": "1999-11-30",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "029780",
+      "name": "삼성카드",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "2007-06-27",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "030210",
+      "name": "다올투자증권",
+      "market": "KOSPI",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "1996-11-19",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "030610",
+      "name": "교보증권",
+      "market": "KOSPI",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2002-07-18",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "031210",
+      "name": "서울보증보험",
+      "market": "KOSPI",
+      "sector": "보험업",
+      "listing_date": "2025-03-14",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "032830",
+      "name": "삼성생명",
+      "market": "KOSPI",
+      "sector": "보험업",
+      "listing_date": "2010-05-12",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "034730",
+      "name": "SK",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "2009-11-11",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "034810",
+      "name": "해성산업",
+      "market": "KOSDAQ",
+      "sector": "기타 금융업",
+      "listing_date": "1999-04-16",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "034830",
+      "name": "한국토지신탁",
+      "market": "KOSPI",
+      "sector": "신탁업 및 집합투자업",
+      "listing_date": "2016-07-11",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "036530",
+      "name": "SNT홀딩스",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "2002-10-22",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "039490",
+      "name": "키움증권",
+      "market": "KOSPI",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2009-08-03",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "041190",
+      "name": "우리기술투자",
+      "market": "KOSDAQ",
+      "sector": "기타 금융업",
+      "listing_date": "2000-06-09",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "042370",
+      "name": "비츠로테크",
+      "market": "KOSDAQ",
+      "sector": "기타 금융업",
+      "listing_date": "2000-08-03",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "044820",
+      "name": "코스맥스비티아이",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "2006-11-13",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "054620",
+      "name": "APS",
+      "market": "KOSDAQ",
+      "sector": "기타 금융업",
+      "listing_date": "2001-12-04",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "055550",
+      "name": "신한지주",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "2001-09-10",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "060250",
+      "name": "NHN KCP",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2002-01-08",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "060980",
+      "name": "HL홀딩스",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "2010-05-19",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "071050",
+      "name": "한국금융지주",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "2003-07-21",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "072710",
+      "name": "농심홀딩스",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "2003-07-30",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "078020",
+      "name": "LS증권",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2007-02-21",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "078070",
+      "name": "유비쿼스홀딩스",
+      "market": "KOSDAQ",
+      "sector": "기타 금융업",
+      "listing_date": "2009-01-23",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "078930",
+      "name": "GS",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "2004-08-05",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "082660",
+      "name": "코스나인",
+      "market": "KOSDAQ",
+      "sector": "기타 화학제품 제조업",
+      "listing_date": "2005-10-05",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "DART_NO_OPERATING_INCOME"
+      },
+      "classes": {
+        "M02": "RECOVERABLE_ACCOUNTING_SOURCE"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "084690",
+      "name": "대상홀딩스",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "2005-08-17",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "085620",
+      "name": "미래에셋생명",
+      "market": "KOSPI",
+      "sector": "보험업",
+      "listing_date": "2015-07-08",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "086520",
+      "name": "에코프로",
+      "market": "KOSDAQ",
+      "sector": "기타 금융업",
+      "listing_date": "2007-07-20",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "086790",
+      "name": "하나금융지주",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "2005-12-12",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "088350",
+      "name": "한화생명",
+      "market": "KOSPI",
+      "sector": "보험업",
+      "listing_date": "2010-03-17",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "088980",
+      "name": "맥쿼리인프라",
+      "market": "KOSPI",
+      "sector": "신탁업 및 집합투자업",
+      "listing_date": "2006-03-15",
+      "missing_metrics": [
+        "M01",
+        "M02",
+        "M03"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED",
+        "M03": "NAVER_EPS_MISSING"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02",
+        "M03": "RECOVERABLE_EPS_SOURCE"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "094800",
+      "name": "맵스리얼티",
+      "market": "KOSPI",
+      "sector": "신탁업 및 집합투자업",
+      "listing_date": "2007-04-09",
+      "missing_metrics": [
+        "M01",
+        "M02",
+        "M03"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED",
+        "M03": "NAVER_EPS_MISSING"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02",
+        "M03": "RECOVERABLE_EPS_SOURCE"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "096760",
+      "name": "JW홀딩스",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "2007-07-31",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "100790",
+      "name": "미래에셋벤처투자",
+      "market": "KOSDAQ",
+      "sector": "기타 금융업",
+      "listing_date": "2019-03-15",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "105560",
+      "name": "KB금융",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "2008-10-10",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "107590",
+      "name": "미원홀딩스",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "2009-03-02",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "123890",
+      "name": "한국자산신탁",
+      "market": "KOSPI",
+      "sector": "신탁업 및 집합투자업",
+      "listing_date": "2016-07-13",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "138040",
+      "name": "메리츠금융지주",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "2011-05-13",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "138930",
+      "name": "BNK금융지주",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "2011-03-30",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "139130",
+      "name": "iM금융지주",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "2011-06-07",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "153890",
+      "name": "져스텍",
+      "market": "KOSDAQ",
+      "sector": "전동기, 발전기 및 전기 변환 · 공급 · 제어 장치 제조업",
+      "listing_date": "2026-06-29",
+      "missing_metrics": [
+        "M04"
+      ],
+      "reasons": {
+        "M04": "PRICE_HISTORY_SHORTER_THAN_6M"
+      },
+      "classes": {
+        "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "175330",
+      "name": "JB금융지주",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "2013-07-18",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "180640",
+      "name": "한진칼",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "2013-09-16",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "190650",
+      "name": "코리아에셋투자증권",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2019-11-20",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "192400",
+      "name": "쿠쿠홀딩스",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "2014-08-06",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "204620",
+      "name": "글로벌텍스프리",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2014-11-19",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "211050",
+      "name": "인카금융서비스",
+      "market": "KOSDAQ",
+      "sector": "보험 및 연금관련 서비스업",
+      "listing_date": "2022-02-16",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "229640",
+      "name": "LS에코에너지",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "2016-09-22",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "234340",
+      "name": "헥토파이낸셜",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2019-07-12",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "241520",
+      "name": "DSC인베스트먼트",
+      "market": "KOSDAQ",
+      "sector": "신탁업 및 집합투자업",
+      "listing_date": "2016-12-19",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "241820",
+      "name": "피씨엘",
+      "market": "KOSDAQ",
+      "sector": "의료용품 및 기타 의약 관련제품 제조업",
+      "listing_date": "2017-02-23",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "DART_NO_OPERATING_INCOME"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "RECOVERABLE_ACCOUNTING_SOURCE"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "244920",
+      "name": "에이플러스에셋",
+      "market": "KOSPI",
+      "sector": "보험 및 연금관련 서비스업",
+      "listing_date": "2020-11-20",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "246690",
+      "name": "TS인베스트먼트",
+      "market": "KOSDAQ",
+      "sector": "신탁업 및 집합투자업",
+      "listing_date": "2016-12-15",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "267250",
+      "name": "HD현대",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "2017-05-10",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "276040",
+      "name": "스코넥",
+      "market": "KOSDAQ",
+      "sector": "소프트웨어 개발 및 공급업",
+      "listing_date": "2022-02-04",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "DART_NO_OPERATING_INCOME"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "RECOVERABLE_ACCOUNTING_SOURCE"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "277070",
+      "name": "린드먼아시아",
+      "market": "KOSDAQ",
+      "sector": "신탁업 및 집합투자업",
+      "listing_date": "2018-03-14",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "279570",
+      "name": "케이뱅크",
+      "market": "KOSPI",
+      "sector": "은행 및 저축기관",
+      "listing_date": "2026-03-05",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "282620",
+      "name": "기도산업",
+      "market": "KOSDAQ",
+      "sector": "봉제의복 제조업",
+      "listing_date": "2026-08-21",
+      "missing_metrics": [
+        "M04"
+      ],
+      "reasons": {
+        "M04": "PRICE_HISTORY_SHORTER_THAN_6M"
+      },
+      "classes": {
+        "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "288180",
+      "name": "케이피항공산업",
+      "market": "KOSDAQ",
+      "sector": "항공기,우주선 및 부품 제조업",
+      "listing_date": "2026-05-19",
+      "missing_metrics": [
+        "M04"
+      ],
+      "reasons": {
+        "M04": "PRICE_HISTORY_SHORTER_THAN_6M"
+      },
+      "classes": {
+        "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "289080",
+      "name": "SV인베스트먼트",
+      "market": "KOSDAQ",
+      "sector": "기타 금융업",
+      "listing_date": "2018-07-06",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "293580",
+      "name": "나우IB",
+      "market": "KOSDAQ",
+      "sector": "기타 금융업",
+      "listing_date": "2018-10-04",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "307930",
+      "name": "컴퍼니케이",
+      "market": "KOSDAQ",
+      "sector": "기타 금융업",
+      "listing_date": "2019-05-23",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "309960",
+      "name": "LB인베스트먼트",
+      "market": "KOSDAQ",
+      "sector": "기타 금융업",
+      "listing_date": "2023-03-29",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "310210",
+      "name": "보로노이",
+      "market": "KOSDAQ",
+      "sector": "자연과학 및 공학 연구개발업",
+      "listing_date": "2022-06-24",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "DART_NO_COMPARABLE_OPERATING_MARGIN"
+      },
+      "classes": {
+        "M02": "RECOVERABLE_ACCOUNTING_SOURCE"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "316140",
+      "name": "우리금융지주",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "2019-02-13",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "323410",
+      "name": "카카오뱅크",
+      "market": "KOSPI",
+      "sector": "은행 및 저축기관",
+      "listing_date": "2021-08-06",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "330730",
+      "name": "스톤브릿지벤처스",
+      "market": "KOSDAQ",
+      "sector": "기타 금융업",
+      "listing_date": "2022-02-25",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "358570",
+      "name": "지아이이노베이션",
+      "market": "KOSDAQ",
+      "sector": "자연과학 및 공학 연구개발업",
+      "listing_date": "2023-03-30",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "DART_NO_COMPARABLE_OPERATING_MARGIN"
+      },
+      "classes": {
+        "M02": "RECOVERABLE_ACCOUNTING_SOURCE"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "363280",
+      "name": "티와이홀딩스",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "2020-09-22",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "365270",
+      "name": "큐라클",
+      "market": "KOSDAQ",
+      "sector": "자연과학 및 공학 연구개발업",
+      "listing_date": "2021-07-22",
+      "missing_metrics": [
+        "M01"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "365590",
+      "name": "하이딥",
+      "market": "KOSDAQ",
+      "sector": "반도체 제조업",
+      "listing_date": "2020-12-21",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "DART_OPERATING_MARGIN_OUTLIER_GUARD"
+      },
+      "classes": {
+        "M02": "RECOVERABLE_ACCOUNTING_SOURCE"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "365660",
+      "name": "레몬헬스케어",
+      "market": "KOSDAQ",
+      "sector": "소프트웨어 개발 및 공급업",
+      "listing_date": "2026-07-06",
+      "missing_metrics": [
+        "M04"
+      ],
+      "reasons": {
+        "M04": "PRICE_HISTORY_SHORTER_THAN_6M"
+      },
+      "classes": {
+        "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "372320",
+      "name": "큐로셀",
+      "market": "KOSDAQ",
+      "sector": "자연과학 및 공학 연구개발업",
+      "listing_date": "2023-11-09",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "DART_NO_COMPARABLE_OPERATING_MARGIN"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "RECOVERABLE_ACCOUNTING_SOURCE"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "377300",
+      "name": "카카오페이",
+      "market": "KOSPI",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2021-11-03",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "383800",
+      "name": "LX홀딩스",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "2021-05-27",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "386380",
+      "name": "스카이랩스",
+      "market": "KOSDAQ",
+      "sector": "의료용 기기 제조업",
+      "listing_date": "2026-09-04",
+      "missing_metrics": [
+        "M01",
+        "M02",
+        "M03",
+        "M04"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "DART_NO_OPERATING_INCOME",
+        "M03": "NAVER_EPS_MISSING",
+        "M04": "PRICE_HISTORY_SHORTER_THAN_6M"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M03": "RECOVERABLE_EPS_SOURCE",
+        "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "387690",
+      "name": "레메디",
+      "market": "KOSDAQ",
+      "sector": "의료용 기기 제조업",
+      "listing_date": "2026-07-13",
+      "missing_metrics": [
+        "M04"
+      ],
+      "reasons": {
+        "M04": "PRICE_HISTORY_SHORTER_THAN_6M"
+      },
+      "classes": {
+        "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "388870",
+      "name": "파로스아이바이오",
+      "market": "KOSDAQ",
+      "sector": "자연과학 및 공학 연구개발업",
+      "listing_date": "2023-07-27",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "DART_NO_OPERATING_INCOME"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "RECOVERABLE_ACCOUNTING_SOURCE"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "394420",
+      "name": "리센스메디컬",
+      "market": "KOSDAQ",
+      "sector": "의료용 기기 제조업",
+      "listing_date": "2026-03-31",
+      "missing_metrics": [
+        "M04"
+      ],
+      "reasons": {
+        "M04": "PRICE_HISTORY_SHORTER_THAN_6M"
+      },
+      "classes": {
+        "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "402340",
+      "name": "SK스퀘어",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "2021-11-29",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "408470",
+      "name": "한패스",
+      "market": "KOSDAQ",
+      "sector": "기타 금융업",
+      "listing_date": "2026-03-25",
+      "missing_metrics": [
+        "M02",
+        "M04"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED",
+        "M04": "PRICE_HISTORY_SHORTER_THAN_6M"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02",
+        "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "415640",
+      "name": "KB발해인프라",
+      "market": "KOSPI",
+      "sector": "신탁업 및 집합투자업",
+      "listing_date": "2024-11-29",
+      "missing_metrics": [
+        "M01",
+        "M02",
+        "M03"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED",
+        "M03": "NAVER_EPS_MISSING"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02",
+        "M03": "RECOVERABLE_EPS_SOURCE"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "417030",
+      "name": "니어스랩",
+      "market": "KOSDAQ",
+      "sector": "소프트웨어 개발 및 공급업",
+      "listing_date": "2026-08-24",
+      "missing_metrics": [
+        "M04"
+      ],
+      "reasons": {
+        "M04": "PRICE_HISTORY_SHORTER_THAN_6M"
+      },
+      "classes": {
+        "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "424870",
+      "name": "이뮨온시아",
+      "market": "KOSDAQ",
+      "sector": "자연과학 및 공학 연구개발업",
+      "listing_date": "2025-05-19",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "DART_NO_COMPARABLE_OPERATING_MARGIN"
+      },
+      "classes": {
+        "M02": "RECOVERABLE_ACCOUNTING_SOURCE"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "439960",
+      "name": "코스모로보틱스",
+      "market": "KOSDAQ",
+      "sector": "의료용 기기 제조업",
+      "listing_date": "2026-05-11",
+      "missing_metrics": [
+        "M04"
+      ],
+      "reasons": {
+        "M04": "PRICE_HISTORY_SHORTER_THAN_6M"
+      },
+      "classes": {
+        "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "440290",
+      "name": "HB인베스트먼트",
+      "market": "KOSDAQ",
+      "sector": "기타 금융업",
+      "listing_date": "2024-01-25",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "452300",
+      "name": "캡스톤파트너스",
+      "market": "KOSDAQ",
+      "sector": "기타 금융업",
+      "listing_date": "2023-11-15",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "466690",
+      "name": "키움히어로제1호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2025-12-12",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "468760",
+      "name": "유진스팩10호",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2024-02-29",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "469480",
+      "name": "IBKS제24호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2024-02-01",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "469900",
+      "name": "하나31호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2024-03-05",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "472230",
+      "name": "SK증권제11호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2024-03-04",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "473000",
+      "name": "SK증권제12호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2024-05-07",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "473050",
+      "name": "유안타제15호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2024-02-29",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "473950",
+      "name": "SK증권제13호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2024-07-25",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "474490",
+      "name": "유안타제16호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2024-05-02",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "474660",
+      "name": "신한제12호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2024-04-15",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "474930",
+      "name": "신한제13호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2024-04-22",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "475040",
+      "name": "스트라드비젼",
+      "market": "KOSDAQ",
+      "sector": "소프트웨어 개발 및 공급업",
+      "listing_date": "2026-06-30",
+      "missing_metrics": [
+        "M04"
+      ],
+      "reasons": {
+        "M04": "PRICE_HISTORY_SHORTER_THAN_6M"
+      },
+      "classes": {
+        "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "475240",
+      "name": "하나32호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2024-03-27",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "475250",
+      "name": "하나33호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2024-04-24",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "475830",
+      "name": "오름테라퓨틱",
+      "market": "KOSDAQ",
+      "sector": "기초 의약물질 제조업",
+      "listing_date": "2025-02-14",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "DART_OPERATING_MARGIN_OUTLIER_GUARD"
+      },
+      "classes": {
+        "M02": "RECOVERABLE_ACCOUNTING_SOURCE"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "477340",
+      "name": "에이치엠씨제7호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2024-06-24",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "477380",
+      "name": "미래에셋비전스팩4호",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2024-05-29",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "477470",
+      "name": "미래에셋비전스팩5호",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2024-06-19",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "477760",
+      "name": "디비금융스팩12호",
+      "market": "KOSDAQ",
+      "sector": "기타 금융업",
+      "listing_date": "2024-06-18",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "477850",
+      "name": "마키나락스",
+      "market": "KOSDAQ",
+      "sector": "소프트웨어 개발 및 공급업",
+      "listing_date": "2026-05-20",
+      "missing_metrics": [
+        "M04"
+      ],
+      "reasons": {
+        "M04": "PRICE_HISTORY_SHORTER_THAN_6M"
+      },
+      "classes": {
+        "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "478110",
+      "name": "이베스트스팩6호",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2024-07-12",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "478390",
+      "name": "KB제29호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2024-06-21",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "478440",
+      "name": "미래에셋비전스팩6호",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2024-06-24",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "479880",
+      "name": "한국제15호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2024-06-26",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "481850",
+      "name": "신한글로벌액티브리츠",
+      "market": "KOSPI",
+      "sector": "신탁업 및 집합투자업",
+      "listing_date": "2024-07-01",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "481890",
+      "name": "엔에이치스팩31호",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2024-07-26",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "482520",
+      "name": "교보16호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2024-08-13",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "482680",
+      "name": "미래에셋비전스팩7호",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2024-09-11",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "482690",
+      "name": "대신밸런스제19호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2024-11-20",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "483350",
+      "name": "딜리셔스",
+      "market": "KOSDAQ",
+      "sector": "무점포 소매업",
+      "listing_date": "2026-08-12",
+      "missing_metrics": [
+        "M04"
+      ],
+      "reasons": {
+        "M04": "PRICE_HISTORY_SHORTER_THAN_6M"
+      },
+      "classes": {
+        "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "484130",
+      "name": "하나34호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2024-11-19",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "486630",
+      "name": "KB제30호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2024-09-25",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "487360",
+      "name": "신한제14호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2024-12-23",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "487400",
+      "name": "케이앤에스아이앤씨",
+      "market": "KOSDAQ",
+      "sector": "통신 및 방송 장비 제조업",
+      "listing_date": "2026-08-13",
+      "missing_metrics": [
+        "M04"
+      ],
+      "reasons": {
+        "M04": "PRICE_HISTORY_SHORTER_THAN_6M"
+      },
+      "classes": {
+        "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "487570",
+      "name": "HS효성",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "2024-07-29",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "487580",
+      "name": "폴레드",
+      "market": "KOSDAQ",
+      "sector": "가정용 기기 제조업",
+      "listing_date": "2026-05-14",
+      "missing_metrics": [
+        "M04"
+      ],
+      "reasons": {
+        "M04": "PRICE_HISTORY_SHORTER_THAN_6M"
+      },
+      "classes": {
+        "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "487720",
+      "name": "키움제10호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2024-12-20",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "487830",
+      "name": "신한제15호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2024-11-15",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "488060",
+      "name": "유진스팩11호",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2024-10-31",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "489210",
+      "name": "교보17호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2024-11-21",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "489460",
+      "name": "바이오비쥬",
+      "market": "KOSDAQ",
+      "sector": "기타 화학제품 제조업",
+      "listing_date": "2025-05-20",
+      "missing_metrics": [
+        "M01"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "489480",
+      "name": "키움제11호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2024-12-11",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "489730",
+      "name": "디비금융제13호스팩",
+      "market": "KOSDAQ",
+      "sector": "기타 금융업",
+      "listing_date": "2024-11-28",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "492220",
+      "name": "KB제31호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2024-12-12",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "493280",
+      "name": "아이엠바이오로직스",
+      "market": "KOSDAQ",
+      "sector": "자연과학 및 공학 연구개발업",
+      "listing_date": "2026-03-20",
+      "missing_metrics": [
+        "M04"
+      ],
+      "reasons": {
+        "M04": "PRICE_HISTORY_SHORTER_THAN_6M"
+      },
+      "classes": {
+        "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "493790",
+      "name": "유안타제17호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2025-01-23",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "496070",
+      "name": "신한제16호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2025-05-29",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "498390",
+      "name": "한화플러스제5호스팩",
+      "market": "KOSDAQ",
+      "sector": "금융 지원 서비스업",
+      "listing_date": "2025-03-20",
+      "missing_metrics": [
+        "M01",
+        "M02"
+      ],
+      "reasons": {
+        "M01": "DART_NO_REVENUE",
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    },
+    {
+      "code": "499790",
+      "name": "GS피앤엘",
+      "market": "KOSPI",
+      "sector": "기타 금융업",
+      "listing_date": "2024-12-23",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "900070",
+      "name": "글로벌에스엠",
+      "market": "KOSDAQ",
+      "sector": "기타 금융업",
+      "listing_date": "2009-12-23",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "900110",
+      "name": "딥커머스",
+      "market": "KOSDAQ",
+      "sector": "기타 금융업",
+      "listing_date": "2010-04-23",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "900120",
+      "name": "씨엑스아이",
+      "market": "KOSDAQ",
+      "sector": "기타 금융업",
+      "listing_date": "2010-03-31",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "900250",
+      "name": "크리스탈신소재",
+      "market": "KOSDAQ",
+      "sector": "기타 금융업",
+      "listing_date": "2016-01-28",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "900260",
+      "name": "로스웰",
+      "market": "KOSDAQ",
+      "sector": "기타 금융업",
+      "listing_date": "2016-06-30",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "900270",
+      "name": "헝셩그룹",
+      "market": "KOSDAQ",
+      "sector": "기타 금융업",
+      "listing_date": "2016-08-18",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "900290",
+      "name": "GRT",
+      "market": "KOSDAQ",
+      "sector": "기타 금융업",
+      "listing_date": "2016-10-25",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "900300",
+      "name": "오가닉티코스메틱",
+      "market": "KOSDAQ",
+      "sector": "기타 금융업",
+      "listing_date": "2016-11-04",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "900310",
+      "name": "컬러레이",
+      "market": "KOSDAQ",
+      "sector": "기타 금융업",
+      "listing_date": "2017-08-10",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "900340",
+      "name": "윙입푸드",
+      "market": "KOSDAQ",
+      "sector": "기타 금융업",
+      "listing_date": "2018-11-30",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "950250",
+      "name": "테라뷰",
+      "market": "KOSDAQ",
+      "sector": "기타 금융업",
+      "listing_date": "2025-12-09",
+      "missing_metrics": [
+        "M02"
+      ],
+      "reasons": {
+        "M02": "FINANCIAL_SECTOR_EXCLUDED"
+      },
+      "classes": {
+        "M02": "STRUCTURAL_NA_FINANCIAL_M02"
+      },
+      "issuer_bucket": "STRUCTURAL_ONLY"
+    },
+    {
+      "code": "950260",
+      "name": "인제니아테라퓨틱스",
+      "market": "KOSDAQ",
+      "sector": "자연과학 및 공학 연구개발업",
+      "listing_date": "2026-08-18",
+      "missing_metrics": [
+        "M01",
+        "M04"
+      ],
+      "reasons": {
+        "M01": "DART_NO_COMPARABLE_PRIOR_REVENUE",
+        "M04": "PRICE_HISTORY_SHORTER_THAN_6M"
+      },
+      "classes": {
+        "M01": "RECOVERABLE_ACCOUNTING_SOURCE",
+        "M04": "STRUCTURAL_NA_NEW_LISTING_M04"
+      },
+      "issuer_bucket": "RECOVERABLE"
+    }
+  ]
+}
