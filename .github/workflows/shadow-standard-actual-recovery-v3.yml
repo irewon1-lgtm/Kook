@@ -1,0 +1,51 @@
+name: KR4 Standard Actual Recovery Shadow V3
+
+on:
+  push:
+    branches:
+      - fix/incomplete-267-recovery-v1
+    paths:
+      - scripts/shadow_standard_actual_recovery_v3.py
+      - .github/workflows/shadow-standard-actual-recovery-v3.yml
+
+permissions:
+  contents: write
+
+jobs:
+  shadow-v3:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/incomplete-267-recovery-v1
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -q requests pandas lxml
+      - name: Run V3 shadow
+        working-directory: scripts
+        run: python shadow_standard_actual_recovery_v3.py --quant ../evidence/real_quant_snapshot.json --out ../evidence/standard_actual_recovery_v3_shadow.json
+      - name: Verify gates
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=json.loads(Path('evidence/standard_actual_recovery_v3_shadow.json').read_text(encoding='utf-8'))
+          b=p['coverage_before']; a=p['coverage_after_shadow']
+          assert p['source_error_count']==0
+          assert b == {'m01_available':2504,'m02_available':2409,'m03_available':2639,'m04_available':2611,'complete_count':2382,'ranked_count':2382}
+          assert a['m01_available']>=2504 and a['m02_available']>=2409
+          assert a['m03_available']==2639 and a['m04_available']==2611
+          assert a['complete_count']>=2382 and a['ranked_count']==a['complete_count']
+          print('KR4_STANDARD_ACTUAL_SHADOW_V3_GATE=PASS')
+          PY
+      - name: Commit evidence
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add evidence/standard_actual_recovery_v3_shadow.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Record final V3 actual recovery shadow'
+          git push origin HEAD:fix/incomplete-267-recovery-v1
