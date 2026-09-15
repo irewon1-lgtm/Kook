@@ -1,0 +1,111 @@
+name: Validate All Safe M01 M02 Recovery
+
+on:
+  push:
+    branches:
+      - fix/all-safe-m01-m02-v1
+    paths:
+      - scripts/apply_all_safe_m01_m02_recovery.py
+      - .github/workflows/validate-all-safe-m01-m02.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: validate-all-safe-m01-m02
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/all-safe-m01-m02-v1
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -q requests pandas lxml
+
+      - name: Self-tests
+        run: |
+          set -euo pipefail
+          python scripts/apply_standard_actual_recovery.py --self-test
+          python scripts/apply_all_safe_m01_m02_recovery.py --self-test
+
+      - name: Apply standard then all-safe recovery to isolated staging
+        run: |
+          set -euo pipefail
+          cp evidence/real_quant_snapshot.json /tmp/quant.json
+          python scripts/apply_standard_actual_recovery.py --quant /tmp/quant.json --out /tmp/quant.json
+          cp /tmp/quant.json /tmp/after_standard.json
+          python scripts/apply_all_safe_m01_m02_recovery.py --quant /tmp/quant.json --out /tmp/quant.json
+
+      - name: Exact current-snapshot and immutable gates
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, math
+          base=json.load(open('evidence/real_quant_snapshot.json',encoding='utf-8'))
+          std=json.load(open('/tmp/after_standard.json',encoding='utf-8'))
+          out=json.load(open('/tmp/quant.json',encoding='utf-8'))
+          bc=base['coverage']; sc=std['coverage']; oc=out['coverage']
+          assert bc=={'m01_available':2504,'m02_available':2409,'m03_available':2639,'m04_available':2607,'complete_count':2379,'ranked_count':2379},bc
+          assert sc=={'m01_available':2508,'m02_available':2417,'m03_available':2639,'m04_available':2607,'complete_count':2388,'ranked_count':2388},sc
+          assert oc=={'m01_available':2565,'m02_available':2418,'m03_available':2639,'m04_available':2607,'complete_count':2388,'ranked_count':2388},oc
+          rec=out['all_safe_m01_m02_recovery']
+          assert rec['m01_recovered']==57,rec
+          assert rec['m02_recovered']==1,rec
+          assert rec['promoted_complete_count']==0,rec
+          assert rec['source_error_count']==0,rec
+          assert len(rec['candidate_codes'])==142,len(rec['candidate_codes'])
+          assert rec['m02_codes']==['082660'],rec['m02_codes']
+          for code,old in std['records'].items():
+              new=out['records'][code]
+              for mid in ('m01','m02','m03','m04'):
+                  if old[mid]['raw'] is not None:
+                      assert new[mid]['raw']==old[mid]['raw'],(code,mid,'raw')
+                      assert new[mid]['basis']==old[mid]['basis'],(code,mid,'basis')
+              if old['m02']['reason']=='FINANCIAL_SECTOR_EXCLUDED':
+                  assert new['m02']['raw'] is None and new['m02']['reason']=='FINANCIAL_SECTOR_EXCLUDED'
+          for mid in ('m01','m02','m03','m04'):
+              counted={}
+              for row in out['records'].values():
+                  m=row[mid]
+                  if m['raw'] is None:
+                      assert m['reason']
+                      key=m['reason']
+                  else:
+                      assert math.isfinite(float(m['raw'])) and m['basis']
+                      key='AVAILABLE'
+                  counted[key]=counted.get(key,0)+1
+              assert out['reason_counts'][mid]==counted,(mid,out['reason_counts'][mid],counted)
+          print('ALL_SAFE_EXACT_GATE_PASS',json.dumps({'baseline':bc,'standard':sc,'all_safe':oc,'m01_added':57,'m02_added':1},ensure_ascii=False))
+          PY
+
+      - name: Python ranking regressions
+        run: |
+          set -euo pipefail
+          cp evidence/real_quant_snapshot.json /tmp/original.json
+          cp /tmp/quant.json evidence/real_quant_snapshot.json
+          python tests/run_all.py /tmp/all_safe_run_all.json
+          python tests/run_combo_rank_stress.py /tmp/all_safe_combo.json
+          mv /tmp/original.json evidence/real_quant_snapshot.json
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: temurin
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+
+      - name: Android unit regression and Debug APK
+        run: gradle :app:testDebugUnitTest :app:assembleDebug --stacktrace
