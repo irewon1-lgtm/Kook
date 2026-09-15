@@ -54,8 +54,8 @@ object StockRepository {
         )
         "M03" -> MetricEducation(
             "마지막 완료 거래일 종가를 네이버의 최근 실제 EPS로 나눈 실적 기준 PER입니다.",
-            "같은 시장 전체에서 낮은 PER일수록 상대점수를 높게 주지만, 낮은 PER이 곧 저평가를 뜻하지는 않습니다.",
-            "EPS가 0 이하인 적자기업은 PER을 만들지 않습니다. 추정 EPS는 사용하지 않습니다."
+            "흑자기업은 같은 시장에서 낮은 양(+)의 PER일수록 상대점수를 높게 줍니다. 음수 PER은 적자 상태 표시이며 저평가 신호로 취급하지 않습니다.",
+            "EPS가 음수면 PER도 음수로 표시해 4지표 완성에는 포함하되 PER 상대점수는 0점으로 처리합니다. EPS가 정확히 0이면 나눗셈이 불가능해 보류합니다. 추정 EPS는 사용하지 않습니다."
         )
         "M04" -> MetricEducation(
             "마지막 완료 거래일 종가와 약 6개월 전 마지막 거래일 종가의 등락률입니다.",
@@ -74,8 +74,9 @@ object StockRepository {
         "DART_NO_OPERATING_INCOME" -> "OpenDART 손익계산서에서 영업이익 계정을 확인하지 못함"
         "DART_NO_COMPARABLE_OPERATING_MARGIN" -> "같은 기간의 매출·영업이익 조합이 부족함"
         "DART_OPERATING_MARGIN_OUTLIER_GUARD" -> "영업이익률이 비정상 범위여서 자동 보류"
-        "NONPOSITIVE_EPS" -> "최근 실제 EPS가 0 이하라 PER 계산 불가"
-        "NAVER_EPS_MISSING" -> "네이버증권에서 최근 실제 EPS를 확인하지 못함"
+        "ZERO_EPS" -> "최근 실제 EPS가 0이라 PER을 계산할 수 없음"
+        "NONPOSITIVE_EPS" -> "이전 스냅샷 정책에서 EPS 0 이하를 PER 계산 대상에서 제외함"
+        "NAVER_EPS_MISSING" -> "네이버증권의 통합·연간 실제실적 자료에서 EPS를 확인하지 못함"
         "NAVER_INTEGRATION_ERROR" -> "네이버증권 밸류에이션 자료 호출 실패"
         "NAVER_NO_PRICE_AT_CUTOFF" -> "기준일 이전 유효 종가를 확인하지 못함"
         "NAVER_PER_OUTLIER_GUARD" -> "PER이 비정상 범위여서 자동 보류"
@@ -160,7 +161,7 @@ object StockRepository {
             sector = issuer.sector.ifBlank { "기타" },
             listingDate = issuer.listingDate,
             isFinancial = issuer.sector.contains("금융") || issuer.sector.contains("보험") || issuer.sector.contains("은행") || issuer.sector.contains("증권"),
-            isLossMaking = q.m03ReasonCode == "NONPOSITIVE_EPS",
+            isLossMaking = q.m03Raw?.let { it < 0.0 } == true || q.m03ReasonCode == "NONPOSITIVE_EPS",
             m01RevGrowth = m01,
             m02OpMargin = m02,
             m03Per = m03,
@@ -269,6 +270,9 @@ object StockRepository {
         if (!metric.isAvailable || metric.rawValue == null || metric.percentileScore == null) {
             return "실적 기준 PER: ${metric.reason ?: "보류"}"
         }
+        if (metric.rawValue < 0.0) {
+            return "실적 PER ${String.format("%.2f배", metric.rawValue)} · EPS가 음수인 적자 상태입니다. 음수 PER은 저평가 배수로 해석하지 않고 PER 상대점수는 0점으로 처리합니다."
+        }
         val relative = when {
             metric.percentileScore >= 75 -> "PER이 비교군에서 상대적으로 낮은 편"
             metric.percentileScore >= 50 -> "PER이 비교군 중간보다 낮은 편"
@@ -295,7 +299,7 @@ object StockRepository {
         val favorable = mutableListOf<String>()
         if (stock.m01RevGrowth.rawValue?.let { it > 0 } == true) favorable += "매출이 전년 동기간 대비 증가했습니다."
         if (stock.m02OpMargin.percentileScore?.let { it >= 60 } == true) favorable += "영업이익률이 전체 비교군에서 상대적으로 양호합니다."
-        if (stock.m03Per.percentileScore?.let { it >= 60 } == true) favorable += "실적 PER이 전체 비교군 대비 상대적으로 낮은 편입니다."
+        if (stock.m03Per.rawValue?.let { it > 0 } == true && stock.m03Per.percentileScore?.let { it >= 60 } == true) favorable += "실적 PER이 전체 비교군 대비 상대적으로 낮은 편입니다."
         if (stock.m04Price6m.rawValue?.let { it > 0 } == true) favorable += "최근 6개월 주가 흐름이 플러스입니다."
         if (favorable.isEmpty()) favorable += "현재 4지표에서 뚜렷한 우호 신호가 확인되지 않았거나 일부 지표가 보류 상태입니다."
 
@@ -303,7 +307,11 @@ object StockRepository {
         metrics.filterNot { it.isAvailable }.forEach { risks += "${it.nameKo}: ${it.reason ?: "보류"}" }
         if (stock.m01RevGrowth.rawValue?.let { it < 0 } == true) risks += "매출이 전년 동기간 대비 감소했습니다."
         if (stock.m02OpMargin.percentileScore?.let { it < 25 } == true) risks += "영업이익률이 전체 비교군 하위권입니다."
-        if (stock.m03Per.percentileScore?.let { it < 25 } == true) risks += "실적 PER이 전체 비교군에서 높은 편입니다."
+        if (stock.m03Per.rawValue?.let { it < 0 } == true) {
+            risks += "EPS가 음수인 적자 상태라 PER은 음수이며 가치평가 상대점수는 0점입니다."
+        } else if (stock.m03Per.percentileScore?.let { it < 25 } == true) {
+            risks += "실적 PER이 전체 비교군에서 높은 편입니다."
+        }
         if (stock.m04Price6m.rawValue?.let { it < -10 } == true) risks += "최근 6개월 주가가 두 자릿수 하락했습니다."
         if (risks.isEmpty()) risks += "4지표만으로는 사업·재무의 모든 위험을 포착할 수 없습니다."
 
@@ -334,7 +342,7 @@ object StockRepository {
             businessQuality = "${growthView(stock.m01RevGrowth)} ${marginView(stock.m02OpMargin)}",
             valuationView = valuationView(stock.m03Per),
             momentumView = momentumView(stock.m04Price6m),
-            dataLimitations = "M01/M02는 OpenDART 재무자료, M03/M04는 네이버증권 가격·실제 EPS를 사용합니다. 업종 피어 중앙값은 KRX KIND 업종을 우선하고 표본이 부족할 때만 명시적 표준 업종군으로 확장하며, 충분한 표본이 없으면 미산출합니다. 금융업 영업이익률과 적자기업 PER, 상장 6개월 미만 가격은 억지로 계산하지 않습니다. 모든 전체시장 상대점수와 업종 중앙값은 현재 확보 가능한 종목끼리의 비교이며 투자 권유가 아닙니다."
+            dataLimitations = "M01/M02는 OpenDART 재무자료, M03/M04는 네이버증권 가격·실제 EPS를 사용합니다. OpenDART 코드가 직접 연결되지 않는 경우에도 회사명 1:1 일치 또는 동일 법인의 우선주-보통주 관계가 확정될 때만 재무값을 복구합니다. 업종 피어 중앙값은 KRX KIND 업종을 우선하고 표본이 부족할 때만 명시적 표준 업종군으로 확장하며, 충분한 표본이 없으면 미산출합니다. 금융업 영업이익률은 일반 제조·서비스업과 직접 비교하지 않습니다. 적자기업 PER은 음수로 표시하되 PER 상대점수는 0점으로 처리하고, EPS가 정확히 0이거나 상장 6개월 미만으로 가격이 부족한 경우만 계산을 보류합니다. 모든 전체시장 상대점수와 업종 중앙값은 현재 확보 가능한 종목끼리의 비교이며 투자 권유가 아닙니다."
         )
     }
 }
