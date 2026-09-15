@@ -1,0 +1,4292 @@
+{
+  "cutoff": "2026-09-15",
+  "target": "2026-03-15",
+  "records": {
+    "006380": {
+      "name": "카프로",
+      "snapshot_m04": {
+        "raw": null,
+        "percentile": null,
+        "reason": "NAVER_CORPORATE_ACTION_ADJUSTMENT_MISSING",
+        "basis": ""
+      },
+      "suspicious": [
+        {
+          "previous_date": "2026-09-07",
+          "previous_close": 3660.0,
+          "date": "2026-09-08",
+          "close": 185.0,
+          "raw_factor": 0.050546448087431695,
+          "reference_factor": null,
+          "previous_bar": {
+            "localTradedAt": "2026-09-07",
+            "closePrice": "3,660",
+            "compareToPreviousClosePrice": "0",
+            "fluctuationsRatio": "0.00",
+            "openPrice": "0",
+            "highPrice": "0",
+            "lowPrice": "0",
+            "accumulatedTradingVolume": 0
+          },
+          "bar": {
+            "localTradedAt": "2026-09-08",
+            "closePrice": "185",
+            "compareToPreviousClosePrice": "-3,475",
+            "fluctuationsRatio": "-94.95",
+            "openPrice": "300",
+            "highPrice": "340",
+            "lowPrice": "185",
+            "accumulatedTradingVolume": 5215801
+          }
+        },
+        {
+          "previous_date": "2026-09-11",
+          "previous_close": 120.0,
+          "date": "2026-09-14",
+          "close": 71.0,
+          "raw_factor": 0.5916666666666667,
+          "reference_factor": null,
+          "previous_bar": {
+            "localTradedAt": "2026-09-11",
+            "closePrice": "120",
+            "compareToPreviousClosePrice": "-24",
+            "fluctuationsRatio": "-16.67",
+            "openPrice": "170",
+            "highPrice": "170",
+            "lowPrice": "113",
+            "accumulatedTradingVolume": 2396855
+          },
+          "bar": {
+            "localTradedAt": "2026-09-14",
+            "closePrice": "71",
+            "compareToPreviousClosePrice": "-49",
+            "fluctuationsRatio": "-40.83",
+            "openPrice": "110",
+            "highPrice": "117",
+            "lowPrice": "70",
+            "accumulatedTradingVolume": 2110973
+          }
+        },
+        {
+          "previous_date": "2026-09-14",
+          "previous_close": 71.0,
+          "date": "2026-09-15",
+          "close": 44.0,
+          "raw_factor": 0.6197183098591549,
+          "reference_factor": null,
+          "previous_bar": {
+            "localTradedAt": "2026-09-14",
+            "closePrice": "71",
+            "compareToPreviousClosePrice": "-49",
+            "fluctuationsRatio": "-40.83",
+            "openPrice": "110",
+            "highPrice": "117",
+            "lowPrice": "70",
+            "accumulatedTradingVolume": 2110973
+          },
+          "bar": {
+            "localTradedAt": "2026-09-15",
+            "closePrice": "44",
+            "compareToPreviousClosePrice": "-27",
+            "fluctuationsRatio": "-38.03",
+            "openPrice": "71",
+            "highPrice": "71",
+            "lowPrice": "44",
+            "accumulatedTradingVolume": 2450637
+          }
+        }
+      ],
+      "all_scalar_keys": [
+        "accumulatedTradingVolume",
+        "closePrice",
+        "compareToPreviousClosePrice",
+        "fluctuationsRatio",
+        "highPrice",
+        "localTradedAt",
+        "lowPrice",
+        "openPrice"
+      ],
+      "alternate_chart_payload": {
+        "code": "006380",
+        "infoType": "item",
+        "periodType": "dayCandle",
+        "newlyListed": false,
+        "stockExchangeType": "KRX",
+        "hasVolume": true,
+        "decimalUnit": 0,
+        "priceInfos": [
+          {
+            "localDate": "20260407",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260408",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260409",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260410",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260413",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260414",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260415",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260416",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260417",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260420",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260421",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260422",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260423",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260424",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260427",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260428",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260429",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260430",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260504",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260506",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260507",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260508",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260511",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260512",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260513",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260514",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260515",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260518",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260519",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260520",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260521",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260522",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260526",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260527",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260528",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260529",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260601",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260602",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260604",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260605",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260608",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260609",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260610",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260611",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260612",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260615",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260616",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260617",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260618",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260619",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260622",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260623",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260624",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260625",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260626",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260629",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260630",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260701",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260702",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260703",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260706",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260707",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260708",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260709",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260710",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260713",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260714",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260715",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260716",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260720",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260721",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260722",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260723",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260724",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260727",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260728",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260729",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260730",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260731",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260803",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260804",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260805",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260806",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260807",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260810",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260811",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260812",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260813",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260814",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260818",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260819",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260820",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260821",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260824",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260825",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260826",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260827",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260828",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260831",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260901",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260902",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260903",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260904",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260907",
+            "closePrice": 3660.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260908",
+            "closePrice": 185.0,
+            "openPrice": 300.0,
+            "highPrice": 340.0,
+            "lowPrice": 185.0,
+            "accumulatedTradingVolume": 5215801,
+            "foreignRetentionRate": 0.08
+          },
+          {
+            "localDate": "20260909",
+            "closePrice": 147.0,
+            "openPrice": 158.0,
+            "highPrice": 172.0,
+            "lowPrice": 133.0,
+            "accumulatedTradingVolume": 4338620,
+            "foreignRetentionRate": 0.07
+          },
+          {
+            "localDate": "20260910",
+            "closePrice": 144.0,
+            "openPrice": 181.0,
+            "highPrice": 260.0,
+            "lowPrice": 144.0,
+            "accumulatedTradingVolume": 4757764,
+            "foreignRetentionRate": 0.06
+          },
+          {
+            "localDate": "20260911",
+            "closePrice": 120.0,
+            "openPrice": 170.0,
+            "highPrice": 170.0,
+            "lowPrice": 113.0,
+            "accumulatedTradingVolume": 2396855,
+            "foreignRetentionRate": 0.06
+          },
+          {
+            "localDate": "20260914",
+            "closePrice": 71.0,
+            "openPrice": 110.0,
+            "highPrice": 117.0,
+            "lowPrice": 70.0,
+            "accumulatedTradingVolume": 2110973,
+            "foreignRetentionRate": 0.06
+          },
+          {
+            "localDate": "20260915",
+            "closePrice": 44.0,
+            "openPrice": 71.0,
+            "highPrice": 71.0,
+            "lowPrice": 44.0,
+            "accumulatedTradingVolume": 2450637,
+            "foreignRetentionRate": 0.06
+          }
+        ]
+      }
+    },
+    "008290": {
+      "name": "원풍물산",
+      "snapshot_m04": {
+        "raw": null,
+        "percentile": null,
+        "reason": "NAVER_CORPORATE_ACTION_ADJUSTMENT_MISSING",
+        "basis": ""
+      },
+      "suspicious": [
+        {
+          "previous_date": "2026-09-09",
+          "previous_close": 248.0,
+          "date": "2026-09-10",
+          "close": 136.0,
+          "raw_factor": 0.5483870967741935,
+          "reference_factor": null,
+          "previous_bar": {
+            "localTradedAt": "2026-09-09",
+            "closePrice": "248",
+            "compareToPreviousClosePrice": "0",
+            "fluctuationsRatio": "0.00",
+            "openPrice": "0",
+            "highPrice": "0",
+            "lowPrice": "0",
+            "accumulatedTradingVolume": 0
+          },
+          "bar": {
+            "localTradedAt": "2026-09-10",
+            "closePrice": "136",
+            "compareToPreviousClosePrice": "-112",
+            "fluctuationsRatio": "-45.16",
+            "openPrice": "172",
+            "highPrice": "172",
+            "lowPrice": "135",
+            "accumulatedTradingVolume": 8691425
+          }
+        }
+      ],
+      "all_scalar_keys": [
+        "accumulatedTradingVolume",
+        "closePrice",
+        "compareToPreviousClosePrice",
+        "fluctuationsRatio",
+        "highPrice",
+        "localTradedAt",
+        "lowPrice",
+        "openPrice"
+      ],
+      "alternate_chart_payload": {
+        "code": "008290",
+        "infoType": "item",
+        "periodType": "dayCandle",
+        "newlyListed": false,
+        "stockExchangeType": "KRX",
+        "hasVolume": true,
+        "decimalUnit": 0,
+        "priceInfos": [
+          {
+            "localDate": "20260407",
+            "closePrice": 728.0,
+            "openPrice": 704.0,
+            "highPrice": 758.0,
+            "lowPrice": 692.0,
+            "accumulatedTradingVolume": 40049,
+            "foreignRetentionRate": 3.19
+          },
+          {
+            "localDate": "20260408",
+            "closePrice": 706.0,
+            "openPrice": 764.0,
+            "highPrice": 764.0,
+            "lowPrice": 662.0,
+            "accumulatedTradingVolume": 87037,
+            "foreignRetentionRate": 3.24
+          },
+          {
+            "localDate": "20260409",
+            "closePrice": 718.0,
+            "openPrice": 722.0,
+            "highPrice": 730.0,
+            "lowPrice": 708.0,
+            "accumulatedTradingVolume": 50349,
+            "foreignRetentionRate": 3.27
+          },
+          {
+            "localDate": "20260410",
+            "closePrice": 746.0,
+            "openPrice": 720.0,
+            "highPrice": 748.0,
+            "lowPrice": 718.0,
+            "accumulatedTradingVolume": 41258,
+            "foreignRetentionRate": 3.31
+          },
+          {
+            "localDate": "20260413",
+            "closePrice": 714.0,
+            "openPrice": 760.0,
+            "highPrice": 760.0,
+            "lowPrice": 710.0,
+            "accumulatedTradingVolume": 57317,
+            "foreignRetentionRate": 3.31
+          },
+          {
+            "localDate": "20260414",
+            "closePrice": 774.0,
+            "openPrice": 714.0,
+            "highPrice": 872.0,
+            "lowPrice": 714.0,
+            "accumulatedTradingVolume": 466361,
+            "foreignRetentionRate": 3.71
+          },
+          {
+            "localDate": "20260415",
+            "closePrice": 806.0,
+            "openPrice": 812.0,
+            "highPrice": 834.0,
+            "lowPrice": 778.0,
+            "accumulatedTradingVolume": 89727,
+            "foreignRetentionRate": 3.75
+          },
+          {
+            "localDate": "20260416",
+            "closePrice": 792.0,
+            "openPrice": 806.0,
+            "highPrice": 860.0,
+            "lowPrice": 740.0,
+            "accumulatedTradingVolume": 209801,
+            "foreignRetentionRate": 3.83
+          },
+          {
+            "localDate": "20260417",
+            "closePrice": 836.0,
+            "openPrice": 810.0,
+            "highPrice": 890.0,
+            "lowPrice": 792.0,
+            "accumulatedTradingVolume": 144309,
+            "foreignRetentionRate": 3.8
+          },
+          {
+            "localDate": "20260420",
+            "closePrice": 836.0,
+            "openPrice": 836.0,
+            "highPrice": 836.0,
+            "lowPrice": 836.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 3.8
+          },
+          {
+            "localDate": "20260421",
+            "closePrice": 836.0,
+            "openPrice": 836.0,
+            "highPrice": 836.0,
+            "lowPrice": 836.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 3.77
+          },
+          {
+            "localDate": "20260422",
+            "closePrice": 836.0,
+            "openPrice": 836.0,
+            "highPrice": 836.0,
+            "lowPrice": 836.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 3.77
+          },
+          {
+            "localDate": "20260423",
+            "closePrice": 836.0,
+            "openPrice": 836.0,
+            "highPrice": 836.0,
+            "lowPrice": 836.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 3.77
+          },
+          {
+            "localDate": "20260424",
+            "closePrice": 836.0,
+            "openPrice": 836.0,
+            "highPrice": 836.0,
+            "lowPrice": 836.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 3.77
+          },
+          {
+            "localDate": "20260427",
+            "closePrice": 836.0,
+            "openPrice": 836.0,
+            "highPrice": 836.0,
+            "lowPrice": 836.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 3.77
+          },
+          {
+            "localDate": "20260428",
+            "closePrice": 836.0,
+            "openPrice": 836.0,
+            "highPrice": 836.0,
+            "lowPrice": 836.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 3.77
+          },
+          {
+            "localDate": "20260429",
+            "closePrice": 836.0,
+            "openPrice": 836.0,
+            "highPrice": 836.0,
+            "lowPrice": 836.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 3.77
+          },
+          {
+            "localDate": "20260430",
+            "closePrice": 836.0,
+            "openPrice": 836.0,
+            "highPrice": 836.0,
+            "lowPrice": 836.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 3.77
+          },
+          {
+            "localDate": "20260504",
+            "closePrice": 836.0,
+            "openPrice": 836.0,
+            "highPrice": 836.0,
+            "lowPrice": 836.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 3.77
+          },
+          {
+            "localDate": "20260506",
+            "closePrice": 836.0,
+            "openPrice": 836.0,
+            "highPrice": 836.0,
+            "lowPrice": 836.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 3.77
+          },
+          {
+            "localDate": "20260507",
+            "closePrice": 836.0,
+            "openPrice": 836.0,
+            "highPrice": 836.0,
+            "lowPrice": 836.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 3.77
+          },
+          {
+            "localDate": "20260508",
+            "closePrice": 836.0,
+            "openPrice": 836.0,
+            "highPrice": 836.0,
+            "lowPrice": 836.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 3.77
+          },
+          {
+            "localDate": "20260511",
+            "closePrice": 836.0,
+            "openPrice": 836.0,
+            "highPrice": 836.0,
+            "lowPrice": 836.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 5.59
+          },
+          {
+            "localDate": "20260512",
+            "closePrice": 696.0,
+            "openPrice": 900.0,
+            "highPrice": 901.0,
+            "lowPrice": 638.0,
+            "accumulatedTradingVolume": 512488,
+            "foreignRetentionRate": 3.55
+          },
+          {
+            "localDate": "20260513",
+            "closePrice": 668.0,
+            "openPrice": 695.0,
+            "highPrice": 709.0,
+            "lowPrice": 656.0,
+            "accumulatedTradingVolume": 145209,
+            "foreignRetentionRate": 3.33
+          },
+          {
+            "localDate": "20260514",
+            "closePrice": 684.0,
+            "openPrice": 668.0,
+            "highPrice": 868.0,
+            "lowPrice": 662.0,
+            "accumulatedTradingVolume": 3971918,
+            "foreignRetentionRate": 2.7
+          },
+          {
+            "localDate": "20260515",
+            "closePrice": 653.0,
+            "openPrice": 698.0,
+            "highPrice": 713.0,
+            "lowPrice": 651.0,
+            "accumulatedTradingVolume": 334833,
+            "foreignRetentionRate": 2.75
+          },
+          {
+            "localDate": "20260518",
+            "closePrice": 683.0,
+            "openPrice": 651.0,
+            "highPrice": 704.0,
+            "lowPrice": 618.0,
+            "accumulatedTradingVolume": 113816,
+            "foreignRetentionRate": 2.95
+          },
+          {
+            "localDate": "20260519",
+            "closePrice": 760.0,
+            "openPrice": 684.0,
+            "highPrice": 771.0,
+            "lowPrice": 683.0,
+            "accumulatedTradingVolume": 392041,
+            "foreignRetentionRate": 3.44
+          },
+          {
+            "localDate": "20260520",
+            "closePrice": 700.0,
+            "openPrice": 760.0,
+            "highPrice": 790.0,
+            "lowPrice": 693.0,
+            "accumulatedTradingVolume": 128055,
+            "foreignRetentionRate": 3.61
+          },
+          {
+            "localDate": "20260521",
+            "closePrice": 677.0,
+            "openPrice": 701.0,
+            "highPrice": 744.0,
+            "lowPrice": 650.0,
+            "accumulatedTradingVolume": 74971,
+            "foreignRetentionRate": 3.6
+          },
+          {
+            "localDate": "20260522",
+            "closePrice": 679.0,
+            "openPrice": 650.0,
+            "highPrice": 740.0,
+            "lowPrice": 650.0,
+            "accumulatedTradingVolume": 80724,
+            "foreignRetentionRate": 3.69
+          },
+          {
+            "localDate": "20260526",
+            "closePrice": 651.0,
+            "openPrice": 681.0,
+            "highPrice": 744.0,
+            "lowPrice": 636.0,
+            "accumulatedTradingVolume": 110173,
+            "foreignRetentionRate": 3.66
+          },
+          {
+            "localDate": "20260527",
+            "closePrice": 610.0,
+            "openPrice": 671.0,
+            "highPrice": 671.0,
+            "lowPrice": 610.0,
+            "accumulatedTradingVolume": 67140,
+            "foreignRetentionRate": 3.6
+          },
+          {
+            "localDate": "20260528",
+            "closePrice": 606.0,
+            "openPrice": 607.0,
+            "highPrice": 617.0,
+            "lowPrice": 592.0,
+            "accumulatedTradingVolume": 67110,
+            "foreignRetentionRate": 3.59
+          },
+          {
+            "localDate": "20260529",
+            "closePrice": 590.0,
+            "openPrice": 620.0,
+            "highPrice": 620.0,
+            "lowPrice": 587.0,
+            "accumulatedTradingVolume": 58651,
+            "foreignRetentionRate": 3.58
+          },
+          {
+            "localDate": "20260601",
+            "closePrice": 524.0,
+            "openPrice": 586.0,
+            "highPrice": 586.0,
+            "lowPrice": 495.0,
+            "accumulatedTradingVolume": 224368,
+            "foreignRetentionRate": 3.76
+          },
+          {
+            "localDate": "20260602",
+            "closePrice": 534.0,
+            "openPrice": 524.0,
+            "highPrice": 550.0,
+            "lowPrice": 519.0,
+            "accumulatedTradingVolume": 77848,
+            "foreignRetentionRate": 3.78
+          },
+          {
+            "localDate": "20260604",
+            "closePrice": 545.0,
+            "openPrice": 529.0,
+            "highPrice": 545.0,
+            "lowPrice": 510.0,
+            "accumulatedTradingVolume": 56027,
+            "foreignRetentionRate": 3.86
+          },
+          {
+            "localDate": "20260605",
+            "closePrice": 527.0,
+            "openPrice": 543.0,
+            "highPrice": 543.0,
+            "lowPrice": 519.0,
+            "accumulatedTradingVolume": 9026,
+            "foreignRetentionRate": 3.87
+          },
+          {
+            "localDate": "20260608",
+            "closePrice": 500.0,
+            "openPrice": 527.0,
+            "highPrice": 538.0,
+            "lowPrice": 500.0,
+            "accumulatedTradingVolume": 20223,
+            "foreignRetentionRate": 3.87
+          },
+          {
+            "localDate": "20260609",
+            "closePrice": 487.0,
+            "openPrice": 495.0,
+            "highPrice": 504.0,
+            "lowPrice": 450.0,
+            "accumulatedTradingVolume": 141868,
+            "foreignRetentionRate": 3.91
+          },
+          {
+            "localDate": "20260610",
+            "closePrice": 510.0,
+            "openPrice": 487.0,
+            "highPrice": 510.0,
+            "lowPrice": 480.0,
+            "accumulatedTradingVolume": 52612,
+            "foreignRetentionRate": 3.91
+          },
+          {
+            "localDate": "20260611",
+            "closePrice": 531.0,
+            "openPrice": 510.0,
+            "highPrice": 534.0,
+            "lowPrice": 480.0,
+            "accumulatedTradingVolume": 58532,
+            "foreignRetentionRate": 3.78
+          },
+          {
+            "localDate": "20260612",
+            "closePrice": 534.0,
+            "openPrice": 531.0,
+            "highPrice": 534.0,
+            "lowPrice": 513.0,
+            "accumulatedTradingVolume": 24980,
+            "foreignRetentionRate": 3.78
+          },
+          {
+            "localDate": "20260615",
+            "closePrice": 511.0,
+            "openPrice": 534.0,
+            "highPrice": 572.0,
+            "lowPrice": 511.0,
+            "accumulatedTradingVolume": 36298,
+            "foreignRetentionRate": 3.74
+          },
+          {
+            "localDate": "20260616",
+            "closePrice": 535.0,
+            "openPrice": 511.0,
+            "highPrice": 565.0,
+            "lowPrice": 511.0,
+            "accumulatedTradingVolume": 48571,
+            "foreignRetentionRate": 3.81
+          },
+          {
+            "localDate": "20260617",
+            "closePrice": 532.0,
+            "openPrice": 535.0,
+            "highPrice": 546.0,
+            "lowPrice": 519.0,
+            "accumulatedTradingVolume": 18989,
+            "foreignRetentionRate": 3.78
+          },
+          {
+            "localDate": "20260618",
+            "closePrice": 536.0,
+            "openPrice": 532.0,
+            "highPrice": 557.0,
+            "lowPrice": 502.0,
+            "accumulatedTradingVolume": 27660,
+            "foreignRetentionRate": 3.77
+          },
+          {
+            "localDate": "20260619",
+            "closePrice": 492.0,
+            "openPrice": 503.0,
+            "highPrice": 531.0,
+            "lowPrice": 490.0,
+            "accumulatedTradingVolume": 41980,
+            "foreignRetentionRate": 3.8
+          },
+          {
+            "localDate": "20260622",
+            "closePrice": 461.0,
+            "openPrice": 492.0,
+            "highPrice": 492.0,
+            "lowPrice": 420.0,
+            "accumulatedTradingVolume": 135764,
+            "foreignRetentionRate": 3.9
+          },
+          {
+            "localDate": "20260623",
+            "closePrice": 470.0,
+            "openPrice": 461.0,
+            "highPrice": 527.0,
+            "lowPrice": 461.0,
+            "accumulatedTradingVolume": 75641,
+            "foreignRetentionRate": 3.98
+          },
+          {
+            "localDate": "20260624",
+            "closePrice": 467.0,
+            "openPrice": 428.0,
+            "highPrice": 470.0,
+            "lowPrice": 428.0,
+            "accumulatedTradingVolume": 24659,
+            "foreignRetentionRate": 3.99
+          },
+          {
+            "localDate": "20260625",
+            "closePrice": 466.0,
+            "openPrice": 467.0,
+            "highPrice": 468.0,
+            "lowPrice": 421.0,
+            "accumulatedTradingVolume": 37039,
+            "foreignRetentionRate": 3.94
+          },
+          {
+            "localDate": "20260626",
+            "closePrice": 460.0,
+            "openPrice": 500.0,
+            "highPrice": 500.0,
+            "lowPrice": 436.0,
+            "accumulatedTradingVolume": 76179,
+            "foreignRetentionRate": 3.89
+          },
+          {
+            "localDate": "20260629",
+            "closePrice": 460.0,
+            "openPrice": 460.0,
+            "highPrice": 460.0,
+            "lowPrice": 438.0,
+            "accumulatedTradingVolume": 38101,
+            "foreignRetentionRate": 3.9
+          },
+          {
+            "localDate": "20260630",
+            "closePrice": 400.0,
+            "openPrice": 448.0,
+            "highPrice": 457.0,
+            "lowPrice": 400.0,
+            "accumulatedTradingVolume": 323899,
+            "foreignRetentionRate": 3.92
+          },
+          {
+            "localDate": "20260701",
+            "closePrice": 296.0,
+            "openPrice": 390.0,
+            "highPrice": 390.0,
+            "lowPrice": 281.0,
+            "accumulatedTradingVolume": 734172,
+            "foreignRetentionRate": 4.07
+          },
+          {
+            "localDate": "20260702",
+            "closePrice": 284.0,
+            "openPrice": 290.0,
+            "highPrice": 320.0,
+            "lowPrice": 252.0,
+            "accumulatedTradingVolume": 434744,
+            "foreignRetentionRate": 4.22
+          },
+          {
+            "localDate": "20260703",
+            "closePrice": 369.0,
+            "openPrice": 264.0,
+            "highPrice": 369.0,
+            "lowPrice": 264.0,
+            "accumulatedTradingVolume": 1759813,
+            "foreignRetentionRate": 4.2
+          },
+          {
+            "localDate": "20260706",
+            "closePrice": 296.0,
+            "openPrice": 435.0,
+            "highPrice": 445.0,
+            "lowPrice": 280.0,
+            "accumulatedTradingVolume": 1216737,
+            "foreignRetentionRate": 3.67
+          },
+          {
+            "localDate": "20260707",
+            "closePrice": 384.0,
+            "openPrice": 292.0,
+            "highPrice": 384.0,
+            "lowPrice": 281.0,
+            "accumulatedTradingVolume": 1790525,
+            "foreignRetentionRate": 4.08
+          },
+          {
+            "localDate": "20260708",
+            "closePrice": 327.0,
+            "openPrice": 384.0,
+            "highPrice": 399.0,
+            "lowPrice": 311.0,
+            "accumulatedTradingVolume": 2128300,
+            "foreignRetentionRate": 3.37
+          },
+          {
+            "localDate": "20260709",
+            "closePrice": 280.0,
+            "openPrice": 313.0,
+            "highPrice": 325.0,
+            "lowPrice": 280.0,
+            "accumulatedTradingVolume": 529029,
+            "foreignRetentionRate": 3.2
+          },
+          {
+            "localDate": "20260710",
+            "closePrice": 262.0,
+            "openPrice": 286.0,
+            "highPrice": 307.0,
+            "lowPrice": 256.0,
+            "accumulatedTradingVolume": 682805,
+            "foreignRetentionRate": 3.64
+          },
+          {
+            "localDate": "20260713",
+            "closePrice": 235.0,
+            "openPrice": 262.0,
+            "highPrice": 262.0,
+            "lowPrice": 234.0,
+            "accumulatedTradingVolume": 253968,
+            "foreignRetentionRate": 3.6
+          },
+          {
+            "localDate": "20260714",
+            "closePrice": 244.0,
+            "openPrice": 233.0,
+            "highPrice": 260.0,
+            "lowPrice": 217.0,
+            "accumulatedTradingVolume": 323296,
+            "foreignRetentionRate": 3.47
+          },
+          {
+            "localDate": "20260715",
+            "closePrice": 260.0,
+            "openPrice": 248.0,
+            "highPrice": 294.0,
+            "lowPrice": 248.0,
+            "accumulatedTradingVolume": 796406,
+            "foreignRetentionRate": 3.17
+          },
+          {
+            "localDate": "20260716",
+            "closePrice": 338.0,
+            "openPrice": 259.0,
+            "highPrice": 338.0,
+            "lowPrice": 249.0,
+            "accumulatedTradingVolume": 1850964,
+            "foreignRetentionRate": 3.42
+          },
+          {
+            "localDate": "20260720",
+            "closePrice": 439.0,
+            "openPrice": 407.0,
+            "highPrice": 439.0,
+            "lowPrice": 405.0,
+            "accumulatedTradingVolume": 494643,
+            "foreignRetentionRate": 3.56
+          },
+          {
+            "localDate": "20260721",
+            "closePrice": 570.0,
+            "openPrice": 570.0,
+            "highPrice": 570.0,
+            "lowPrice": 570.0,
+            "accumulatedTradingVolume": 62475,
+            "foreignRetentionRate": 3.56
+          },
+          {
+            "localDate": "20260722",
+            "closePrice": 625.0,
+            "openPrice": 741.0,
+            "highPrice": 741.0,
+            "lowPrice": 501.0,
+            "accumulatedTradingVolume": 15720293,
+            "foreignRetentionRate": 3.15
+          },
+          {
+            "localDate": "20260723",
+            "closePrice": 515.0,
+            "openPrice": 542.0,
+            "highPrice": 728.0,
+            "lowPrice": 515.0,
+            "accumulatedTradingVolume": 7095145,
+            "foreignRetentionRate": 3.25
+          },
+          {
+            "localDate": "20260724",
+            "closePrice": 406.0,
+            "openPrice": 502.0,
+            "highPrice": 520.0,
+            "lowPrice": 400.0,
+            "accumulatedTradingVolume": 2733140,
+            "foreignRetentionRate": 3.44
+          },
+          {
+            "localDate": "20260727",
+            "closePrice": 393.0,
+            "openPrice": 420.0,
+            "highPrice": 461.0,
+            "lowPrice": 376.0,
+            "accumulatedTradingVolume": 1026750,
+            "foreignRetentionRate": 3.55
+          },
+          {
+            "localDate": "20260728",
+            "closePrice": 325.0,
+            "openPrice": 397.0,
+            "highPrice": 397.0,
+            "lowPrice": 304.0,
+            "accumulatedTradingVolume": 882092,
+            "foreignRetentionRate": 3.95
+          },
+          {
+            "localDate": "20260729",
+            "closePrice": 422.0,
+            "openPrice": 319.0,
+            "highPrice": 422.0,
+            "lowPrice": 302.0,
+            "accumulatedTradingVolume": 1480535,
+            "foreignRetentionRate": 3.97
+          },
+          {
+            "localDate": "20260730",
+            "closePrice": 326.0,
+            "openPrice": 548.0,
+            "highPrice": 548.0,
+            "lowPrice": 326.0,
+            "accumulatedTradingVolume": 4186644,
+            "foreignRetentionRate": 3.78
+          },
+          {
+            "localDate": "20260731",
+            "closePrice": 370.0,
+            "openPrice": 373.0,
+            "highPrice": 409.0,
+            "lowPrice": 326.0,
+            "accumulatedTradingVolume": 4244416,
+            "foreignRetentionRate": 3.57
+          },
+          {
+            "localDate": "20260803",
+            "closePrice": 388.0,
+            "openPrice": 359.0,
+            "highPrice": 459.0,
+            "lowPrice": 330.0,
+            "accumulatedTradingVolume": 2834118,
+            "foreignRetentionRate": 3.77
+          },
+          {
+            "localDate": "20260804",
+            "closePrice": 420.0,
+            "openPrice": 390.0,
+            "highPrice": 482.0,
+            "lowPrice": 386.0,
+            "accumulatedTradingVolume": 2500722,
+            "foreignRetentionRate": 3.75
+          },
+          {
+            "localDate": "20260805",
+            "closePrice": 401.0,
+            "openPrice": 417.0,
+            "highPrice": 439.0,
+            "lowPrice": 390.0,
+            "accumulatedTradingVolume": 883197,
+            "foreignRetentionRate": 3.74
+          },
+          {
+            "localDate": "20260806",
+            "closePrice": 373.0,
+            "openPrice": 403.0,
+            "highPrice": 415.0,
+            "lowPrice": 361.0,
+            "accumulatedTradingVolume": 800750,
+            "foreignRetentionRate": 3.65
+          },
+          {
+            "localDate": "20260807",
+            "closePrice": 358.0,
+            "openPrice": 370.0,
+            "highPrice": 409.0,
+            "lowPrice": 357.0,
+            "accumulatedTradingVolume": 605827,
+            "foreignRetentionRate": 3.69
+          },
+          {
+            "localDate": "20260810",
+            "closePrice": 392.0,
+            "openPrice": 359.0,
+            "highPrice": 398.0,
+            "lowPrice": 358.0,
+            "accumulatedTradingVolume": 719679,
+            "foreignRetentionRate": 4.16
+          },
+          {
+            "localDate": "20260811",
+            "closePrice": 376.0,
+            "openPrice": 392.0,
+            "highPrice": 398.0,
+            "lowPrice": 364.0,
+            "accumulatedTradingVolume": 274074,
+            "foreignRetentionRate": 4.07
+          },
+          {
+            "localDate": "20260812",
+            "closePrice": 359.0,
+            "openPrice": 376.0,
+            "highPrice": 379.0,
+            "lowPrice": 352.0,
+            "accumulatedTradingVolume": 435512,
+            "foreignRetentionRate": 4.05
+          },
+          {
+            "localDate": "20260813",
+            "closePrice": 336.0,
+            "openPrice": 369.0,
+            "highPrice": 369.0,
+            "lowPrice": 329.0,
+            "accumulatedTradingVolume": 271754,
+            "foreignRetentionRate": 4.19
+          },
+          {
+            "localDate": "20260814",
+            "closePrice": 436.0,
+            "openPrice": 336.0,
+            "highPrice": 436.0,
+            "lowPrice": 336.0,
+            "accumulatedTradingVolume": 4137469,
+            "foreignRetentionRate": 3.9
+          },
+          {
+            "localDate": "20260818",
+            "closePrice": 458.0,
+            "openPrice": 451.0,
+            "highPrice": 558.0,
+            "lowPrice": 392.0,
+            "accumulatedTradingVolume": 6507258,
+            "foreignRetentionRate": 3.68
+          },
+          {
+            "localDate": "20260819",
+            "closePrice": 454.0,
+            "openPrice": 440.0,
+            "highPrice": 540.0,
+            "lowPrice": 427.0,
+            "accumulatedTradingVolume": 2068036,
+            "foreignRetentionRate": 3.43
+          },
+          {
+            "localDate": "20260820",
+            "closePrice": 412.0,
+            "openPrice": 433.0,
+            "highPrice": 449.0,
+            "lowPrice": 393.0,
+            "accumulatedTradingVolume": 737818,
+            "foreignRetentionRate": 3.49
+          },
+          {
+            "localDate": "20260821",
+            "closePrice": 535.0,
+            "openPrice": 424.0,
+            "highPrice": 535.0,
+            "lowPrice": 424.0,
+            "accumulatedTradingVolume": 6048804,
+            "foreignRetentionRate": 4.49
+          },
+          {
+            "localDate": "20260824",
+            "closePrice": 695.0,
+            "openPrice": 609.0,
+            "highPrice": 695.0,
+            "lowPrice": 580.0,
+            "accumulatedTradingVolume": 1813178,
+            "foreignRetentionRate": 5.11
+          },
+          {
+            "localDate": "20260825",
+            "closePrice": 712.0,
+            "openPrice": 830.0,
+            "highPrice": 900.0,
+            "lowPrice": 662.0,
+            "accumulatedTradingVolume": 9308349,
+            "foreignRetentionRate": 3.97
+          },
+          {
+            "localDate": "20260826",
+            "closePrice": 661.0,
+            "openPrice": 685.0,
+            "highPrice": 800.0,
+            "lowPrice": 620.0,
+            "accumulatedTradingVolume": 3877826,
+            "foreignRetentionRate": 3.45
+          },
+          {
+            "localDate": "20260827",
+            "closePrice": 722.0,
+            "openPrice": 685.0,
+            "highPrice": 859.0,
+            "lowPrice": 679.0,
+            "accumulatedTradingVolume": 8438084,
+            "foreignRetentionRate": 4.09
+          },
+          {
+            "localDate": "20260828",
+            "closePrice": 701.0,
+            "openPrice": 736.0,
+            "highPrice": 783.0,
+            "lowPrice": 699.0,
+            "accumulatedTradingVolume": 1902981,
+            "foreignRetentionRate": 3.25
+          },
+          {
+            "localDate": "20260831",
+            "closePrice": 692.0,
+            "openPrice": 672.0,
+            "highPrice": 739.0,
+            "lowPrice": 670.0,
+            "accumulatedTradingVolume": 1067204,
+            "foreignRetentionRate": 3.57
+          },
+          {
+            "localDate": "20260901",
+            "closePrice": 758.0,
+            "openPrice": 750.0,
+            "highPrice": 898.0,
+            "lowPrice": 750.0,
+            "accumulatedTradingVolume": 3515530,
+            "foreignRetentionRate": 3.74
+          },
+          {
+            "localDate": "20260902",
+            "closePrice": 663.0,
+            "openPrice": 756.0,
+            "highPrice": 782.0,
+            "lowPrice": 652.0,
+            "accumulatedTradingVolume": 1357165,
+            "foreignRetentionRate": 3.49
+          },
+          {
+            "localDate": "20260903",
+            "closePrice": 610.0,
+            "openPrice": 668.0,
+            "highPrice": 811.0,
+            "lowPrice": 581.0,
+            "accumulatedTradingVolume": 5551848,
+            "foreignRetentionRate": 4.54
+          },
+          {
+            "localDate": "20260904",
+            "closePrice": 427.0,
+            "openPrice": 659.0,
+            "highPrice": 745.0,
+            "lowPrice": 427.0,
+            "accumulatedTradingVolume": 7360215,
+            "foreignRetentionRate": 5.29
+          },
+          {
+            "localDate": "20260907",
+            "closePrice": 299.0,
+            "openPrice": 299.0,
+            "highPrice": 299.0,
+            "lowPrice": 299.0,
+            "accumulatedTradingVolume": 1036353,
+            "foreignRetentionRate": 5.34
+          },
+          {
+            "localDate": "20260908",
+            "closePrice": 248.0,
+            "openPrice": 220.0,
+            "highPrice": 349.0,
+            "lowPrice": 220.0,
+            "accumulatedTradingVolume": 37174555,
+            "foreignRetentionRate": 6.18
+          },
+          {
+            "localDate": "20260909",
+            "closePrice": 248.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 5.86
+          },
+          {
+            "localDate": "20260910",
+            "closePrice": 136.0,
+            "openPrice": 172.0,
+            "highPrice": 172.0,
+            "lowPrice": 135.0,
+            "accumulatedTradingVolume": 8691425,
+            "foreignRetentionRate": 5.42
+          },
+          {
+            "localDate": "20260911",
+            "closePrice": 134.0,
+            "openPrice": 139.0,
+            "highPrice": 139.0,
+            "lowPrice": 121.0,
+            "accumulatedTradingVolume": 4282516,
+            "foreignRetentionRate": 5.25
+          },
+          {
+            "localDate": "20260914",
+            "closePrice": 99.0,
+            "openPrice": 134.0,
+            "highPrice": 134.0,
+            "lowPrice": 99.0,
+            "accumulatedTradingVolume": 3768890,
+            "foreignRetentionRate": 4.01
+          },
+          {
+            "localDate": "20260915",
+            "closePrice": 70.0,
+            "openPrice": 99.0,
+            "highPrice": 99.0,
+            "lowPrice": 69.0,
+            "accumulatedTradingVolume": 3790908,
+            "foreignRetentionRate": 4.01
+          }
+        ]
+      }
+    },
+    "046070": {
+      "name": "코다코",
+      "snapshot_m04": {
+        "raw": null,
+        "percentile": null,
+        "reason": "NAVER_CORPORATE_ACTION_ADJUSTMENT_MISSING",
+        "basis": ""
+      },
+      "suspicious": [
+        {
+          "previous_date": "2026-09-09",
+          "previous_close": 82300.0,
+          "date": "2026-09-10",
+          "close": 410.0,
+          "raw_factor": 0.004981773997569866,
+          "reference_factor": null,
+          "previous_bar": {
+            "localTradedAt": "2026-09-09",
+            "closePrice": "82,300",
+            "compareToPreviousClosePrice": "0",
+            "fluctuationsRatio": "0.00",
+            "openPrice": "0",
+            "highPrice": "0",
+            "lowPrice": "0",
+            "accumulatedTradingVolume": 0
+          },
+          "bar": {
+            "localTradedAt": "2026-09-10",
+            "closePrice": "410",
+            "compareToPreviousClosePrice": "-81,890",
+            "fluctuationsRatio": "-99.50",
+            "openPrice": "800",
+            "highPrice": "800",
+            "lowPrice": "400",
+            "accumulatedTradingVolume": 6380367
+          }
+        },
+        {
+          "previous_date": "2026-09-11",
+          "previous_close": 452.0,
+          "date": "2026-09-14",
+          "close": 300.0,
+          "raw_factor": 0.6637168141592921,
+          "reference_factor": null,
+          "previous_bar": {
+            "localTradedAt": "2026-09-11",
+            "closePrice": "452",
+            "compareToPreviousClosePrice": "42",
+            "fluctuationsRatio": "10.24",
+            "openPrice": "481",
+            "highPrice": "550",
+            "lowPrice": "405",
+            "accumulatedTradingVolume": 3782127
+          },
+          "bar": {
+            "localTradedAt": "2026-09-14",
+            "closePrice": "300",
+            "compareToPreviousClosePrice": "-152",
+            "fluctuationsRatio": "-33.63",
+            "openPrice": "462",
+            "highPrice": "510",
+            "lowPrice": "280",
+            "accumulatedTradingVolume": 4048600
+          }
+        }
+      ],
+      "all_scalar_keys": [
+        "accumulatedTradingVolume",
+        "closePrice",
+        "compareToPreviousClosePrice",
+        "fluctuationsRatio",
+        "highPrice",
+        "localTradedAt",
+        "lowPrice",
+        "openPrice"
+      ],
+      "alternate_chart_payload": {
+        "code": "046070",
+        "infoType": "item",
+        "periodType": "dayCandle",
+        "newlyListed": false,
+        "stockExchangeType": "KRX",
+        "hasVolume": true,
+        "decimalUnit": 0,
+        "priceInfos": [
+          {
+            "localDate": "20260407",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260408",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260409",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260410",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260413",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260414",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260415",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260416",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260417",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260420",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260421",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260422",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260423",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260424",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260427",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260428",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260429",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260430",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260504",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260506",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260507",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260508",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260511",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260512",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260513",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260514",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260515",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260518",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260519",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260520",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260521",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260522",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260526",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260527",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260528",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260529",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260601",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260602",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260604",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260605",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260608",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260609",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260610",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260611",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260612",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260615",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260616",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260617",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260618",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260619",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260622",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260623",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260624",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260625",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260626",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260629",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260630",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260701",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260702",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260703",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260706",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260707",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260708",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260709",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260710",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260713",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260714",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260715",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260716",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260720",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260721",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260722",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260723",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260724",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260727",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260728",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260729",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260730",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260731",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260803",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260804",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260805",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260806",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260807",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260810",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260811",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260812",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260813",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260814",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260818",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260819",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260820",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260821",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260824",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260825",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260826",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260827",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260828",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260831",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260901",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260902",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.11
+          },
+          {
+            "localDate": "20260903",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.02
+          },
+          {
+            "localDate": "20260904",
+            "closePrice": 82300.0,
+            "openPrice": 82300.0,
+            "highPrice": 82300.0,
+            "lowPrice": 82300.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.02
+          },
+          {
+            "localDate": "20260907",
+            "closePrice": 82300.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.02
+          },
+          {
+            "localDate": "20260908",
+            "closePrice": 82300.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.02
+          },
+          {
+            "localDate": "20260909",
+            "closePrice": 82300.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.02
+          },
+          {
+            "localDate": "20260910",
+            "closePrice": 410.0,
+            "openPrice": 800.0,
+            "highPrice": 800.0,
+            "lowPrice": 400.0,
+            "accumulatedTradingVolume": 6380367,
+            "foreignRetentionRate": 0.02
+          },
+          {
+            "localDate": "20260911",
+            "closePrice": 452.0,
+            "openPrice": 481.0,
+            "highPrice": 550.0,
+            "lowPrice": 405.0,
+            "accumulatedTradingVolume": 3782127,
+            "foreignRetentionRate": 0.02
+          },
+          {
+            "localDate": "20260914",
+            "closePrice": 300.0,
+            "openPrice": 462.0,
+            "highPrice": 510.0,
+            "lowPrice": 280.0,
+            "accumulatedTradingVolume": 4048600,
+            "foreignRetentionRate": 0.01
+          },
+          {
+            "localDate": "20260915",
+            "closePrice": 229.0,
+            "openPrice": 302.0,
+            "highPrice": 341.0,
+            "lowPrice": 228.0,
+            "accumulatedTradingVolume": 2977385,
+            "foreignRetentionRate": 0.01
+          }
+        ]
+      }
+    },
+    "082660": {
+      "name": "코스나인",
+      "snapshot_m04": {
+        "raw": null,
+        "percentile": null,
+        "reason": "NAVER_CORPORATE_ACTION_ADJUSTMENT_MISSING",
+        "basis": ""
+      },
+      "suspicious": [
+        {
+          "previous_date": "2026-09-09",
+          "previous_close": 480.0,
+          "date": "2026-09-10",
+          "close": 13.0,
+          "raw_factor": 0.027083333333333334,
+          "reference_factor": null,
+          "previous_bar": {
+            "localTradedAt": "2026-09-09",
+            "closePrice": "480",
+            "compareToPreviousClosePrice": "0",
+            "fluctuationsRatio": "0.00",
+            "openPrice": "0",
+            "highPrice": "0",
+            "lowPrice": "0",
+            "accumulatedTradingVolume": 0
+          },
+          "bar": {
+            "localTradedAt": "2026-09-10",
+            "closePrice": "13",
+            "compareToPreviousClosePrice": "-467",
+            "fluctuationsRatio": "-97.29",
+            "openPrice": "16",
+            "highPrice": "16",
+            "lowPrice": "12",
+            "accumulatedTradingVolume": 46035714
+          }
+        }
+      ],
+      "all_scalar_keys": [
+        "accumulatedTradingVolume",
+        "closePrice",
+        "compareToPreviousClosePrice",
+        "fluctuationsRatio",
+        "highPrice",
+        "localTradedAt",
+        "lowPrice",
+        "openPrice"
+      ],
+      "alternate_chart_payload": {
+        "code": "082660",
+        "infoType": "item",
+        "periodType": "dayCandle",
+        "newlyListed": false,
+        "stockExchangeType": "KRX",
+        "hasVolume": true,
+        "decimalUnit": 0,
+        "priceInfos": [
+          {
+            "localDate": "20260407",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260408",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260409",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260410",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260413",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260414",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260415",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260416",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260417",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260420",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260421",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260422",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260423",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260424",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260427",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260428",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260429",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260430",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260504",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260506",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260507",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260508",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260511",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260512",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260513",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260514",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260515",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260518",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260519",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260520",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260521",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260522",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260526",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260527",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260528",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260529",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260601",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260602",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260604",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260605",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260608",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260609",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260610",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260611",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260612",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260615",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260616",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260617",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260618",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260619",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260622",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260623",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260624",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260625",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260626",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260629",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260630",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260701",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260702",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260703",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260706",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260707",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260708",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260709",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260710",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260713",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260714",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260715",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260716",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260720",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260721",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260722",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260723",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260724",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260727",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260728",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260729",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260730",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260731",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260803",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260804",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260805",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260806",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260807",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260810",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260811",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260812",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260813",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260814",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260818",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260819",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260820",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260821",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260824",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260825",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260826",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260827",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260828",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260831",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260901",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260902",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260903",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260904",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260907",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260908",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260909",
+            "closePrice": 480.0,
+            "openPrice": 0.0,
+            "highPrice": 0.0,
+            "lowPrice": 0.0,
+            "accumulatedTradingVolume": 0,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260910",
+            "closePrice": 13.0,
+            "openPrice": 16.0,
+            "highPrice": 16.0,
+            "lowPrice": 12.0,
+            "accumulatedTradingVolume": 46035714,
+            "foreignRetentionRate": 0.71
+          },
+          {
+            "localDate": "20260911",
+            "closePrice": 10.0,
+            "openPrice": 13.0,
+            "highPrice": 15.0,
+            "lowPrice": 9.0,
+            "accumulatedTradingVolume": 31580306,
+            "foreignRetentionRate": 0.57
+          },
+          {
+            "localDate": "20260914",
+            "closePrice": 7.0,
+            "openPrice": 10.0,
+            "highPrice": 10.0,
+            "lowPrice": 7.0,
+            "accumulatedTradingVolume": 30529911,
+            "foreignRetentionRate": 0.54
+          },
+          {
+            "localDate": "20260915",
+            "closePrice": 5.0,
+            "openPrice": 7.0,
+            "highPrice": 7.0,
+            "lowPrice": 4.0,
+            "accumulatedTradingVolume": 25397492,
+            "foreignRetentionRate": 0.54
+          }
+        ]
+      }
+    }
+  },
+  "errors": {},
+  "error_count": 0
+}
