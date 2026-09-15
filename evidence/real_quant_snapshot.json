@@ -84997,10 +84997,44 @@
   "recent_dart_fallback": {
     "policy": "one-quarter-back validated OpenDART history only; no multi-quarter skip; final economic fail-close + full rerank",
     "source_period": "2026Q1",
-    "m01_recovered": 0,
-    "m02_recovered": 0,
-    "m01_codes": [],
-    "m02_codes": [],
+    "m01_recovered": 16,
+    "m02_recovered": 16,
+    "m01_codes": [
+      "001570",
+      "002630",
+      "003620",
+      "004960",
+      "018500",
+      "020180",
+      "033200",
+      "060310",
+      "067010",
+      "082660",
+      "092440",
+      "099750",
+      "226340",
+      "344820",
+      "365330",
+      "950170"
+    ],
+    "m02_codes": [
+      "001570",
+      "002630",
+      "003620",
+      "004960",
+      "018500",
+      "020180",
+      "033200",
+      "060310",
+      "067010",
+      "092440",
+      "099750",
+      "226340",
+      "344820",
+      "365330",
+      "489460",
+      "950170"
+    ],
     "economic_guard": {
       "m01_range": [
         -100.0,
@@ -85020,61 +85054,218 @@
       "m02_excluded_codes": [
         "0082N0",
         "068240",
-        "310210",
-        "365590",
         "378800",
-        "389470",
-        "424870",
-        "475830",
-        "950210"
+        "389470"
       ]
     },
     "coverage_before": {
-      "m01_available": 2508,
-      "m02_available": 2417,
+      "m01_available": 2469,
+      "m02_available": 2380,
       "m03_available": 2638,
       "m04_available": 2607,
-      "complete_count": 2387,
-      "ranked_count": 2387
+      "complete_count": 2350,
+      "ranked_count": 2350
     },
     "coverage_after": {
-      "m01_available": 2503,
-      "m02_available": 2408,
+      "m01_available": 2480,
+      "m02_available": 2392,
       "m03_available": 2638,
       "m04_available": 2607,
-      "complete_count": 2376,
-      "ranked_count": 2376
+      "complete_count": 2359,
+      "ranked_count": 2359
     }
   },
   "fiscal_calendar_recovery": {
     "policy": "non-December fiscal issuers only; latest completed Naver actual quarter; consensus rejected; existing numeric metrics preserved",
-    "m01_recovered": 0,
-    "m02_recovered": 0,
-    "m01_codes": [],
-    "m02_codes": [],
-    "details": {},
+    "m01_recovered": 19,
+    "m02_recovered": 13,
+    "m01_codes": [
+      "001720",
+      "021820",
+      "030960",
+      "032800",
+      "050860",
+      "093240",
+      "097870",
+      "169330",
+      "189690",
+      "190650",
+      "289080",
+      "334970",
+      "395400",
+      "417310",
+      "448730",
+      "900120",
+      "900290",
+      "950210",
+      "950250"
+    ],
+    "m02_codes": [
+      "021820",
+      "030960",
+      "032800",
+      "050860",
+      "093240",
+      "097870",
+      "169330",
+      "189690",
+      "334970",
+      "395400",
+      "417310",
+      "448730",
+      "950210"
+    ],
+    "details": {
+      "001720": {
+        "fiscal_month": 3,
+        "latest_actual_period": "202606",
+        "prior_year_period": "202506",
+        "m01": 84.440501
+      },
+      "021820": {
+        "fiscal_month": 6,
+        "latest_actual_period": "202603",
+        "prior_year_period": "202503",
+        "m01": -21.792261,
+        "m02": -1.75
+      },
+      "030960": {
+        "fiscal_month": 6,
+        "latest_actual_period": "202606",
+        "prior_year_period": "202506",
+        "m01": -15.730337,
+        "m02": -102.11
+      },
+      "032800": {
+        "fiscal_month": 6,
+        "latest_actual_period": "202603",
+        "prior_year_period": "202503",
+        "m01": -30.232558,
+        "m02": -37.04
+      },
+      "050860": {
+        "fiscal_month": 6,
+        "latest_actual_period": "202603",
+        "prior_year_period": "202503",
+        "m01": -27.16895,
+        "m02": 0.63
+      },
+      "093240": {
+        "fiscal_month": 6,
+        "latest_actual_period": "202603",
+        "prior_year_period": "202503",
+        "m01": 17.280453,
+        "m02": 3.69
+      },
+      "097870": {
+        "fiscal_month": 6,
+        "latest_actual_period": "202603",
+        "prior_year_period": "202503",
+        "m01": -5.357143,
+        "m02": 30.32
+      },
+      "169330": {
+        "fiscal_month": 6,
+        "latest_actual_period": "202603",
+        "prior_year_period": "202503",
+        "m01": -11.607143,
+        "m02": -9.69
+      },
+      "189690": {
+        "fiscal_month": 6,
+        "latest_actual_period": "202603",
+        "prior_year_period": "202503",
+        "m01": 5.263158,
+        "m02": -0.82
+      },
+      "190650": {
+        "fiscal_month": 3,
+        "latest_actual_period": "202606",
+        "prior_year_period": "202506",
+        "m01": 3.357664
+      },
+      "289080": {
+        "fiscal_month": 3,
+        "latest_actual_period": "202606",
+        "prior_year_period": "202506",
+        "m01": 40.0
+      },
+      "334970": {
+        "fiscal_month": 6,
+        "latest_actual_period": "202603",
+        "prior_year_period": "202503",
+        "m01": -34.285714,
+        "m02": -719.42
+      },
+      "395400": {
+        "fiscal_month": 3,
+        "latest_actual_period": "202606",
+        "prior_year_period": "202506",
+        "m01": 12.957746,
+        "m02": 89.48
+      },
+      "417310": {
+        "fiscal_month": 2,
+        "latest_actual_period": "202605",
+        "prior_year_period": "202505",
+        "m01": 20.0,
+        "m02": 73.6
+      },
+      "448730": {
+        "fiscal_month": 1,
+        "latest_actual_period": "202604",
+        "prior_year_period": "202504",
+        "m01": 13.559322,
+        "m02": 66.71
+      },
+      "900120": {
+        "fiscal_month": 6,
+        "latest_actual_period": "202603",
+        "prior_year_period": "202503",
+        "m01": -27.884615
+      },
+      "900290": {
+        "fiscal_month": 6,
+        "latest_actual_period": "202603",
+        "prior_year_period": "202503",
+        "m01": 33.558016
+      },
+      "950210": {
+        "fiscal_month": 6,
+        "latest_actual_period": "202603",
+        "prior_year_period": "202503",
+        "m01": -84.848485,
+        "m02": -5175.09
+      },
+      "950250": {
+        "fiscal_month": 4,
+        "latest_actual_period": "202604",
+        "prior_year_period": "202504",
+        "m01": -47.368421
+      }
+    },
     "coverage_before": {
-      "m01_available": 2503,
-      "m02_available": 2408,
+      "m01_available": 2480,
+      "m02_available": 2392,
       "m03_available": 2638,
       "m04_available": 2607,
-      "complete_count": 2376,
-      "ranked_count": 2376
+      "complete_count": 2359,
+      "ranked_count": 2359
     },
     "coverage_after": {
-      "m01_available": 2503,
-      "m02_available": 2408,
+      "m01_available": 2499,
+      "m02_available": 2404,
       "m03_available": 2638,
       "m04_available": 2607,
-      "complete_count": 2376,
-      "ranked_count": 2376
+      "complete_count": 2371,
+      "ranked_count": 2371
     },
-    "candidate_count": 1,
+    "candidate_count": 20,
     "source_errors": {}
   },
   "standard_actual_recovery": {
     "policy": "all safe residual M01/M02 cells plus verified liquidation-trading M04 recovery; completed Naver actual periods; per-metric reason gates; finance M02 structural exclusion preserved; finite direct actual OPM authoritative; computed fallback abs<=10000; M03 immutable; M04 raw out-of-band moves allowed only for dated liquidation notices and unresolved resets",
-    "candidate_count": 142,
+    "candidate_count": 151,
     "candidate_codes": [
       "000370",
       "000400",
@@ -85082,6 +85273,7 @@
       "000540",
       "0007J0",
       "000810",
+      "001080",
       "001200",
       "001270",
       "001290",
@@ -85167,17 +85359,23 @@
       "138930",
       "139130",
       "175330",
+      "241820",
       "246690",
+      "276040",
       "279570",
       "293580",
       "307930",
+      "310210",
       "316140",
       "323410",
+      "358570",
       "365270",
+      "365590",
       "372320",
       "386380",
       "388870",
       "415640",
+      "424870",
       "440290",
       "466690",
       "468760",
@@ -85192,6 +85390,7 @@
       "474930",
       "475240",
       "475250",
+      "475830",
       "477340",
       "477380",
       "477470",
@@ -85211,6 +85410,7 @@
       "487830",
       "488060",
       "489210",
+      "489460",
       "489480",
       "489730",
       "492220",
@@ -85219,20 +85419,16 @@
       "498390",
       "950260"
     ],
-    "upgrade_candidate_count": 4,
-    "upgrade_candidate_codes": [
-      "001080",
-      "241820",
-      "276040",
-      "358570"
-    ],
-    "m01_recovered": 57,
-    "m02_recovered": 1,
+    "upgrade_candidate_count": 0,
+    "upgrade_candidate_codes": [],
+    "m01_recovered": 61,
+    "m02_recovered": 9,
     "m01_codes": [
       "000370",
       "000400",
       "000540",
       "000810",
+      "001080",
       "001200",
       "001270",
       "001290",
@@ -85280,15 +85476,26 @@
       "138930",
       "139130",
       "175330",
+      "241820",
       "246690",
+      "276040",
       "279570",
       "307930",
       "316140",
       "323410",
-      "440290"
+      "440290",
+      "489460"
     ],
     "m02_codes": [
-      "082660"
+      "001080",
+      "082660",
+      "241820",
+      "276040",
+      "310210",
+      "358570",
+      "365590",
+      "424870",
+      "475830"
     ],
     "m02_upgraded_count": 0,
     "m02_upgraded_codes": [],
@@ -85457,20 +85664,25 @@
         "basis_after": "2026-03-13->2026-09-15_KRX_ADJ_DAILY_CA1_FB1_LIQ1_EVT20260910:LIQUIDATION_TRADING:NA"
       }
     },
-    "promoted_complete_count": 4,
+    "promoted_complete_count": 9,
     "promoted_complete_codes": [
+      "001080",
       "006380",
       "008290",
       "046070",
-      "082660"
+      "082660",
+      "241820",
+      "276040",
+      "358570",
+      "489460"
     ],
     "coverage_before": {
-      "m01_available": 2503,
-      "m02_available": 2408,
+      "m01_available": 2499,
+      "m02_available": 2404,
       "m03_available": 2638,
       "m04_available": 2607,
-      "complete_count": 2376,
-      "ranked_count": 2376
+      "complete_count": 2371,
+      "ranked_count": 2371
     },
     "coverage_after": {
       "m01_available": 2560,
@@ -85568,6 +85780,29 @@
           "M02"
         ],
         "result": "PARTIAL"
+      },
+      "001080": {
+        "name": "만호제강",
+        "market": "KOSPI",
+        "sector": "1차 철강 제조업",
+        "m01_resolver": {
+          "key": "202603",
+          "prior_key": "202503",
+          "value": 1.617251,
+          "current_revenue": 377.0,
+          "prior_revenue": 371.0
+        },
+        "m02_resolver": {
+          "key": "202603",
+          "value": 3.35,
+          "source": "DIRECT",
+          "direct": 3.35,
+          "computed_from_rounded_cells": null,
+          "extreme_direct_actual": false,
+          "rejected_newer_periods": []
+        },
+        "missing_after": [],
+        "result": "PROMOTED_COMPLETE"
       },
       "001200": {
         "name": "유진증권",
@@ -86777,6 +87012,29 @@
         ],
         "result": "PARTIAL"
       },
+      "241820": {
+        "name": "피씨엘",
+        "market": "KOSDAQ",
+        "sector": "의료용품 및 기타 의약 관련제품 제조업",
+        "m01_resolver": {
+          "key": "202509",
+          "prior_key": "202409",
+          "value": 200.0,
+          "current_revenue": 12.0,
+          "prior_revenue": 4.0
+        },
+        "m02_resolver": {
+          "key": "202509",
+          "value": 10.57,
+          "source": "DIRECT",
+          "direct": 10.57,
+          "computed_from_rounded_cells": null,
+          "extreme_direct_actual": false,
+          "rejected_newer_periods": []
+        },
+        "missing_after": [],
+        "result": "PROMOTED_COMPLETE"
+      },
       "246690": {
         "name": "TS인베스트먼트",
         "market": "KOSDAQ",
@@ -86792,6 +87050,29 @@
           "M02"
         ],
         "result": "PARTIAL"
+      },
+      "276040": {
+        "name": "스코넥",
+        "market": "KOSDAQ",
+        "sector": "소프트웨어 개발 및 공급업",
+        "m01_resolver": {
+          "key": "202606",
+          "prior_key": "202506",
+          "value": -12.5,
+          "current_revenue": 7.0,
+          "prior_revenue": 8.0
+        },
+        "m02_resolver": {
+          "key": "202606",
+          "value": -131.81,
+          "source": "DIRECT",
+          "direct": -131.81,
+          "computed_from_rounded_cells": null,
+          "extreme_direct_actual": false,
+          "rejected_newer_periods": []
+        },
+        "missing_after": [],
+        "result": "PROMOTED_COMPLETE"
       },
       "279570": {
         "name": "케이뱅크",
@@ -86840,6 +87121,22 @@
         ],
         "result": "PARTIAL"
       },
+      "310210": {
+        "name": "보로노이",
+        "market": "KOSDAQ",
+        "sector": "자연과학 및 공학 연구개발업",
+        "m02_resolver": {
+          "key": "202512",
+          "value": -73336.04,
+          "source": "DIRECT",
+          "direct": -73336.04,
+          "computed_from_rounded_cells": null,
+          "extreme_direct_actual": true,
+          "rejected_newer_periods": []
+        },
+        "missing_after": [],
+        "result": "PROMOTED_COMPLETE"
+      },
       "316140": {
         "name": "우리금융지주",
         "market": "KOSPI",
@@ -86872,6 +87169,22 @@
         ],
         "result": "PARTIAL"
       },
+      "358570": {
+        "name": "지아이이노베이션",
+        "market": "KOSDAQ",
+        "sector": "자연과학 및 공학 연구개발업",
+        "m02_resolver": {
+          "key": "202512",
+          "value": -130.73,
+          "source": "DIRECT",
+          "direct": -130.73,
+          "computed_from_rounded_cells": null,
+          "extreme_direct_actual": false,
+          "rejected_newer_periods": []
+        },
+        "missing_after": [],
+        "result": "PROMOTED_COMPLETE"
+      },
       "365270": {
         "name": "큐라클",
         "market": "KOSDAQ",
@@ -86885,6 +87198,22 @@
           "M01"
         ],
         "result": "PARTIAL"
+      },
+      "365590": {
+        "name": "하이딥",
+        "market": "KOSDAQ",
+        "sector": "반도체 제조업",
+        "m02_resolver": {
+          "key": "202606",
+          "value": -11703.11,
+          "source": "DIRECT",
+          "direct": -11703.11,
+          "computed_from_rounded_cells": null,
+          "extreme_direct_actual": true,
+          "rejected_newer_periods": []
+        },
+        "missing_after": [],
+        "result": "PROMOTED_COMPLETE"
       },
       "372320": {
         "name": "큐로셀",
@@ -86935,6 +87264,22 @@
           "M03"
         ],
         "result": "PARTIAL"
+      },
+      "424870": {
+        "name": "이뮨온시아",
+        "market": "KOSDAQ",
+        "sector": "자연과학 및 공학 연구개발업",
+        "m02_resolver": {
+          "key": "202506",
+          "value": -5589.89,
+          "source": "DIRECT",
+          "direct": -5589.89,
+          "computed_from_rounded_cells": null,
+          "extreme_direct_actual": false,
+          "rejected_newer_periods": []
+        },
+        "missing_after": [],
+        "result": "PROMOTED_COMPLETE"
       },
       "440290": {
         "name": "HB인베스트먼트",
@@ -87094,6 +87439,22 @@
           "M02"
         ],
         "result": "PARTIAL"
+      },
+      "475830": {
+        "name": "오름테라퓨틱",
+        "market": "KOSDAQ",
+        "sector": "기초 의약물질 제조업",
+        "m02_resolver": {
+          "key": "202606",
+          "value": -63691.04,
+          "source": "DIRECT",
+          "direct": -63691.04,
+          "computed_from_rounded_cells": null,
+          "extreme_direct_actual": true,
+          "rejected_newer_periods": []
+        },
+        "missing_after": [],
+        "result": "PROMOTED_COMPLETE"
       },
       "477340": {
         "name": "에이치엠씨제7호스팩",
@@ -87304,6 +87665,20 @@
         ],
         "result": "PARTIAL"
       },
+      "489460": {
+        "name": "바이오비쥬",
+        "market": "KOSDAQ",
+        "sector": "기타 화학제품 제조업",
+        "m01_resolver": {
+          "key": "202606",
+          "prior_key": "202506",
+          "value": 59.677419,
+          "current_revenue": 99.0,
+          "prior_revenue": 62.0
+        },
+        "missing_after": [],
+        "result": "PROMOTED_COMPLETE"
+      },
       "489480": {
         "name": "키움제11호스팩",
         "market": "KOSDAQ",
@@ -87384,66 +87759,6 @@
           "M04"
         ],
         "result": "PARTIAL"
-      },
-      "001080": {
-        "name": "만호제강",
-        "market": "KOSPI",
-        "sector": "1차 철강 제조업",
-        "m02_upgrade_resolver": {
-          "key": "202603",
-          "value": 3.35,
-          "source": "DIRECT",
-          "direct": 3.35,
-          "computed_from_rounded_cells": null,
-          "extreme_direct_actual": false,
-          "rejected_newer_periods": []
-        },
-        "m02_upgrade_result": "ALREADY_CURRENT"
-      },
-      "241820": {
-        "name": "피씨엘",
-        "market": "KOSDAQ",
-        "sector": "의료용품 및 기타 의약 관련제품 제조업",
-        "m02_upgrade_resolver": {
-          "key": "202509",
-          "value": 10.57,
-          "source": "DIRECT",
-          "direct": 10.57,
-          "computed_from_rounded_cells": null,
-          "extreme_direct_actual": false,
-          "rejected_newer_periods": []
-        },
-        "m02_upgrade_result": "ALREADY_CURRENT"
-      },
-      "276040": {
-        "name": "스코넥",
-        "market": "KOSDAQ",
-        "sector": "소프트웨어 개발 및 공급업",
-        "m02_upgrade_resolver": {
-          "key": "202606",
-          "value": -131.81,
-          "source": "DIRECT",
-          "direct": -131.81,
-          "computed_from_rounded_cells": null,
-          "extreme_direct_actual": false,
-          "rejected_newer_periods": []
-        },
-        "m02_upgrade_result": "ALREADY_CURRENT"
-      },
-      "358570": {
-        "name": "지아이이노베이션",
-        "market": "KOSDAQ",
-        "sector": "자연과학 및 공학 연구개발업",
-        "m02_upgrade_resolver": {
-          "key": "202512",
-          "value": -130.73,
-          "source": "DIRECT",
-          "direct": -130.73,
-          "computed_from_rounded_cells": null,
-          "extreme_direct_actual": false,
-          "rejected_newer_periods": []
-        },
-        "m02_upgrade_result": "ALREADY_CURRENT"
       }
     },
     "source_error_count": 0,
