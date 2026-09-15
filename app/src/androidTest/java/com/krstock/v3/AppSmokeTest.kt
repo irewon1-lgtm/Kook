@@ -74,6 +74,7 @@ class AppSmokeTest {
         composeRule.waitForIdle()
         composeRule.onNodeWithTag("detail_metrics_page").assertIsDisplayed()
         composeRule.onNodeWithText("4대 정량지표").assertIsDisplayed()
+        composeRule.onNodeWithTag("peer_benchmark_M01").performScrollTo().assertIsDisplayed()
 
         composeRule.onNodeWithTag("detail_pager").performTouchInput { swipeLeft() }
         composeRule.waitForIdle()

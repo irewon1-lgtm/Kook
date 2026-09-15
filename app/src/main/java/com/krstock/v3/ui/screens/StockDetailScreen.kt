@@ -21,10 +21,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.krstock.v3.data.model.CompanyReport
 import com.krstock.v3.data.model.MetricValue
+import com.krstock.v3.data.model.PeerComparison
+import com.krstock.v3.data.model.PeerGroupBasis
 import com.krstock.v3.data.model.StockSummary
 import com.krstock.v3.data.repository.StockRepository
 import com.krstock.v3.ui.components.StatusBadge
 import kotlinx.coroutines.launch
+import kotlin.math.abs
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -239,7 +242,7 @@ private fun DetailMetricsPage(summary: StockSummary) {
             fontSize = 18.sp
         )
         Text(
-            "값 · 전체시장 상대위치 · 의미 · 산출근거를 한 카드에서 확인합니다.",
+            "값 · 업종 피어 중앙값 · 전체시장 상대위치 · 산출근거를 한 카드에서 확인합니다.",
             fontSize = 11.sp,
             color = scheme.onSurfaceVariant
         )
@@ -416,6 +419,9 @@ private fun MetricCard(metric: MetricValue, lossMaking: Boolean = false) {
             }
 
             Spacer(modifier = Modifier.height(10.dp))
+            PeerMedianPanel(metric)
+
+            Spacer(modifier = Modifier.height(10.dp))
             if (available) {
                 Text(metric.interpretation, fontSize = 12.sp, lineHeight = 18.sp)
             } else {
@@ -439,6 +445,88 @@ private fun MetricCard(metric: MetricValue, lossMaking: Boolean = false) {
             Spacer(modifier = Modifier.height(8.dp))
             Text("주의 · ${metric.caution}", fontSize = 9.sp, lineHeight = 15.sp, color = scheme.onSurfaceVariant)
         }
+    }
+}
+
+@Composable
+private fun PeerMedianPanel(metric: MetricValue) {
+    val scheme = MaterialTheme.colorScheme
+    val peer = metric.peerComparison
+    Surface(
+        modifier = Modifier.fillMaxWidth().testTag("peer_benchmark_${metric.id}"),
+        shape = RoundedCornerShape(11.dp),
+        color = scheme.secondaryContainer.copy(alpha = 0.55f),
+        contentColor = scheme.onSecondaryContainer,
+        border = BorderStroke(1.dp, scheme.secondary.copy(alpha = 0.18f))
+    ) {
+        Column(modifier = Modifier.padding(horizontal = 11.dp, vertical = 9.dp)) {
+            Text("업종 피어 중앙값", fontSize = 9.sp, fontWeight = FontWeight.Bold, color = scheme.secondary)
+            Spacer(Modifier.height(3.dp))
+
+            if (peer == null) {
+                Text("피어 엔진 정보 없음", fontSize = 10.sp, color = LocalContentColor.current.copy(alpha = 0.72f))
+                return@Column
+            }
+
+            val basisLabel = when (peer.basis) {
+                PeerGroupBasis.KRX_EXACT_SECTOR -> "KRX 세부업종"
+                PeerGroupBasis.STANDARD_SECTOR_FAMILY -> "표준 피어그룹"
+                PeerGroupBasis.INSUFFICIENT -> "표본 부족"
+            }
+            Text(
+                "${peer.groupLabel} · N=${peer.sampleSize} · $basisLabel",
+                fontSize = 10.sp,
+                fontWeight = FontWeight.SemiBold,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+            Spacer(Modifier.height(5.dp))
+
+            if (peer.isSufficient && peer.median != null) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text("중앙값", fontSize = 10.sp, color = LocalContentColor.current.copy(alpha = 0.72f))
+                    Text(formatMetricValue(metric.id, peer.median), fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                }
+                Spacer(Modifier.height(4.dp))
+                Text(peerComparisonText(metric, peer), fontSize = 10.sp, lineHeight = 15.sp)
+            } else {
+                Text(
+                    "중앙값 미산출 · ${peer.reason ?: "충분한 동종업계 표본 없음"}",
+                    fontSize = 10.sp,
+                    lineHeight = 15.sp,
+                    color = LocalContentColor.current.copy(alpha = 0.76f)
+                )
+            }
+        }
+    }
+}
+
+private fun formatMetricValue(metricId: String, value: Double): String =
+    if (metricId == "M03") String.format("%.2f배", value) else String.format("%.1f%%", value)
+
+private fun peerComparisonText(metric: MetricValue, peer: PeerComparison): String {
+    val raw = metric.rawValue ?: return "현재 종목 값이 없어 업종 중앙값과의 직접 비교는 보류합니다."
+    val delta = peer.deltaFromMedian ?: return "업종 중앙값과의 직접 비교를 계산하지 못했습니다."
+    if (abs(delta) <= 1e-12) return "업종 중앙값과 동일한 수준입니다."
+
+    return if (metric.id == "M03") {
+        val rel = peer.relativeToMedianPct
+        val direction = if (delta < 0) "낮음" else "높음"
+        val implication = if (peer.betterThanMedian == true) "정량 방향상 유리" else "정량 방향상 부담"
+        if (rel != null && rel.isFinite()) {
+            "업종 중앙값보다 ${String.format("%.1f", abs(rel))}% $direction · $implication"
+        } else {
+            "업종 중앙값보다 ${String.format("%.2f", abs(delta))}배 $direction · $implication"
+        }
+    } else {
+        val sign = if (delta > 0) "+" else "-"
+        val direction = if (delta > 0) "상회" else "하회"
+        val implication = if (peer.betterThanMedian == true) "정량 방향상 우위" else "정량 방향상 열위"
+        "업종 중앙값 대비 $sign${String.format("%.1f", abs(delta))}%p · $direction · $implication"
     }
 }
 
