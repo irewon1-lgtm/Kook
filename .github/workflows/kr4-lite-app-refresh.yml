@@ -1,0 +1,154 @@
+name: KR4 Lite App Data Refresh
+
+on:
+  push:
+    branches:
+      - refresh/kr4-app-data
+    paths:
+      - ".github/kr4-lite-trigger"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: kr4-lite-app-data-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: refresh/kr4-app-data
+          fetch-depth: 0
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install only required dependencies
+        run: pip install requests pandas lxml
+
+      - name: Cheap targeted regressions
+        run: |
+          set -euo pipefail
+          python tests/test_m04_corporate_actions.py
+          python tests/test_auto_update_pipeline.py
+
+      - name: Preserve baseline
+        run: cp evidence/real_quant_snapshot.json /tmp/kr4_baseline.json
+
+      - name: Collect only four-metric app snapshot
+        run: |
+          set -euo pipefail
+          python scripts/collect_real_quant_v3.py \
+            --as-of auto \
+            --price-cutoff auto \
+            --workers 14 \
+            --kotlin-out /tmp/GeneratedRealQuantSnapshot.kt \
+            --evidence-out /tmp/real_quant_snapshot.json
+
+      - name: Apply existing M01 M02 recovery chain without recollecting 8Q history
+        run: |
+          set -euo pipefail
+          python scripts/apply_recent_dart_fallback.py \
+            --quant /tmp/real_quant_snapshot.json \
+            --history evidence/quarterly_history.json \
+            --out /tmp/real_quant_snapshot.json
+          python scripts/apply_fiscal_calendar_recovery.py \
+            --quant /tmp/real_quant_snapshot.json \
+            --out /tmp/real_quant_snapshot.json \
+            --kind-retries 3
+          python scripts/apply_standard_actual_recovery.py \
+            --quant /tmp/real_quant_snapshot.json \
+            --out /tmp/real_quant_snapshot.json
+
+      - name: Four-metric quality and corporate-action gate
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, math, re
+          from collections import Counter
+          from datetime import date
+
+          new=json.load(open('/tmp/real_quant_snapshot.json',encoding='utf-8'))
+          old=json.load(open('/tmp/kr4_baseline.json',encoding='utf-8'))
+          n=new['universe_count']
+          assert n==old['universe_count']==len(new['records'])==2649
+          assert new.get('auto_update',{}).get('collector')=='collect_real_quant_v3.py'
+          snap=date.fromisoformat(new['snapshot_date_kst'])
+          price=date.fromisoformat(new['price_cutoff_date_kst'])
+          assert price<=snap and (snap-price).days<=10
+          c=new['coverage']; b=old['coverage']
+          floors={
+            'm01_available':max(int(n*0.88),int(b['m01_available'])-55),
+            'm02_available':max(int(n*0.84),int(b['m02_available'])-55),
+            'm03_available':max(int(n*0.58),int(b['m03_available'])-80),
+            'm04_available':max(int(n*0.96),int(b['m04_available'])-30),
+            'complete_count':max(int(n*0.50),int(b['complete_count'])-100),
+          }
+          for k,f in floors.items(): assert int(c[k])>=f,(k,c[k],f)
+          assert c['ranked_count']==c['complete_count']
+
+          ranks=[]; evt_stocks=0; evt_dates=Counter(); m03_ca_reasons=Counter()
+          for code,r in new['records'].items():
+            assert re.fullmatch(r'[0-9A-Z]{6}',code)
+            ms=[r[f'm0{i}'] for i in range(1,5)]
+            for m in ms:
+              raw,pct,reason,basis=m['raw'],m['percentile'],m['reason'],m['basis']
+              if raw is None: assert pct is None and reason,(code,m)
+              else: assert math.isfinite(float(raw)) and pct is not None and 0<=float(pct)<=100 and basis,(code,m)
+            complete=all(m['raw'] is not None for m in ms)
+            assert (r['composite'] is not None)==complete
+            assert (r['rank'] is not None)==complete
+            if r['rank'] is not None: ranks.append(int(r['rank']))
+            basis=str(r['m04'].get('basis') or '')
+            dates=re.findall(r'_EVT(20\d{6}):',basis)
+            if dates:
+              evt_stocks += 1
+              evt_dates.update(dates)
+            reason=str(r['m03'].get('reason') or '')
+            if reason.startswith('CORPORATE_ACTION_PER_XCHECK_'):
+              m03_ca_reasons[reason]+=1
+          assert sorted(ranks)==list(range(1,len(ranks)+1))
+          top_date,top_count=(evt_dates.most_common(1)[0] if evt_dates else ('NONE',0))
+          assert top_count < 200,(top_date,top_count)
+          summary={
+            'snapshot':new['snapshot_date_kst'],
+            'price':new['price_cutoff_date_kst'],
+            'coverage':c,
+            'corporate_action_stocks':evt_stocks,
+            'top_event_date':top_date,
+            'top_event_date_count':top_count,
+            'm03_ca_block_reasons':dict(m03_ca_reasons),
+          }
+          json.dump(summary,open('/tmp/kr4_lite_summary.json','w',encoding='utf-8'),ensure_ascii=False,indent=2)
+          print('KR4_LITE_GATE_PASS',json.dumps(summary,ensure_ascii=False))
+          PY
+
+      - name: Publish JSON only to main without downstream Actions
+        run: |
+          set -euo pipefail
+          SUMMARY=$(python - <<'PY'
+          import json
+          s=json.load(open('/tmp/kr4_lite_summary.json',encoding='utf-8'))
+          c=s['coverage']
+          print(f"{s['snapshot']} price={s['price']} M03={c['m03_available']} M04={c['m04_available']} complete={c['complete_count']} CA={s['corporate_action_stocks']} topCA={s['top_event_date_count']}")
+          PY
+          )
+          git fetch origin main
+          git checkout -B kr4-publish origin/main
+          cp /tmp/real_quant_snapshot.json evidence/real_quant_snapshot.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add evidence/real_quant_snapshot.json
+          if git diff --cached --quiet; then
+            echo "No app snapshot change"
+            exit 0
+          fi
+          git commit -m "[skip actions] Refresh KR4 app data: ${SUMMARY}"
+          git push origin HEAD:main
