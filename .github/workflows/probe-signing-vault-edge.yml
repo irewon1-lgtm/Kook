@@ -1,4 +1,4 @@
-name: Probe Signing Gateway Options
+name: Probe Existing Netlify CI Auth Contract
 
 on:
   push:
@@ -30,7 +30,7 @@ jobs:
           assert isinstance(token,str) and len(token)>100
           PY
 
-      - name: Probe existing Netlify CI bootstrap route safely
+      - name: Read only public error contract
         env:
           BASE: https://ai-ranker-family-live.netlify.app/api/ci-bootstrap-token
         run: |
@@ -45,20 +45,23 @@ jobs:
             NAME="$1"; shift
             BODY="$RUNNER_TEMP/${NAME}.body"
             STATUS=$(curl -sS -o "$BODY" -w '%{http_code}' "$@")
-            echo -n "$NAME status=$STATUS "
-            python3 - "$BODY" <<'PY'
-          import json,sys,os
-          p=sys.argv[1]
+            python3 - "$NAME" "$STATUS" "$BODY" <<'PY'
+          import json,sys
+          name,status,path=sys.argv[1:]
           try:
-              obj=json.load(open(p,encoding='utf-8'))
-              if isinstance(obj,dict): print('json_keys='+','.join(sorted(obj.keys())))
-              else: print('json_type='+type(obj).__name__)
+              obj=json.load(open(path,encoding='utf-8'))
+              if status != '200' and isinstance(obj,dict):
+                  err=obj.get('error')
+                  if isinstance(err,str) and len(err)<200:
+                      print(f'{name} status={status} error={err}')
+                  else:
+                      print(f'{name} status={status} keys={sorted(obj.keys())}')
+              else:
+                  print(f'{name} status={status} keys={sorted(obj.keys()) if isinstance(obj,dict) else type(obj).__name__}')
           except Exception:
-              print('non_json bytes='+str(os.path.getsize(p)))
+              print(f'{name} status={status} non_json')
           PY
           }
-          probe get_noauth "$BASE"
           probe post_noauth -X POST -H 'Content-Type: application/json' -d '{}' "$BASE"
-          probe get_oidc -H "Authorization: Bearer $TOKEN" "$BASE"
           probe post_oidc_header -X POST -H 'Content-Type: application/json' -H "Authorization: Bearer $TOKEN" -d '{}' "$BASE"
           probe post_oidc_body -X POST -H 'Content-Type: application/json' --data-binary "@$RUNNER_TEMP/token-body.json" "$BASE"
