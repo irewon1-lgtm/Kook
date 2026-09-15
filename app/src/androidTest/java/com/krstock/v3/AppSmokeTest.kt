@@ -29,7 +29,7 @@ class AppSmokeTest {
         composeRule.onNodeWithText("국내주식 4지표 목록").assertIsDisplayed()
         composeRule.onNodeWithText("KOSDAQ").assertIsDisplayed().performClick()
         composeRule.onNodeWithTag("stock_search").performTextInput("삼천당제약")
-        composeRule.onNodeWithText("삼천당제약").assertIsDisplayed().performClick()
+        composeRule.onNodeWithTag("stock_000250").assertIsDisplayed().performClick()
 
         composeRule.onNodeWithText("삼천당제약 (000250)").assertIsDisplayed()
         composeRule.onNodeWithText("4대 정량지표").assertIsDisplayed()
