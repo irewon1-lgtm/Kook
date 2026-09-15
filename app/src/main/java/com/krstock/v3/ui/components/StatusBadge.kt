@@ -1,39 +1,44 @@
 package com.krstock.v3.ui.components
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.krstock.v3.data.model.DataStatus
-import com.krstock.v3.ui.theme.AmberWarning
-import com.krstock.v3.ui.theme.BlueAccent
-import com.krstock.v3.ui.theme.EmeraldGreen
-import com.krstock.v3.ui.theme.RoseError
 
 @Composable
 fun StatusBadge(status: DataStatus, modifier: Modifier = Modifier) {
-    val (bgColor, textColor, label) = when (status) {
-        DataStatus.REAL -> Triple(EmeraldGreen.copy(alpha = 0.12f), EmeraldGreen, "실데이터")
-        DataStatus.REGISTERED -> Triple(BlueAccent.copy(alpha = 0.10f), BlueAccent, "등록")
-        DataStatus.DEMO -> Triple(Color.Gray.copy(alpha = 0.12f), Color.DarkGray, "데모")
-        DataStatus.MISSING -> Triple(RoseError.copy(alpha = 0.11f), RoseError, "결측")
-        DataStatus.WAITING_FOR_AUTH -> Triple(AmberWarning.copy(alpha = 0.11f), AmberWarning, "연결 대기")
+    val scheme = MaterialTheme.colorScheme
+    val colors = when (status) {
+        DataStatus.REAL -> scheme.secondaryContainer to scheme.onSecondaryContainer
+        DataStatus.REGISTERED -> scheme.primaryContainer to scheme.onPrimaryContainer
+        DataStatus.DEMO -> scheme.surfaceVariant to scheme.onSurfaceVariant
+        DataStatus.MISSING -> scheme.errorContainer to scheme.onErrorContainer
+        DataStatus.WAITING_FOR_AUTH -> scheme.tertiaryContainer to scheme.onTertiaryContainer
+    }
+    val label = when (status) {
+        DataStatus.REAL -> "실데이터"
+        DataStatus.REGISTERED -> "등록"
+        DataStatus.DEMO -> "데모"
+        DataStatus.MISSING -> "결측"
+        DataStatus.WAITING_FOR_AUTH -> "연결 대기"
     }
 
-    Box(
-        modifier = modifier
-            .background(bgColor, shape = RoundedCornerShape(999.dp))
-            .padding(horizontal = 8.dp, vertical = 4.dp)
+    Surface(
+        modifier = modifier,
+        color = colors.first,
+        contentColor = colors.second,
+        shape = RoundedCornerShape(999.dp)
     ) {
         Text(
             text = label,
-            color = textColor,
+            modifier = Modifier.padding(horizontal = 9.dp, vertical = 4.dp),
             fontSize = 10.sp,
             fontWeight = FontWeight.Bold
         )
