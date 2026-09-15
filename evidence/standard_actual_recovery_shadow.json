@@ -1,0 +1,239 @@
+{
+  "policy": "completion-candidate M01/M02 only; Naver actual quarters; forecast/future rejected; shadow only",
+  "candidate_count": 14,
+  "candidate_codes": [
+    "001080",
+    "0120G0",
+    "082660",
+    "241820",
+    "276040",
+    "310210",
+    "358570",
+    "365270",
+    "365590",
+    "372320",
+    "388870",
+    "424870",
+    "475830",
+    "489460"
+  ],
+  "m01_recovered": 4,
+  "m02_recovered": 6,
+  "m01_codes": [
+    "001080",
+    "241820",
+    "276040",
+    "489460"
+  ],
+  "m02_codes": [
+    "001080",
+    "082660",
+    "241820",
+    "276040",
+    "358570",
+    "424870"
+  ],
+  "promoted_complete_count": 7,
+  "promoted_complete_codes": [
+    "001080",
+    "082660",
+    "241820",
+    "276040",
+    "358570",
+    "424870",
+    "489460"
+  ],
+  "coverage_before": {
+    "m01_available": 2504,
+    "m02_available": 2409,
+    "m03_available": 2639,
+    "m04_available": 2611,
+    "complete_count": 2382,
+    "ranked_count": 2382
+  },
+  "coverage_after_shadow": {
+    "m01_available": 2508,
+    "m02_available": 2415,
+    "m03_available": 2639,
+    "m04_available": 2611,
+    "complete_count": 2389,
+    "ranked_count": 2389
+  },
+  "details": {
+    "001080": {
+      "name": "만호제강",
+      "market": "KOSPI",
+      "missing_before": [
+        "M01",
+        "M02"
+      ],
+      "latest_actual_period": "202603",
+      "prior_year_period": "202503",
+      "m01": 1.617251,
+      "m02": 3.35,
+      "missing_after": [],
+      "result": "PROMOTED_COMPLETE"
+    },
+    "0120G0": {
+      "name": "삼양바이오팜",
+      "market": "KOSPI",
+      "missing_before": [
+        "M01"
+      ],
+      "latest_actual_period": "202606",
+      "prior_year_period": "202506",
+      "missing_after": [
+        "M01"
+      ],
+      "result": "PARTIAL"
+    },
+    "082660": {
+      "name": "코스나인",
+      "market": "KOSDAQ",
+      "missing_before": [
+        "M02"
+      ],
+      "latest_actual_period": "202509",
+      "prior_year_period": "202409",
+      "m02": -111.16,
+      "missing_after": [],
+      "result": "PROMOTED_COMPLETE"
+    },
+    "241820": {
+      "name": "피씨엘",
+      "market": "KOSDAQ",
+      "missing_before": [
+        "M01",
+        "M02"
+      ],
+      "latest_actual_period": "202509",
+      "prior_year_period": "202409",
+      "m01": 200.0,
+      "m02": 10.57,
+      "missing_after": [],
+      "result": "PROMOTED_COMPLETE"
+    },
+    "276040": {
+      "name": "스코넥",
+      "market": "KOSDAQ",
+      "missing_before": [
+        "M01",
+        "M02"
+      ],
+      "latest_actual_period": "202606",
+      "prior_year_period": "202506",
+      "m01": -12.5,
+      "m02": -131.81,
+      "missing_after": [],
+      "result": "PROMOTED_COMPLETE"
+    },
+    "310210": {
+      "name": "보로노이",
+      "market": "KOSDAQ",
+      "missing_before": [
+        "M02"
+      ],
+      "latest_actual_period": "202512",
+      "prior_year_period": "202412",
+      "missing_after": [
+        "M02"
+      ],
+      "result": "PARTIAL"
+    },
+    "358570": {
+      "name": "지아이이노베이션",
+      "market": "KOSDAQ",
+      "missing_before": [
+        "M02"
+      ],
+      "latest_actual_period": "202512",
+      "prior_year_period": "202412",
+      "m02": -130.73,
+      "missing_after": [],
+      "result": "PROMOTED_COMPLETE"
+    },
+    "365270": {
+      "name": "큐라클",
+      "market": "KOSDAQ",
+      "missing_before": [
+        "M01"
+      ],
+      "latest_actual_period": "202606",
+      "prior_year_period": "202506",
+      "missing_after": [
+        "M01"
+      ],
+      "result": "PARTIAL"
+    },
+    "365590": {
+      "name": "하이딥",
+      "market": "KOSDAQ",
+      "missing_before": [
+        "M02"
+      ],
+      "latest_actual_period": "202606",
+      "prior_year_period": "202506",
+      "missing_after": [
+        "M02"
+      ],
+      "result": "PARTIAL"
+    },
+    "372320": {
+      "name": "큐로셀",
+      "market": "KOSDAQ",
+      "missing_before": [
+        "M01",
+        "M02"
+      ],
+      "result": "NO_SAFE_ACTUAL_QUARTER"
+    },
+    "388870": {
+      "name": "파로스아이바이오",
+      "market": "KOSDAQ",
+      "missing_before": [
+        "M01",
+        "M02"
+      ],
+      "result": "NO_SAFE_ACTUAL_QUARTER"
+    },
+    "424870": {
+      "name": "이뮨온시아",
+      "market": "KOSDAQ",
+      "missing_before": [
+        "M02"
+      ],
+      "latest_actual_period": "202506",
+      "prior_year_period": "202406",
+      "m02": -5589.89,
+      "missing_after": [],
+      "result": "PROMOTED_COMPLETE"
+    },
+    "475830": {
+      "name": "오름테라퓨틱",
+      "market": "KOSDAQ",
+      "missing_before": [
+        "M02"
+      ],
+      "latest_actual_period": "202606",
+      "prior_year_period": "202506",
+      "missing_after": [
+        "M02"
+      ],
+      "result": "PARTIAL"
+    },
+    "489460": {
+      "name": "바이오비쥬",
+      "market": "KOSDAQ",
+      "missing_before": [
+        "M01"
+      ],
+      "latest_actual_period": "202606",
+      "prior_year_period": "202506",
+      "m01": 59.677419,
+      "missing_after": [],
+      "result": "PROMOTED_COMPLETE"
+    }
+  },
+  "source_errors": {},
+  "source_error_count": 0
+}
