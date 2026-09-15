@@ -66,6 +66,9 @@ jobs:
       - name: Auto-update adversarial logic tests
         run: python3 tests/test_auto_update_pipeline.py
 
+      - name: Live news/disclosure evidence source probe
+        run: python3 scripts/probe_context_sources.py
+
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -134,6 +137,8 @@ jobs:
           grep -q 'resolve_price_cutoff' scripts/collect_real_quant_v3.py
           grep -q '_select_latest_dart_entry' scripts/collect_real_quant_v3.py
           grep -q 'NAVER_REPORTED_TRAILING_PER' scripts/collect_real_quant_v2.py
+          grep -q 'ContextEvidenceRepository.load' app/src/main/java/com/krstock/v3/ui/screens/StockDetailScreen.kt
+          grep -q 'IntegratedInterpretationEngine.analyze' app/src/main/java/com/krstock/v3/ui/screens/StockDetailScreen.kt
           grep -q 'schedule:' .github/workflows/collect-real-quant.yml
           grep -q '40 8 \* \* 1-5' .github/workflows/collect-real-quant.yml
           grep -q '30 12 \* \* 1-5' .github/workflows/collect-real-quant.yml
