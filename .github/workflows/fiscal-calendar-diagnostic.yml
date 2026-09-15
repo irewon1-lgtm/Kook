@@ -1,0 +1,37 @@
+name: Fiscal Calendar Diagnostic
+
+on:
+  push:
+    branches:
+      - fix/fiscal-calendar-aware-dart-v1
+    paths:
+      - "scripts/diagnose_fiscal_calendar.py"
+      - ".github/workflows/fiscal-calendar-diagnostic.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install requests pandas lxml
+      - name: Run live KIND/DART fiscal diagnostic
+        run: |
+          set -euo pipefail
+          python scripts/diagnose_fiscal_calendar.py | tee fiscal-calendar-diagnostic.log
+      - name: Upload diagnostic
+        uses: actions/upload-artifact@v4
+        with:
+          name: KR4_Fiscal_Calendar_Diagnostic
+          path: fiscal-calendar-diagnostic.log
+          retention-days: 7
