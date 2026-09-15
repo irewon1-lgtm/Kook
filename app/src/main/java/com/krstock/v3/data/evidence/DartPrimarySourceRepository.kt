@@ -115,7 +115,7 @@ object DartPrimarySourceRepository {
 
     private data class FilingCandidate(val evidence: ContextEvidence, val receiptNo: String)
 
-    private data class ViewerSection(
+    internal data class ViewerSection(
         val rcpNo: String,
         val dcmNo: String,
         val eleId: String,
@@ -312,7 +312,7 @@ object DartPrimarySourceRepository {
         val lower = context.lowercase()
         var score = searchTerms.sumOf { if (lower.contains(it)) 4 else 0 }
         score += SECTION_PRIORITIES.sumOf { if (lower.contains(it)) 7 else 0 }
-        if (lower.contains("재무제표")) score -= 2 // structured figures are already handled by the quant collector
+        if (lower.contains("재무제표")) score -= 2
         return score
     }
 
