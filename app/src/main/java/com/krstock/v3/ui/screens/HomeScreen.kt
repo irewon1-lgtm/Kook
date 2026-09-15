@@ -52,10 +52,11 @@ fun HomeScreen(
                 ),
                 title = {
                     Column {
-                        Text("KR4 국내주식", fontWeight = FontWeight.Bold, fontSize = 21.sp)
+                        Text("KR4 국내주식", fontWeight = FontWeight.Bold, fontSize = 22.sp)
                         Text(
                             "성장 · 수익성 · 가치 · 흐름",
                             fontSize = 12.sp,
+                            lineHeight = 17.sp,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
@@ -90,14 +91,32 @@ fun HomeScreen(
             }
 
             item {
-                Column {
-                    Text("상위 조사 후보", fontWeight = FontWeight.Bold, fontSize = 20.sp)
-                    Spacer(Modifier.height(2.dp))
-                    Text(
-                        "4지표 완성 ${rankedStocks.size}종목 · 시장 상대점수 순",
-                        fontSize = 13.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.Bottom
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text("상위 조사 후보", fontWeight = FontWeight.Bold, fontSize = 22.sp)
+                        Spacer(Modifier.height(3.dp))
+                        Text(
+                            "성장 · 수익성 · 가치 · 흐름을 한눈에 비교",
+                            fontSize = 13.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    Surface(
+                        shape = RoundedCornerShape(999.dp),
+                        color = MaterialTheme.colorScheme.surfaceVariant,
+                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                    ) {
+                        Text(
+                            "TOP ${previewStocks.size}",
+                            modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
+                            fontSize = 11.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
                 }
             }
 
@@ -134,25 +153,38 @@ private fun PrimaryStockExplorer(total: Int, rankedCount: Int, onClick: () -> Un
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .heightIn(min = 96.dp)
+            .heightIn(min = 116.dp)
             .testTag("primary_stock_explorer")
             .clickable(onClick = onClick),
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(
             containerColor = scheme.primary,
             contentColor = scheme.onPrimary
         ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 18.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(Modifier.weight(1f)) {
+                Surface(
+                    shape = RoundedCornerShape(999.dp),
+                    color = scheme.onPrimary.copy(alpha = 0.12f),
+                    contentColor = scheme.onPrimary
+                ) {
+                    Text(
+                        "4축 스크리닝",
+                        modifier = Modifier.padding(horizontal = 9.dp, vertical = 4.dp),
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+                Spacer(Modifier.height(8.dp))
                 Text(
                     "상위 조사 후보 전체보기",
-                    fontSize = 21.sp,
-                    lineHeight = 27.sp,
+                    fontSize = 22.sp,
+                    lineHeight = 28.sp,
                     fontWeight = FontWeight.Bold
                 )
                 Spacer(Modifier.height(5.dp))
@@ -164,7 +196,7 @@ private fun PrimaryStockExplorer(total: Int, rankedCount: Int, onClick: () -> Un
                 )
             }
             Spacer(Modifier.width(12.dp))
-            Text("›", fontSize = 34.sp, fontWeight = FontWeight.SemiBold)
+            Text("›", fontSize = 36.sp, fontWeight = FontWeight.SemiBold)
         }
     }
 }
@@ -179,11 +211,11 @@ private fun SnapshotCompactCard(total: Int, complete: Int, snapshotDate: String,
         border = BorderStroke(1.dp, scheme.outlineVariant)
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 11.dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(Modifier.weight(1f)) {
-                Text("실데이터 4지표 연결 완료", fontWeight = FontWeight.SemiBold, fontSize = 13.sp)
+                Text("실데이터 4지표 연결 완료", fontWeight = FontWeight.SemiBold, fontSize = 12.sp)
                 Text(
                     "4지표 완성 $complete/$total · 재무 $snapshotDate · 주가 $priceDate",
                     fontSize = 10.sp,
@@ -271,15 +303,19 @@ fun StockSummaryCard(
     missingLabel: String = "실데이터 ${availableMetricCount(stock)}/4 · 순위 보류"
 ) {
     val scheme = MaterialTheme.colorScheme
+    val isTopRank = displayRank != null && displayRank <= 3
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .testTag("stock_${stock.issuerId}")
             .clickable(onClick = onClick),
-        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = if (isTopRank) 2.dp else 1.dp),
         colors = CardDefaults.cardColors(containerColor = scheme.surface),
-        border = BorderStroke(1.dp, scheme.outlineVariant),
-        shape = RoundedCornerShape(18.dp)
+        border = BorderStroke(
+            1.dp,
+            if (isTopRank) scheme.primary.copy(alpha = 0.36f) else scheme.outlineVariant
+        ),
+        shape = RoundedCornerShape(20.dp)
     ) {
         Column(modifier = Modifier.padding(horizontal = 18.dp, vertical = 17.dp)) {
             Row(
@@ -291,14 +327,14 @@ fun StockSummaryCard(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         if (displayRank != null) {
                             Surface(
-                                shape = RoundedCornerShape(9.dp),
-                                color = scheme.primaryContainer,
-                                contentColor = scheme.onPrimaryContainer
+                                shape = RoundedCornerShape(10.dp),
+                                color = if (isTopRank) scheme.primary else scheme.primaryContainer,
+                                contentColor = if (isTopRank) scheme.onPrimary else scheme.onPrimaryContainer
                             ) {
                                 Text(
                                     "${displayRank}위",
-                                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
-                                    fontSize = 14.sp,
+                                    modifier = Modifier.padding(horizontal = 11.dp, vertical = 7.dp),
+                                    fontSize = 15.sp,
                                     fontWeight = FontWeight.Bold
                                 )
                             }
@@ -307,8 +343,8 @@ fun StockSummaryCard(
                         Text(
                             stock.name,
                             fontWeight = FontWeight.Bold,
-                            fontSize = 21.sp,
-                            lineHeight = 26.sp,
+                            fontSize = 22.sp,
+                            lineHeight = 27.sp,
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis
                         )
@@ -331,20 +367,36 @@ fun StockSummaryCard(
             HorizontalDivider(color = scheme.outlineVariant)
             Spacer(modifier = Modifier.height(12.dp))
 
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                MetricTile(stock.m01RevGrowth, "매출 증가율", Modifier.weight(1f))
-                MetricTile(stock.m02OpMargin, "영업이익률", Modifier.weight(1f))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text("한눈 비교", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                Text("시장 내 상대위치", fontSize = 11.sp, color = scheme.onSurfaceVariant)
             }
-            Spacer(modifier = Modifier.height(10.dp))
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                MetricTile(stock.m03Per, "실적 PER", Modifier.weight(1f), lossMaking = stock.isLossMaking)
-                MetricTile(stock.m04Price6m, "6개월 상승률", Modifier.weight(1f))
+            Spacer(modifier = Modifier.height(9.dp))
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .testTag("comparison_${stock.issuerId}")
+            ) {
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    MetricTile(stock.m01RevGrowth, "성장", "매출 증가율", Modifier.weight(1f))
+                    MetricTile(stock.m02OpMargin, "수익성", "영업이익률", Modifier.weight(1f))
+                }
+                Spacer(modifier = Modifier.height(10.dp))
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    MetricTile(stock.m03Per, "가치", "실적 PER", Modifier.weight(1f), lossMaking = stock.isLossMaking)
+                    MetricTile(stock.m04Price6m, "흐름", "6개월 상승률", Modifier.weight(1f))
+                }
             }
 
             Spacer(modifier = Modifier.height(13.dp))
             Surface(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp),
+                shape = RoundedCornerShape(14.dp),
                 color = if (displayScore != null) scheme.primaryContainer else scheme.surfaceVariant,
                 contentColor = if (displayScore != null) scheme.onPrimaryContainer else scheme.onSurfaceVariant
             ) {
@@ -354,6 +406,13 @@ fun StockSummaryCard(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            "종합 비교",
+                            fontSize = 10.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = LocalContentColor.current.copy(alpha = 0.72f)
+                        )
+                        Spacer(Modifier.height(2.dp))
                         Text(
                             if (displayScore != null) scoreLabel else missingLabel,
                             fontSize = 13.sp,
@@ -373,7 +432,7 @@ fun StockSummaryCard(
                     Text(
                         displayScore?.let { String.format("%.1f점", it) } ?: "미산출",
                         fontWeight = FontWeight.Bold,
-                        fontSize = 22.sp
+                        fontSize = 24.sp
                     )
                 }
             }
@@ -384,6 +443,7 @@ fun StockSummaryCard(
 @Composable
 private fun MetricTile(
     metric: MetricValue,
+    axis: String,
     label: String,
     modifier: Modifier = Modifier,
     lossMaking: Boolean = false
@@ -402,30 +462,51 @@ private fun MetricTile(
     }
 
     Surface(
-        modifier = modifier.heightIn(min = 104.dp),
-        shape = RoundedCornerShape(12.dp),
+        modifier = modifier.heightIn(min = 110.dp),
+        shape = RoundedCornerShape(14.dp),
         color = scheme.surfaceVariant,
         contentColor = scheme.onSurface,
         border = BorderStroke(1.dp, scheme.outlineVariant)
     ) {
         Column(Modifier.padding(horizontal = 12.dp, vertical = 12.dp)) {
-            Text(
-                label,
-                fontSize = 13.sp,
-                lineHeight = 17.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = scheme.onSurfaceVariant,
-                maxLines = 1
-            )
-            Spacer(Modifier.height(6.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Surface(
+                    shape = RoundedCornerShape(999.dp),
+                    color = scheme.primaryContainer,
+                    contentColor = scheme.onPrimaryContainer
+                ) {
+                    Text(
+                        axis,
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+                Spacer(Modifier.width(6.dp))
+                Text(
+                    label,
+                    modifier = Modifier.weight(1f),
+                    fontSize = 12.sp,
+                    lineHeight = 16.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = scheme.onSurfaceVariant,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+            Spacer(Modifier.height(7.dp))
             Text(
                 value,
-                fontSize = 20.sp,
-                lineHeight = 24.sp,
+                fontSize = 21.sp,
+                lineHeight = 25.sp,
                 fontWeight = FontWeight.Bold,
                 color = if (available) scheme.onSurface else scheme.onSurfaceVariant
             )
-            Spacer(Modifier.height(5.dp))
+            Spacer(Modifier.height(4.dp))
             Text(
                 note,
                 fontSize = 12.sp,
