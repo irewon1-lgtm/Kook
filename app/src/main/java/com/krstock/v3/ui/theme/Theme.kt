@@ -11,44 +11,42 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
-// Legacy exports kept for source compatibility. New UI must use MaterialTheme.colorScheme
-// for surfaces/text so light and dark themes can never mix fixed light backgrounds with
-// dark-theme foreground colors.
-val NavyPrimary = Color(0xFF101828)
-val NavySecondary = Color(0xFF1D2939)
-val BlueAccent = Color(0xFF175CD3)
-val BlueAccentSoft = Color(0xFFEFF4FF)
-val EmeraldGreen = Color(0xFF067647)
-val AmberWarning = Color(0xFFB54708)
+// Premium-neutral finance palette. Kept as named exports for source compatibility.
+val NavyPrimary = Color(0xFF2B2830)
+val NavySecondary = Color(0xFF403943)
+val BlueAccent = Color(0xFF6D4C7D)
+val BlueAccentSoft = Color(0xFFF0E8F2)
+val EmeraldGreen = Color(0xFF7A6258)
+val AmberWarning = Color(0xFF8A672D)
 val RoseError = Color(0xFFB42318)
-val BackgroundLight = Color(0xFFF4F6F8)
-val SurfaceLight = Color(0xFFFFFFFF)
-val SurfaceMuted = Color(0xFFF1F4F8)
-val BorderLight = Color(0xFFD8DEE8)
-val TextPrimaryLight = Color(0xFF111827)
-val TextSecondaryLight = Color(0xFF556274)
-val TextTertiaryLight = Color(0xFF7B8798)
+val BackgroundLight = Color(0xFFF6F3F1)
+val SurfaceLight = Color(0xFFFFFCFA)
+val SurfaceMuted = Color(0xFFF0ECE9)
+val BorderLight = Color(0xFFD9D2D8)
+val TextPrimaryLight = Color(0xFF1B191D)
+val TextSecondaryLight = Color(0xFF655F68)
+val TextTertiaryLight = Color(0xFF8A838D)
 
 private val FinanceLightColorScheme = lightColorScheme(
-    primary = Color(0xFF0B5CAD),
+    primary = Color(0xFF6D4C7D),
     onPrimary = Color.White,
-    primaryContainer = Color(0xFFE7F0FB),
-    onPrimaryContainer = Color(0xFF0B315A),
-    secondary = Color(0xFF0F766E),
+    primaryContainer = Color(0xFFF0E7F3),
+    onPrimaryContainer = Color(0xFF34243B),
+    secondary = Color(0xFF82685D),
     onSecondary = Color.White,
-    secondaryContainer = Color(0xFFDDF4F0),
-    onSecondaryContainer = Color(0xFF174B47),
-    tertiary = Color(0xFF9A6700),
+    secondaryContainer = Color(0xFFF2E7E1),
+    onSecondaryContainer = Color(0xFF3C2B24),
+    tertiary = Color(0xFF8A672D),
     onTertiary = Color.White,
-    tertiaryContainer = Color(0xFFFFF0C2),
-    onTertiaryContainer = Color(0xFF533F00),
+    tertiaryContainer = Color(0xFFF4E8CC),
+    onTertiaryContainer = Color(0xFF463511),
     background = BackgroundLight,
     onBackground = TextPrimaryLight,
     surface = SurfaceLight,
     onSurface = TextPrimaryLight,
     surfaceVariant = SurfaceMuted,
     onSurfaceVariant = TextSecondaryLight,
-    outline = Color(0xFF98A2B3),
+    outline = Color(0xFF958C96),
     outlineVariant = BorderLight,
     error = RoseError,
     onError = Color.White,
@@ -57,26 +55,26 @@ private val FinanceLightColorScheme = lightColorScheme(
 )
 
 private val FinanceDarkColorScheme = darkColorScheme(
-    primary = Color(0xFF9FC5F8),
-    onPrimary = Color(0xFF002E57),
-    primaryContainer = Color(0xFF123A62),
-    onPrimaryContainer = Color(0xFFD6E8FF),
-    secondary = Color(0xFF7BD7CC),
-    onSecondary = Color(0xFF003733),
-    secondaryContainer = Color(0xFF174A46),
-    onSecondaryContainer = Color(0xFFB9F1EA),
-    tertiary = Color(0xFFE7C76F),
-    onTertiary = Color(0xFF3C2F00),
-    tertiaryContainer = Color(0xFF554500),
-    onTertiaryContainer = Color(0xFFFFE7A0),
-    background = Color(0xFF0B1017),
-    onBackground = Color(0xFFF3F6FA),
-    surface = Color(0xFF111824),
-    onSurface = Color(0xFFF3F6FA),
-    surfaceVariant = Color(0xFF1B2432),
-    onSurfaceVariant = Color(0xFFB8C3D1),
-    outline = Color(0xFF778396),
-    outlineVariant = Color(0xFF2D3949),
+    primary = Color(0xFFD8BCE3),
+    onPrimary = Color(0xFF3A2840),
+    primaryContainer = Color(0xFF503A57),
+    onPrimaryContainer = Color(0xFFF3E5F6),
+    secondary = Color(0xFFD9BCAF),
+    onSecondary = Color(0xFF3A2922),
+    secondaryContainer = Color(0xFF554038),
+    onSecondaryContainer = Color(0xFFF2DED5),
+    tertiary = Color(0xFFE1C488),
+    onTertiary = Color(0xFF3D2F0C),
+    tertiaryContainer = Color(0xFF54451F),
+    onTertiaryContainer = Color(0xFFF5E3B5),
+    background = Color(0xFF171519),
+    onBackground = Color(0xFFF4F0F3),
+    surface = Color(0xFF201D21),
+    onSurface = Color(0xFFF4F0F3),
+    surfaceVariant = Color(0xFF2B272D),
+    onSurfaceVariant = Color(0xFFCEC5CF),
+    outline = Color(0xFF958B97),
+    outlineVariant = Color(0xFF403A42),
     error = Color(0xFFFFB4AB),
     onError = Color(0xFF690005),
     errorContainer = Color(0xFF8C1D18),
@@ -86,20 +84,20 @@ private val FinanceDarkColorScheme = darkColorScheme(
 private val AppTypography = Typography(
     headlineSmall = TextStyle(
         fontWeight = FontWeight.Bold,
-        fontSize = 22.sp,
-        lineHeight = 28.sp,
-        letterSpacing = (-0.2).sp
+        fontSize = 24.sp,
+        lineHeight = 30.sp,
+        letterSpacing = (-0.25).sp
     ),
     titleLarge = TextStyle(
         fontWeight = FontWeight.Bold,
-        fontSize = 19.sp,
-        lineHeight = 25.sp,
+        fontSize = 20.sp,
+        lineHeight = 26.sp,
         letterSpacing = (-0.15).sp
     ),
     titleMedium = TextStyle(
         fontWeight = FontWeight.SemiBold,
-        fontSize = 16.sp,
-        lineHeight = 22.sp
+        fontSize = 17.sp,
+        lineHeight = 23.sp
     ),
     bodyLarge = TextStyle(
         fontWeight = FontWeight.Normal,
@@ -113,13 +111,13 @@ private val AppTypography = Typography(
     ),
     labelLarge = TextStyle(
         fontWeight = FontWeight.SemiBold,
-        fontSize = 13.sp,
-        lineHeight = 18.sp
+        fontSize = 14.sp,
+        lineHeight = 19.sp
     ),
     labelMedium = TextStyle(
         fontWeight = FontWeight.Medium,
-        fontSize = 11.sp,
-        lineHeight = 16.sp
+        fontSize = 12.sp,
+        lineHeight = 17.sp
     )
 )
 
