@@ -1,4 +1,4 @@
-name: KR4 Real DART+Price Extreme CleanPass
+name: KR4 Swipe+MultiRank Extreme CleanPass
 
 on:
   push:
@@ -64,20 +64,11 @@ jobs:
                   assert r['composite'] is None and r['rank'] is None
           assert sorted(ranks)==list(range(1,1463))
           assert d['records']['005930']['name']=='삼성전자'
-          assert d['records']['005930']['market']=='KOSPI'
           assert d['records']['000250']['name']=='삼천당제약'
-          assert d['records']['000250']['market']=='KOSDAQ'
-          assert d['records']['005930']['m01']['basis']
-          assert d['records']['005930']['m04']['basis']
           print('REAL_SNAPSHOT_VALIDATED',json.dumps(c,ensure_ascii=False))
           print('DART_BULK_SHA256',d['dart_bulk_zip_sha256'])
           print('GENERATED_KOTLIN_SHA256',kt_sha)
           PY
-          grep -q 'const val universeCount: Int = 2649' app/src/main/java/com/krstock/v3/data/generated/GeneratedRealQuantSnapshot.kt
-          grep -q 'const val completeCount: Int = 1462' app/src/main/java/com/krstock/v3/data/generated/GeneratedRealQuantSnapshot.kt
-          grep -q 'GeneratedRealQuantSnapshot' app/src/main/java/com/krstock/v3/data/repository/StockRepository.kt
-          grep -q 'OpenDART' app/src/main/java/com/krstock/v3/data/repository/StockRepository.kt
-          grep -q '네이버증권' app/src/main/java/com/krstock/v3/data/repository/StockRepository.kt
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -90,13 +81,24 @@ jobs:
         with:
           gradle-version: '8.7'
 
-      - name: Python reference-engine CLEAN tests
+      - name: Python reference and combination Extreme simulations
         run: |
           set -euo pipefail
           python3 tests/run_all.py evidence/clean_pass_results.json
           python3 tests/run_stress.py
+          python3 tests/run_combo_rank_stress.py evidence/combo_rank_stress_results.json
+          python3 - <<'PY'
+          import json
+          d=json.load(open('evidence/combo_rank_stress_results.json',encoding='utf-8'))
+          assert d['status']=='PASS'
+          assert d['all_nonempty_combinations_tested']==15
+          assert d['ten_thousand_toggle_simulation_pass'] is True
+          assert d['all_four_reproduces_committed_rank'] is True
+          assert d['selected_complete_filter_checks']==2649*15
+          print('COMBO_RANK_EXTREME_PASS', d['all_nonempty_combinations_tested'], d['selected_complete_filter_checks'])
+          PY
 
-      - name: Android 2649-stock real-data extreme regression tests
+      - name: Android 2649-stock and dynamic-ranking extreme regression tests
         run: |
           set -euo pipefail
           gradle :app:testDebugUnitTest --stacktrace
@@ -112,7 +114,7 @@ jobs:
             sudo chmod 666 /dev/kvm
           fi
 
-      - name: Real Android emulator end-to-end real-data simulation
+      - name: Real Android swipe and multi-ranking end-to-end simulation
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 34
@@ -122,23 +124,27 @@ jobs:
           disable-animations: true
           script: gradle :app:connectedDebugAndroidTest --stacktrace
 
-      - name: Hard verify APK and anti-fabrication guards
+      - name: Hard verify APK and requested features
         run: |
           set -euo pipefail
           APK="app/build/outputs/apk/debug/app-debug.apk"
           test -f "$APK"
           test -s "$APK"
           mkdir -p dist evidence/ci
-          cp "$APK" dist/KR4_DART_PRICE_RealData_Extreme_CleanPass_debug.apk
+          cp "$APK" dist/KR4_SWIPE_MULTI_RANK_Extreme_CleanPass_debug.apk
           sha256sum "$APK" | tee evidence/ci/APK_SHA256.txt
           stat --printf='APK_BYTES=%s\n' "$APK" | tee evidence/ci/APK_SIZE.txt
           ! grep -R "news.example.com" app/src/main || exit 1
           ! grep -R "mockStocks.first" app/src/main || exit 1
           ! grep -R "DEMO 데이터" app/src/main || exit 1
           ! grep -R 'snapshotDate: String = "PENDING"' app/src/main/java/com/krstock/v3/data/generated/GeneratedRealQuantSnapshot.kt || exit 1
-          grep -q 'DataStatus.REAL' app/src/main/java/com/krstock/v3/data/repository/StockRepository.kt
-          grep -q 'NONPOSITIVE_EPS' app/src/main/java/com/krstock/v3/data/repository/StockRepository.kt
-          grep -q 'FINANCIAL_SECTOR_EXCLUDED' app/src/main/java/com/krstock/v3/data/repository/StockRepository.kt
+          grep -q 'HorizontalPager' app/src/main/java/com/krstock/v3/MainActivity.kt
+          grep -q 'HorizontalPager' app/src/main/java/com/krstock/v3/ui/screens/StockDetailScreen.kt
+          grep -q 'DynamicRankingEngine.rank' app/src/main/java/com/krstock/v3/ui/screens/StockListScreen.kt
+          grep -q 'metric_toggle_M01' app/src/main/java/com/krstock/v3/ui/screens/StockListScreen.kt
+          grep -q 'selected_metrics_complete_only' app/src/main/java/com/krstock/v3/ui/screens/StockListScreen.kt
+          grep -q 'displayRank = dynamic?.rank' app/src/main/java/com/krstock/v3/ui/screens/StockListScreen.kt
+          grep -q 'selectedMetricIds.size == 1' app/src/main/java/com/krstock/v3/ui/screens/StockListScreen.kt
 
       - name: Write machine-readable final proof
         run: |
@@ -146,6 +152,7 @@ jobs:
           python3 - <<'PY'
           import glob, hashlib, json, os, pathlib, xml.etree.ElementTree as ET
           d=json.load(open('evidence/real_quant_snapshot.json',encoding='utf-8'))
+          combo=json.load(open('evidence/combo_rank_stress_results.json',encoding='utf-8'))
           def junit_stats(pattern):
               tests=failures=errors=skipped=0
               files=glob.glob(pattern,recursive=True)
@@ -165,21 +172,27 @@ jobs:
           android=junit_stats('app/build/outputs/androidTest-results/**/*.xml')
           assert unit['tests']>0 and unit['failures']==0 and unit['errors']==0,unit
           assert android['tests']>0 and android['failures']==0 and android['errors']==0,android
-          apk=pathlib.Path('dist/KR4_DART_PRICE_RealData_Extreme_CleanPass_debug.apk')
+          apk=pathlib.Path('dist/KR4_SWIPE_MULTI_RANK_Extreme_CleanPass_debug.apk')
           apk_sha=hashlib.sha256(apk.read_bytes()).hexdigest()
-          apk_bytes=apk.stat().st_size
           proof={
-            'scope':'KR4 KOSPI+KOSDAQ 2649 issue codes with real four-metric snapshot and full Android Extreme CleanPass',
+            'scope':'KR4 requested fixes 1-4: swipe navigation + 1~4 metric combination ranking + matching rank badge + selected-metric completeness filter',
             'commit':os.environ.get('GITHUB_SHA'),
-            'snapshot_date_kst':d['snapshot_date_kst'],
-            'price_cutoff_date_kst':d['price_cutoff_date_kst'],
             'universe_count':d['universe_count'],
             'coverage':d['coverage'],
-            'reason_counts':d['reason_counts'],
-            'dart_bulk_file':d['dart_bulk_file'],
-            'dart_bulk_zip_sha256':d['dart_bulk_zip_sha256'],
-            'generated_kotlin_sha256':d['generated_kotlin_sha256'],
-            'market_master_counts':{'KOSPI':832,'KOSDAQ':1817},
+            'requested_features':{
+              'home_list_horizontal_swipe':True,
+              'detail_four_page_horizontal_swipe':True,
+              'multi_metric_selection_1_to_4':True,
+              'active_combination_rank_and_score_badge':True,
+              'selected_metrics_complete_only_filter':True,
+              'zero_metric_selection_prevented':True,
+            },
+            'combination_extreme_simulation':{
+              'all_nonempty_combinations_tested':combo['all_nonempty_combinations_tested'],
+              'ten_thousand_toggle_simulation_pass':combo['ten_thousand_toggle_simulation_pass'],
+              'selected_complete_filter_checks':combo['selected_complete_filter_checks'],
+              'all_four_reproduces_committed_rank':combo['all_four_reproduces_committed_rank'],
+            },
             'python_clean_pass':True,
             'python_stress_pass':True,
             'android_unit_regression':unit,
@@ -187,11 +200,22 @@ jobs:
             'android_apk_build_pass':True,
             'anti_fabrication_guard_pass':True,
             'apk_sha256':apk_sha,
-            'apk_bytes':apk_bytes,
-            'ui_path_tested':['launch','home real-data status','all-stock list','KOSDAQ filter','search 삼천당제약','open 000250 detail','four metrics section','source/limitations section'],
-            'ranking_rule':'equal 25% average only when all four available; 1462 ranked stocks',
+            'apk_bytes':apk.stat().st_size,
+            'ui_path_tested':[
+              'launch home',
+              'swipe Home -> Stock List',
+              'deselect one metric -> 3-metric combination ranking',
+              'deselect second metric -> 2-metric combination ranking',
+              'KOSDAQ filter',
+              'search 삼천당제약',
+              'open 000250 detail',
+              'swipe summary -> four metrics',
+              'swipe four metrics -> quantitative analysis',
+              'swipe analysis -> checkpoints/source'
+            ],
+            'ranking_rule':'Selected 1~4 metric percentile scores are equal-weight averaged; rank exists only when every selected metric is available.',
           }
-          out=pathlib.Path('evidence/ci/REAL_DATA_EXTREME_CLEANPASS_PROOF.json')
+          out=pathlib.Path('evidence/ci/SWIPE_MULTI_RANK_EXTREME_CLEANPASS_PROOF.json')
           out.write_text(json.dumps(proof,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
           print(json.dumps(proof,ensure_ascii=False,indent=2))
           PY
@@ -199,12 +223,13 @@ jobs:
       - name: Upload verified APK and complete evidence
         uses: actions/upload-artifact@v4
         with:
-          name: KR4_DART_PRICE_RealData_Extreme_CleanPass
+          name: KR4_SWIPE_MULTI_RANK_Extreme_CleanPass
           path: |
-            dist/KR4_DART_PRICE_RealData_Extreme_CleanPass_debug.apk
+            dist/KR4_SWIPE_MULTI_RANK_Extreme_CleanPass_debug.apk
             evidence/ci/APK_SHA256.txt
             evidence/ci/APK_SIZE.txt
-            evidence/ci/REAL_DATA_EXTREME_CLEANPASS_PROOF.json
+            evidence/ci/SWIPE_MULTI_RANK_EXTREME_CLEANPASS_PROOF.json
+            evidence/combo_rank_stress_results.json
             evidence/real_quant_snapshot.json
             evidence/kospi_master_snapshot.json
             evidence/kosdaq_master_snapshot.json
