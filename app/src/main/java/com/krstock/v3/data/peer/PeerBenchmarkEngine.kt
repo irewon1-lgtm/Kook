@@ -24,12 +24,14 @@ object PeerBenchmarkEngine {
             require(sorted.all { it.isFinite() })
             require(sorted.zipWithNext().all { (a, b) -> a <= b })
         }
+
         val size: Int get() = sorted.size
         val median: Double by lazy {
             val n = sorted.size
             if (n % 2 == 1) sorted[n / 2] else (sorted[n / 2 - 1] + sorted[n / 2]) / 2.0
         }
     }
+
     private data class SelectedDistribution(
         val basis: PeerGroupBasis,
         val label: String,
@@ -165,7 +167,12 @@ object PeerBenchmarkEngine {
             has("의약품", "제약", "생물학적", "생명공학", "바이오", "의약물질") -> SectorFamily("PHARMA_BIO", "제약·바이오")
             has("의료용기기", "의료기기", "의료용품", "의료서비스", "병원", "진단기기") -> SectorFamily("MEDICAL_HEALTH", "의료기기·헬스케어")
             has("디스플레이", "액정", "oled") -> SectorFamily("DISPLAY", "디스플레이")
-            has("반도체", "전자부품", "컴퓨터", "통신장비", "영상기기", "음향기기") -> SectorFamily("SEMICON_ELECTRONICS", "반도체·전자부품")
+
+            // Resolve software/service language before electronics. The generic
+            // token "컴퓨터" alone is too broad and can include programming firms.
+            has("소프트웨어", "프로그래밍", "시스템통합", "정보서비스", "데이터베이스", "컴퓨터프로그래밍") -> SectorFamily("SOFTWARE_IT", "소프트웨어·IT서비스")
+            has("반도체", "전자부품", "컴퓨터제조", "컴퓨터및주변장치", "주변장치", "통신장비", "영상기기", "음향기기") -> SectorFamily("SEMICON_ELECTRONICS", "반도체·전자부품")
+
             has("일차전지", "이차전지", "축전지", "전기장비", "전동기", "발전기", "변압기", "전선", "배선", "조명") -> SectorFamily("ELECTRICAL_BATTERY", "전기장비·배터리")
             has("자동차", "자동차용", "차체", "트레일러") -> SectorFamily("AUTO", "자동차·부품")
             has("조선", "선박", "항공기", "철도장비", "운송장비") -> SectorFamily("TRANSPORT_EQUIPMENT", "조선·운송장비")
@@ -178,7 +185,6 @@ object PeerBenchmarkEngine {
             has("발전업", "전기업", "전력", "수도", "폐기물", "환경정화") -> SectorFamily("UTILITY_ENV", "유틸리티·환경")
             has("해운", "항공운송", "육상운송", "운송업", "물류", "창고") -> SectorFamily("TRANSPORT_LOGISTICS", "운송·물류")
             has("식품", "음료", "주류", "담배", "농업", "축산", "수산", "사료") -> SectorFamily("FOOD", "음식료·농축수산")
-            has("소프트웨어", "프로그래밍", "시스템통합", "정보서비스", "데이터베이스", "컴퓨터프로그래밍") -> SectorFamily("SOFTWARE_IT", "소프트웨어·IT서비스")
             has("포털", "게임", "영화", "방송", "콘텐츠", "출판", "음악", "영상물", "광고") -> SectorFamily("CONTENT_MEDIA", "인터넷·콘텐츠·미디어")
             has("전기통신업", "무선통신", "유선통신", "통신서비스") -> SectorFamily("TELECOM", "통신서비스")
             has("부동산", "임대업") -> SectorFamily("REAL_ESTATE", "부동산·임대")
