@@ -1,0 +1,82 @@
+name: KR4 Apply Standard Actual Recovery
+
+on:
+  push:
+    branches:
+      - fix/incomplete-267-recovery-v1
+    paths:
+      - scripts/apply_standard_actual_recovery.py
+      - .github/workflows/apply-standard-actual-recovery.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/incomplete-267-recovery-v1
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install recovery dependencies
+        run: pip install -q requests pandas lxml
+      - name: Self-test resolver
+        working-directory: scripts
+        run: python apply_standard_actual_recovery.py --self-test
+      - name: Preserve before snapshot
+        run: cp evidence/real_quant_snapshot.json /tmp/before.json
+      - name: Apply production recovery
+        working-directory: scripts
+        run: python apply_standard_actual_recovery.py --quant ../evidence/real_quant_snapshot.json --out ../evidence/real_quant_snapshot.json
+      - name: Extreme immutable and coverage gates
+        run: |
+          python - <<'PY'
+          import json
+          b=json.load(open('/tmp/before.json',encoding='utf-8'))
+          a=json.load(open('evidence/real_quant_snapshot.json',encoding='utf-8'))
+          assert set(a['records'])==set(b['records']) and len(a['records'])==2649
+          assert b['coverage']=={'m01_available':2504,'m02_available':2409,'m03_available':2639,'m04_available':2611,'complete_count':2382,'ranked_count':2382}
+          assert a['coverage']=={'m01_available':2508,'m02_available':2417,'m03_available':2639,'m04_available':2611,'complete_count':2391,'ranked_count':2391}, a['coverage']
+          r=a['standard_actual_recovery']
+          assert r['candidate_count']==14
+          assert r['m01_recovered']==4 and r['m02_recovered']==8 and r['promoted_complete_count']==9, r
+          assert r['source_error_count']==0
+          changed=set(r['m01_codes'])|set(r['m02_codes'])
+          assert changed=={'001080','082660','241820','276040','310210','358570','365590','424870','489460'}, changed
+          for code, old in b['records'].items():
+              new=a['records'][code]
+              for mid in ('m01','m02','m03','m04'):
+                  if old[mid]['raw'] is not None:
+                      assert new[mid]['raw']==old[mid]['raw'],(code,mid,'raw')
+                      assert new[mid]['basis']==old[mid]['basis'],(code,mid,'basis')
+              if old['m02']['reason']=='FINANCIAL_SECTOR_EXCLUDED':
+                  assert new['m02']['raw'] is None and new['m02']['reason']=='FINANCIAL_SECTOR_EXCLUDED'
+          # Reason metadata must equal canonical rows after the recovery.
+          for mid in ('m01','m02','m03','m04'):
+              counted={}
+              for row in a['records'].values():
+                  m=row[mid]
+                  k='AVAILABLE' if m['raw'] is not None else (m['reason'] or 'UNKNOWN')
+                  counted[k]=counted.get(k,0)+1
+              assert a['reason_counts'][mid]==counted,(mid,a['reason_counts'][mid],counted)
+          assert a['reason_counts']['m01']['AVAILABLE']==2508
+          assert a['reason_counts']['m02']['AVAILABLE']==2417
+          print('STANDARD_ACTUAL_PRODUCTION_EXTREME_GATE=PASS')
+          PY
+      - name: Commit recovered production snapshot
+        run: |
+          git add evidence/real_quant_snapshot.json
+          if git diff --cached --quiet; then
+            echo 'No recovery changes.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Apply KR4 standard recovery: M01=2508 M02=2417 M03=2639 M04=2611 complete=2391'
+          git pull --rebase origin fix/incomplete-267-recovery-v1
+          git push origin HEAD:fix/incomplete-267-recovery-v1
