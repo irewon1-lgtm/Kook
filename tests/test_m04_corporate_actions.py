@@ -113,6 +113,37 @@ def test_valof_331520_reverse_split_does_not_create_plus_300pct_return() -> None
     assert raw_broken_return > 300 and row["m04_raw"] < 300, row
 
 
+
+def test_falling_bar_direction_or_signed_ratio_does_not_fake_reference_reset() -> None:
+    falling = {
+        "localTradedAt": "2026-09-15",
+        "closePrice": "10,000",
+        "compareToPreviousClosePrice": "100",
+        "compareToPreviousPrice": {"name": "FALLING"},
+        "fluctuationsRatio": "-0.99",
+    }
+    factor = v2._daily_reference_factor(falling, 10000.0)
+    assert factor is not None
+    assert abs(factor - (10000.0 / 10100.0)) < 1e-12, factor
+    by_date = {date(2026, 9, 14): 10100.0, date(2026, 9, 15): 10000.0}
+    by_factor = {date(2026, 9, 14): 1.0, date(2026, 9, 15): factor}
+    assert v2._detect_reference_reset_events(
+        by_date, by_factor, date(2026, 9, 14), date(2026, 9, 15)
+    ) == []
+
+
+def test_falling_bar_without_direction_prefers_signed_fluctuation_ratio() -> None:
+    falling = {
+        "localTradedAt": "2026-09-15",
+        "closePrice": "10,000",
+        "compareToPreviousClosePrice": "100",
+        "fluctuationsRatio": "-0.99",
+    }
+    factor = v2._daily_reference_factor(falling, 10000.0)
+    assert factor is not None and abs(factor - 0.9901) < 1e-12, factor
+    raw = 10000.0 / 10100.0
+    assert abs(raw / factor - 1.0) < v2._REFERENCE_RESET_REL_TOL
+
 def test_small_bonus_issue_inside_daily_limit_is_still_detected() -> None:
     payload = [
         {"localTradedAt": "2026-09-14", "closePrice": "9,450", "compareToPreviousClosePrice": "450", "fluctuationsRatio": "5.00"},

@@ -92,41 +92,52 @@ def _relative_diff(a: float, b: float) -> float:
 
 
 def _daily_reference_factor(bar: dict[str, Any], close: float) -> float | None:
-    """Return a corporate-action-aware one-day price factor.
+    """Return the KRX-reference one-day factor without direction ambiguity.
 
-    Naver exposes both the day's price change and percentage change relative to
-    the exchange reference/base price. KRX adjusts that base price around stock
-    splits/reverse splits/bonus issues. The integer change-derived factor is
-    preferred because it avoids compounding rounded percentages; the percentage
-    field is the fallback and also rescues corporate-action days if the textual
-    change field is not usable.
+    ``fluctuationsRatio`` is signed and already measured from the exchange
+    reference/base price, so it is authoritative. When Naver also supplies
+    ``compareToPreviousPrice.name`` we normalize the absolute KRW change to
+    that direction and use the more precise change-derived factor only when
+    it agrees with the signed ratio. A positive change magnitude without
+    direction is never assumed to mean a rise.
     """
-    change = base.parse_number(bar.get("compareToPreviousClosePrice"))
     ratio = base.parse_number(bar.get("fluctuationsRatio"))
-
-    change_factor = None
-    if change is not None:
-        reference_price = close - change
-        if reference_price > 0:
-            candidate = close / reference_price
-            if _valid_daily_factor(candidate):
-                change_factor = candidate
-
     ratio_factor = None
     if ratio is not None:
         candidate = 1.0 + ratio / 100.0
         if _valid_daily_factor(candidate):
             ratio_factor = candidate
 
-    if change_factor is not None and ratio_factor is not None:
-        # Percentage is normally rounded to two decimals. If both fields disagree
-        # materially, prefer the exchange-style percentage factor rather than
-        # allowing a suspicious absolute-change field to contaminate M04.
-        if abs(change_factor - ratio_factor) > 0.02:
-            return ratio_factor
-        return change_factor
-    return change_factor if change_factor is not None else ratio_factor
+    change = base.parse_number(bar.get("compareToPreviousClosePrice"))
+    direction_raw = bar.get("compareToPreviousPrice")
+    if isinstance(direction_raw, dict):
+        direction = str(direction_raw.get("name") or "").strip().upper()
+    else:
+        direction = str(direction_raw or "").strip().upper()
 
+    change_factor = None
+    if change is not None and direction:
+        if direction in {"FALLING", "LOWER", "DOWN"}:
+            change = -abs(change)
+        elif direction in {"RISING", "HIGHER", "UP"}:
+            change = abs(change)
+        elif direction in {"UNCHANGED", "SAME", "FLAT"}:
+            change = 0.0
+        reference_price = close - change
+        if reference_price > 0:
+            candidate = close / reference_price
+            if _valid_daily_factor(candidate):
+                change_factor = candidate
+
+    if change_factor is not None and ratio_factor is not None:
+        # fluctuationsRatio is rounded while KRW change is exact. Use the
+        # precise factor only after direction normalization and agreement.
+        if abs(change_factor - ratio_factor) <= 0.005:
+            return change_factor
+        return ratio_factor
+    if ratio_factor is not None:
+        return ratio_factor
+    return change_factor
 
 def _parse_price_bars(
     code: str,
