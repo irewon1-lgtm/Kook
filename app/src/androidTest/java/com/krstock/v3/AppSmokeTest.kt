@@ -142,7 +142,7 @@ class AppSmokeTest {
         closeSoftKeyboard()
         composeRule.waitForIdle()
         composeRule.onNodeWithTag("stock_025560").performScrollTo().assertIsDisplayed()
-        composeRule.onNodeWithText("FINAL #1").assertIsDisplayed()
+        composeRule.onNodeWithText("FINAL #1").performScrollTo().assertIsDisplayed()
         composeRule.onNodeWithTag("stock_025560").performClick()
         composeRule.waitForIdle()
 
@@ -151,8 +151,8 @@ class AppSmokeTest {
         composeRule.onNodeWithTag("detail_summary_page").assertIsDisplayed()
         composeRule.onNodeWithTag("final_candidate_detail_card").performScrollTo().assertIsDisplayed()
         composeRule.onNodeWithTag("financial_safety_card").performScrollTo().assertIsDisplayed()
-        composeRule.onNodeWithTag("valuation_card").performScrollTo().assertIsDisplayed()
         composeRule.onNodeWithText("Stage4 재무안정성").assertIsDisplayed()
+        composeRule.onNodeWithTag("valuation_card").performScrollTo().assertIsDisplayed()
         composeRule.onNodeWithText("Stage5 상대 PER 밴드").assertIsDisplayed()
     }
 }
