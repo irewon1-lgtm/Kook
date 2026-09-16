@@ -34,6 +34,7 @@ jobs:
           cp .github/stage4567_direct_release.sh /tmp/stage4567_direct_release.sh
           chmod +x /tmp/stage4567_direct_release.sh
           python3 .github/patch_stage4567_sign_post.py /tmp/stage4567_direct_release.sh
+          python3 .github/patch_stage4567_promote.py /tmp/stage4567_direct_release.sh
           cat .github/stage4567_payload.part* | base64 -d > /tmp/stage4567_payload.tgz
           echo '7683b880ef72c26127f15e8951042f28285d861e6e3b9268196c6522953c943d  /tmp/stage4567_payload.tgz' | sha256sum -c -
           tar -xzf /tmp/stage4567_payload.tgz
