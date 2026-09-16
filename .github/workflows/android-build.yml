@@ -26,6 +26,17 @@ jobs:
         with:
           fetch-depth: 2
 
+      - name: Detect app source change
+        id: app_scope
+        run: |
+          set -euo pipefail
+          APP_CHANGED=true
+          if git rev-parse HEAD^ >/dev/null 2>&1 && git diff --quiet HEAD^ HEAD -- app/; then
+            APP_CHANGED=false
+          fi
+          echo "changed=$APP_CHANGED" >> "$GITHUB_OUTPUT"
+          echo "APP_SOURCE_CHANGED=$APP_CHANGED"
+
       - name: Set up Python 3.12
         uses: actions/setup-python@v5
         with:
@@ -79,12 +90,14 @@ jobs:
           PY
 
       - name: Auto-update and quarterly-history adversarial logic tests
+        if: steps.app_scope.outputs.changed == 'true'
         run: |
           set -euo pipefail
           python3 tests/test_auto_update_pipeline.py
           python3 tests/test_quarterly_history.py
 
       - name: Live news/disclosure evidence source probe
+        if: steps.app_scope.outputs.changed == 'true'
         run: python3 scripts/probe_context_sources.py
 
       - name: Set up JDK 17
@@ -99,6 +112,7 @@ jobs:
           gradle-version: '8.7'
 
       - name: Python reference and combination Extreme simulations
+        if: steps.app_scope.outputs.changed == 'true'
         run: |
           set -euo pipefail
           python3 tests/run_all.py evidence/clean_pass_results.json
@@ -116,16 +130,20 @@ jobs:
           PY
 
       - name: Android 2649-stock regression tests
+        if: steps.app_scope.outputs.changed == 'true'
         run: gradle :app:testDebugUnitTest --stacktrace
 
       - name: Build Android Debug APK
+        if: steps.app_scope.outputs.changed == 'true'
         run: gradle :app:assembleDebug --stacktrace
 
       - name: Enable KVM for emulator
+        if: steps.app_scope.outputs.changed == 'true'
         run: |
           if [ -e /dev/kvm ]; then sudo chmod 666 /dev/kvm; fi
 
       - name: Android 14 end-to-end simulation
+        if: steps.app_scope.outputs.changed == 'true'
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 34
@@ -136,6 +154,7 @@ jobs:
           script: gradle :app:connectedDebugAndroidTest --stacktrace
 
       - name: Hard verify APK and automatic-update fail-safes
+        if: steps.app_scope.outputs.changed == 'true'
         run: |
           set -euo pipefail
           APK="app/build/outputs/apk/debug/app-debug.apk"
@@ -157,6 +176,7 @@ jobs:
           grep -q "$EXPECTED_STABLE_CERT_SHA256" .github/workflows/android-build.yml
 
       - name: Upload verified APK and evidence
+        if: steps.app_scope.outputs.changed == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: KR4_AUTOUPDATE_Extreme_CleanPass
@@ -180,17 +200,17 @@ jobs:
         if: github.event_name != 'pull_request'
         run: |
           set -euo pipefail
-          APP_CHANGED=false
+          RELEASE_READY=false
           if [ "$GITHUB_REF" = "refs/heads/main" ]; then
             if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-              APP_CHANGED=true
+              RELEASE_READY=true
             elif git rev-parse HEAD^ >/dev/null 2>&1 && ! git diff --quiet HEAD^ HEAD -- app/ .github/workflows/android-build.yml; then
-              APP_CHANGED=true
+              RELEASE_READY=true
             fi
           fi
-          echo "app_changed=$APP_CHANGED" >> "$GITHUB_OUTPUT"
-          echo "ready=$APP_CHANGED" >> "$GITHUB_OUTPUT"
-          echo "APP_CHANGED=$APP_CHANGED RELEASE_READY=$APP_CHANGED"
+          echo "app_changed=$RELEASE_READY" >> "$GITHUB_OUTPUT"
+          echo "ready=$RELEASE_READY" >> "$GITHUB_OUTPUT"
+          echo "RELEASE_READY=$RELEASE_READY"
 
       - name: Prepare original KR4 stable signing identity
         if: steps.release_gate.outputs.ready == 'true'
@@ -233,7 +253,6 @@ jobs:
               'Cache-Control': 'no-cache',
               'Pragma': 'no-cache',
           }
-          params = {'transport_key': os.environ['TRANSPORT_KEY']}
           path = os.path.join(os.environ['RUNNER_TEMP'], 'kr4-encrypted-signing.json')
 
           for attempt in range(1, 4):
