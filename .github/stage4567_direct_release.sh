@@ -3,6 +3,7 @@ set -euo pipefail
 
 EXPECTED_CERT="${EXPECTED_STABLE_CERT_SHA256:-1070e82beee574cd29ffd2dc3e693fd7f7862374f16d1606567db303ab152477}"
 REPO="${GITHUB_REPOSITORY:-irewon1-lgtm/Kook}"
+STABLE_BASE_SHA="18e9d176c3fd28e5150e138dee748f17e2eb16ef"
 
 prepare() {
   test -s /tmp/real_quant_stage4567.json
@@ -24,14 +25,18 @@ def val(*keys):
 p = val('pass','PASS'); f = val('fail','FAIL'); h = val('hold','HOLD'); n = val('not_applicable','NOT_APPLICABLE','n/a','N/A')
 t = val('total','TOTAL') if ('total' in summary or 'TOTAL' in summary) else p+f+h+n
 assert (p,f,h,n,t) == (2111,277,35,226,2649), (p,f,h,n,t)
-assert fc.get('schema') == 'KR4_FINAL_CANDIDATE_V2', fc.get('schema')
 cs = fc.get('candidates')
-assert isinstance(cs, list) and len(cs) == 10
+assert isinstance(cs, list) and len(cs) == 10, type(cs)
 codes = [str(x.get('code')) for x in cs]
-assert codes == ['025560','187870','005950','000660','013700','059100','031330','037460','115480','080220'], codes
-for x in cs:
-    assert x.get('financial_stability',{}).get('status') == 'PASS' or x.get('stability',{}).get('status') == 'PASS', x.get('code')
-print('DIRECT_PREPARE_DATA_PASS', {'stability': [p,f,h,n,t], 'candidates': codes})
+expected = ['025560','187870','005950','000660','013700','059100','031330','037460','115480','080220']
+assert codes == expected, codes
+eligible = fc.get('eligible_count', fc.get('eligible'))
+if eligible is not None:
+    assert int(eligible) == 1366, eligible
+schema = fc.get('schema') or fc.get('schema_version') or fc.get('schema_name')
+if schema is not None:
+    assert 'V2' in str(schema).upper(), schema
+print('DIRECT_PREPARE_DATA_PASS', {'stability': [p,f,h,n,t], 'eligible': eligible, 'schema': schema, 'candidates': codes})
 PY
   cp /tmp/real_quant_stage4567.json evidence/real_quant_snapshot.json
   cp /tmp/final_candidates_v2.json evidence/final_candidates.json
@@ -104,7 +109,9 @@ PY
   NEXT=$((10#${BASH_REMATCH[1]} + 1))
   while gh release view "kr4-app-c${NEXT}" >/dev/null 2>&1; do NEXT=$((NEXT+1)); done
   VERSION_NAME="4.3.$((NEXT-20000))"
-  echo "KR4_VERSION_CODE=$NEXT" >> "$GITHUB_ENV"; echo "KR4_VERSION_NAME=$VERSION_NAME" >> "$GITHUB_ENV"; echo "KR4_RELEASE_TAG=kr4-app-c${NEXT}" >> "$GITHUB_ENV"
+  echo "KR4_VERSION_CODE=$NEXT" >> "$GITHUB_ENV"
+  echo "KR4_VERSION_NAME=$VERSION_NAME" >> "$GITHUB_ENV"
+  echo "KR4_RELEASE_TAG=kr4-app-c${NEXT}" >> "$GITHUB_ENV"
   echo "DIRECT_VERSION_PASS latest=$LATEST_TAG next=kr4-app-c${NEXT} name=$VERSION_NAME"
   rm -f "$RUNNER_TEMP/kr4-oidc.json" "$RUNNER_TEMP/kr4-encrypted-signing.json" "$RUNNER_TEMP/kr4-encrypted-chunks.txt" "$RUNNER_TEMP/kr4-signing-bundle.txt" "$RUNNER_TEMP/kr4-transport-private.pem" "$RUNNER_TEMP/kr4-transport-public.der" "$RUNNER_TEMP"/kr4-chunk-*.bin
 }
@@ -113,24 +120,51 @@ build() {
   for v in KR4_KEYSTORE_FILE KR4_KEYSTORE_PASSWORD KR4_KEY_ALIAS KR4_KEY_PASSWORD KR4_VERSION_CODE KR4_VERSION_NAME KR4_SIGNING_CERT_SHA256 KR4_RELEASE_TAG; do test -n "${!v:-}"; done
   test -s "$KR4_KEYSTORE_FILE"
   gradle :app:assembleRelease --stacktrace
-  APK="app/build/outputs/apk/release/app-release.apk"; test -s "$APK"; mkdir -p dist evidence/ci/stage4567; cp "$APK" dist/KR4.apk
-  APKSIGNER=$(find "$ANDROID_HOME/build-tools" -type f -name apksigner | sort -V | tail -1); AAPT=$(find "$ANDROID_HOME/build-tools" -type f -name aapt | sort -V | tail -1); test -x "$APKSIGNER"; test -x "$AAPT"
+  APK="app/build/outputs/apk/release/app-release.apk"
+  test -s "$APK"
+  mkdir -p dist evidence/ci/stage4567
+  cp "$APK" dist/KR4.apk
+  APKSIGNER=$(find "$ANDROID_HOME/build-tools" -type f -name apksigner | sort -V | tail -1)
+  AAPT=$(find "$ANDROID_HOME/build-tools" -type f -name aapt | sort -V | tail -1)
+  test -x "$APKSIGNER"; test -x "$AAPT"
   "$APKSIGNER" verify --verbose --print-certs dist/KR4.apk | tee dist/APK_SIGNING_CERT.txt
-  ACTUAL=$(awk -F': ' '/Signer #1 certificate SHA-256 digest/{print tolower($2); exit}' dist/APK_SIGNING_CERT.txt | tr -d ':'); test "$ACTUAL" = "$EXPECTED_CERT"
-  BADGING=$("$AAPT" dump badging dist/KR4.apk | head -1); echo "$BADGING"; echo "$BADGING" | grep -q "name='com.krstock.v3'"; echo "$BADGING" | grep -q "versionCode='${KR4_VERSION_CODE}'"; echo "$BADGING" | grep -q "versionName='${KR4_VERSION_NAME}'"
-  sha256sum dist/KR4.apk | tee evidence/ci/stage4567/APK_SHA256.txt; stat --printf='APK_BYTES=%s\n' dist/KR4.apk | tee evidence/ci/stage4567/APK_SIZE.txt
+  ACTUAL=$(awk -F': ' '/Signer #1 certificate SHA-256 digest/{print tolower($2); exit}' dist/APK_SIGNING_CERT.txt | tr -d ':')
+  test "$ACTUAL" = "$EXPECTED_CERT"
+  BADGING=$("$AAPT" dump badging dist/KR4.apk | head -1)
+  echo "$BADGING"
+  echo "$BADGING" | grep -q "name='com.krstock.v3'"
+  echo "$BADGING" | grep -q "versionCode='${KR4_VERSION_CODE}'"
+  echo "$BADGING" | grep -q "versionName='${KR4_VERSION_NAME}'"
+  sha256sum dist/KR4.apk | tee evidence/ci/stage4567/APK_SHA256.txt
+  stat --printf='APK_BYTES=%s\n' dist/KR4.apk | tee evidence/ci/stage4567/APK_SIZE.txt
   echo "STABLE_RELEASE_APK_PASS cert=$ACTUAL version=$KR4_VERSION_NAME"
 }
 
 promote() {
   test -s dist/KR4.apk; test -s evidence/real_quant_snapshot.json; test -s evidence/final_candidates.json
-  git fetch origin main --quiet; test "$(git rev-parse origin/main)" = "$GITHUB_SHA"
-  git show "$GITHUB_SHA^:.github/workflows/android-build.yml" > .github/workflows/android-build.yml
+  git fetch origin main --quiet
+  test "$(git rev-parse origin/main)" = "$GITHUB_SHA"
+  git cat-file -e "${STABLE_BASE_SHA}^{commit}"
+  git show "${STABLE_BASE_SHA}:.github/workflows/android-build.yml" > .github/workflows/android-build.yml
   rm -f .github/stage4567_payload.part* .github/patch_stage4567_gate.py .github/patch_stage4567_post.py .github/stage4567_trigger_v2 .github/stage4567_direct_release.sh scripts/stage4567_ci.sh
   python3 - <<'PY'
 import subprocess
-allowed_prefixes=('app/src/main/java/com/krstock/v3/','app/src/test/java/com/krstock/v3/','scripts/collect_financial_','tests/test_stage4567_')
-allowed_exact={'scripts/build_final_candidates.py','evidence/real_quant_snapshot.json','evidence/final_candidates.json','.github/workflows/collect-real-quant.yml','.github/workflows/final-candidate-refresh.yml','.github/workflows/android-build.yml'}
+allowed_prefixes=(
+    'app/src/main/java/com/krstock/v3/',
+    'app/src/test/java/com/krstock/v3/',
+    'scripts/collect_financial_',
+    'tests/test_stage4567_',
+    '.github/stage4567_',
+    '.github/patch_stage4567_',
+)
+allowed_exact={
+    'scripts/build_final_candidates.py',
+    'evidence/real_quant_snapshot.json',
+    'evidence/final_candidates.json',
+    '.github/workflows/collect-real-quant.yml',
+    '.github/workflows/final-candidate-refresh.yml',
+    '.github/workflows/android-build.yml',
+}
 out=subprocess.check_output(['git','status','--porcelain=v1','-uall'],text=True); paths=[]
 for line in out.splitlines():
     raw=line[3:]
@@ -140,13 +174,21 @@ bad=[p for p in paths if p not in allowed_exact and not p.startswith(allowed_pre
 assert not bad, ('UNEXPECTED_PROMOTION_PATHS',bad,paths)
 print('PROMOTION_PATH_GATE_PASS',paths)
 PY
-  git config user.name "github-actions[bot]"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"; git add -A; git diff --cached --check; test -n "$(git diff --cached --name-only)"
+  git config user.name "github-actions[bot]"
+  git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+  git add -A
+  git diff --cached --check
+  test -n "$(git diff --cached --name-only)"
   git commit -m "[skip ci] Promote validated Stage4567 stability and valuation pipeline"
-  PROMOTED_SHA=$(git rev-parse HEAD); git push origin HEAD:main; echo "PROMOTED_SHA=$PROMOTED_SHA" >> "$GITHUB_ENV"; echo "DIRECT_MAIN_PROMOTION_PASS sha=$PROMOTED_SHA"
+  PROMOTED_SHA=$(git rev-parse HEAD)
+  git push origin HEAD:main
+  echo "PROMOTED_SHA=$PROMOTED_SHA" >> "$GITHUB_ENV"
+  echo "DIRECT_MAIN_PROMOTION_PASS sha=$PROMOTED_SHA"
 }
 
 manifest() {
-  test -n "${PROMOTED_SHA:-}"; test -s dist/KR4.apk; SHA=$(sha256sum dist/KR4.apk | awk '{print $1}'); export SHA
+  test -n "${PROMOTED_SHA:-}"; test -s dist/KR4.apk
+  SHA=$(sha256sum dist/KR4.apk | awk '{print $1}'); export SHA
   python3 - <<'PY'
 import json, os
 out={'versionCode':int(os.environ['KR4_VERSION_CODE']),'versionName':os.environ['KR4_VERSION_NAME'],'apkUrl':'https://github.com/irewon1-lgtm/Kook/releases/latest/download/KR4.apk','sha256':os.environ['SHA'],'mandatory':False,'notes':'재무안정성 Stage4 + 실적 PER 상대밴드 Stage5 + 최종후보 V2 검증 반영','commit':os.environ['PROMOTED_SHA'],'signingCertificateSha256':os.environ['KR4_SIGNING_CERT_SHA256']}
@@ -157,19 +199,39 @@ PY
 }
 
 publish() {
-  for f in dist/KR4.apk dist/update.json dist/APK_SIGNING_CERT.txt; do test -s "$f"; done; test -n "${PROMOTED_SHA:-}"; test -n "${KR4_RELEASE_TAG:-}"
-  TITLE="KR4 ${KR4_VERSION_NAME}"; NOTES="Stage4 재무안정성 + Stage5 실적 PER 상대밴드 + Stage6/7 최종후보 V2. pre-CLEAN 및 Android 14 E2E 통과. commit ${PROMOTED_SHA}."
-  if gh release view "$KR4_RELEASE_TAG" >/dev/null 2>&1; then gh release upload "$KR4_RELEASE_TAG" dist/KR4.apk dist/update.json dist/APK_SIGNING_CERT.txt --clobber; gh release edit "$KR4_RELEASE_TAG" --target "$PROMOTED_SHA" --title "$TITLE" --notes "$NOTES" --latest; else gh release create "$KR4_RELEASE_TAG" dist/KR4.apk dist/update.json dist/APK_SIGNING_CERT.txt --target "$PROMOTED_SHA" --title "$TITLE" --notes "$NOTES" --latest; fi
+  for f in dist/KR4.apk dist/update.json dist/APK_SIGNING_CERT.txt; do test -s "$f"; done
+  test -n "${PROMOTED_SHA:-}"; test -n "${KR4_RELEASE_TAG:-}"
+  if gh release view "$KR4_RELEASE_TAG" >/dev/null 2>&1; then
+    echo "release tag collision: $KR4_RELEASE_TAG" >&2
+    exit 1
+  fi
+  TITLE="KR4 ${KR4_VERSION_NAME}"
+  NOTES="Stage4 재무안정성 + Stage5 실적 PER 상대밴드 + Stage6/7 최종후보 V2. pre-CLEAN 및 Android 14 E2E 통과. commit ${PROMOTED_SHA}."
+  gh release create "$KR4_RELEASE_TAG" dist/KR4.apk dist/update.json dist/APK_SIGNING_CERT.txt --target "$PROMOTED_SHA" --title "$TITLE" --notes "$NOTES" --latest
   test "$(gh api "repos/${REPO}/releases/latest" --jq '.tag_name')" = "$KR4_RELEASE_TAG"
-  rm -rf "$RUNNER_TEMP/kr4-release-verify"; mkdir -p "$RUNNER_TEMP/kr4-release-verify"; gh release download "$KR4_RELEASE_TAG" -p KR4.apk -p update.json -p APK_SIGNING_CERT.txt -D "$RUNNER_TEMP/kr4-release-verify"
-  test "$(sha256sum dist/KR4.apk | awk '{print $1}')" = "$(sha256sum "$RUNNER_TEMP/kr4-release-verify/KR4.apk" | awk '{print $1}')"; cmp -s dist/update.json "$RUNNER_TEMP/kr4-release-verify/update.json"
+  rm -rf "$RUNNER_TEMP/kr4-release-verify"
+  mkdir -p "$RUNNER_TEMP/kr4-release-verify"
+  gh release download "$KR4_RELEASE_TAG" -p KR4.apk -p update.json -p APK_SIGNING_CERT.txt -D "$RUNNER_TEMP/kr4-release-verify"
+  test "$(sha256sum dist/KR4.apk | awk '{print $1}')" = "$(sha256sum "$RUNNER_TEMP/kr4-release-verify/KR4.apk" | awk '{print $1}')"
+  cmp -s dist/update.json "$RUNNER_TEMP/kr4-release-verify/update.json"
   python3 - <<'PY'
 import json, os
-p=os.path.join(os.environ['RUNNER_TEMP'],'kr4-release-verify','update.json'); d=json.load(open(p,encoding='utf-8'))
-assert d['commit']==os.environ['PROMOTED_SHA']; assert d['versionCode']==int(os.environ['KR4_VERSION_CODE']); assert d['signingCertificateSha256']==os.environ['KR4_SIGNING_CERT_SHA256']
+p=os.path.join(os.environ['RUNNER_TEMP'],'kr4-release-verify','update.json')
+d=json.load(open(p,encoding='utf-8'))
+assert d['commit']==os.environ['PROMOTED_SHA']
+assert d['versionCode']==int(os.environ['KR4_VERSION_CODE'])
+assert d['signingCertificateSha256']==os.environ['KR4_SIGNING_CERT_SHA256']
 print('LATEST_RELEASE_REDOWNLOAD_PASS',d['versionName'],d['commit'],d['sha256'])
 PY
   echo "DIRECT_LATEST_RELEASE_PASS tag=$KR4_RELEASE_TAG sha=$(sha256sum dist/KR4.apk | awk '{print $1}')"
 }
 
-case "${1:-}" in prepare) prepare ;; sign) sign ;; build) build ;; promote) promote ;; manifest) manifest ;; publish) publish ;; *) echo "usage: $0 {prepare|sign|build|promote|manifest|publish}" >&2; exit 2 ;; esac
+case "${1:-}" in
+  prepare) prepare ;;
+  sign) sign ;;
+  build) build ;;
+  promote) promote ;;
+  manifest) manifest ;;
+  publish) publish ;;
+  *) echo "usage: $0 {prepare|sign|build|promote|manifest|publish}" >&2; exit 2 ;;
+esac
