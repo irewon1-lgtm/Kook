@@ -212,6 +212,7 @@ jobs:
             -H "Authorization: Bearer ${ACTIONS_ID_TOKEN_REQUEST_TOKEN}" \
             "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=kr4-signing-vault" \
             -o "$RUNNER_TEMP/kr4-oidc.json"
+          test -s "$RUNNER_TEMP/kr4-oidc.json"
           OIDC_TOKEN=$(python3 - <<'PY'
           import json, os
           path = os.path.join(os.environ['RUNNER_TEMP'], 'kr4-oidc.json')
@@ -227,15 +228,18 @@ jobs:
           import requests
 
           url = os.environ['SIGNING_VAULT_URL']
-          payload = {
-              'token': os.environ['OIDC_TOKEN'],
-              'transportKey': os.environ['TRANSPORT_KEY'],
+          headers = {
+              'Authorization': f"Bearer {os.environ['OIDC_TOKEN']}",
+              'Accept': 'application/json',
+              'Cache-Control': 'no-cache',
+              'Pragma': 'no-cache',
           }
+          params = {'transport_key': os.environ['TRANSPORT_KEY']}
           path = os.path.join(os.environ['RUNNER_TEMP'], 'kr4-encrypted-signing.json')
 
           for attempt in range(1, 4):
               try:
-                  response = requests.post(url, json=payload, timeout=30)
+                  response = requests.get(url, headers=headers, params=params, timeout=30)
                   response.raise_for_status()
                   if not response.content.strip():
                       raise RuntimeError('empty signing-vault response')
@@ -251,7 +255,7 @@ jobs:
               except Exception as exc:
                   if attempt == 3:
                       raise RuntimeError(
-                          f'signing-vault POST failed after {attempt} attempts: {type(exc).__name__}'
+                          f'signing-vault GET failed after {attempt} attempts: {type(exc).__name__}'
                       ) from exc
                   time.sleep(attempt * 2)
           PY
