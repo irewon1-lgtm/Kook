@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Release hardening only; no visual behavior change. -->
     <style name="KR4AppTheme" parent="@android:style/Theme.Material.Light.NoActionBar">
         <item name="android:windowBackground">#F6F3F1</item>
         <item name="android:windowDisablePreview">true</item>
