@@ -1,5 +1,7 @@
 package com.krstock.v3
 
+import android.content.Context
+import android.view.inputmethod.InputMethodManager
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
@@ -12,8 +14,6 @@ import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeLeft
-import androidx.test.espresso.Espresso.closeSoftKeyboard
-import androidx.test.espresso.Espresso.pressBack
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Rule
 import org.junit.Test
@@ -32,6 +32,37 @@ class AppSmokeTest {
         composeRule.onNodeWithTag(tag).assertIsDisplayed()
     }
 
+    /**
+     * Espresso's global closeSoftKeyboard()/pressBack() first waits for a focused
+     * root window. Hosted API-34 emulators can transiently hand focus to the IME,
+     * causing RootViewWithoutFocusException even though the app is healthy.
+     * Drive these two system actions from the Activity itself instead, then wait
+     * until the application window has focus again before using Compose semantics.
+     */
+    private fun hideKeyboardAndRestoreAppFocus() {
+        val activity = composeRule.activity
+        activity.runOnUiThread {
+            val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(activity.window.decorView.windowToken, 0)
+            activity.window.decorView.requestFocus()
+        }
+        composeRule.waitUntil(timeoutMillis = 10_000L) {
+            activity.window.decorView.hasWindowFocus()
+        }
+        composeRule.waitForIdle()
+    }
+
+    private fun navigateBackThroughActivity() {
+        val activity = composeRule.activity
+        activity.runOnUiThread {
+            activity.onBackPressedDispatcher.onBackPressed()
+        }
+        composeRule.waitUntil(timeoutMillis = 10_000L) {
+            activity.window.decorView.hasWindowFocus()
+        }
+        composeRule.waitForIdle()
+    }
+
     @Test
     fun swipeNavigationAndMultiMetricRankingWorkEndToEnd() {
         waitForDisplayedTag("main_pager")
@@ -43,9 +74,8 @@ class AppSmokeTest {
         composeRule.waitForIdle()
         composeRule.onNodeWithText("국내주식 조합순위").assertIsDisplayed()
 
-        // Android system Back from the full list must return home, never finish the activity.
-        pressBack()
-        composeRule.waitForIdle()
+        // Exercise the actual Activity back dispatcher without Espresso's focused-root dependency.
+        navigateBackThroughActivity()
         waitForDisplayedTag("primary_stock_explorer")
         composeRule.onNodeWithText("KR4 국내주식").assertIsDisplayed()
 
@@ -80,8 +110,7 @@ class AppSmokeTest {
 
         composeRule.onNodeWithTag("market_KOSDAQ").performClick()
         composeRule.onNodeWithTag("stock_search").performTextInput("삼천당제약")
-        closeSoftKeyboard()
-        composeRule.waitForIdle()
+        hideKeyboardAndRestoreAppFocus()
         // A stock card is taller than the remaining list viewport. Verify the unique visual
         // comparison region instead of ambiguous axis text such as "성장", which also appears
         // elsewhere on the screen.
@@ -145,8 +174,7 @@ class AppSmokeTest {
         composeRule.onNodeWithTag("main_pager").performTouchInput { swipeLeft() }
         composeRule.waitForIdle()
         composeRule.onNodeWithTag("stock_search").performTextInput("025560")
-        closeSoftKeyboard()
-        composeRule.waitForIdle()
+        hideKeyboardAndRestoreAppFocus()
         composeRule.onNodeWithTag("stock_025560").performScrollTo()
         composeRule.onNodeWithText("FINAL #1").performScrollTo().assertIsDisplayed()
         composeRule.onAllNodesWithTag("financial_safety_badge", useUnmergedTree = true).onFirst()
