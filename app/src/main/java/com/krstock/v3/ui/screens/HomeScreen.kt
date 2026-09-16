@@ -21,6 +21,9 @@ import com.krstock.v3.data.candidate.FinalCandidateRepository
 import com.krstock.v3.data.model.MetricValue
 import com.krstock.v3.data.model.StockSummary
 import com.krstock.v3.data.repository.StockRepository
+import com.krstock.v3.data.stage.FinancialSafetyRepository
+import com.krstock.v3.data.stage.ValuationBandPolicy
+import com.krstock.v3.ui.components.Stage45CompactPanel
 import com.krstock.v3.ui.components.StatusBadge
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -33,6 +36,7 @@ fun HomeScreen(
     val stockByCode = remember(stocks) { stocks.associateBy { it.issuerId } }
     val rankedStocks = remember(stocks) { stocks.filter { it.rankOrder != null }.sortedBy { it.rankOrder } }
     val finalCandidates = remember(stocks) { FinalCandidateRepository.getFinalCandidates() }
+    val safetyByCode = remember(stocks) { FinancialSafetyRepository.getAll() }
     val previewStocks = remember(finalCandidates, stockByCode) {
         finalCandidates.take(5).mapNotNull { candidate ->
             stockByCode[candidate.issuerId]?.let { stock -> candidate to stock }
@@ -102,8 +106,9 @@ fun HomeScreen(
                         Text("최종 조사 후보", fontWeight = FontWeight.Bold, fontSize = 22.sp)
                         Spacer(Modifier.height(3.dp))
                         Text(
-                            "4지표 검증 완료 · 실적 PER 양수 · 기존 종합순위 기준",
+                            "4지표 완성 · 양수 PER · 재무안정성 PASS · 기존 종합순위 재사용",
                             fontSize = 13.sp,
+                            lineHeight = 18.sp,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
@@ -128,7 +133,15 @@ fun HomeScreen(
                     onClick = { onStockClick(stock.issuerId) },
                     displayRank = candidate.candidateRank,
                     displayScore = candidate.compositeScore,
-                    scoreLabel = "최종 후보 · 기존 종합 ${candidate.sourceRank}위"
+                    scoreLabel = "최종 후보 · 기존 종합 ${candidate.sourceRank}위",
+                    stage45Content = {
+                        Stage45CompactPanel(
+                            candidate = candidate,
+                            safety = safetyByCode[stock.issuerId],
+                            valuation = ValuationBandPolicy.classify(stock.m03Per),
+                            showRatios = true,
+                        )
+                    }
                 )
             }
 
@@ -308,7 +321,8 @@ fun StockSummaryCard(
     displayRank: Int? = stock.rankOrder,
     displayScore: Double? = stock.compositeScore,
     scoreLabel: String = "4지표 종합 상대점수",
-    missingLabel: String = "실데이터 ${availableMetricCount(stock)}/4 · 순위 보류"
+    missingLabel: String = "실데이터 ${availableMetricCount(stock)}/4 · 순위 보류",
+    stage45Content: (@Composable ColumnScope.() -> Unit)? = null,
 ) {
     val scheme = MaterialTheme.colorScheme
     val isTopRank = displayRank != null && displayRank <= 3
@@ -443,6 +457,11 @@ fun StockSummaryCard(
                         fontSize = 24.sp
                     )
                 }
+            }
+
+            if (stage45Content != null) {
+                Spacer(Modifier.height(10.dp))
+                stage45Content()
             }
         }
     }
