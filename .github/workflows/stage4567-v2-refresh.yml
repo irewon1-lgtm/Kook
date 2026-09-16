@@ -1,0 +1,136 @@
+name: KR4 Stage4-7 Refresh V2
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "evidence/real_quant_snapshot.json"
+      - "scripts/collect_financial_safety.py"
+      - "scripts/build_final_candidates_v2.py"
+      - "tests/test_stage4567.py"
+      - ".github/workflows/stage4567-v2-refresh.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: kr4-stage4567-v2-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  refresh-stage4567:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact triggering main
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Stage4 dependencies
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          pip install requests pandas lxml
+
+      - name: Stage4-7 adversarial self-tests
+        run: |
+          set -euo pipefail
+          python scripts/collect_financial_safety.py --self-test
+          python scripts/build_final_candidates_v2.py --self-test
+          python tests/test_stage4567.py
+
+      - name: Build Stage4 safety on the exact quant snapshot
+        run: |
+          set -euo pipefail
+          cp evidence/real_quant_snapshot.json /tmp/real_quant_stage4567.json
+          python scripts/collect_financial_safety.py \
+            --quant /tmp/real_quant_stage4567.json \
+            --out /tmp/real_quant_stage4567.json
+
+      - name: Structural Stage4 gate
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, sys
+          sys.path.insert(0, 'scripts')
+          import collect_financial_safety as fs
+          d=json.load(open('/tmp/real_quant_stage4567.json',encoding='utf-8'))
+          fs.validate_augmented(d)
+          c=d['financial_safety']['coverage']
+          assert sum(c[k] for k in ('pass','fail','hold','not_applicable')) == c['total'] == d['universe_count'] == 2649, c
+          assert d['financial_safety']['source_file'], d['financial_safety']
+          print('STAGE4_REFRESH_STRUCTURAL_GATE_PASS', c)
+          PY
+
+      - name: Build and validate Stage5-7 V2 candidates
+        run: |
+          set -euo pipefail
+          python scripts/build_final_candidates_v2.py \
+            --quant /tmp/real_quant_stage4567.json \
+            --out /tmp/final_candidates_v2.json \
+            --limit 10
+          python - <<'PY'
+          import json, sys
+          sys.path.insert(0, 'scripts')
+          import build_final_candidates_v2 as fc
+          q=json.load(open('/tmp/real_quant_stage4567.json',encoding='utf-8'))
+          d=json.load(open('/tmp/final_candidates_v2.json',encoding='utf-8'))
+          fc.validate_payload(d)
+          assert d['schema_version']=='KR4_FINAL_CANDIDATE_V2'
+          assert d['policy_version']=='STAGE4567_SAFETY_AND_RELATIVE_PER_BAND_V1'
+          assert d['snapshot_date_kst']==q['snapshot_date_kst']
+          assert d['price_cutoff_date_kst']==q['price_cutoff_date_kst']
+          assert d['candidate_count']==10 and d['eligible_count']>=10, (d['candidate_count'], d['eligible_count'])
+          assert all(x['financial_safety']['status']=='PASS' for x in d['candidates'])
+          assert all(x['valuation']['changes_rank'] is False for x in d['candidates'])
+          print('STAGE567_REFRESH_V2_GATE_PASS', {'eligible':d['eligible_count'],'codes':[x['code'] for x in d['candidates']]})
+          PY
+
+      - name: Fail closed if main moved during live collection
+        run: |
+          set -euo pipefail
+          git fetch origin main --quiet
+          test "$(git rev-parse origin/main)" = "$GITHUB_SHA"
+          echo "STAGE4567_REFRESH_HEAD_GATE_PASS sha=$GITHUB_SHA"
+
+      - name: Promote Stage4 quant and Stage6-7 candidate snapshots
+        run: |
+          set -euo pipefail
+          cp /tmp/real_quant_stage4567.json evidence/real_quant_snapshot.json
+          cp /tmp/final_candidates_v2.json evidence/final_candidates.json
+          git add evidence/real_quant_snapshot.json evidence/final_candidates.json
+          git diff --cached --check
+          if git diff --cached --quiet; then
+            echo "STAGE4567_REFRESH_NO_CHANGE"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          META=$(python - <<'PY'
+          import json
+          q=json.load(open('evidence/real_quant_snapshot.json',encoding='utf-8'))
+          d=json.load(open('evidence/final_candidates.json',encoding='utf-8'))
+          c=q['financial_safety']['coverage']
+          print(f"{q['snapshot_date_kst']} safety={c['pass']}/{c['fail']}/{c['hold']}/{c['not_applicable']} eligible={d['eligible_count']} candidates={d['candidate_count']}")
+          PY
+          )
+          git commit -m "[skip ci] Auto-refresh KR4 Stage4-7 V2: ${META}"
+          git push origin HEAD:main
+
+      - name: Upload Stage4-7 refresh proof
+        uses: actions/upload-artifact@v4
+        with:
+          name: KR4_Stage4567_V2_Refresh_Proof
+          path: |
+            evidence/real_quant_snapshot.json
+            evidence/final_candidates.json
+          if-no-files-found: error
+          retention-days: 14
