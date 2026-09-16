@@ -3,6 +3,7 @@ package com.krstock.v3
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
+import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -119,5 +120,39 @@ class AppSmokeTest {
         composeRule.onNodeWithTag("detail_source_page").assertIsDisplayed()
         composeRule.onNodeWithTag("detail_source_card").performScrollTo().assertIsDisplayed()
         composeRule.onNodeWithText("데이터 한계와 출처").assertIsDisplayed()
+    }
+
+    @Test
+    fun stage4567DataIsVisibleOnHomeListAndCandidateDetail() {
+        waitForDisplayedTag("main_pager")
+
+        // Home must expose the V2 final-candidate state and its Stage4/5 context.
+        composeRule.onNodeWithTag("home_list").performScrollToIndex(3)
+        composeRule.waitForIdle()
+        composeRule.onNodeWithTag("stock_025560").assertIsDisplayed()
+        composeRule.onNodeWithText("FINAL #1").assertIsDisplayed()
+        composeRule.onAllNodesWithTag("financial_safety_badge").onFirst().assertIsDisplayed()
+        composeRule.onAllNodesWithTag("valuation_band_badge").onFirst().assertIsDisplayed()
+
+        // The full list must surface the same candidate identity without changing
+        // its existing dynamic combination-ranking controls.
+        composeRule.onNodeWithTag("main_pager").performTouchInput { swipeLeft() }
+        composeRule.waitForIdle()
+        composeRule.onNodeWithTag("stock_search").performTextInput("025560")
+        closeSoftKeyboard()
+        composeRule.waitForIdle()
+        composeRule.onNodeWithTag("stock_025560").performScrollTo().assertIsDisplayed()
+        composeRule.onNodeWithText("FINAL #1").assertIsDisplayed()
+        composeRule.onNodeWithTag("stock_025560").performClick()
+        composeRule.waitForIdle()
+
+        // Candidate detail must explain Stage6/7 selection and show the full
+        // Stage4 safety and Stage5 valuation cards on the summary page.
+        composeRule.onNodeWithTag("detail_summary_page").assertIsDisplayed()
+        composeRule.onNodeWithTag("final_candidate_detail_card").performScrollTo().assertIsDisplayed()
+        composeRule.onNodeWithTag("financial_safety_card").performScrollTo().assertIsDisplayed()
+        composeRule.onNodeWithTag("valuation_card").performScrollTo().assertIsDisplayed()
+        composeRule.onNodeWithText("Stage4 재무안정성").assertIsDisplayed()
+        composeRule.onNodeWithText("Stage5 상대 PER 밴드").assertIsDisplayed()
     }
 }
