@@ -12,6 +12,15 @@ import com.krstock.v3.data.repository.StockRepository
 object FinalCandidateRepository {
     fun getFinalCandidates(limit: Int = FinalCandidateEngine.DEFAULT_LIMIT): List<FinalCandidateRecord> {
         require(limit in 1..100) { "Final-candidate limit must be between 1 and 100" }
-        return FinalCandidateRuntimeStore.current(StockRepository.quantSnapshotDate()).take(limit)
+        return current().take(limit)
     }
+
+    fun getFinalCandidate(issuerId: String): FinalCandidateRecord? =
+        current().firstOrNull { it.issuerId == issuerId }
+
+    fun getFinalCandidateMap(): Map<String, FinalCandidateRecord> =
+        current().associateBy { it.issuerId }
+
+    private fun current(): List<FinalCandidateRecord> =
+        FinalCandidateRuntimeStore.current(StockRepository.quantSnapshotDate())
 }
