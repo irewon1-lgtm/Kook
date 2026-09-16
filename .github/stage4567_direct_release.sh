@@ -47,24 +47,17 @@ PY
 
 sign() {
   test "${GITHUB_REF:-}" = "refs/heads/main"
-  test -n "${ACTIONS_ID_TOKEN_REQUEST_URL:-}"
-  test -n "${ACTIONS_ID_TOKEN_REQUEST_TOKEN:-}"
   test -n "${GITHUB_ENV:-}"
   test -n "${RUNNER_TEMP:-}"
+  test -s "$RUNNER_TEMP/kr4-oidc-token.txt"
+  OIDC_TOKEN=$(cat "$RUNNER_TEMP/kr4-oidc-token.txt")
+  test "${#OIDC_TOKEN}" -gt 100
   umask 077
   openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:3072 -out "$RUNNER_TEMP/kr4-transport-private.pem" >/dev/null 2>&1
   openssl pkey -in "$RUNNER_TEMP/kr4-transport-private.pem" -pubout -outform DER -out "$RUNNER_TEMP/kr4-transport-public.der"
   TRANSPORT_KEY=$(base64 -w0 "$RUNNER_TEMP/kr4-transport-public.der" | tr '+/' '-_' | tr -d '=')
-  curl -fsS -H "Authorization: Bearer ${ACTIONS_ID_TOKEN_REQUEST_TOKEN}" "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=kr4-signing-vault" -o "$RUNNER_TEMP/kr4-oidc.json"
-  OIDC_TOKEN=$(python3 - <<'PY'
-import json, os
-p=os.path.join(os.environ['RUNNER_TEMP'],'kr4-oidc.json')
-t=json.load(open(p,encoding='utf-8')).get('value')
-assert isinstance(t,str) and len(t)>100
-print(t)
-PY
-)
   curl -fsS --get -H "Authorization: Bearer ${OIDC_TOKEN}" --data-urlencode "transport_key=${TRANSPORT_KEY}" "https://kr4-signing-vault-5yh3dd.v2.appdeploy.ai/api/signing-material" -o "$RUNNER_TEMP/kr4-encrypted-signing.json"
+  test -s "$RUNNER_TEMP/kr4-encrypted-signing.json"
   python3 - <<'PY'
 import json, os
 p=os.path.join(os.environ['RUNNER_TEMP'],'kr4-encrypted-signing.json')
@@ -113,7 +106,7 @@ PY
   echo "KR4_VERSION_NAME=$VERSION_NAME" >> "$GITHUB_ENV"
   echo "KR4_RELEASE_TAG=kr4-app-c${NEXT}" >> "$GITHUB_ENV"
   echo "DIRECT_VERSION_PASS latest=$LATEST_TAG next=kr4-app-c${NEXT} name=$VERSION_NAME"
-  rm -f "$RUNNER_TEMP/kr4-oidc.json" "$RUNNER_TEMP/kr4-encrypted-signing.json" "$RUNNER_TEMP/kr4-encrypted-chunks.txt" "$RUNNER_TEMP/kr4-signing-bundle.txt" "$RUNNER_TEMP/kr4-transport-private.pem" "$RUNNER_TEMP/kr4-transport-public.der" "$RUNNER_TEMP"/kr4-chunk-*.bin
+  rm -f "$RUNNER_TEMP/kr4-oidc-token.txt" "$RUNNER_TEMP/kr4-encrypted-signing.json" "$RUNNER_TEMP/kr4-encrypted-chunks.txt" "$RUNNER_TEMP/kr4-signing-bundle.txt" "$RUNNER_TEMP/kr4-transport-private.pem" "$RUNNER_TEMP/kr4-transport-public.der" "$RUNNER_TEMP"/kr4-chunk-*.bin
 }
 
 build() {
@@ -149,20 +142,21 @@ promote() {
   rm -f .github/stage4567_payload.part* .github/patch_stage4567_gate.py .github/patch_stage4567_post.py .github/stage4567_trigger_v2 .github/stage4567_direct_release.sh scripts/stage4567_ci.sh
   python3 - <<'PY'
 import subprocess
+from pathlib import Path
+payload_allowed=set()
+manifest=Path('/tmp/stage4567_payload_changed_paths.txt')
+assert manifest.is_file(), 'payload path manifest missing'
+for raw in manifest.read_text(encoding='utf-8').splitlines():
+    raw=raw.strip()
+    if raw:
+        payload_allowed.add(raw)
 allowed_prefixes=(
-    'app/src/main/java/com/krstock/v3/',
-    'app/src/test/java/com/krstock/v3/',
-    'scripts/collect_financial_',
-    'tests/test_stage4567_',
     '.github/stage4567_',
     '.github/patch_stage4567_',
 )
 allowed_exact={
-    'scripts/build_final_candidates.py',
     'evidence/real_quant_snapshot.json',
     'evidence/final_candidates.json',
-    '.github/workflows/collect-real-quant.yml',
-    '.github/workflows/final-candidate-refresh.yml',
     '.github/workflows/android-build.yml',
 }
 out=subprocess.check_output(['git','status','--porcelain=v1','-uall'],text=True); paths=[]
@@ -170,9 +164,9 @@ for line in out.splitlines():
     raw=line[3:]
     if ' -> ' in raw: raw=raw.split(' -> ',1)[1]
     paths.append(raw.strip('"'))
-bad=[p for p in paths if p not in allowed_exact and not p.startswith(allowed_prefixes)]
-assert not bad, ('UNEXPECTED_PROMOTION_PATHS',bad,paths)
-print('PROMOTION_PATH_GATE_PASS',paths)
+bad=[p for p in paths if p not in payload_allowed and p not in allowed_exact and not p.startswith(allowed_prefixes)]
+assert not bad, ('UNEXPECTED_PROMOTION_PATHS',bad,paths,sorted(payload_allowed))
+print('PROMOTION_PATH_GATE_PASS', {'paths':paths,'payload_allowed_count':len(payload_allowed)})
 PY
   git config user.name "github-actions[bot]"
   git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
