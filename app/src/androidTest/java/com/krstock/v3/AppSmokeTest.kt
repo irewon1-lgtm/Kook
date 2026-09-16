@@ -127,12 +127,18 @@ class AppSmokeTest {
         waitForDisplayedTag("main_pager")
 
         // Home must expose the V2 final-candidate state and its Stage4/5 context.
+        // Candidate cards are taller than one phone viewport, so each assertion
+        // explicitly scrolls the target semantics node into view first.
         composeRule.onNodeWithTag("home_list").performScrollToIndex(3)
         composeRule.waitForIdle()
-        composeRule.onNodeWithTag("stock_025560").assertIsDisplayed()
-        composeRule.onNodeWithText("FINAL #1").assertIsDisplayed()
-        composeRule.onAllNodesWithTag("financial_safety_badge").onFirst().assertIsDisplayed()
-        composeRule.onAllNodesWithTag("valuation_band_badge").onFirst().assertIsDisplayed()
+        composeRule.onNodeWithTag("stock_025560").performScrollTo()
+        composeRule.onNodeWithText("FINAL #1").performScrollTo().assertIsDisplayed()
+        composeRule.onAllNodesWithTag("financial_safety_badge").onFirst()
+            .performScrollTo()
+            .assertIsDisplayed()
+        composeRule.onAllNodesWithTag("valuation_band_badge").onFirst()
+            .performScrollTo()
+            .assertIsDisplayed()
 
         // The full list must surface the same candidate identity without changing
         // its existing dynamic combination-ranking controls.
@@ -141,18 +147,24 @@ class AppSmokeTest {
         composeRule.onNodeWithTag("stock_search").performTextInput("025560")
         closeSoftKeyboard()
         composeRule.waitForIdle()
-        composeRule.onNodeWithTag("stock_025560").performScrollTo().assertIsDisplayed()
+        composeRule.onNodeWithTag("stock_025560").performScrollTo()
         composeRule.onNodeWithText("FINAL #1").performScrollTo().assertIsDisplayed()
-        composeRule.onNodeWithTag("stock_025560").performClick()
+        composeRule.onAllNodesWithTag("financial_safety_badge").onFirst()
+            .performScrollTo()
+            .assertIsDisplayed()
+        composeRule.onAllNodesWithTag("valuation_band_badge").onFirst()
+            .performScrollTo()
+            .assertIsDisplayed()
+        composeRule.onNodeWithTag("stock_025560").performScrollTo().performClick()
         composeRule.waitForIdle()
 
         // Candidate detail must explain Stage6/7 selection and show the full
-        // Stage4 safety and Stage5 valuation cards on the summary page.
+        // Stage4 safety and Stage5 valuation cards on the summary page. Verify
+        // the headings after scrolling rather than requiring a potentially tall
+        // card container to fit the viewport at once.
         composeRule.onNodeWithTag("detail_summary_page").assertIsDisplayed()
-        composeRule.onNodeWithTag("final_candidate_detail_card").performScrollTo().assertIsDisplayed()
-        composeRule.onNodeWithTag("financial_safety_card").performScrollTo().assertIsDisplayed()
-        composeRule.onNodeWithText("Stage4 재무안정성").assertIsDisplayed()
-        composeRule.onNodeWithTag("valuation_card").performScrollTo().assertIsDisplayed()
-        composeRule.onNodeWithText("Stage5 상대 PER 밴드").assertIsDisplayed()
+        composeRule.onNodeWithText("최종 조사 후보").performScrollTo().assertIsDisplayed()
+        composeRule.onNodeWithText("Stage4 재무안정성").performScrollTo().assertIsDisplayed()
+        composeRule.onNodeWithText("Stage5 상대 PER 밴드").performScrollTo().assertIsDisplayed()
     }
 }
