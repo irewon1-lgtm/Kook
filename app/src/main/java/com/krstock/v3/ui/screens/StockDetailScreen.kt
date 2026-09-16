@@ -20,11 +20,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.krstock.v3.data.analysis.IntegratedInterpretationEngine
 import com.krstock.v3.data.analysis.QuarterlyTrendAnalyzer
+import com.krstock.v3.data.candidate.FinalCandidateRepository
 import com.krstock.v3.data.evidence.ContextEvidenceRepository
 import com.krstock.v3.data.history.QuarterlyHistoryRepository
 import com.krstock.v3.data.model.*
 import com.krstock.v3.data.repository.StockRepository
+import com.krstock.v3.data.stage.FinancialSafetyRepository
+import com.krstock.v3.data.stage.ValuationBandPolicy
+import com.krstock.v3.ui.components.FinalCandidateDetailCard
+import com.krstock.v3.ui.components.FinancialSafetyCard
 import com.krstock.v3.ui.components.StatusBadge
+import com.krstock.v3.ui.components.ValuationCard
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 
@@ -62,6 +68,9 @@ fun StockDetailScreen(issuerId: String, onBack: () -> Unit) {
 
     val summary = stockDetail.summary
     val report = stockDetail.report
+    val finalCandidate = remember(issuerId) { FinalCandidateRepository.getFinalCandidate(issuerId) }
+    val financialSafety = remember(issuerId) { FinancialSafetyRepository.get(issuerId) }
+    val valuationBand = remember(summary) { ValuationBandPolicy.classify(summary.m03Per) }
     val context = LocalContext.current
     var evidence by remember(issuerId) { mutableStateOf(EvidenceBundle(issuerId = issuerId)) }
     var quarterlyHistory by remember(issuerId) { mutableStateOf(QuarterlyHistory.empty(issuerId)) }
@@ -142,7 +151,13 @@ fun StockDetailScreen(issuerId: String, onBack: () -> Unit) {
                 modifier = Modifier.fillMaxSize().testTag("detail_pager")
             ) { page ->
                 when (page) {
-                    0 -> DetailSummaryPage(summary = summary, analysis = integrated)
+                    0 -> DetailSummaryPage(
+                        summary = summary,
+                        analysis = integrated,
+                        finalCandidate = finalCandidate,
+                        financialSafety = financialSafety,
+                        valuationBand = valuationBand,
+                    )
                     1 -> DetailMetricsPage(summary = summary)
                     2 -> DetailAnalysisPage(analysis = integrated, evidence = evidence, history = quarterlyHistory)
                     else -> DetailCheckSourcePage(report = report, evidence = evidence)
@@ -153,7 +168,13 @@ fun StockDetailScreen(issuerId: String, onBack: () -> Unit) {
 }
 
 @Composable
-private fun DetailSummaryPage(summary: StockSummary, analysis: IntegratedAnalysis) {
+private fun DetailSummaryPage(
+    summary: StockSummary,
+    analysis: IntegratedAnalysis,
+    finalCandidate: FinalCandidateRecord?,
+    financialSafety: FinancialSafetyRecord?,
+    valuationBand: ValuationBand?,
+) {
     val scheme = MaterialTheme.colorScheme
     val availableCount = listOf(summary.m01RevGrowth, summary.m02OpMargin, summary.m03Per, summary.m04Price6m)
         .count { it.isAvailable }
@@ -202,6 +223,20 @@ private fun DetailSummaryPage(summary: StockSummary, analysis: IntegratedAnalysi
                 }
             }
         }
+
+        if (finalCandidate != null) {
+            FinalCandidateDetailCard(finalCandidate)
+        }
+
+        FinancialSafetyCard(
+            safety = financialSafety,
+            snapshotDate = StockRepository.quantSnapshotDate(),
+        )
+
+        ValuationCard(
+            metric = summary.m03Per,
+            band = valuationBand,
+        )
 
         FinanceSectionCard(title = "핵심 판독") {
             Text(analysis.regimeTitle, fontSize = 14.sp, fontWeight = FontWeight.Bold, color = scheme.primary)

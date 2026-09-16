@@ -2,7 +2,10 @@ package com.krstock.v3.data.update
 
 import android.content.Context
 import com.krstock.v3.data.generated.GeneratedRealQuantSnapshot
+import com.krstock.v3.data.model.FinancialSafetySnapshot
 import com.krstock.v3.data.model.RealQuantRecord
+import com.krstock.v3.data.stage.FinancialSafetyRuntimeStore
+import com.krstock.v3.data.stage.FinancialSafetySnapshotParser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
@@ -46,6 +49,7 @@ object SnapshotAutoUpdater {
         val priceCutoffDate: String,
         val dartFileName: String,
         val rows: List<RealQuantRecord>,
+        val financialSafety: FinancialSafetySnapshot,
         val m01Available: Int,
         val m02Available: Int,
         val m03Available: Int,
@@ -75,6 +79,7 @@ object SnapshotAutoUpdater {
         var active = bundledResult("앱 내장 정상본")
         val cache = File(context.filesDir, CACHE_NAME)
         val backup = File(context.filesDir, BACKUP_NAME)
+        if (installInMemory) FinancialSafetyRuntimeStore.clear()
 
         // 1) Warm start from local known-good copies. Cache is preferred when
         // equally new, but a strictly newer valid rollback copy can still win.
@@ -145,7 +150,7 @@ object SnapshotAutoUpdater {
             useCaches = false
             setRequestProperty("Accept", "application/json")
             setRequestProperty("Cache-Control", "no-cache")
-            setRequestProperty("User-Agent", "KR4-Android-AutoUpdate/3")
+            setRequestProperty("User-Agent", "KR4-Android-AutoUpdate/4")
         }
         try {
             require(c.responseCode == HttpURLConnection.HTTP_OK) { "HTTP ${c.responseCode}" }
@@ -292,11 +297,19 @@ object SnapshotAutoUpdater {
         require(perExplained >= (universe * 0.985).toInt()) { "PER state explanation regression" }
         require(sourceErrors <= 15) { "too many provider/worker errors: $sourceErrors" }
 
+        require(root.has("financial_safety")) { "financial_safety section missing" }
+        val financialSafety = FinancialSafetySnapshotParser.parse(
+            safety = root.getJSONObject("financial_safety"),
+            expectedSnapshotDate = snapshotDate,
+            expectedCodes = bundledCodes,
+        )
+
         return ParsedSnapshot(
             snapshotDate = snapshotDate,
             priceCutoffDate = priceCutoffDate,
             dartFileName = root.optString("dart_bulk_file", ""),
             rows = parsed.sortedBy { it.code },
+            financialSafety = financialSafety,
             m01Available = c1,
             m02Available = c2,
             m03Available = c3,
@@ -328,6 +341,7 @@ object SnapshotAutoUpdater {
             newM04Available = p.m04Available,
             newCompleteCount = p.completeCount,
         )
+        FinancialSafetyRuntimeStore.install(p.financialSafety)
     }
 
     private fun isNotOlderThanBundled(snapshotDate: String, priceDate: String): Boolean =

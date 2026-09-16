@@ -15,11 +15,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.krstock.v3.data.candidate.FinalCandidateRepository
 import com.krstock.v3.data.model.StockSummary
 import com.krstock.v3.data.ranking.DynamicRankResult
 import com.krstock.v3.data.ranking.DynamicRankingEngine
 import com.krstock.v3.data.ranking.RankMetric
 import com.krstock.v3.data.repository.StockRepository
+import com.krstock.v3.data.stage.FinancialSafetyRepository
+import com.krstock.v3.data.stage.ValuationBandPolicy
+import com.krstock.v3.ui.components.Stage45CompactPanel
 
 private enum class ListSortMode(val label: String) {
     COMBINATION("선택지표 순위"),
@@ -34,6 +38,8 @@ fun StockListScreen(
     onBack: () -> Unit
 ) {
     val stocks = remember { StockRepository.getAllStocks() }
+    val finalCandidateMap = remember(stocks) { FinalCandidateRepository.getFinalCandidateMap() }
+    val safetyByCode = remember(stocks) { FinancialSafetyRepository.getAll() }
     var searchQuery by remember { mutableStateOf("") }
     var selectedMarket by remember { mutableStateOf("전체") }
     var selectedCompleteOnly by remember { mutableStateOf(false) }
@@ -394,7 +400,15 @@ fun StockListScreen(
                             displayRank = dynamic?.rank,
                             displayScore = dynamic?.score,
                             scoreLabel = "선택 ${selectedCount}개 지표 종합 상대점수",
-                            missingLabel = "선택지표 결측 · 조합순위 보류"
+                            missingLabel = "선택지표 결측 · 조합순위 보류",
+                            stage45Content = {
+                                Stage45CompactPanel(
+                                    candidate = finalCandidateMap[stock.issuerId],
+                                    safety = safetyByCode[stock.issuerId],
+                                    valuation = ValuationBandPolicy.classify(stock.m03Per),
+                                    showRatios = false,
+                                )
+                            }
                         )
                     }
                 }
