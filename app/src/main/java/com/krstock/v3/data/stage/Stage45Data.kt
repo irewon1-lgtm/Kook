@@ -78,6 +78,7 @@ object FinancialSafetySnapshotParser {
             when (status) {
                 FinancialSafetyStatus.PASS -> {
                     require(reason == "PASS") { "PASS reason mismatch for $code" }
+                    require(scope in setOf("CFS", "OFS")) { "PASS scope missing for $code" }
                     require(debt != null && current != null && identity != null) { "PASS ratios missing for $code" }
                     require(debt <= DEBT_TO_EQUITY_MAX + 1e-9) { "PASS debt ratio violates policy for $code" }
                     require(current >= CURRENT_RATIO_MIN - 1e-9) { "PASS current ratio violates policy for $code" }
@@ -85,16 +86,74 @@ object FinancialSafetySnapshotParser {
                     require(basis.isNotBlank()) { "PASS basis missing for $code" }
                     pass++
                 }
+
                 FinancialSafetyStatus.FAIL -> {
+                    require(scope in setOf("CFS", "OFS")) { "FAIL scope missing for $code" }
                     require(basis.isNotBlank()) { "FAIL basis missing for $code" }
-                    require(identity == null || identity <= IDENTITY_TOLERANCE + 1e-9) {
-                        "identity mismatch must be HOLD, not FAIL, for $code"
+                    require(identity != null && identity <= IDENTITY_TOLERANCE + 1e-9) {
+                        "FAIL requires a valid accounting identity for $code"
+                    }
+                    when (reason) {
+                        "NONPOSITIVE_EQUITY" -> {
+                            require(debt == null && current == null) { "nonpositive-equity derived ratios must be null for $code" }
+                        }
+                        "DEBT_TO_EQUITY_OVER_400" -> {
+                            require(debt != null && current != null) { "debt FAIL ratios missing for $code" }
+                            require(debt > DEBT_TO_EQUITY_MAX) { "debt FAIL does not exceed threshold for $code" }
+                        }
+                        "CURRENT_RATIO_UNDER_70" -> {
+                            require(debt != null && current != null) { "current-ratio FAIL ratios missing for $code" }
+                            require(debt <= DEBT_TO_EQUITY_MAX + 1e-9) { "current-ratio FAIL should have failed debt first for $code" }
+                            require(current < CURRENT_RATIO_MIN) { "current-ratio FAIL does not violate threshold for $code" }
+                        }
+                        else -> throw IllegalArgumentException("unexpected financial-safety FAIL reason for $code: $reason")
                     }
                     fail++
                 }
-                FinancialSafetyStatus.HOLD -> hold++
+
+                FinancialSafetyStatus.HOLD -> {
+                    when {
+                        reason.startsWith("MISSING_") -> {
+                            require(debt == null && current == null && identity == null) {
+                                "missing-input HOLD ratios must be null for $code"
+                            }
+                        }
+                        reason == "DART_NO_BALANCE_SHEET" -> {
+                            require(scope.isBlank()) { "no-BS HOLD must not have scope for $code" }
+                            require(basis.isBlank()) { "no-BS HOLD must not have basis for $code" }
+                            require(debt == null && current == null && identity == null) {
+                                "no-BS HOLD ratios must be null for $code"
+                            }
+                        }
+                        reason == "NONPOSITIVE_ASSETS" -> {
+                            require(debt == null && current == null && identity == null) {
+                                "nonpositive-assets HOLD ratios must be null for $code"
+                            }
+                        }
+                        reason == "ACCOUNTING_IDENTITY_MISMATCH" -> {
+                            require(debt == null && current == null) { "identity HOLD debt/current ratios must be null for $code" }
+                            require(identity == null || identity > IDENTITY_TOLERANCE) {
+                                "identity HOLD does not exceed tolerance for $code"
+                            }
+                        }
+                        reason == "NONPOSITIVE_CURRENT_LIABILITIES" -> {
+                            require(debt != null && current == null && identity != null) {
+                                "current-liabilities HOLD ratio shape invalid for $code"
+                            }
+                            require(identity <= IDENTITY_TOLERANCE + 1e-9) { "current-liabilities HOLD identity invalid for $code" }
+                        }
+                        reason == "NONFINITE_DERIVED_RATIO" -> {
+                            // Upstream should normally reject/serialize no non-finite values before promotion.
+                            // If this reason survives with finite JSON values, keep the HOLD state without inferring a replacement.
+                        }
+                        else -> throw IllegalArgumentException("unexpected financial-safety HOLD reason for $code: $reason")
+                    }
+                    hold++
+                }
+
                 FinancialSafetyStatus.NOT_APPLICABLE -> {
                     require(reason == "FINANCIAL_SECTOR_NOT_COMPARABLE") { "N/A reason mismatch for $code" }
+                    require(scope.isBlank() && basis.isBlank()) { "N/A scope/basis must be empty for $code" }
                     require(debt == null && current == null && identity == null) { "N/A ratios must be null for $code" }
                     notApplicable++
                 }
@@ -151,7 +210,7 @@ object FinancialSafetyRuntimeStore {
     @Synchronized
     fun install(snapshot: FinancialSafetySnapshot) {
         require(snapshot.records.isNotEmpty()) { "cannot install empty financial-safety snapshot" }
-        require(snapshot.records.values.all { it.issuerId in snapshot.records.keys }) {
+        require(snapshot.records.all { (code, row) -> code == row.issuerId }) {
             "financial-safety record identity mismatch"
         }
         installed = snapshot.copy(records = snapshot.records.toMap())
