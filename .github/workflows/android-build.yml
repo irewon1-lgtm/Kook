@@ -330,32 +330,34 @@ jobs:
           test "$INDEX" -gt 0
 
           python3 - <<'PY'
-          import base64, json, os
-          path = os.path.join(os.environ['RUNNER_TEMP'], 'kr4-signing-bundle.txt')
-          raw = open(path, encoding='utf-8').read().strip()
-          assert len(raw) > 100
-          doc = json.loads(base64.b64decode(raw).decode('utf-8'))
-          for key in ('keystore_b64', 'store_password', 'alias', 'key_password'):
-              assert isinstance(doc.get(key), str) and doc[key]
-          temp = os.environ['RUNNER_TEMP']
-          jks = os.path.join(temp, 'kr4-release.jks')
-          open(jks, 'wb').write(base64.b64decode(doc['keystore_b64']))
-          os.chmod(jks, 0o600)
+          import base64, hashlib, json, os, subprocess
+          rt=os.environ['RUNNER_TEMP']
+          path=os.path.join(rt,'kr4-signing-bundle.txt')
+          raw=open(path,encoding='utf-8').read().strip()
+          assert len(raw)>100
+          doc=json.loads(base64.b64decode(raw).decode('utf-8'))
+          for key in ('keystore_b64','store_password','alias','key_password'):
+              value=doc.get(key)
+              assert isinstance(value,str) and value and '\n' not in value and '\r' not in value, key
+          jks=os.path.join(rt,'kr4-release.jks')
+          open(jks,'wb').write(base64.b64decode(doc['keystore_b64']))
+          os.chmod(jks,0o600)
+          cert=subprocess.check_output([
+              'keytool','-exportcert','-keystore',jks,'-alias',doc['alias'],'-storepass',doc['store_password']
+          ],stderr=subprocess.DEVNULL)
+          sha=hashlib.sha256(cert).hexdigest()
+          expected=os.environ['EXPECTED_STABLE_CERT_SHA256']
+          assert sha==expected,(sha,expected)
           print(f"::add-mask::{doc['store_password']}")
           print(f"::add-mask::{doc['key_password']}")
-          with open(os.environ['GITHUB_ENV'], 'a', encoding='utf-8') as out:
+          with open(os.environ['GITHUB_ENV'],'a',encoding='utf-8') as out:
               out.write(f"KR4_KEYSTORE_FILE={jks}\n")
               out.write(f"KR4_KEYSTORE_PASSWORD={doc['store_password']}\n")
               out.write(f"KR4_KEY_ALIAS={doc['alias']}\n")
               out.write(f"KR4_KEY_PASSWORD={doc['key_password']}\n")
+              out.write(f"KR4_SIGNING_CERT_SHA256={sha}\n")
+          print('STABLE_SIGNING_CERT_PASS',sha)
           PY
-
-          ACTUAL_CERT_SHA=$(keytool -exportcert \
-            -keystore "$KR4_KEYSTORE_FILE" \
-            -alias "$KR4_KEY_ALIAS" \
-            -storepass "$KR4_KEYSTORE_PASSWORD" \
-            -rfc 2>/dev/null | openssl x509 -outform DER 2>/dev/null | sha256sum | awk '{print $1}')
-          test "$ACTUAL_CERT_SHA" = "$EXPECTED_STABLE_CERT_SHA256"
 
           LATEST_TAG=$(gh api "repos/${GITHUB_REPOSITORY}/releases/latest" --jq '.tag_name')
           [[ "$LATEST_TAG" =~ ^kr4-app-c([0-9]+)$ ]]
@@ -364,7 +366,6 @@ jobs:
           VERSION_NAME="4.3.$((VERSION_CODE - 20000))"
           echo "KR4_VERSION_CODE=$VERSION_CODE" >> "$GITHUB_ENV"
           echo "KR4_VERSION_NAME=$VERSION_NAME" >> "$GITHUB_ENV"
-          echo "KR4_SIGNING_CERT_SHA256=$ACTUAL_CERT_SHA" >> "$GITHUB_ENV"
           rm -f \
             "$RUNNER_TEMP/kr4-oidc-token.txt" \
             "$RUNNER_TEMP/kr4-encrypted-signing.json" \
@@ -373,7 +374,7 @@ jobs:
             "$RUNNER_TEMP/kr4-transport-private.pem" \
             "$RUNNER_TEMP/kr4-transport-public.der" \
             "$RUNNER_TEMP"/kr4-chunk-*.bin
-          echo "STABLE_SIGNING_IDENTITY_READY cert_sha256=$ACTUAL_CERT_SHA version=$VERSION_NAME latest=$LATEST_TAG"
+          echo "STABLE_SIGNING_IDENTITY_READY cert_sha256=$EXPECTED_STABLE_CERT_SHA256 version=$VERSION_NAME latest=$LATEST_TAG"
 
       - name: Build and verify stable signed Release APK
         if: steps.release_gate.outputs.ready == 'true'
