@@ -28,7 +28,9 @@ class FinancialSafetyParserInstrumentedTest {
         assertEquals(FinancialSafetyStatus.FAIL, parsed.records["000002"]?.status)
         assertEquals(FinancialSafetyStatus.HOLD, parsed.records["000003"]?.status)
         assertEquals(FinancialSafetyStatus.NOT_APPLICABLE, parsed.records["000004"]?.status)
+        assertEquals(null, parsed.records["000003"]?.debtToEquityPct)
         assertEquals(null, parsed.records["000003"]?.currentRatioPct)
+        assertEquals(null, parsed.records["000003"]?.accountingIdentityGapPct)
         assertEquals(null, parsed.records["000004"]?.debtToEquityPct)
     }
 
@@ -41,6 +43,13 @@ class FinancialSafetyParserInstrumentedTest {
     fun rejectsPassRowThatViolatesDebtPolicy() {
         val root = validDocument()
         root.getJSONObject("records").getJSONObject("000001").put("debt_to_equity_pct", 401.0)
+        FinancialSafetySnapshotParser.parse(root, "2026-09-16", codes)
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun rejectsFailReasonThatDoesNotMatchRatio() {
+        val root = validDocument()
+        root.getJSONObject("records").getJSONObject("000002").put("debt_to_equity_pct", 399.0)
         FinancialSafetySnapshotParser.parse(root, "2026-09-16", codes)
     }
 
@@ -94,9 +103,9 @@ class FinancialSafetyParserInstrumentedTest {
               "status": "HOLD",
               "reason": "MISSING_CURRENT_ASSETS",
               "scope": "CFS",
-              "debt_to_equity_pct": 90.0,
+              "debt_to_equity_pct": null,
               "current_ratio_pct": null,
-              "identity_gap_pct": 0.30,
+              "identity_gap_pct": null,
               "basis": "CFS test"
             },
             "000004": {
