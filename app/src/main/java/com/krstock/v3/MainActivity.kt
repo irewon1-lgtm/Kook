@@ -11,10 +11,14 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.weight
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -28,6 +32,7 @@ import androidx.navigation.compose.rememberNavController
 import com.krstock.v3.data.candidate.FinalCandidateSnapshotUpdater
 import com.krstock.v3.data.update.SnapshotAutoUpdater
 import com.krstock.v3.ui.screens.HomeScreen
+import com.krstock.v3.ui.screens.Stage4567Screen
 import com.krstock.v3.ui.screens.StockDetailScreen
 import com.krstock.v3.ui.screens.StockListScreen
 import com.krstock.v3.ui.theme.KRStockV3Theme
@@ -52,9 +57,8 @@ class MainActivity : ComponentActivity() {
 
                 LaunchedEffect(Unit) {
                     runCatching { SnapshotAutoUpdater.bootstrap(this@MainActivity) }
-                    // Stage 4~7 candidates are a separate fail-closed remote artifact.
-                    // It is loaded only after the active quant snapshot is known so
-                    // stale safety data can never be mixed with newer M01~M04.
+                    // Stage 4~7 final candidates are a separate fail-closed remote artifact.
+                    // They are loaded only after the active quant snapshot is known.
                     runCatching { FinalCandidateSnapshotUpdater.bootstrap(this@MainActivity) }
                     ready = true
                 }
@@ -90,26 +94,47 @@ class MainActivity : ComponentActivity() {
                             popExitTransition = { ExitTransition.None }
                         ) {
                             composable("main") {
-                                val pagerState = rememberPagerState(initialPage = 0, pageCount = { 2 })
+                                val pagerState = rememberPagerState(initialPage = 0, pageCount = { 3 })
                                 val scope = rememberCoroutineScope()
+                                val labels = listOf("홈", "조합순위", "안정·가치")
 
                                 BackHandler(enabled = pagerState.currentPage != 0) {
                                     scope.launch { pagerState.scrollToPage(0) }
                                 }
 
-                                HorizontalPager(
-                                    state = pagerState,
-                                    modifier = Modifier.fillMaxSize().testTag("main_pager")
-                                ) { page ->
-                                    when (page) {
-                                        0 -> HomeScreen(
-                                            onStockClick = { issuerId -> navController.navigate("detail/$issuerId") },
-                                            onNavigateToList = { scope.launch { pagerState.animateScrollToPage(1) } }
-                                        )
-                                        else -> StockListScreen(
-                                            onStockClick = { issuerId -> navController.navigate("detail/$issuerId") },
-                                            onBack = { scope.launch { pagerState.scrollToPage(0) } }
-                                        )
+                                Column(modifier = Modifier.fillMaxSize()) {
+                                    HorizontalPager(
+                                        state = pagerState,
+                                        modifier = Modifier
+                                            .weight(1f)
+                                            .fillMaxWidth()
+                                            .testTag("main_pager")
+                                    ) { page ->
+                                        when (page) {
+                                            0 -> HomeScreen(
+                                                onStockClick = { issuerId -> navController.navigate("detail/$issuerId") },
+                                                onNavigateToList = { scope.launch { pagerState.animateScrollToPage(1) } }
+                                            )
+                                            1 -> StockListScreen(
+                                                onStockClick = { issuerId -> navController.navigate("detail/$issuerId") },
+                                                onBack = { scope.launch { pagerState.scrollToPage(0) } }
+                                            )
+                                            else -> Stage4567Screen(
+                                                onStockClick = { issuerId -> navController.navigate("detail/$issuerId") }
+                                            )
+                                        }
+                                    }
+
+                                    NavigationBar(modifier = Modifier.fillMaxWidth().testTag("main_bottom_nav")) {
+                                        labels.forEachIndexed { index, label ->
+                                            NavigationBarItem(
+                                                selected = pagerState.currentPage == index,
+                                                onClick = { scope.launch { pagerState.animateScrollToPage(index) } },
+                                                icon = {},
+                                                label = { Text(label) },
+                                                alwaysShowLabel = true,
+                                            )
+                                        }
                                     }
                                 }
                             }
