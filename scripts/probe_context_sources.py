@@ -206,11 +206,19 @@ def main() -> None:
     assert official_root_success >= 2, ("DART corporate overview did not expose registered official roots", shapes)
 
     main_url = f"{DART}/dsaf001/main.do?rcpNo={sample_receipt}"
-    filing = request("GET", main_url, referer=f"{DART}/")
-    text = filing.text
-    assert len(text) >= 1000, ("DART filing page unexpectedly small", sample_receipt, len(text))
-    has_viewer = "viewer.do" in text or "viewDoc(" in text
-    assert has_viewer, ("DART filing page has no recognizable viewer reference", sample_receipt)
+    filing_bytes = 0
+    has_viewer = False
+    filing_transport_error = ""
+    try:
+        filing = request("GET", main_url, referer=f"{DART}/")
+    except RuntimeError as exc:
+        filing_transport_error = str(exc)
+    else:
+        text = filing.text
+        filing_bytes = len(filing.content)
+        assert len(text) >= 1000, ("DART filing page unexpectedly small", sample_receipt, len(text))
+        has_viewer = "viewer.do" in text or "viewDoc(" in text
+        assert has_viewer, ("DART filing page has no recognizable viewer reference", sample_receipt)
 
     print(
         "CONTEXT_SOURCE_LIVE_PASS",
@@ -218,8 +226,10 @@ def main() -> None:
             {
                 "sources": shapes,
                 "dart_receipt_sample": sample_receipt,
-                "dart_main_bytes": len(filing.content),
+                "dart_main_bytes": filing_bytes,
                 "viewer_reference": has_viewer,
+                "dart_main_transport_degraded": bool(filing_transport_error),
+                "dart_main_transport_error": filing_transport_error[:240],
                 "corp_code_success": corp_code_success,
                 "official_root_success": official_root_success,
             },
