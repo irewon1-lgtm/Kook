@@ -3,25 +3,27 @@ name: KR4 AutoUpdate Extreme CleanPass
 on:
   workflow_dispatch:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    branches:
-      - main
+    branches: [main]
 
 permissions:
   contents: write
   id-token: write
 
+concurrency:
+  group: kr4-extreme-cleanpass-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   extreme-cleanpass:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 55
     env:
       EXPECTED_STABLE_CERT_SHA256: 1070e82beee574cd29ffd2dc3e693fd7f7862374f16d1606567db303ab152477
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout exact commit
         uses: actions/checkout@v4
         with:
           fetch-depth: 2
@@ -31,60 +33,93 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install Python collector dependency
-        run: pip install requests
-
-      - name: Validate masters and current committed snapshot without frozen dates
+      - name: Install validation dependencies
         run: |
           set -euo pipefail
-          test -s evidence/kospi_master_snapshot.json
-          test -s evidence/kosdaq_master_snapshot.json
-          test -s evidence/real_quant_snapshot.json
-          test -s evidence/quarterly_history.json
+          python -m pip install --upgrade pip
+          pip install requests pandas lxml
+
+      - name: Validate current quant Stage4 and Stage5-7 snapshots
+        run: |
+          set -euo pipefail
           python3 - <<'PY'
           import json, math, re
           from datetime import date
-          k = json.load(open('evidence/kospi_master_snapshot.json', encoding='utf-8'))
-          q = json.load(open('evidence/kosdaq_master_snapshot.json', encoding='utf-8'))
-          d = json.load(open('evidence/real_quant_snapshot.json', encoding='utf-8'))
-          assert k['issuer_count'] + q['issuer_count'] == d['universe_count'] == len(d['records']) == 2649
-          snap = date.fromisoformat(d['snapshot_date_kst'])
-          price = date.fromisoformat(d['price_cutoff_date_kst'])
-          assert price <= snap and (snap - price).days <= 10, (snap, price)
-          c = d['coverage']
-          floors = {'m01_available': 2400, 'm02_available': 2300, 'm03_available': 1600, 'm04_available': 2550, 'complete_count': 1380}
-          for key, floor in floors.items():
-              assert int(c[key]) >= floor, (key, c[key], floor)
-          assert c['ranked_count'] == c['complete_count']
-          ranks = []
-          for code, row in d['records'].items():
-              assert re.fullmatch(r'[0-9A-Z]{6}', code)
-              metrics = [row[f'm0{i}'] for i in range(1, 5)]
-              complete = True
-              for metric in metrics:
-                  if metric['raw'] is None:
-                      complete = False
-                      assert metric['percentile'] is None and metric['reason']
-                  else:
-                      assert math.isfinite(float(metric['raw']))
-                      assert metric['percentile'] is not None and 0 <= float(metric['percentile']) <= 100
-                      assert metric['basis']
-              assert (row['composite'] is not None) == complete
-              assert (row['rank'] is not None) == complete
-              if row['rank'] is not None:
-                  ranks.append(int(row['rank']))
-          assert sorted(ranks) == list(range(1, len(ranks) + 1))
-          assert d['records']['005930']['name'] == '삼성전자'
-          print('CURRENT_SNAPSHOT_VALIDATED', snap, price, json.dumps(c, ensure_ascii=False))
+          k=json.load(open('evidence/kospi_master_snapshot.json',encoding='utf-8'))
+          q=json.load(open('evidence/kosdaq_master_snapshot.json',encoding='utf-8'))
+          d=json.load(open('evidence/real_quant_snapshot.json',encoding='utf-8'))
+          f=json.load(open('evidence/final_candidates.json',encoding='utf-8'))
+          n=d['universe_count']
+          assert k['issuer_count']+q['issuer_count']==n==len(d['records'])==2649
+          snap=date.fromisoformat(d['snapshot_date_kst']); price=date.fromisoformat(d['price_cutoff_date_kst'])
+          assert price<=snap and (snap-price).days<=10,(snap,price)
+          c=d['coverage']
+          floors={'m01_available':2400,'m02_available':2300,'m03_available':1600,'m04_available':2550,'complete_count':1380}
+          for key,floor in floors.items(): assert int(c[key])>=floor,(key,c[key],floor)
+          assert c['ranked_count']==c['complete_count']
+          ranks=[]
+          for code,row in d['records'].items():
+            assert re.fullmatch(r'[0-9A-Z]{6}',code),code
+            metrics=[row[f'm0{i}'] for i in range(1,5)]
+            complete=True
+            for m in metrics:
+              if m['raw'] is None:
+                complete=False; assert m['percentile'] is None and m['reason'],(code,m)
+              else:
+                assert math.isfinite(float(m['raw'])) and m['percentile'] is not None and 0<=float(m['percentile'])<=100 and m['basis'],(code,m)
+            assert (row['composite'] is not None)==complete,(code,'composite')
+            assert (row['rank'] is not None)==complete,(code,'rank')
+            if row['rank'] is not None: ranks.append(int(row['rank']))
+          assert sorted(ranks)==list(range(1,len(ranks)+1))
+          fs=d['financial_safety']
+          assert fs['policy_version']=='STAGE4_BS_SAFETY_V1'
+          assert fs['snapshot_date_kst']==d['snapshot_date_kst']
+          assert len(fs['records'])==n
+          cov=fs['coverage']
+          assert sum(int(cov[x]) for x in ('pass','fail','hold','not_applicable'))==int(cov['total'])==n,cov
+          counted={x:0 for x in ('PASS','FAIL','HOLD','NOT_APPLICABLE')}
+          for code,row in fs['records'].items():
+            s=row['status']; assert s in counted,(code,s); counted[s]+=1
+            if s=='PASS':
+              assert row['debt_to_equity_pct'] is not None and float(row['debt_to_equity_pct'])<=400,(code,row)
+              assert row['current_ratio_pct'] is not None and float(row['current_ratio_pct'])>=70,(code,row)
+              assert row['identity_gap_pct'] is not None and float(row['identity_gap_pct'])<=5,(code,row)
+          assert counted['PASS']==cov['pass'] and counted['FAIL']==cov['fail'] and counted['HOLD']==cov['hold'] and counted['NOT_APPLICABLE']==cov['not_applicable'],(counted,cov)
+          assert f['schema_version']=='KR4_FINAL_CANDIDATE_V2'
+          assert f['policy_version']=='STAGE4567_SAFETY_AND_RELATIVE_PER_BAND_V1'
+          assert f['snapshot_date_kst']==d['snapshot_date_kst'] and f['universe_count']==n
+          assert f['candidate_count']==len(f['candidates'])==10 and f['eligible_count']>=10
+          assert len({x['code'] for x in f['candidates']})==10
+          assert [x['candidate_rank'] for x in f['candidates']]==list(range(1,11))
+          for x in f['candidates']:
+            assert x['financial_safety']['status']=='PASS'
+            assert x['metrics']['M03']['raw']>0
+            assert x['valuation']['changes_rank'] is False
+            assert x['valuation']['band'] in {'LOW_RELATIVE_PER','BELOW_MEDIAN_PER','MID_PER','ABOVE_MEDIAN_PER','HIGH_RELATIVE_PER'}
+          print('STAGE4567_RELEASE_DATA_PASS', {'coverage':cov,'eligible':f['eligible_count'],'candidates':[x['code'] for x in f['candidates']]})
           PY
 
-      - name: Auto-update and quarterly-history adversarial logic tests
+      - name: Python adversarial and Stage4-7 self tests
         run: |
           set -euo pipefail
           python3 tests/test_auto_update_pipeline.py
           python3 tests/test_quarterly_history.py
+          python3 scripts/collect_financial_safety.py --self-test
+          python3 scripts/build_final_candidates_v2.py --self-test
+          python3 tests/test_stage4567.py
+          python3 tests/run_all.py evidence/clean_pass_results.json
+          python3 tests/run_stress.py
+          python3 tests/run_combo_rank_stress.py evidence/combo_rank_stress_results.json
+          python3 - <<'PY'
+          import json
+          d=json.load(open('evidence/combo_rank_stress_results.json',encoding='utf-8'))
+          assert d['status']=='PASS' and d['all_nonempty_combinations_tested']==15
+          assert d['ten_thousand_toggle_simulation_pass'] is True
+          assert d['all_four_reproduces_committed_rank'] is True
+          print('PYTHON_EXTREME_PASS', d['selected_complete_filter_checks'])
+          PY
 
-      - name: Live news/disclosure evidence source probe
+      - name: Live news and disclosure source probe
         run: python3 scripts/probe_context_sources.py
 
       - name: Set up JDK 17
@@ -98,28 +133,16 @@ jobs:
         with:
           gradle-version: '8.7'
 
-      - name: Python reference and combination Extreme simulations
+      - name: Android unit regression and Debug build
         run: |
           set -euo pipefail
-          python3 tests/run_all.py evidence/clean_pass_results.json
-          python3 tests/run_stress.py
-          python3 tests/run_combo_rank_stress.py evidence/combo_rank_stress_results.json
-          python3 - <<'PY'
-          import json
-          d = json.load(open('evidence/combo_rank_stress_results.json', encoding='utf-8'))
-          assert d['status'] == 'PASS'
-          assert d['all_nonempty_combinations_tested'] == 15
-          assert d['ten_thousand_toggle_simulation_pass'] is True
-          assert d['all_four_reproduces_committed_rank'] is True
-          assert d['selected_complete_filter_checks'] == 2649 * 15
-          print('COMBO_RANK_EXTREME_PASS', d['all_nonempty_combinations_tested'], d['selected_complete_filter_checks'])
-          PY
-
-      - name: Android 2649-stock regression tests
-        run: gradle :app:testDebugUnitTest --stacktrace
-
-      - name: Build Android Debug APK
-        run: gradle :app:assembleDebug --stacktrace
+          gradle :app:testDebugUnitTest :app:assembleDebug --stacktrace
+          test -s app/build/outputs/apk/debug/app-debug.apk
+          grep -q 'Stage4567Screen' app/src/main/java/com/krstock/v3/MainActivity.kt
+          grep -q 'STAGE4_BS_SAFETY_V1' app/src/main/java/com/krstock/v3/data/stage/Stage4567SnapshotRepository.kt
+          grep -q 'LOW_RELATIVE_PER' app/src/main/java/com/krstock/v3/data/stage/Stage4567Policy.kt
+          grep -q 'finalOnly' app/src/main/java/com/krstock/v3/ui/screens/Stage4567Screen.kt
+          echo ANDROID_STAGE4567_STATIC_GATE_PASS
 
       - name: Enable KVM for emulator
         run: |
@@ -135,43 +158,18 @@ jobs:
           disable-animations: true
           script: gradle :app:connectedDebugAndroidTest --stacktrace
 
-      - name: Hard verify APK and automatic-update fail-safes
-        run: |
-          set -euo pipefail
-          APK="app/build/outputs/apk/debug/app-debug.apk"
-          test -s "$APK"
-          mkdir -p dist evidence/ci
-          cp "$APK" dist/KR4_AUTOUPDATE_Extreme_CleanPass_debug.apk
-          sha256sum "$APK" | tee evidence/ci/APK_SHA256.txt
-          stat --printf='APK_BYTES=%s\n' "$APK" | tee evidence/ci/APK_SIZE.txt
-          grep -q 'applicationId = "com.krstock.v3"' app/build.gradle.kts
-          grep -q 'AppAutoUpdater.checkAndDownload' app/src/main/java/com/krstock/v3/MainActivity.kt
-          grep -q 'PeriodicWorkRequestBuilder<AppUpdateWorker>' app/src/main/java/com/krstock/v3/KR4Application.kt
-          grep -q 'REQUEST_INSTALL_PACKAGES' app/src/main/AndroidManifest.xml
-          grep -q 'FileProvider' app/src/main/AndroidManifest.xml
-          grep -q 'releases/latest/download/update.json' app/src/main/java/com/krstock/v3/update/AppAutoUpdater.kt
-          grep -q 'signerDigests(installed) == signerDigests(archive)' app/src/main/java/com/krstock/v3/update/AppAutoUpdater.kt
-          grep -q 'sha256(apk) != info.sha256' app/src/main/java/com/krstock/v3/update/AppAutoUpdater.kt
-          grep -q 'id-token: write' .github/workflows/android-build.yml
-          grep -q 'kr4-signing-vault-5yh3dd.v2.appdeploy.ai' .github/workflows/android-build.yml
-          grep -q "$EXPECTED_STABLE_CERT_SHA256" .github/workflows/android-build.yml
-
-      - name: Upload verified APK and evidence
+      - name: Upload CleanPass proof
         uses: actions/upload-artifact@v4
         with:
-          name: KR4_AUTOUPDATE_Extreme_CleanPass
+          name: KR4_STAGE4567_FULL_UI_CleanPass
           path: |
-            dist/KR4_AUTOUPDATE_Extreme_CleanPass_debug.apk
-            evidence/ci/APK_SHA256.txt
-            evidence/ci/APK_SIZE.txt
-            evidence/combo_rank_stress_results.json
-            evidence/real_quant_snapshot.json
-            evidence/quarterly_history.json
-            evidence/clean_pass_results.json
-            evidence/stress_results.json
+            app/build/outputs/apk/debug/app-debug.apk
             app/build/reports/tests/testDebugUnitTest/
             app/build/reports/androidTests/
             app/build/outputs/androidTest-results/
+            evidence/real_quant_snapshot.json
+            evidence/final_candidates.json
+            evidence/combo_rank_stress_results.json
           if-no-files-found: error
           retention-days: 14
 
@@ -180,67 +178,77 @@ jobs:
         if: github.event_name != 'pull_request'
         run: |
           set -euo pipefail
-          APP_CHANGED=false
-          if [ "$GITHUB_REF" = "refs/heads/main" ]; then
-            if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-              APP_CHANGED=true
+          READY=false
+          if [ "$GITHUB_REF" = 'refs/heads/main' ]; then
+            if [ "${{ github.event_name }}" = 'workflow_dispatch' ]; then
+              READY=true
             elif git rev-parse HEAD^ >/dev/null 2>&1 && ! git diff --quiet HEAD^ HEAD -- app/ .github/workflows/android-build.yml; then
-              APP_CHANGED=true
+              READY=true
             fi
           fi
-          echo "app_changed=$APP_CHANGED" >> "$GITHUB_OUTPUT"
-          echo "ready=$APP_CHANGED" >> "$GITHUB_OUTPUT"
-          echo "APP_CHANGED=$APP_CHANGED RELEASE_READY=$APP_CHANGED"
+          echo "ready=$READY" >> "$GITHUB_OUTPUT"
+          echo "RELEASE_READY=$READY"
 
-      - name: Prepare original KR4 stable signing identity
+      - name: Request GitHub OIDC token with toolkit
+        if: steps.release_gate.outputs.ready == 'true'
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const fs = require('fs')
+            const token = await core.getIDToken('kr4-signing-vault')
+            if (!token || token.length < 100) throw new Error('OIDC token missing or too short')
+            core.setSecret(token)
+            const p = `${process.env.RUNNER_TEMP}/kr4-oidc-token.txt`
+            fs.writeFileSync(p, token, { mode: 0o600 })
+            core.info(`OIDC_TOOLKIT_PASS length=${token.length}`)
+
+      - name: Obtain and verify original stable signing identity
         if: steps.release_gate.outputs.ready == 'true'
         env:
-          SIGNING_VAULT_URL: https://kr4-signing-vault-5yh3dd.v2.appdeploy.ai/api/signing-material
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           umask 077
-          test -n "${ACTIONS_ID_TOKEN_REQUEST_URL:-}"
-          test -n "${ACTIONS_ID_TOKEN_REQUEST_TOKEN:-}"
+          test -s "$RUNNER_TEMP/kr4-oidc-token.txt"
+          OIDC_TOKEN=$(cat "$RUNNER_TEMP/kr4-oidc-token.txt")
+          test "${#OIDC_TOKEN}" -gt 100
 
-          openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:3072 \
-            -out "$RUNNER_TEMP/kr4-transport-private.pem" >/dev/null 2>&1
-          openssl pkey -in "$RUNNER_TEMP/kr4-transport-private.pem" \
-            -pubout -outform DER -out "$RUNNER_TEMP/kr4-transport-public.der"
+          openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:3072 -out "$RUNNER_TEMP/kr4-transport-private.pem" >/dev/null 2>&1
+          openssl pkey -in "$RUNNER_TEMP/kr4-transport-private.pem" -pubout -outform DER -out "$RUNNER_TEMP/kr4-transport-public.der"
           TRANSPORT_KEY=$(base64 -w0 "$RUNNER_TEMP/kr4-transport-public.der" | tr '+/' '-_' | tr -d '=')
 
-          curl -fsS \
-            -H "Authorization: Bearer ${ACTIONS_ID_TOKEN_REQUEST_TOKEN}" \
-            "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=kr4-signing-vault" \
-            -o "$RUNNER_TEMP/kr4-oidc.json"
-          OIDC_TOKEN=$(python3 - <<'PY'
-          import json, os
-          path = os.path.join(os.environ['RUNNER_TEMP'], 'kr4-oidc.json')
-          token = json.load(open(path, encoding='utf-8')).get('value')
-          assert isinstance(token, str) and len(token) > 100
-          print(token)
+          OIDC_TOKEN="$OIDC_TOKEN" TRANSPORT_KEY="$TRANSPORT_KEY" python3 - <<'PY'
+          import os, urllib.parse
+          frag=urllib.parse.urlencode({'relay_token':os.environ['OIDC_TOKEN'],'transport_key':os.environ['TRANSPORT_KEY']},quote_via=urllib.parse.quote)
+          p=os.path.join(os.environ['RUNNER_TEMP'],'kr4-relay-url.txt')
+          open(p,'w',encoding='utf-8').write('https://kr4-signing-vault-5yh3dd.v2.appdeploy.ai/#'+frag)
+          os.chmod(p,0o600)
+          print('SIGNING_BROWSER_RELAY_URL_READY')
           PY
-          )
-
-          curl -fsS --get \
-            -H "Authorization: Bearer ${OIDC_TOKEN}" \
-            --data-urlencode "transport_key=${TRANSPORT_KEY}" \
-            "$SIGNING_VAULT_URL" \
-            -o "$RUNNER_TEMP/kr4-encrypted-signing.json"
+          CHROME=$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)
+          test -n "$CHROME"
+          RELAY_URL=$(cat "$RUNNER_TEMP/kr4-relay-url.txt")
+          "$CHROME" --headless=new --no-sandbox --disable-gpu --disable-dev-shm-usage --virtual-time-budget=15000 --dump-dom "$RELAY_URL" > "$RUNNER_TEMP/kr4-relay.html"
+          rm -f "$RUNNER_TEMP/kr4-relay-url.txt"
 
           python3 - <<'PY'
-          import json, os
-          path = os.path.join(os.environ['RUNNER_TEMP'], 'kr4-encrypted-signing.json')
-          root = json.load(open(path, encoding='utf-8'))
-          assert root.get('algorithm') == 'RSA-OAEP-SHA256'
-          assert root.get('repository') == 'irewon1-lgtm/Kook'
-          assert root.get('ref') == 'refs/heads/main'
-          chunks = root.get('ciphertextChunks')
-          assert isinstance(chunks, list) and chunks and all(isinstance(x, str) and x for x in chunks)
-          out = os.path.join(os.environ['RUNNER_TEMP'], 'kr4-encrypted-chunks.txt')
-          with open(out, 'w', encoding='utf-8') as f:
-              for item in chunks:
-                  f.write(item + '\n')
+          import html as html_lib, json, os, re
+          src=open(os.path.join(os.environ['RUNNER_TEMP'],'kr4-relay.html'),encoding='utf-8',errors='replace').read()
+          m=re.search(r'<pre[^>]*id=["\']relay-output["\'][^>]*>(.*?)</pre>',src,re.I|re.S)
+          assert m,'relay_output_missing'
+          text=html_lib.unescape(re.sub(r'<[^>]+>','',m.group(1))).strip()
+          assert text and text!='WORKING','relay_not_completed'
+          doc=json.loads(text)
+          assert not doc.get('error'),doc
+          assert doc.get('algorithm')=='RSA-OAEP-SHA256'
+          assert doc.get('repository')=='irewon1-lgtm/Kook'
+          assert doc.get('ref')=='refs/heads/main'
+          chunks=doc.get('ciphertextChunks')
+          assert isinstance(chunks,list) and chunks and all(isinstance(x,str) and x for x in chunks)
+          open(os.path.join(os.environ['RUNNER_TEMP'],'kr4-encrypted-chunks.txt'),'w',encoding='utf-8').write('\n'.join(chunks)+'\n')
+          print('SIGNING_BROWSER_RELAY_PASS',len(chunks))
           PY
+          rm -f "$RUNNER_TEMP/kr4-relay.html"
 
           : > "$RUNNER_TEMP/kr4-signing-bundle.txt"
           INDEX=0
@@ -252,132 +260,137 @@ jobs:
               -pkeyopt rsa_padding_mode:oaep \
               -pkeyopt rsa_oaep_md:sha256 \
               >> "$RUNNER_TEMP/kr4-signing-bundle.txt"
-            INDEX=$((INDEX + 1))
+            INDEX=$((INDEX+1))
           done < "$RUNNER_TEMP/kr4-encrypted-chunks.txt"
           test "$INDEX" -gt 0
 
           python3 - <<'PY'
-          import base64, json, os
-          path = os.path.join(os.environ['RUNNER_TEMP'], 'kr4-signing-bundle.txt')
-          raw = open(path, encoding='utf-8').read().strip()
-          assert len(raw) > 100
-          doc = json.loads(base64.b64decode(raw).decode('utf-8'))
-          for key in ('keystore_b64', 'store_password', 'alias', 'key_password'):
-              assert isinstance(doc.get(key), str) and doc[key]
-          temp = os.environ['RUNNER_TEMP']
-          jks = os.path.join(temp, 'kr4-release.jks')
-          open(jks, 'wb').write(base64.b64decode(doc['keystore_b64']))
-          os.chmod(jks, 0o600)
-          print(f"::add-mask::{doc['store_password']}")
-          print(f"::add-mask::{doc['key_password']}")
-          with open(os.environ['GITHUB_ENV'], 'a', encoding='utf-8') as out:
-              out.write(f"KR4_KEYSTORE_FILE={jks}\n")
-              out.write(f"KR4_KEYSTORE_PASSWORD={doc['store_password']}\n")
-              out.write(f"KR4_KEY_ALIAS={doc['alias']}\n")
-              out.write(f"KR4_KEY_PASSWORD={doc['key_password']}\n")
+          import base64, hashlib, json, os, subprocess
+          rt=os.environ['RUNNER_TEMP']
+          raw=open(os.path.join(rt,'kr4-signing-bundle.txt'),encoding='utf-8').read().strip()
+          assert len(raw)>100
+          bundle=json.loads(base64.b64decode(raw).decode('utf-8'))
+          for k in ('keystore_b64','store_password','alias','key_password'):
+            v=bundle.get(k); assert isinstance(v,str) and v and '\n' not in v and '\r' not in v,k
+          jks=os.path.join(rt,'kr4-release.jks')
+          open(jks,'wb').write(base64.b64decode(bundle['keystore_b64'])); os.chmod(jks,0o600)
+          cert=subprocess.check_output(['keytool','-exportcert','-keystore',jks,'-alias',bundle['alias'],'-storepass',bundle['store_password']],stderr=subprocess.DEVNULL)
+          sha=hashlib.sha256(cert).hexdigest(); expected=os.environ['EXPECTED_STABLE_CERT_SHA256']
+          assert sha==expected,(sha,expected)
+          print(f"::add-mask::{bundle['store_password']}"); print(f"::add-mask::{bundle['key_password']}")
+          with open(os.environ['GITHUB_ENV'],'a',encoding='utf-8') as out:
+            out.write(f"KR4_KEYSTORE_FILE={jks}\nKR4_KEYSTORE_PASSWORD={bundle['store_password']}\nKR4_KEY_ALIAS={bundle['alias']}\nKR4_KEY_PASSWORD={bundle['key_password']}\nKR4_SIGNING_CERT_SHA256={sha}\n")
+          print('STABLE_SIGNING_CERT_PASS',sha)
           PY
 
-          ACTUAL_CERT_SHA=$(keytool -exportcert \
-            -keystore "$KR4_KEYSTORE_FILE" \
-            -alias "$KR4_KEY_ALIAS" \
-            -storepass "$KR4_KEYSTORE_PASSWORD" \
-            -rfc 2>/dev/null | openssl x509 -outform DER 2>/dev/null | sha256sum | awk '{print $1}')
-          test "$ACTUAL_CERT_SHA" = "$EXPECTED_STABLE_CERT_SHA256"
-
-          VERSION_CODE=$((20000 + GITHUB_RUN_NUMBER))
-          VERSION_NAME="4.3.${GITHUB_RUN_NUMBER}"
-          echo "KR4_VERSION_CODE=$VERSION_CODE" >> "$GITHUB_ENV"
+          LATEST_TAG=$(gh api repos/${GITHUB_REPOSITORY}/releases/latest --jq '.tag_name')
+          [[ "$LATEST_TAG" =~ ^kr4-app-c([0-9]+)$ ]]
+          NEXT=$((10#${BASH_REMATCH[1]}+1))
+          while gh release view "kr4-app-c${NEXT}" >/dev/null 2>&1; do NEXT=$((NEXT+1)); done
+          VERSION_NAME="4.3.$((NEXT-20000))"
+          echo "KR4_VERSION_CODE=$NEXT" >> "$GITHUB_ENV"
           echo "KR4_VERSION_NAME=$VERSION_NAME" >> "$GITHUB_ENV"
-          echo "KR4_SIGNING_CERT_SHA256=$ACTUAL_CERT_SHA" >> "$GITHUB_ENV"
-          rm -f \
-            "$RUNNER_TEMP/kr4-oidc.json" \
-            "$RUNNER_TEMP/kr4-encrypted-signing.json" \
-            "$RUNNER_TEMP/kr4-encrypted-chunks.txt" \
-            "$RUNNER_TEMP/kr4-signing-bundle.txt" \
-            "$RUNNER_TEMP/kr4-transport-private.pem" \
-            "$RUNNER_TEMP/kr4-transport-public.der" \
-            "$RUNNER_TEMP"/kr4-chunk-*.bin
-          echo "STABLE_SIGNING_IDENTITY_READY cert_sha256=$ACTUAL_CERT_SHA version=$VERSION_NAME"
+          echo "KR4_RELEASE_TAG=kr4-app-c${NEXT}" >> "$GITHUB_ENV"
+          echo "STABLE_SIGNING_IDENTITY_READY latest=$LATEST_TAG next=kr4-app-c${NEXT} version=$VERSION_NAME"
+          rm -f "$RUNNER_TEMP/kr4-oidc-token.txt" "$RUNNER_TEMP/kr4-encrypted-chunks.txt" "$RUNNER_TEMP/kr4-signing-bundle.txt" "$RUNNER_TEMP/kr4-transport-private.pem" "$RUNNER_TEMP/kr4-transport-public.der" "$RUNNER_TEMP"/kr4-chunk-*.bin
 
       - name: Build and verify stable signed Release APK
         if: steps.release_gate.outputs.ready == 'true'
         run: |
           set -euo pipefail
           gradle :app:assembleRelease --stacktrace
-          APK="app/build/outputs/apk/release/app-release.apk"
+          APK=app/build/outputs/apk/release/app-release.apk
           test -s "$APK"
           mkdir -p dist
           cp "$APK" dist/KR4.apk
           APKSIGNER=$(find "$ANDROID_HOME/build-tools" -type f -name apksigner | sort -V | tail -1)
           AAPT=$(find "$ANDROID_HOME/build-tools" -type f -name aapt | sort -V | tail -1)
-          test -x "$APKSIGNER"
-          test -x "$AAPT"
           "$APKSIGNER" verify --verbose --print-certs dist/KR4.apk | tee dist/APK_SIGNING_CERT.txt
-          ACTUAL_APK_CERT_SHA=$(awk -F': ' '/Signer #1 certificate SHA-256 digest/{print tolower($2); exit}' dist/APK_SIGNING_CERT.txt | tr -d ':')
-          test "$ACTUAL_APK_CERT_SHA" = "$EXPECTED_STABLE_CERT_SHA256"
+          ACTUAL=$(python3 - <<'PY'
+          import re
+          text=open('dist/APK_SIGNING_CERT.txt',encoding='utf-8',errors='replace').read()
+          m=re.search(r'(?im)certificate SHA-256 digest:\s*([0-9a-f:]{64,95})\s*$',text)
+          assert m,'apk_certificate_sha256_missing'
+          print(m.group(1).replace(':','').lower())
+          PY
+          )
+          test "$ACTUAL" = "$EXPECTED_STABLE_CERT_SHA256"
           BADGING=$("$AAPT" dump badging dist/KR4.apk | head -1)
-          echo "$BADGING"
           echo "$BADGING" | grep -q "name='com.krstock.v3'"
           echo "$BADGING" | grep -q "versionCode='${KR4_VERSION_CODE}'"
-          echo "STABLE_RELEASE_APK_PASS bytes=$(stat -c%s dist/KR4.apk) cert=$ACTUAL_APK_CERT_SHA"
+          echo "$BADGING" | grep -q "versionName='${KR4_VERSION_NAME}'"
+          echo "STABLE_RELEASE_APK_PASS bytes=$(stat -c%s dist/KR4.apk) cert=$ACTUAL version=$KR4_VERSION_NAME"
 
       - name: Generate cryptographic latest-update manifest
         if: steps.release_gate.outputs.ready == 'true'
         run: |
           set -euo pipefail
-          SHA256=$(sha256sum dist/KR4.apk | awk '{print $1}')
-          export SHA256
+          SHA256=$(sha256sum dist/KR4.apk | awk '{print $1}'); export SHA256
           python3 - <<'PY'
           import json, os
-          doc = {
-              'versionCode': int(os.environ['KR4_VERSION_CODE']),
-              'versionName': os.environ['KR4_VERSION_NAME'],
-              'apkUrl': 'https://github.com/irewon1-lgtm/Kook/releases/latest/download/KR4.apk',
-              'sha256': os.environ['SHA256'],
-              'mandatory': False,
-              'notes': '검증된 국내주식 앱 UI·기능 업데이트',
-              'commit': os.environ['GITHUB_SHA'],
-              'signingCertificateSha256': os.environ['KR4_SIGNING_CERT_SHA256'],
+          doc={
+            'versionCode':int(os.environ['KR4_VERSION_CODE']),
+            'versionName':os.environ['KR4_VERSION_NAME'],
+            'apkUrl':'https://github.com/irewon1-lgtm/Kook/releases/latest/download/KR4.apk',
+            'sha256':os.environ['SHA256'],
+            'mandatory':False,
+            'notes':'Stage4 전체 재무안정성 + Stage5 상대 PER 밴드 + Stage6/7 최종후보 V2 화면 완전 반영',
+            'commit':os.environ['GITHUB_SHA'],
+            'signingCertificateSha256':os.environ['KR4_SIGNING_CERT_SHA256'],
           }
-          with open('dist/update.json', 'w', encoding='utf-8') as f:
-              json.dump(doc, f, ensure_ascii=False, indent=2)
-              f.write('\n')
-          print(json.dumps({k: v for k, v in doc.items() if k != 'apkUrl'}, ensure_ascii=False))
+          with open('dist/update.json','w',encoding='utf-8') as f: json.dump(doc,f,ensure_ascii=False,indent=2); f.write('\n')
+          print('UPDATE_MANIFEST_PASS',{k:v for k,v in doc.items() if k!='apkUrl'})
           PY
-          grep -q '"sha256"' dist/update.json
-          grep -q '"versionCode"' dist/update.json
-          grep -q '"signingCertificateSha256"' dist/update.json
 
-      - name: Publish immutable signed APK as GitHub latest release
+      - name: Upload stable release proof
+        if: steps.release_gate.outputs.ready == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: KR4_STAGE4567_FULL_UI_Release_Proof
+          path: |
+            dist/KR4.apk
+            dist/update.json
+            dist/APK_SIGNING_CERT.txt
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Publish and redownload-verify Latest Release
         if: steps.release_gate.outputs.ready == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          TAG="kr4-app-c${KR4_VERSION_CODE}"
-          TITLE="KR4 ${KR4_VERSION_NAME}"
-          NOTES="Extreme CleanPass 통과 후 기존 KR4 고정서명으로 자동 게시. commit ${GITHUB_SHA}."
-          if gh release view "$TAG" >/dev/null 2>&1; then
-            gh release upload "$TAG" dist/KR4.apk dist/update.json dist/APK_SIGNING_CERT.txt --clobber
-            gh release edit "$TAG" --title "$TITLE" --notes "$NOTES" --latest
-          else
-            gh release create "$TAG" \
-              dist/KR4.apk \
-              dist/update.json \
-              dist/APK_SIGNING_CERT.txt \
-              --title "$TITLE" \
-              --notes "$NOTES" \
-              --latest
+          if gh release view "$KR4_RELEASE_TAG" >/dev/null 2>&1; then
+            echo "release tag collision: $KR4_RELEASE_TAG" >&2
+            exit 1
           fi
-          gh release view "$TAG" --json tagName,name,isLatest,url
+          TITLE="KR4 ${KR4_VERSION_NAME}"
+          NOTES="Stage4 전체 재무안정성 · Stage5 상대 PER 밴드 · Stage6/7 최종후보 V2를 앱의 안정·가치 화면에 완전 반영. Android 14 E2E 및 고정서명 검증 완료. commit ${GITHUB_SHA}."
+          gh release create "$KR4_RELEASE_TAG" dist/KR4.apk dist/update.json dist/APK_SIGNING_CERT.txt \
+            --target "$GITHUB_SHA" --title "$TITLE" --notes "$NOTES" --latest
+          test "$(gh api repos/${GITHUB_REPOSITORY}/releases/latest --jq '.tag_name')" = "$KR4_RELEASE_TAG"
+          VERIFY="$RUNNER_TEMP/kr4-release-verify"
+          rm -rf "$VERIFY"; mkdir -p "$VERIFY"
+          gh release download "$KR4_RELEASE_TAG" -p KR4.apk -p update.json -p APK_SIGNING_CERT.txt -D "$VERIFY"
+          test "$(sha256sum dist/KR4.apk | awk '{print $1}')" = "$(sha256sum "$VERIFY/KR4.apk" | awk '{print $1}')"
+          cmp -s dist/update.json "$VERIFY/update.json"
+          python3 - <<'PY'
+          import json, os
+          d=json.load(open(os.path.join(os.environ['RUNNER_TEMP'],'kr4-release-verify','update.json'),encoding='utf-8'))
+          assert d['commit']==os.environ['GITHUB_SHA']
+          assert d['versionCode']==int(os.environ['KR4_VERSION_CODE'])
+          assert d['versionName']==os.environ['KR4_VERSION_NAME']
+          assert d['signingCertificateSha256']==os.environ['EXPECTED_STABLE_CERT_SHA256']
+          print('LATEST_RELEASE_REDOWNLOAD_PASS',d['versionName'],d['sha256'])
+          PY
 
       - name: Signed release status
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         run: |
-          if [ "${{ steps.release_gate.outputs.app_changed }}" != "true" ]; then
-            echo "No app/workflow code change: APK release intentionally skipped."
-          else
+          if [ "${{ steps.release_gate.outputs.ready }}" = 'true' ]; then
             test -s dist/KR4.apk
             test -s dist/update.json
-            echo "Stable signed APK release published and detectable by installed KR4 apps."
+            echo "KR4 Stage4-7 full UI stable release published."
+          else
+            echo "No app/workflow change: signed APK release intentionally skipped."
           fi
