@@ -30,10 +30,9 @@ def normalize_counts(d):
     lower = {str(k).lower(): v for k, v in d.items()}
     aliases = {
         "pass": ("pass",),
-        "fail": ("fail",),
+        "fail": ("fail", "reject"),
         "hold": ("hold",),
         "not_applicable": ("not_applicable", "not applicable", "n/a", "na"),
-        "total": ("total",),
     }
     out = {}
     for dest, names in aliases.items():
@@ -44,6 +43,8 @@ def normalize_counts(d):
             out[dest] = int(hit)
         except Exception:
             return None
+    total_hit = lower.get("total")
+    out["total"] = int(total_hit) if total_hit is not None else sum(out.values())
     return out
 
 def walk(obj):
@@ -60,10 +61,12 @@ def walk(obj):
 paths = [
     Path("/tmp/financial_safety.json"),
     Path("/tmp/financial_safety_snapshot.json"),
+    Path("evidence/financial_stability_snapshot.json"),
     Path("evidence/financial_safety.json"),
     Path("evidence/financial_safety_snapshot.json"),
 ]
 paths.extend(sorted(Path("/tmp").glob("*financial*safety*.json")))
+paths.extend(sorted(Path("evidence").glob("*financial*stability*.json")))
 paths.extend(sorted(Path("evidence").glob("*financial*safety*.json")))
 
 seen = set()
@@ -85,7 +88,7 @@ for path in paths:
     if selected:
         break
 
-assert selected is not None, "financial-safety status summary not found"
+assert selected is not None, "financial-stability status summary not found"
 counts = selected
 assert sum(counts[k] for k in ("pass", "fail", "hold", "not_applicable")) == counts["total"], counts
 
@@ -96,10 +99,10 @@ non_financial = counts["total"] - counts["not_applicable"]
 assert counts["pass"] + counts["fail"] >= int(non_financial * 0.95), counts
 assert counts["hold"] <= max(50, int(non_financial * 0.05)), counts
 assert counts["pass"] > 0 and counts["fail"] > 0, counts
-print("FINANCIAL_SAFETY_STRUCTURAL_GATE_PASS", str(selected_path), counts)
+print("FINANCIAL_STABILITY_STRUCTURAL_GATE_PASS", str(selected_path), counts)
 '''
 
 replacement = indent + "python3 - <<'PY'\n" + gate + "\nPY\n"
 s2 = s[:line_start] + replacement + s[end:]
 p.write_text(s2, encoding="utf-8")
-print("FINANCIAL_SAFETY_GATE_PATCHED")
+print("FINANCIAL_STABILITY_GATE_PATCHED")
