@@ -84,6 +84,47 @@ jobs:
           disable-animations: true
           script: gradle :app:connectedDebugAndroidTest --stacktrace
 
+      - name: Diagnose post-stage JSON inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, re
+          from pathlib import Path
+          s = Path('scripts/stage4567_ci.sh').read_text(encoding='utf-8')
+          start = s.find('post)')
+          if start < 0:
+              raise SystemExit('post case not found')
+          end = s.find('\n    ;;', start)
+          if end < 0:
+              end = min(len(s), start + 20000)
+          block = s[start:end]
+          print('POST_SECTION_BEGIN')
+          print(block)
+          print('POST_SECTION_END')
+          refs = sorted(set(re.findall(r'''["']([^"']+\.json)["']''', block)))
+          print('POST_JSON_LITERAL_REFS', refs)
+          candidates = set(refs)
+          for root in (Path('evidence'), Path('dist'), Path('/tmp')):
+              if root.exists():
+                  for p in root.rglob('*.json'):
+                      candidates.add(str(p))
+          for raw in sorted(candidates):
+              p = Path(raw)
+              if not p.exists() or not p.is_file():
+                  print('JSON_INPUT', raw, 'MISSING')
+                  continue
+              size = p.stat().st_size
+              status = 'VALID'
+              err = ''
+              try:
+                  json.loads(p.read_text(encoding='utf-8'))
+              except Exception as exc:
+                  status = 'INVALID'
+                  err = f'{type(exc).__name__}:{exc}'
+              print('JSON_INPUT', raw, 'size=', size, 'status=', status, err)
+          PY
+
       - name: Stable-sign, promote validated code/data, and stage release proof
         run: bash scripts/stage4567_ci.sh post
 
