@@ -30,8 +30,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.krstock.v3.data.candidate.FinalCandidateSnapshotUpdater
+import com.krstock.v3.data.stage.Stage4567SnapshotRepository
 import com.krstock.v3.data.update.SnapshotAutoUpdater
 import com.krstock.v3.ui.screens.HomeScreen
+import com.krstock.v3.ui.screens.Stage4567DetailScreen
 import com.krstock.v3.ui.screens.Stage4567Screen
 import com.krstock.v3.ui.screens.StockDetailScreen
 import com.krstock.v3.ui.screens.StockListScreen
@@ -57,8 +59,9 @@ class MainActivity : ComponentActivity() {
 
                 LaunchedEffect(Unit) {
                     runCatching { SnapshotAutoUpdater.bootstrap(this@MainActivity) }
-                    // Stage 4~7 final candidates are a separate fail-closed remote artifact.
-                    // They are loaded only after the active quant snapshot is known.
+                    // Stage 4 safety and Stage 6/7 final-candidate artifacts are both
+                    // fail-closed and loaded only after the active quant date is known.
+                    runCatching { Stage4567SnapshotRepository.bootstrap(this@MainActivity) }
                     runCatching { FinalCandidateSnapshotUpdater.bootstrap(this@MainActivity) }
                     ready = true
                 }
@@ -120,7 +123,7 @@ class MainActivity : ComponentActivity() {
                                                 onBack = { scope.launch { pagerState.scrollToPage(0) } }
                                             )
                                             else -> Stage4567Screen(
-                                                onStockClick = { issuerId -> navController.navigate("detail/$issuerId") }
+                                                onStockClick = { issuerId -> navController.navigate("stage-detail/$issuerId") }
                                             )
                                         }
                                     }
@@ -143,6 +146,14 @@ class MainActivity : ComponentActivity() {
                                 StockDetailScreen(
                                     issuerId = issuerId,
                                     onBack = { navController.popBackStack() }
+                                )
+                            }
+                            composable("stage-detail/{issuerId}") { backStackEntry ->
+                                val issuerId = backStackEntry.arguments?.getString("issuerId").orEmpty()
+                                Stage4567DetailScreen(
+                                    issuerId = issuerId,
+                                    onBack = { navController.popBackStack() },
+                                    onOpenFullDetail = { navController.navigate("detail/$issuerId") },
                                 )
                             }
                         }
