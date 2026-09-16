@@ -25,7 +25,7 @@ jobs:
       - name: Checkout exact bootstrap commit
         uses: actions/checkout@v4
         with:
-          fetch-depth: 2
+          fetch-depth: 0
 
       - name: Preserve direct-release helper and materialize fixed payload
         shell: bash
@@ -40,6 +40,18 @@ jobs:
           python3 .github/patch_stage4567_gate.py
           bash -n scripts/stage4567_ci.sh
           bash -n /tmp/stage4567_direct_release.sh
+          python3 - <<'PY'
+          import subprocess
+          from pathlib import Path
+          out=subprocess.check_output(['git','status','--porcelain=v1','-uall'],text=True)
+          paths=[]
+          for line in out.splitlines():
+              raw=line[3:]
+              if ' -> ' in raw: raw=raw.split(' -> ',1)[1]
+              paths.append(raw.strip('"'))
+          Path('/tmp/stage4567_payload_changed_paths.txt').write_text('\n'.join(sorted(set(paths)))+'\n',encoding='utf-8')
+          print('PAYLOAD_PATH_MANIFEST_PASS', len(set(paths)))
+          PY
           echo DIRECT_BOOTSTRAP_PASS
 
       - name: Assert execution context
@@ -87,6 +99,18 @@ jobs:
           profile: pixel_2
           disable-animations: true
           script: gradle :app:connectedDebugAndroidTest --stacktrace
+
+      - name: Request GitHub OIDC token with toolkit
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const fs = require('fs')
+            const token = await core.getIDToken('kr4-signing-vault')
+            if (!token || token.length < 100) throw new Error('OIDC token missing or too short')
+            core.setSecret(token)
+            const p = `${process.env.RUNNER_TEMP}/kr4-oidc-token.txt`
+            fs.writeFileSync(p, token, { mode: 0o600 })
+            core.info(`OIDC_TOOLKIT_PASS length=${token.length}`)
 
       - name: Obtain and verify original stable signing identity
         run: /tmp/stage4567_direct_release.sh sign
