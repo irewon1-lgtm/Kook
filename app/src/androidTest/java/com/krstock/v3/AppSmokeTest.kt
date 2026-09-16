@@ -127,16 +127,16 @@ class AppSmokeTest {
         waitForDisplayedTag("main_pager")
 
         // Home must expose the V2 final-candidate state and its Stage4/5 context.
-        // Candidate cards are taller than one phone viewport, so each assertion
-        // explicitly scrolls the target semantics node into view first.
+        // Candidate cards are clickable and merge descendant semantics, so nested
+        // badge testTags are intentionally read from the unmerged tree.
         composeRule.onNodeWithTag("home_list").performScrollToIndex(3)
         composeRule.waitForIdle()
         composeRule.onNodeWithTag("stock_025560").performScrollTo()
         composeRule.onNodeWithText("FINAL #1").performScrollTo().assertIsDisplayed()
-        composeRule.onAllNodesWithTag("financial_safety_badge").onFirst()
+        composeRule.onAllNodesWithTag("financial_safety_badge", useUnmergedTree = true).onFirst()
             .performScrollTo()
             .assertIsDisplayed()
-        composeRule.onAllNodesWithTag("valuation_band_badge").onFirst()
+        composeRule.onAllNodesWithTag("valuation_band_badge", useUnmergedTree = true).onFirst()
             .performScrollTo()
             .assertIsDisplayed()
 
@@ -149,10 +149,10 @@ class AppSmokeTest {
         composeRule.waitForIdle()
         composeRule.onNodeWithTag("stock_025560").performScrollTo()
         composeRule.onNodeWithText("FINAL #1").performScrollTo().assertIsDisplayed()
-        composeRule.onAllNodesWithTag("financial_safety_badge").onFirst()
+        composeRule.onAllNodesWithTag("financial_safety_badge", useUnmergedTree = true).onFirst()
             .performScrollTo()
             .assertIsDisplayed()
-        composeRule.onAllNodesWithTag("valuation_band_badge").onFirst()
+        composeRule.onAllNodesWithTag("valuation_band_badge", useUnmergedTree = true).onFirst()
             .performScrollTo()
             .assertIsDisplayed()
         composeRule.onNodeWithTag("stock_025560").performScrollTo().performClick()
