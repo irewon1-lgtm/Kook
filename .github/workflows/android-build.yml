@@ -221,11 +221,41 @@ jobs:
           PY
           )
 
-          curl -fsS --get \
-            -H "Authorization: Bearer ${OIDC_TOKEN}" \
-            --data-urlencode "transport_key=${TRANSPORT_KEY}" \
-            "$SIGNING_VAULT_URL" \
-            -o "$RUNNER_TEMP/kr4-encrypted-signing.json"
+          export OIDC_TOKEN TRANSPORT_KEY
+          python3 - <<'PY'
+          import json, os, time
+          import requests
+
+          url = os.environ['SIGNING_VAULT_URL']
+          payload = {
+              'token': os.environ['OIDC_TOKEN'],
+              'transportKey': os.environ['TRANSPORT_KEY'],
+          }
+          path = os.path.join(os.environ['RUNNER_TEMP'], 'kr4-encrypted-signing.json')
+
+          for attempt in range(1, 4):
+              try:
+                  response = requests.post(url, json=payload, timeout=30)
+                  response.raise_for_status()
+                  if not response.content.strip():
+                      raise RuntimeError('empty signing-vault response')
+                  root = response.json()
+                  assert root.get('algorithm') == 'RSA-OAEP-SHA256'
+                  assert root.get('repository') == 'irewon1-lgtm/Kook'
+                  assert root.get('ref') == 'refs/heads/main'
+                  chunks = root.get('ciphertextChunks')
+                  assert isinstance(chunks, list) and chunks and all(isinstance(x, str) and x for x in chunks)
+                  with open(path, 'w', encoding='utf-8') as f:
+                      json.dump(root, f)
+                  break
+              except Exception as exc:
+                  if attempt == 3:
+                      raise RuntimeError(
+                          f'signing-vault POST failed after {attempt} attempts: {type(exc).__name__}'
+                      ) from exc
+                  time.sleep(attempt * 2)
+          PY
+          test -s "$RUNNER_TEMP/kr4-encrypted-signing.json"
 
           python3 - <<'PY'
           import json, os
