@@ -1,26 +1,34 @@
 {
-  "schema_version": "KR4_FINAL_CANDIDATE_V1",
-  "policy_version": "STAGE6_POSITIVE_PER_COMPLETE_TOP_RANK_V1",
-  "generated_from": "real_quant_snapshot.json",
+  "schema_version": "KR4_FINAL_CANDIDATE_V2",
+  "policy_version": "STAGE4567_SAFETY_AND_RELATIVE_PER_BAND_V1",
+  "generated_from": "real_quant_snapshot.json#financial_safety",
   "snapshot_date_kst": "2026-09-16",
   "price_cutoff_date_kst": "2026-09-15",
   "universe_count": 2649,
-  "eligible_count": 1481,
+  "financial_safety_policy_version": "STAGE4_BS_SAFETY_V1",
+  "eligible_count": 1366,
   "candidate_limit": 10,
   "candidate_count": 10,
+  "reject_counts": {
+    "base_incomplete_or_nonpositive_per": 1168,
+    "financial_safety_not_pass": 115
+  },
   "selection_policy": {
     "purpose": "research_priority_only",
     "requires_four_validated_metrics": true,
     "requires_existing_composite_rank": true,
     "requires_positive_trailing_per": true,
+    "requires_financial_safety_pass": true,
+    "valuation_band": "descriptive market-relative trailing-PER percentile band",
+    "valuation_band_changes_rank": false,
     "new_score_formula": false,
     "ordering": "existing KR4 composite rank ascending, then issue code",
     "missing_value_policy": "fail_closed_no_guess"
   },
   "candidates": [
     {
-      "schema_version": "KR4_FINAL_CANDIDATE_V1",
-      "policy_version": "STAGE6_POSITIVE_PER_COMPLETE_TOP_RANK_V1",
+      "schema_version": "KR4_FINAL_CANDIDATE_V2",
+      "policy_version": "STAGE4567_SAFETY_AND_RELATIVE_PER_BAND_V1",
       "candidate_rank": 1,
       "source_rank": 1,
       "code": "025560",
@@ -60,20 +68,37 @@
           "as_of_date": "2026-09-15"
         }
       },
+      "financial_safety": {
+        "status": "PASS",
+        "reason": "PASS",
+        "basis": "2026_2Q_BS_20260916030311.zip:CFS:당기 반기말",
+        "debt_to_equity_pct": 36.262736,
+        "current_ratio_pct": 200.650714,
+        "identity_gap_pct": 0.0
+      },
+      "valuation": {
+        "method": "MARKET_RELATIVE_TRAILING_PER_PERCENTILE",
+        "band": "BELOW_MEDIAN_PER",
+        "band_ko": "시장 중앙값보다 낮은 PER 구간",
+        "m03_percentile": 78.541145,
+        "changes_rank": false
+      },
       "selection_flags": [
         "FOUR_METRICS_COMPLETE",
         "POSITIVE_TRAILING_PER",
+        "FINANCIAL_SAFETY_PASS",
+        "VALUATION_BAND_CLASSIFIED",
         "EXISTING_COMPOSITE_RANK_REUSED",
         "POSITIVE_REVENUE_GROWTH",
         "POSITIVE_OPERATING_MARGIN",
         "POSITIVE_6M_MOMENTUM"
       ],
       "research_status": "FINAL_RESEARCH_CANDIDATE",
-      "selection_reason_ko": "4지표 검증 완료 · 실적 PER 양수 · 기존 종합순위 1위 기준 최종 조사 후보"
+      "selection_reason_ko": "4지표 검증 · 재무안정성 PASS · 시장 중앙값보다 낮은 PER 구간 · 기존 종합순위 1위 기준 조사 후보"
     },
     {
-      "schema_version": "KR4_FINAL_CANDIDATE_V1",
-      "policy_version": "STAGE6_POSITIVE_PER_COMPLETE_TOP_RANK_V1",
+      "schema_version": "KR4_FINAL_CANDIDATE_V2",
+      "policy_version": "STAGE4567_SAFETY_AND_RELATIVE_PER_BAND_V1",
       "candidate_rank": 2,
       "source_rank": 2,
       "code": "187870",
@@ -113,20 +138,37 @@
           "as_of_date": "2026-09-15"
         }
       },
+      "financial_safety": {
+        "status": "PASS",
+        "reason": "PASS",
+        "basis": "2026_2Q_BS_20260916030311.zip:CFS:당기 반기말",
+        "debt_to_equity_pct": 37.640866,
+        "current_ratio_pct": 300.357966,
+        "identity_gap_pct": 0.0
+      },
+      "valuation": {
+        "method": "MARKET_RELATIVE_TRAILING_PER_PERCENTILE",
+        "band": "LOW_RELATIVE_PER",
+        "band_ko": "시장 내 낮은 PER 구간",
+        "m03_percentile": 88.222719,
+        "changes_rank": false
+      },
       "selection_flags": [
         "FOUR_METRICS_COMPLETE",
         "POSITIVE_TRAILING_PER",
+        "FINANCIAL_SAFETY_PASS",
+        "VALUATION_BAND_CLASSIFIED",
         "EXISTING_COMPOSITE_RANK_REUSED",
         "POSITIVE_REVENUE_GROWTH",
         "POSITIVE_OPERATING_MARGIN",
         "POSITIVE_6M_MOMENTUM"
       ],
       "research_status": "FINAL_RESEARCH_CANDIDATE",
-      "selection_reason_ko": "4지표 검증 완료 · 실적 PER 양수 · 기존 종합순위 2위 기준 최종 조사 후보"
+      "selection_reason_ko": "4지표 검증 · 재무안정성 PASS · 시장 내 낮은 PER 구간 · 기존 종합순위 2위 기준 조사 후보"
     },
     {
-      "schema_version": "KR4_FINAL_CANDIDATE_V1",
-      "policy_version": "STAGE6_POSITIVE_PER_COMPLETE_TOP_RANK_V1",
+      "schema_version": "KR4_FINAL_CANDIDATE_V2",
+      "policy_version": "STAGE4567_SAFETY_AND_RELATIVE_PER_BAND_V1",
       "candidate_rank": 3,
       "source_rank": 3,
       "code": "005950",
@@ -166,20 +208,37 @@
           "as_of_date": "2026-09-15"
         }
       },
+      "financial_safety": {
+        "status": "PASS",
+        "reason": "PASS",
+        "basis": "2026_2Q_BS_20260916030311.zip:CFS:당기 반기말",
+        "debt_to_equity_pct": 151.095189,
+        "current_ratio_pct": 116.820765,
+        "identity_gap_pct": 0.0
+      },
+      "valuation": {
+        "method": "MARKET_RELATIVE_TRAILING_PER_PERCENTILE",
+        "band": "LOW_RELATIVE_PER",
+        "band_ko": "시장 내 낮은 PER 구간",
+        "m03_percentile": 90.37746,
+        "changes_rank": false
+      },
       "selection_flags": [
         "FOUR_METRICS_COMPLETE",
         "POSITIVE_TRAILING_PER",
+        "FINANCIAL_SAFETY_PASS",
+        "VALUATION_BAND_CLASSIFIED",
         "EXISTING_COMPOSITE_RANK_REUSED",
         "POSITIVE_REVENUE_GROWTH",
         "POSITIVE_OPERATING_MARGIN",
         "POSITIVE_6M_MOMENTUM"
       ],
       "research_status": "FINAL_RESEARCH_CANDIDATE",
-      "selection_reason_ko": "4지표 검증 완료 · 실적 PER 양수 · 기존 종합순위 3위 기준 최종 조사 후보"
+      "selection_reason_ko": "4지표 검증 · 재무안정성 PASS · 시장 내 낮은 PER 구간 · 기존 종합순위 3위 기준 조사 후보"
     },
     {
-      "schema_version": "KR4_FINAL_CANDIDATE_V1",
-      "policy_version": "STAGE6_POSITIVE_PER_COMPLETE_TOP_RANK_V1",
+      "schema_version": "KR4_FINAL_CANDIDATE_V2",
+      "policy_version": "STAGE4567_SAFETY_AND_RELATIVE_PER_BAND_V1",
       "candidate_rank": 4,
       "source_rank": 4,
       "code": "000660",
@@ -219,20 +278,37 @@
           "as_of_date": "2026-09-15"
         }
       },
+      "financial_safety": {
+        "status": "PASS",
+        "reason": "PASS",
+        "basis": "2026_2Q_BS_20260916030311.zip:CFS:당기 반기말",
+        "debt_to_equity_pct": 32.802135,
+        "current_ratio_pct": 259.149679,
+        "identity_gap_pct": 0.0
+      },
+      "valuation": {
+        "method": "MARKET_RELATIVE_TRAILING_PER_PERCENTILE",
+        "band": "BELOW_MEDIAN_PER",
+        "band_ko": "시장 중앙값보다 낮은 PER 구간",
+        "m03_percentile": 63.66458,
+        "changes_rank": false
+      },
       "selection_flags": [
         "FOUR_METRICS_COMPLETE",
         "POSITIVE_TRAILING_PER",
+        "FINANCIAL_SAFETY_PASS",
+        "VALUATION_BAND_CLASSIFIED",
         "EXISTING_COMPOSITE_RANK_REUSED",
         "POSITIVE_REVENUE_GROWTH",
         "POSITIVE_OPERATING_MARGIN",
         "POSITIVE_6M_MOMENTUM"
       ],
       "research_status": "FINAL_RESEARCH_CANDIDATE",
-      "selection_reason_ko": "4지표 검증 완료 · 실적 PER 양수 · 기존 종합순위 4위 기준 최종 조사 후보"
+      "selection_reason_ko": "4지표 검증 · 재무안정성 PASS · 시장 중앙값보다 낮은 PER 구간 · 기존 종합순위 4위 기준 조사 후보"
     },
     {
-      "schema_version": "KR4_FINAL_CANDIDATE_V1",
-      "policy_version": "STAGE6_POSITIVE_PER_COMPLETE_TOP_RANK_V1",
+      "schema_version": "KR4_FINAL_CANDIDATE_V2",
+      "policy_version": "STAGE4567_SAFETY_AND_RELATIVE_PER_BAND_V1",
       "candidate_rank": 5,
       "source_rank": 5,
       "code": "013700",
@@ -272,20 +348,37 @@
           "as_of_date": "2026-09-15"
         }
       },
+      "financial_safety": {
+        "status": "PASS",
+        "reason": "PASS",
+        "basis": "2026_2Q_BS_20260916030311.zip:CFS:당기 반기말",
+        "debt_to_equity_pct": 132.833628,
+        "current_ratio_pct": 165.967411,
+        "identity_gap_pct": 0.0
+      },
+      "valuation": {
+        "method": "MARKET_RELATIVE_TRAILING_PER_PERCENTILE",
+        "band": "LOW_RELATIVE_PER",
+        "band_ko": "시장 내 낮은 PER 구간",
+        "m03_percentile": 90.67263,
+        "changes_rank": false
+      },
       "selection_flags": [
         "FOUR_METRICS_COMPLETE",
         "POSITIVE_TRAILING_PER",
+        "FINANCIAL_SAFETY_PASS",
+        "VALUATION_BAND_CLASSIFIED",
         "EXISTING_COMPOSITE_RANK_REUSED",
         "POSITIVE_REVENUE_GROWTH",
         "POSITIVE_OPERATING_MARGIN",
         "POSITIVE_6M_MOMENTUM"
       ],
       "research_status": "FINAL_RESEARCH_CANDIDATE",
-      "selection_reason_ko": "4지표 검증 완료 · 실적 PER 양수 · 기존 종합순위 5위 기준 최종 조사 후보"
+      "selection_reason_ko": "4지표 검증 · 재무안정성 PASS · 시장 내 낮은 PER 구간 · 기존 종합순위 5위 기준 조사 후보"
     },
     {
-      "schema_version": "KR4_FINAL_CANDIDATE_V1",
-      "policy_version": "STAGE6_POSITIVE_PER_COMPLETE_TOP_RANK_V1",
+      "schema_version": "KR4_FINAL_CANDIDATE_V2",
+      "policy_version": "STAGE4567_SAFETY_AND_RELATIVE_PER_BAND_V1",
       "candidate_rank": 6,
       "source_rank": 6,
       "code": "059100",
@@ -325,20 +418,37 @@
           "as_of_date": "2026-09-15"
         }
       },
+      "financial_safety": {
+        "status": "PASS",
+        "reason": "PASS",
+        "basis": "2026_2Q_BS_20260916030311.zip:OFS:당기 반기말",
+        "debt_to_equity_pct": 31.272254,
+        "current_ratio_pct": 339.778941,
+        "identity_gap_pct": 0.0
+      },
+      "valuation": {
+        "method": "MARKET_RELATIVE_TRAILING_PER_PERCENTILE",
+        "band": "LOW_RELATIVE_PER",
+        "band_ko": "시장 내 낮은 PER 구간",
+        "m03_percentile": 85.27102,
+        "changes_rank": false
+      },
       "selection_flags": [
         "FOUR_METRICS_COMPLETE",
         "POSITIVE_TRAILING_PER",
+        "FINANCIAL_SAFETY_PASS",
+        "VALUATION_BAND_CLASSIFIED",
         "EXISTING_COMPOSITE_RANK_REUSED",
         "POSITIVE_REVENUE_GROWTH",
         "POSITIVE_OPERATING_MARGIN",
         "POSITIVE_6M_MOMENTUM"
       ],
       "research_status": "FINAL_RESEARCH_CANDIDATE",
-      "selection_reason_ko": "4지표 검증 완료 · 실적 PER 양수 · 기존 종합순위 6위 기준 최종 조사 후보"
+      "selection_reason_ko": "4지표 검증 · 재무안정성 PASS · 시장 내 낮은 PER 구간 · 기존 종합순위 6위 기준 조사 후보"
     },
     {
-      "schema_version": "KR4_FINAL_CANDIDATE_V1",
-      "policy_version": "STAGE6_POSITIVE_PER_COMPLETE_TOP_RANK_V1",
+      "schema_version": "KR4_FINAL_CANDIDATE_V2",
+      "policy_version": "STAGE4567_SAFETY_AND_RELATIVE_PER_BAND_V1",
       "candidate_rank": 7,
       "source_rank": 7,
       "code": "031330",
@@ -378,20 +488,37 @@
           "as_of_date": "2026-09-15"
         }
       },
+      "financial_safety": {
+        "status": "PASS",
+        "reason": "PASS",
+        "basis": "2026_2Q_BS_20260916030311.zip:CFS:당기 반기말",
+        "debt_to_equity_pct": 178.91517,
+        "current_ratio_pct": 148.828558,
+        "identity_gap_pct": 0.0
+      },
+      "valuation": {
+        "method": "MARKET_RELATIVE_TRAILING_PER_PERCENTILE",
+        "band": "LOW_RELATIVE_PER",
+        "band_ko": "시장 내 낮은 PER 구간",
+        "m03_percentile": 96.576029,
+        "changes_rank": false
+      },
       "selection_flags": [
         "FOUR_METRICS_COMPLETE",
         "POSITIVE_TRAILING_PER",
+        "FINANCIAL_SAFETY_PASS",
+        "VALUATION_BAND_CLASSIFIED",
         "EXISTING_COMPOSITE_RANK_REUSED",
         "POSITIVE_REVENUE_GROWTH",
         "POSITIVE_OPERATING_MARGIN",
         "POSITIVE_6M_MOMENTUM"
       ],
       "research_status": "FINAL_RESEARCH_CANDIDATE",
-      "selection_reason_ko": "4지표 검증 완료 · 실적 PER 양수 · 기존 종합순위 7위 기준 최종 조사 후보"
+      "selection_reason_ko": "4지표 검증 · 재무안정성 PASS · 시장 내 낮은 PER 구간 · 기존 종합순위 7위 기준 조사 후보"
     },
     {
-      "schema_version": "KR4_FINAL_CANDIDATE_V1",
-      "policy_version": "STAGE6_POSITIVE_PER_COMPLETE_TOP_RANK_V1",
+      "schema_version": "KR4_FINAL_CANDIDATE_V2",
+      "policy_version": "STAGE4567_SAFETY_AND_RELATIVE_PER_BAND_V1",
       "candidate_rank": 8,
       "source_rank": 8,
       "code": "037460",
@@ -431,20 +558,37 @@
           "as_of_date": "2026-09-15"
         }
       },
+      "financial_safety": {
+        "status": "PASS",
+        "reason": "PASS",
+        "basis": "2026_2Q_BS_20260916030311.zip:CFS:당기 반기말",
+        "debt_to_equity_pct": 152.143102,
+        "current_ratio_pct": 149.798798,
+        "identity_gap_pct": 0.0
+      },
+      "valuation": {
+        "method": "MARKET_RELATIVE_TRAILING_PER_PERCENTILE",
+        "band": "LOW_RELATIVE_PER",
+        "band_ko": "시장 내 낮은 PER 구간",
+        "m03_percentile": 96.428444,
+        "changes_rank": false
+      },
       "selection_flags": [
         "FOUR_METRICS_COMPLETE",
         "POSITIVE_TRAILING_PER",
+        "FINANCIAL_SAFETY_PASS",
+        "VALUATION_BAND_CLASSIFIED",
         "EXISTING_COMPOSITE_RANK_REUSED",
         "POSITIVE_REVENUE_GROWTH",
         "POSITIVE_OPERATING_MARGIN",
         "POSITIVE_6M_MOMENTUM"
       ],
       "research_status": "FINAL_RESEARCH_CANDIDATE",
-      "selection_reason_ko": "4지표 검증 완료 · 실적 PER 양수 · 기존 종합순위 8위 기준 최종 조사 후보"
+      "selection_reason_ko": "4지표 검증 · 재무안정성 PASS · 시장 내 낮은 PER 구간 · 기존 종합순위 8위 기준 조사 후보"
     },
     {
-      "schema_version": "KR4_FINAL_CANDIDATE_V1",
-      "policy_version": "STAGE6_POSITIVE_PER_COMPLETE_TOP_RANK_V1",
+      "schema_version": "KR4_FINAL_CANDIDATE_V2",
+      "policy_version": "STAGE4567_SAFETY_AND_RELATIVE_PER_BAND_V1",
       "candidate_rank": 9,
       "source_rank": 9,
       "code": "115480",
@@ -484,19 +628,36 @@
           "as_of_date": "2026-09-15"
         }
       },
+      "financial_safety": {
+        "status": "PASS",
+        "reason": "PASS",
+        "basis": "2026_2Q_BS_20260916030311.zip:CFS:당기 반기말",
+        "debt_to_equity_pct": 75.198108,
+        "current_ratio_pct": 117.359895,
+        "identity_gap_pct": 0.0
+      },
+      "valuation": {
+        "method": "MARKET_RELATIVE_TRAILING_PER_PERCENTILE",
+        "band": "LOW_RELATIVE_PER",
+        "band_ko": "시장 내 낮은 PER 구간",
+        "m03_percentile": 92.384615,
+        "changes_rank": false
+      },
       "selection_flags": [
         "FOUR_METRICS_COMPLETE",
         "POSITIVE_TRAILING_PER",
+        "FINANCIAL_SAFETY_PASS",
+        "VALUATION_BAND_CLASSIFIED",
         "EXISTING_COMPOSITE_RANK_REUSED",
         "POSITIVE_REVENUE_GROWTH",
         "POSITIVE_OPERATING_MARGIN"
       ],
       "research_status": "FINAL_RESEARCH_CANDIDATE",
-      "selection_reason_ko": "4지표 검증 완료 · 실적 PER 양수 · 기존 종합순위 9위 기준 최종 조사 후보"
+      "selection_reason_ko": "4지표 검증 · 재무안정성 PASS · 시장 내 낮은 PER 구간 · 기존 종합순위 9위 기준 조사 후보"
     },
     {
-      "schema_version": "KR4_FINAL_CANDIDATE_V1",
-      "policy_version": "STAGE6_POSITIVE_PER_COMPLETE_TOP_RANK_V1",
+      "schema_version": "KR4_FINAL_CANDIDATE_V2",
+      "policy_version": "STAGE4567_SAFETY_AND_RELATIVE_PER_BAND_V1",
       "candidate_rank": 10,
       "source_rank": 10,
       "code": "080220",
@@ -536,16 +697,33 @@
           "as_of_date": "2026-09-15"
         }
       },
+      "financial_safety": {
+        "status": "PASS",
+        "reason": "PASS",
+        "basis": "2026_2Q_BS_20260916030311.zip:CFS:당기 반기말",
+        "debt_to_equity_pct": 63.575862,
+        "current_ratio_pct": 385.856194,
+        "identity_gap_pct": 0.0
+      },
+      "valuation": {
+        "method": "MARKET_RELATIVE_TRAILING_PER_PERCENTILE",
+        "band": "MID_PER",
+        "band_ko": "시장 중간 PER 구간",
+        "m03_percentile": 50.234347,
+        "changes_rank": false
+      },
       "selection_flags": [
         "FOUR_METRICS_COMPLETE",
         "POSITIVE_TRAILING_PER",
+        "FINANCIAL_SAFETY_PASS",
+        "VALUATION_BAND_CLASSIFIED",
         "EXISTING_COMPOSITE_RANK_REUSED",
         "POSITIVE_REVENUE_GROWTH",
         "POSITIVE_OPERATING_MARGIN",
         "POSITIVE_6M_MOMENTUM"
       ],
       "research_status": "FINAL_RESEARCH_CANDIDATE",
-      "selection_reason_ko": "4지표 검증 완료 · 실적 PER 양수 · 기존 종합순위 10위 기준 최종 조사 후보"
+      "selection_reason_ko": "4지표 검증 · 재무안정성 PASS · 시장 중간 PER 구간 · 기존 종합순위 10위 기준 조사 후보"
     }
   ]
 }

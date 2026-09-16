@@ -1,7 +1,7 @@
 package com.krstock.v3.data.model
 
 /**
- * Standard app-facing representation for the stage-6 final research shortlist.
+ * Standard app-facing representation for the KR4 final research shortlist.
  * This is a research-priority record, not a buy/sell recommendation.
  */
 data class CandidateMetricSnapshot(
@@ -10,7 +10,7 @@ data class CandidateMetricSnapshot(
     val percentileScore: Double,
     val basis: String,
     val asOfDate: String,
-    val source: String
+    val source: String = ""
 )
 
 data class FinalCandidateRecord(
@@ -31,5 +31,14 @@ data class FinalCandidateRecord(
     val m04: CandidateMetricSnapshot,
     val selectionFlags: List<String>,
     val researchStatus: String,
-    val selectionReasonKo: String
+    val selectionReasonKo: String,
+    val financialSafetyStatus: String = "UNVERIFIED",
+    val financialSafetyReason: String = "",
+    val financialSafetyBasis: String = "",
+    val debtToEquityPct: Double? = null,
+    val currentRatioPct: Double? = null,
+    val accountingIdentityGapPct: Double? = null,
+    val valuationBand: String = "UNAVAILABLE",
+    val valuationBandKo: String = "",
+    val valuationPercentile: Double? = null,
 )
