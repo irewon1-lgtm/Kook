@@ -45,6 +45,97 @@ jobs:
             echo STAGE4567_BOOTSTRAP_NOT_NEEDED
           fi
 
+      - name: Replace prevalence guess with structural financial-safety gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          p = Path('scripts/stage4567_ci.sh')
+          s = p.read_text(encoding='utf-8')
+          anchor = s.find('collect_financial_safety.py')
+          if anchor < 0:
+              raise SystemExit('financial-safety collector anchor not found')
+          starts = [x for x in (s.find("python3 - <<'PY'", anchor), s.find("python - <<'PY'", anchor)) if x >= 0]
+          if not starts:
+              raise SystemExit('financial-safety post-collector python gate not found')
+          py_start = min(starts)
+          block_start = s.rfind('\n', 0, py_start) + 1
+          block_end = s.find('\nPY\n', py_start)
+          if block_end < 0:
+              raise SystemExit('financial-safety gate terminator not found')
+          block_end += len('\nPY\n')
+          old = s[block_start:block_end]
+          print('ORIGINAL_FINANCIAL_SAFETY_GATE_BEGIN')
+          print(old)
+          print('ORIGINAL_FINANCIAL_SAFETY_GATE_END')
+
+          new = r'''python3 - <<'PY'
+          import json
+          import sys
+          from collections import Counter
+          from pathlib import Path
+
+          sys.path.insert(0, 'scripts')
+          import collect_real_quant as base
+
+          candidates = [
+              Path('/tmp/financial_safety.json'),
+              Path('/tmp/financial_safety_snapshot.json'),
+              Path('evidence/financial_safety.json'),
+              Path('evidence/financial_safety_snapshot.json'),
+          ]
+          candidates.extend(sorted(Path('/tmp').glob('*financial*safety*.json')))
+          path = next((x for x in candidates if x.is_file()), None)
+          assert path is not None, 'financial safety JSON not found after collector'
+          d = json.load(open(path, encoding='utf-8'))
+          summary = d.get('summary') or d.get('coverage') or d.get('status_counts')
+          assert isinstance(summary, dict), ('missing financial-safety summary', path, d.keys())
+
+          def n(*keys):
+              for key in keys:
+                  if key in summary:
+                      return int(summary[key])
+              raise AssertionError(('missing status count', keys, summary))
+
+          passed = n('pass', 'PASS')
+          failed = n('fail', 'FAIL')
+          hold = n('hold', 'HOLD')
+          na = n('not_applicable', 'NOT_APPLICABLE', 'n/a', 'N/A')
+          total = n('total', 'TOTAL')
+          assert total == 2649, summary
+          assert passed + failed + hold + na == total, summary
+
+          issuers = base.load_issuers()
+          financial_count = sum(1 for issuer in issuers if base.is_financial(issuer))
+          assert financial_count == na, (financial_count, summary)
+          non_financial = total - financial_count
+          assert passed + failed >= int(non_financial * 0.95), summary
+          assert hold <= max(50, int(non_financial * 0.05)), summary
+          assert passed > 0 and failed > 0, summary
+
+          records = d.get('records')
+          if isinstance(records, dict):
+              assert len(records) == total, (len(records), total)
+              sample = next(iter(records.values())) if records else {}
+              status_key = next((k for k in ('status', 'safety_status', 'classification') if k in sample), None)
+              if status_key:
+                  counts = Counter(str(row.get(status_key, '')).upper() for row in records.values())
+                  assert counts['PASS'] == passed, (counts, summary)
+                  assert counts['FAIL'] == failed, (counts, summary)
+                  assert counts['HOLD'] == hold, (counts, summary)
+                  assert counts['NOT_APPLICABLE'] + counts['N/A'] == na, (counts, summary)
+
+          print('FINANCIAL_SAFETY_STRUCTURAL_GATE_PASS', path, summary, 'financial_count=', financial_count)
+          PY
+'''
+          s = s[:block_start] + new + s[block_end:]
+          p.write_text(s, encoding='utf-8')
+          print('FINANCIAL_SAFETY_GATE_PATCHED')
+          PY
+          bash -n scripts/stage4567_ci.sh
+
       - name: Assert approved execution context
         run: |
           set -euo pipefail
