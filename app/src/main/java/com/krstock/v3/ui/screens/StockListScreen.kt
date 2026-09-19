@@ -66,20 +66,6 @@ fun StockListScreen(
             .toList()
     }
 
-    // A ranking/filter mode change represents a new result set. Never preserve the
-    // previous rank-list viewport: show the new first row immediately.
-    // Search typing is intentionally excluded so the keyboard/input field stays stable.
-    LaunchedEffect(
-        selectedMetricIds,
-        selectedMarket,
-        selectedCompleteOnly,
-        sortMode
-    ) {
-        if (filteredStocks.isNotEmpty()) {
-            listState.scrollToItem(0)
-        }
-    }
-
     val selectedCount = selectedMetricIds.size
     val selectedNames = RankMetric.entries
         .filter { it.id in selectedMetricIds }
@@ -125,13 +111,21 @@ fun StockListScreen(
             )
         }
     ) { padding ->
-        Column(
+        // Phone fix: filters and stock cards share one vertical scroll container.
+        // The large ranking controls therefore scroll away instead of permanently
+        // consuming the small phone viewport. The top app bar remains fixed.
+        LazyColumn(
+            state = listState,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(horizontal = 14.dp)
+                .testTag("stock_rank_list"),
+            contentPadding = PaddingValues(start = 14.dp, end = 14.dp, bottom = 28.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            OutlinedTextField(
+            item(key = "ranking_controls") {
+                Column {
+                    OutlinedTextField(
                 value = searchQuery,
                 onValueChange = { searchQuery = it },
                 modifier = Modifier
@@ -363,10 +357,13 @@ fun StockListScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(7.dp))
+                    Spacer(modifier = Modifier.height(7.dp))
+                }
+            }
 
             if (filteredStocks.isEmpty()) {
-                Card(
+                item(key = "empty_result") {
+                    Card(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(18.dp),
                     colors = CardDefaults.cardColors(containerColor = scheme.surface),
@@ -382,17 +379,9 @@ fun StockListScreen(
                         )
                     }
                 }
+                }
             } else {
-                LazyColumn(
-                    state = listState,
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxWidth()
-                        .testTag("stock_rank_list"),
-                    contentPadding = PaddingValues(bottom = 28.dp),
-                    verticalArrangement = Arrangement.spacedBy(10.dp)
-                ) {
-                    items(filteredStocks, key = { "${it.market}:${it.issuerId}" }) { stock ->
+                items(filteredStocks, key = { "${it.market}:${it.issuerId}" }) { stock ->
                         val dynamic = dynamicRanks[stock.issuerId]
                         StockSummaryCard(
                             stock = stock,
@@ -411,7 +400,6 @@ fun StockListScreen(
                             }
                         )
                     }
-                }
             }
         }
     }
