@@ -406,6 +406,17 @@ jobs:
           echo "$BADGING" | grep -q "versionName='${KR4_VERSION_NAME}'"
           echo "STABLE_RELEASE_APK_PASS bytes=$(stat -c%s dist/KR4.apk) cert=$ACTUAL_APK_CERT_SHA"
 
+      - name: Upload stable signed APK artifact
+        if: steps.release_gate.outputs.ready == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: KR4_STABLE_SIGNED_APK
+          path: |
+            dist/KR4.apk
+            dist/APK_SIGNING_CERT.txt
+          if-no-files-found: error
+          retention-days: 14
+
       - name: Generate cryptographic latest-update manifest
         if: steps.release_gate.outputs.ready == 'true'
         run: |
