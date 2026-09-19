@@ -182,7 +182,7 @@ class AppSmokeTest {
         // badge testTags are intentionally read from the unmerged tree.
         composeRule.onNodeWithTag("home_list").performScrollToIndex(3)
         composeRule.waitForIdle()
-        composeRule.onNodeWithTag("stock_025560").performScrollTo()
+        waitForTag("stock_025560")
         composeRule.onNodeWithText("FINAL #1").performScrollTo().assertIsDisplayed()
         composeRule.onAllNodesWithTag("financial_safety_badge", useUnmergedTree = true).onFirst()
             .performScrollTo()
@@ -200,7 +200,6 @@ class AppSmokeTest {
         composeRule.onNodeWithTag("stock_rank_list").performScrollToIndex(1)
         composeRule.waitForIdle()
         waitForTag("stock_025560")
-        composeRule.onNodeWithTag("stock_025560").performScrollTo()
         composeRule.onNodeWithText("FINAL #1").performScrollTo().assertIsDisplayed()
         composeRule.onAllNodesWithTag("financial_safety_badge", useUnmergedTree = true).onFirst()
             .performScrollTo()
@@ -208,7 +207,10 @@ class AppSmokeTest {
         composeRule.onAllNodesWithTag("valuation_band_badge", useUnmergedTree = true).onFirst()
             .performScrollTo()
             .assertIsDisplayed()
-        composeRule.onNodeWithTag("stock_025560").performScrollTo().performClick()
+        composeRule.onNodeWithTag("stock_rank_list").performScrollToIndex(1)
+        composeRule.waitForIdle()
+        waitForTag("stock_025560")
+        composeRule.onNodeWithTag("stock_025560").performClick()
         composeRule.waitForIdle()
 
         // Candidate detail must explain Stage6/7 selection and show the full
