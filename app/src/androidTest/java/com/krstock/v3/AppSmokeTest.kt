@@ -120,7 +120,10 @@ class AppSmokeTest {
         composeRule.onNodeWithTag("market_KOSDAQ").performScrollTo().performClick()
         composeRule.onNodeWithTag("stock_search").performScrollTo().performTextInput("삼천당제약")
         hideKeyboardAndRestoreAppFocus()
-        // A stock card is taller than the remaining list viewport. Verify the unique visual
+        composeRule.onNodeWithTag("stock_rank_list").performScrollToIndex(1)
+        // The filtered stock row is now below the scrollable controls on compact phones.
+        // Move the shared list to the first result before addressing the stock semantics.
+        // A stock card can still be taller than the viewport, so verify its comparison region.
         // comparison region instead of ambiguous axis text such as "성장", which also appears
         // elsewhere on the screen.
         composeRule.onNodeWithTag("stock_000250").performScrollTo()
@@ -184,6 +187,7 @@ class AppSmokeTest {
         composeRule.waitForIdle()
         composeRule.onNodeWithTag("stock_search").performTextInput("025560")
         hideKeyboardAndRestoreAppFocus()
+        composeRule.onNodeWithTag("stock_rank_list").performScrollToIndex(1)
         composeRule.onNodeWithTag("stock_025560").performScrollTo()
         composeRule.onNodeWithText("FINAL #1").performScrollTo().assertIsDisplayed()
         composeRule.onAllNodesWithTag("financial_safety_badge", useUnmergedTree = true).onFirst()
