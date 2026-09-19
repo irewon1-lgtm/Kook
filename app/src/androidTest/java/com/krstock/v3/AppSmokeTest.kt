@@ -84,32 +84,41 @@ class AppSmokeTest {
         composeRule.waitForIdle()
         composeRule.onNodeWithText("국내주식 조합순위").assertIsDisplayed()
 
-        // Regression: changing a ranking metric after browsing lower ranks must return to the new #1.
+        // Phone regression: ranking controls and stock cards share one scroll container.
+        // Browse lower rows, return to the scrollable controls, change the combination,
+        // then verify the new #1 can use the full viewport instead of a tiny fixed pane.
         composeRule.onNodeWithTag("stock_rank_list").performScrollToIndex(12)
         composeRule.waitForIdle()
+
+        composeRule.onNodeWithTag("stock_rank_list").performScrollToIndex(0)
         composeRule.onNodeWithTag("metric_toggle_M02").performClick()
         composeRule.waitForIdle()
+        composeRule.onNodeWithTag("stock_rank_list").performScrollToIndex(1)
         composeRule.onNodeWithText("1위").assertIsDisplayed()
+        composeRule.onNodeWithTag("stock_rank_list").performScrollToIndex(0)
         composeRule.onNodeWithText("3개 · 각 33.3%").assertIsDisplayed()
 
         composeRule.onNodeWithTag("metric_toggle_M04").performClick()
         composeRule.waitForIdle()
+        composeRule.onNodeWithTag("stock_rank_list").performScrollToIndex(1)
         composeRule.onNodeWithText("1위").assertIsDisplayed()
+        composeRule.onNodeWithTag("stock_rank_list").performScrollToIndex(0)
         composeRule.onNodeWithText("2개 · 각 50%").assertIsDisplayed()
         composeRule.onNodeWithTag("metric_toggle_M04").performClick()
         composeRule.waitForIdle()
         composeRule.onNodeWithText("3개 · 각 33.3%").assertIsDisplayed()
 
-        // Sort-mode changes must also restart from the beginning rather than preserving stale scroll position.
-        composeRule.onNodeWithTag("stock_rank_list").performScrollToIndex(10)
-        composeRule.onNodeWithTag("sort_CODE").performClick()
+        // Sort controls remain reachable by scrolling the shared header item.
+        composeRule.onNodeWithTag("sort_CODE").performScrollTo().performClick()
         composeRule.waitForIdle()
-        composeRule.onNodeWithTag("sort_COMBINATION").performClick()
+        composeRule.onNodeWithTag("sort_COMBINATION").performScrollTo().performClick()
         composeRule.waitForIdle()
+        composeRule.onNodeWithTag("stock_rank_list").performScrollToIndex(1)
         composeRule.onNodeWithText("1위").assertIsDisplayed()
 
-        composeRule.onNodeWithTag("market_KOSDAQ").performClick()
-        composeRule.onNodeWithTag("stock_search").performTextInput("삼천당제약")
+        composeRule.onNodeWithTag("stock_rank_list").performScrollToIndex(0)
+        composeRule.onNodeWithTag("market_KOSDAQ").performScrollTo().performClick()
+        composeRule.onNodeWithTag("stock_search").performScrollTo().performTextInput("삼천당제약")
         hideKeyboardAndRestoreAppFocus()
         // A stock card is taller than the remaining list viewport. Verify the unique visual
         // comparison region instead of ambiguous axis text such as "성장", which also appears
