@@ -120,7 +120,7 @@ fun StockListScreen(
                 .fillMaxSize()
                 .padding(padding)
                 .testTag("stock_rank_list"),
-            contentPadding = PaddingValues(horizontal = 14.dp, bottom = 28.dp),
+            contentPadding = PaddingValues(start = 14.dp, end = 14.dp, bottom = 28.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             item(key = "ranking_controls") {
