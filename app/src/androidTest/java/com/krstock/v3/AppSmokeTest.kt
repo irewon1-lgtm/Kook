@@ -32,6 +32,12 @@ class AppSmokeTest {
         composeRule.onNodeWithTag(tag).assertIsDisplayed()
     }
 
+    private fun waitForTag(tag: String, timeoutMillis: Long = 10_000L) {
+        composeRule.waitUntil(timeoutMillis = timeoutMillis) {
+            composeRule.onAllNodesWithTag(tag).fetchSemanticsNodes().isNotEmpty()
+        }
+    }
+
     /**
      * Espresso's global closeSoftKeyboard()/pressBack() first waits for a focused
      * root window. Hosted API-34 emulators can transiently hand focus to the IME,
@@ -121,6 +127,8 @@ class AppSmokeTest {
         composeRule.onNodeWithTag("stock_search").performScrollTo().performTextInput("삼천당제약")
         hideKeyboardAndRestoreAppFocus()
         composeRule.onNodeWithTag("stock_rank_list").performScrollToIndex(1)
+        composeRule.waitForIdle()
+        waitForTag("stock_000250")
         // The filtered stock row is now below the scrollable controls on compact phones.
         // Move the shared list to the first result before addressing the stock semantics.
         // A stock card can still be taller than the viewport, so verify its comparison region.
@@ -130,7 +138,9 @@ class AppSmokeTest {
         composeRule.onNodeWithText("한눈 비교", useUnmergedTree = true)
             .performScrollTo()
             .assertIsDisplayed()
-        composeRule.onNodeWithText("시장 내 상대위치", useUnmergedTree = true).assertIsDisplayed()
+        composeRule.onNodeWithText("시장 내 상대위치", useUnmergedTree = true)
+            .performScrollTo()
+            .assertIsDisplayed()
         composeRule.onNodeWithTag("comparison_000250", useUnmergedTree = true)
             .performScrollTo()
             .assertIsDisplayed()
@@ -188,6 +198,8 @@ class AppSmokeTest {
         composeRule.onNodeWithTag("stock_search").performTextInput("025560")
         hideKeyboardAndRestoreAppFocus()
         composeRule.onNodeWithTag("stock_rank_list").performScrollToIndex(1)
+        composeRule.waitForIdle()
+        waitForTag("stock_025560")
         composeRule.onNodeWithTag("stock_025560").performScrollTo()
         composeRule.onNodeWithText("FINAL #1").performScrollTo().assertIsDisplayed()
         composeRule.onAllNodesWithTag("financial_safety_badge", useUnmergedTree = true).onFirst()
