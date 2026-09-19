@@ -471,7 +471,7 @@ jobs:
           assert d['signingCertificateSha256']==os.environ['EXPECTED_STABLE_CERT_SHA256']
           print('LATEST_RELEASE_REDOWNLOAD_PASS', d['versionName'], d['versionCode'])
           PY
-          gh release view "$TAG" --json tagName,name,isLatest,url
+          gh release view "$TAG" --json tagName,name,url
 
       - name: Signed release status
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
