@@ -49,8 +49,8 @@
     }
   },
   "rules": {
-    "M01": "latest OpenDART PL period; 3-month YoY preferred, YTD/annual comparable fallback; CFS preferred to OFS; deterministic name/preferred-share alias recovery; if the latest DART period is unavailable, use exactly the immediately preceding validated quarter's revenue YoY; final rankability guard -100%..5000% with fail-close before full rerank",
-    "M02": "same latest OpenDART PL period; operating income/revenue on a matched period column; financial/insurance sectors excluded; deterministic name/preferred-share alias recovery; if the latest DART period is unavailable, use exactly the immediately preceding validated quarter's operating margin (financial-sector exclusion unchanged); final rankability guard -5000%..200% with fail-close before full rerank",
+    "M01": "latest OpenDART PL period; 3-month YoY preferred, YTD/annual comparable fallback; CFS preferred to OFS; deterministic name/preferred-share alias recovery; if the latest DART period is unavailable, use exactly the immediately preceding validated quarter's revenue YoY; final rankability guard -100%..5000% with fail-close before full rerank; if the latest DART period is unavailable, use exactly the immediately preceding validated quarter's revenue YoY; final rankability guard -100%..5000% with fail-close before full rerank",
+    "M02": "same latest OpenDART PL period; operating income/revenue on a matched period column; financial/insurance sectors excluded; deterministic name/preferred-share alias recovery; if the latest DART period is unavailable, use exactly the immediately preceding validated quarter's operating margin (financial-sector exclusion unchanged); final rankability guard -5000%..200% with fail-close before full rerank; if the latest DART period is unavailable, use exactly the immediately preceding validated quarter's operating margin (financial-sector exclusion unchanged); final rankability guard -5000%..200% with fail-close before full rerank",
     "M03": "positive reported trailing PER preferred; otherwise completed-session close / actual non-consensus EPS; missing integration EPS may fall back to latest non-consensus annual EPS; negative EPS yields negative PER with 0 valuation percentile; zero EPS remains unavailable",
     "M04": "close-to-close return from last session on/before six-month target to price cutoff; at least 150 calendar days required",
     "percentiles": "available-universe percentile; higher is better except PER where lower is better",
@@ -84997,44 +84997,10 @@
   "recent_dart_fallback": {
     "policy": "one-quarter-back validated OpenDART history only; no multi-quarter skip; final economic fail-close + full rerank",
     "source_period": "2026Q1",
-    "m01_recovered": 16,
-    "m02_recovered": 16,
-    "m01_codes": [
-      "001570",
-      "002630",
-      "003620",
-      "004960",
-      "018500",
-      "020180",
-      "033200",
-      "060310",
-      "067010",
-      "082660",
-      "092440",
-      "099750",
-      "226340",
-      "344820",
-      "365330",
-      "950170"
-    ],
-    "m02_codes": [
-      "001570",
-      "002630",
-      "003620",
-      "004960",
-      "018500",
-      "020180",
-      "033200",
-      "060310",
-      "067010",
-      "092440",
-      "099750",
-      "226340",
-      "344820",
-      "365330",
-      "489460",
-      "950170"
-    ],
+    "m01_recovered": 0,
+    "m02_recovered": 0,
+    "m01_codes": [],
+    "m02_codes": [],
     "economic_guard": {
       "m01_range": [
         -100.0,
@@ -85044,223 +85010,50 @@
         -5000.0,
         200.0
       ],
-      "m01_excluded_codes": [
-        "068240",
-        "214610",
-        "288330",
-        "308080",
-        "493280"
-      ],
-      "m02_excluded_codes": [
-        "0082N0",
-        "068240",
-        "378800",
-        "389470"
-      ]
+      "m01_excluded_codes": [],
+      "m02_excluded_codes": []
     },
     "coverage_before": {
-      "m01_available": 2469,
-      "m02_available": 2380,
+      "m01_available": 2561,
+      "m02_available": 2409,
       "m03_available": 2635,
       "m04_available": 2613,
-      "complete_count": 2352,
-      "ranked_count": 2352
+      "complete_count": 2376,
+      "ranked_count": 2376
     },
     "coverage_after": {
-      "m01_available": 2480,
-      "m02_available": 2392,
+      "m01_available": 2561,
+      "m02_available": 2409,
       "m03_available": 2635,
       "m04_available": 2613,
-      "complete_count": 2359,
-      "ranked_count": 2359
+      "complete_count": 2376,
+      "ranked_count": 2376
     }
   },
   "fiscal_calendar_recovery": {
     "policy": "non-December fiscal issuers only; latest completed Naver actual quarter; consensus rejected; existing numeric metrics preserved",
-    "m01_recovered": 19,
-    "m02_recovered": 13,
-    "m01_codes": [
-      "001720",
-      "021820",
-      "030960",
-      "032800",
-      "050860",
-      "093240",
-      "097870",
-      "169330",
-      "189690",
-      "190650",
-      "289080",
-      "334970",
-      "395400",
-      "417310",
-      "448730",
-      "900120",
-      "900290",
-      "950210",
-      "950250"
-    ],
-    "m02_codes": [
-      "021820",
-      "030960",
-      "032800",
-      "050860",
-      "093240",
-      "097870",
-      "169330",
-      "189690",
-      "334970",
-      "395400",
-      "417310",
-      "448730",
-      "950210"
-    ],
-    "details": {
-      "001720": {
-        "fiscal_month": 3,
-        "latest_actual_period": "202606",
-        "prior_year_period": "202506",
-        "m01": 84.440501
-      },
-      "021820": {
-        "fiscal_month": 6,
-        "latest_actual_period": "202603",
-        "prior_year_period": "202503",
-        "m01": -21.792261,
-        "m02": -1.75
-      },
-      "030960": {
-        "fiscal_month": 6,
-        "latest_actual_period": "202606",
-        "prior_year_period": "202506",
-        "m01": -15.730337,
-        "m02": -102.11
-      },
-      "032800": {
-        "fiscal_month": 6,
-        "latest_actual_period": "202603",
-        "prior_year_period": "202503",
-        "m01": -30.232558,
-        "m02": -37.04
-      },
-      "050860": {
-        "fiscal_month": 6,
-        "latest_actual_period": "202606",
-        "prior_year_period": "202506",
-        "m01": 24.193548,
-        "m02": 13.78
-      },
-      "093240": {
-        "fiscal_month": 6,
-        "latest_actual_period": "202606",
-        "prior_year_period": "202506",
-        "m01": -16.0,
-        "m02": -0.82
-      },
-      "097870": {
-        "fiscal_month": 6,
-        "latest_actual_period": "202606",
-        "prior_year_period": "202506",
-        "m01": 36.666667,
-        "m02": -17.77
-      },
-      "169330": {
-        "fiscal_month": 6,
-        "latest_actual_period": "202603",
-        "prior_year_period": "202503",
-        "m01": -11.607143,
-        "m02": -9.69
-      },
-      "189690": {
-        "fiscal_month": 6,
-        "latest_actual_period": "202606",
-        "prior_year_period": "202506",
-        "m01": 30.985915,
-        "m02": 18.56
-      },
-      "190650": {
-        "fiscal_month": 3,
-        "latest_actual_period": "202606",
-        "prior_year_period": "202506",
-        "m01": 3.357664
-      },
-      "289080": {
-        "fiscal_month": 3,
-        "latest_actual_period": "202606",
-        "prior_year_period": "202506",
-        "m01": 40.0
-      },
-      "334970": {
-        "fiscal_month": 6,
-        "latest_actual_period": "202606",
-        "prior_year_period": "202506",
-        "m01": 150.877193,
-        "m02": -67.28
-      },
-      "395400": {
-        "fiscal_month": 3,
-        "latest_actual_period": "202606",
-        "prior_year_period": "202506",
-        "m01": 12.957746,
-        "m02": 89.48
-      },
-      "417310": {
-        "fiscal_month": 2,
-        "latest_actual_period": "202605",
-        "prior_year_period": "202505",
-        "m01": 20.0,
-        "m02": 73.6
-      },
-      "448730": {
-        "fiscal_month": 1,
-        "latest_actual_period": "202604",
-        "prior_year_period": "202504",
-        "m01": 13.559322,
-        "m02": 66.71
-      },
-      "900120": {
-        "fiscal_month": 6,
-        "latest_actual_period": "202603",
-        "prior_year_period": "202503",
-        "m01": -27.884615
-      },
-      "900290": {
-        "fiscal_month": 6,
-        "latest_actual_period": "202603",
-        "prior_year_period": "202503",
-        "m01": 33.558016
-      },
-      "950210": {
-        "fiscal_month": 6,
-        "latest_actual_period": "202603",
-        "prior_year_period": "202503",
-        "m01": -84.848485,
-        "m02": -5175.09
-      },
-      "950250": {
-        "fiscal_month": 4,
-        "latest_actual_period": "202604",
-        "prior_year_period": "202504",
-        "m01": -47.368421
-      }
-    },
+    "m01_recovered": 0,
+    "m02_recovered": 0,
+    "m01_codes": [],
+    "m02_codes": [],
+    "details": {},
     "coverage_before": {
-      "m01_available": 2480,
-      "m02_available": 2392,
+      "m01_available": 2561,
+      "m02_available": 2409,
       "m03_available": 2635,
       "m04_available": 2613,
-      "complete_count": 2359,
-      "ranked_count": 2359
+      "complete_count": 2376,
+      "ranked_count": 2376
     },
     "coverage_after": {
-      "m01_available": 2499,
-      "m02_available": 2404,
+      "m01_available": 2561,
+      "m02_available": 2409,
       "m03_available": 2635,
       "m04_available": 2613,
-      "complete_count": 2371,
-      "ranked_count": 2371
+      "complete_count": 2376,
+      "ranked_count": 2376
     },
-    "candidate_count": 20,
+    "candidate_count": 1,
     "source_errors": {}
   },
   "standard_actual_recovery": {
