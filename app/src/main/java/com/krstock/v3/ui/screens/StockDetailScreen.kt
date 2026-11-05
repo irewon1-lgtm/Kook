@@ -27,6 +27,7 @@ import com.krstock.v3.data.model.*
 import com.krstock.v3.data.repository.StockRepository
 import com.krstock.v3.data.stage.FinancialSafetyRepository
 import com.krstock.v3.data.stage.ValuationBandPolicy
+import com.krstock.v3.data.update.SnapshotAutoUpdater
 import com.krstock.v3.ui.components.FinalCandidateDetailCard
 import com.krstock.v3.ui.components.FinancialSafetyCard
 import com.krstock.v3.ui.components.StatusBadge
@@ -37,7 +38,8 @@ import kotlin.math.abs
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StockDetailScreen(issuerId: String, onBack: () -> Unit) {
-    val stockDetail = remember(issuerId) { StockRepository.getStockDetail(issuerId) }
+    val snapshotState by SnapshotAutoUpdater.state.collectAsState()
+    val stockDetail = remember(issuerId, snapshotState.revision) { StockRepository.getStockDetail(issuerId) }
     val scheme = MaterialTheme.colorScheme
 
     if (stockDetail == null) {
@@ -68,8 +70,8 @@ fun StockDetailScreen(issuerId: String, onBack: () -> Unit) {
 
     val summary = stockDetail.summary
     val report = stockDetail.report
-    val finalCandidate = remember(issuerId) { FinalCandidateRepository.getFinalCandidate(issuerId) }
-    val financialSafety = remember(issuerId) { FinancialSafetyRepository.get(issuerId) }
+    val finalCandidate = remember(issuerId, snapshotState.revision) { FinalCandidateRepository.getFinalCandidate(issuerId) }
+    val financialSafety = remember(issuerId, snapshotState.revision) { FinancialSafetyRepository.get(issuerId) }
     val valuationBand = remember(summary) { ValuationBandPolicy.classify(summary.m03Per) }
     val context = LocalContext.current
     var evidence by remember(issuerId) { mutableStateOf(EvidenceBundle(issuerId = issuerId)) }
@@ -204,6 +206,12 @@ private fun DetailSummaryPage(
                             fontSize = 10.sp,
                             color = scheme.onPrimaryContainer.copy(alpha = 0.74f)
                         )
+                        Text(
+                            "재무 ${summary.asOfDate} · 주가 ${summary.m04Price6m.asOfDate}",
+                            modifier = Modifier.testTag("detail_snapshot_dates"),
+                            fontSize = 10.sp,
+                            color = scheme.onPrimaryContainer.copy(alpha = 0.74f),
+                        )
                     }
                     StatusBadge(status = summary.status)
                 }
@@ -213,11 +221,13 @@ private fun DetailSummaryPage(
                     SummaryStat(
                         label = "기본 4지표 순위",
                         value = summary.rankOrder?.let { "${it}위" } ?: "보류",
+                        valueTag = "detail_summary_rank",
                         modifier = Modifier.weight(1f)
                     )
                     SummaryStat(
                         label = "종합 상대점수",
                         value = summary.compositeScore?.let { String.format("%.1f점", it) } ?: "미산출",
+                        valueTag = "detail_summary_score",
                         modifier = Modifier.weight(1f)
                     )
                 }
@@ -230,7 +240,7 @@ private fun DetailSummaryPage(
 
         FinancialSafetyCard(
             safety = financialSafety,
-            snapshotDate = StockRepository.quantSnapshotDate(),
+            snapshotDate = summary.asOfDate,
         )
 
         ValuationCard(
@@ -254,8 +264,8 @@ private fun DetailSummaryPage(
                 IdentityRow("시장", summary.market)
                 IdentityRow("업종", summary.sector)
                 IdentityRow("상장일", summary.listingDate.ifBlank { "확인 필요" })
-                IdentityRow("재무 기준", StockRepository.quantSnapshotDate())
-                IdentityRow("주가 기준", StockRepository.priceCutoffDate())
+                IdentityRow("재무 기준", summary.asOfDate)
+                IdentityRow("주가 기준", summary.m04Price6m.asOfDate)
             }
         }
 
@@ -264,7 +274,7 @@ private fun DetailSummaryPage(
 }
 
 @Composable
-private fun SummaryStat(label: String, value: String, modifier: Modifier = Modifier) {
+private fun SummaryStat(label: String, value: String, valueTag: String, modifier: Modifier = Modifier) {
     val scheme = MaterialTheme.colorScheme
     Surface(
         modifier = modifier,
@@ -276,7 +286,7 @@ private fun SummaryStat(label: String, value: String, modifier: Modifier = Modif
         Column(Modifier.padding(horizontal = 12.dp, vertical = 11.dp)) {
             Text(label, fontSize = 9.sp, color = LocalContentColor.current.copy(alpha = 0.72f))
             Spacer(modifier = Modifier.height(4.dp))
-            Text(value, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Text(value, modifier = Modifier.testTag(valueTag), fontSize = 18.sp, fontWeight = FontWeight.Bold)
         }
     }
 }
@@ -655,6 +665,7 @@ private fun MetricCard(metric: MetricValue, lossMaking: Boolean = false) {
                             metric.id == "M03" -> String.format("%.2f배", metric.rawValue)
                             else -> String.format("%.1f%%", metric.rawValue)
                         },
+                        modifier = Modifier.testTag("detail_${metric.id.lowercase()}_value"),
                         fontWeight = FontWeight.Bold,
                         fontSize = 21.sp,
                         color = if (available) scheme.onSurface else scheme.onSurfaceVariant

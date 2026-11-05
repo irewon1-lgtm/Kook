@@ -8,24 +8,19 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.krstock.v3.data.candidate.FinalCandidateSnapshotUpdater
 import com.krstock.v3.data.update.SnapshotAutoUpdater
 import com.krstock.v3.ui.screens.HomeScreen
 import com.krstock.v3.ui.screens.StockDetailScreen
@@ -51,11 +46,9 @@ class MainActivity : ComponentActivity() {
                 }
 
                 LaunchedEffect(Unit) {
+                    // Render the current known-good snapshot while its updater
+                    // refreshes quant, safety and candidates as one pipeline.
                     runCatching { SnapshotAutoUpdater.bootstrap(this@MainActivity) }
-                    // Stage 4~7 candidates are a separate fail-closed remote artifact.
-                    // It is loaded only after the active quant snapshot is known so
-                    // stale safety data can never be mixed with newer M01~M04.
-                    runCatching { FinalCandidateSnapshotUpdater.bootstrap(this@MainActivity) }
                     ready = true
                 }
 
@@ -69,57 +62,46 @@ class MainActivity : ComponentActivity() {
                 }
 
                 Surface(modifier = Modifier.fillMaxSize()) {
-                    if (!ready) {
-                        Column(
-                            modifier = Modifier.fillMaxSize().testTag("snapshot_bootstrap"),
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                        ) {
-                            CircularProgressIndicator()
-                            Text("최신 검증 데이터 확인 중")
+                    val navController = rememberNavController()
+                    NavHost(
+                        navController = navController,
+                        startDestination = "main",
+                        modifier = Modifier.fillMaxSize(),
+                        enterTransition = { EnterTransition.None },
+                        exitTransition = { ExitTransition.None },
+                        popEnterTransition = { EnterTransition.None },
+                        popExitTransition = { ExitTransition.None }
+                    ) {
+                        composable("main") {
+                            val pagerState = rememberPagerState(initialPage = 0, pageCount = { 2 })
+                            val scope = rememberCoroutineScope()
+
+                            BackHandler(enabled = pagerState.currentPage != 0) {
+                                scope.launch { pagerState.scrollToPage(0) }
+                            }
+
+                            HorizontalPager(
+                                state = pagerState,
+                                modifier = Modifier.fillMaxSize().testTag("main_pager")
+                            ) { page ->
+                                when (page) {
+                                    0 -> HomeScreen(
+                                        onStockClick = { issuerId -> navController.navigate("detail/$issuerId") },
+                                        onNavigateToList = { scope.launch { pagerState.animateScrollToPage(1) } }
+                                    )
+                                    else -> StockListScreen(
+                                        onStockClick = { issuerId -> navController.navigate("detail/$issuerId") },
+                                        onBack = { scope.launch { pagerState.scrollToPage(0) } }
+                                    )
+                                }
+                            }
                         }
-                    } else {
-                        val navController = rememberNavController()
-                        NavHost(
-                            navController = navController,
-                            startDestination = "main",
-                            modifier = Modifier.fillMaxSize(),
-                            enterTransition = { EnterTransition.None },
-                            exitTransition = { ExitTransition.None },
-                            popEnterTransition = { EnterTransition.None },
-                            popExitTransition = { ExitTransition.None }
-                        ) {
-                            composable("main") {
-                                val pagerState = rememberPagerState(initialPage = 0, pageCount = { 2 })
-                                val scope = rememberCoroutineScope()
-
-                                BackHandler(enabled = pagerState.currentPage != 0) {
-                                    scope.launch { pagerState.scrollToPage(0) }
-                                }
-
-                                HorizontalPager(
-                                    state = pagerState,
-                                    modifier = Modifier.fillMaxSize().testTag("main_pager")
-                                ) { page ->
-                                    when (page) {
-                                        0 -> HomeScreen(
-                                            onStockClick = { issuerId -> navController.navigate("detail/$issuerId") },
-                                            onNavigateToList = { scope.launch { pagerState.animateScrollToPage(1) } }
-                                        )
-                                        else -> StockListScreen(
-                                            onStockClick = { issuerId -> navController.navigate("detail/$issuerId") },
-                                            onBack = { scope.launch { pagerState.scrollToPage(0) } }
-                                        )
-                                    }
-                                }
-                            }
-                            composable("detail/{issuerId}") { backStackEntry ->
-                                val issuerId = backStackEntry.arguments?.getString("issuerId").orEmpty()
-                                StockDetailScreen(
-                                    issuerId = issuerId,
-                                    onBack = { navController.popBackStack() }
-                                )
-                            }
+                        composable("detail/{issuerId}") { backStackEntry ->
+                            val issuerId = backStackEntry.arguments?.getString("issuerId").orEmpty()
+                            StockDetailScreen(
+                                issuerId = issuerId,
+                                onBack = { navController.popBackStack() }
+                            )
                         }
                     }
                 }

@@ -1,0 +1,127 @@
+package com.krstock.v3
+
+import android.content.Context
+import android.content.ContextWrapper
+import android.graphics.Bitmap
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.work.WorkManager
+import com.krstock.v3.data.candidate.FinalCandidateRuntimeStore
+import com.krstock.v3.data.generated.GeneratedRealQuantSnapshot
+import com.krstock.v3.data.stage.FinancialSafetyRepository
+import com.krstock.v3.data.stage.FinancialSafetyRuntimeStore
+import com.krstock.v3.data.update.SnapshotAutoUpdater
+import org.json.JSONObject
+import org.junit.rules.TestWatcher
+import org.junit.runner.Description
+import java.io.File
+import java.io.IOException
+import java.util.concurrent.TimeUnit
+
+/** Test-only, byte-for-byte historical collector output; provenance is an adjacent asset. */
+internal object SnapshotTestSupport {
+    const val CURRENT = "quant_20261105.json"
+    const val BEFORE = "quant_20261007_before.json"
+    const val SAME_DATE_AFTER = "quant_20261007_after.json"
+    const val CACHE = "kr4_latest_snapshot.json"
+    const val BACKUP = "kr4_previous_snapshot.json"
+
+    fun fixture(name: String = CURRENT): String =
+        InstrumentationRegistry.getInstrumentation().context.assets.open(name)
+            .bufferedReader(Charsets.UTF_8).use { it.readText() }
+
+    fun isolatedContext(context: Context): Context {
+        val directory = File(context.cacheDir, "snapshot-test-${System.nanoTime()}").apply { mkdirs() }
+        return object : ContextWrapper(context) {
+            override fun getFilesDir(): File = directory
+            override fun getApplicationContext(): Context = this
+        }
+    }
+
+    fun stopPeriodicRefreshes(context: Context) {
+        val work = WorkManager.getInstance(context)
+        listOf("kr4-validated-snapshot-refresh-v2", "kr4-native-app-update-v1").forEach {
+            work.cancelUniqueWork(it).result.get(20, TimeUnit.SECONDS)
+        }
+    }
+
+    fun offline(): Nothing = throw IOException("instrumented offline attempt")
+
+    fun failureEvidence(): TestWatcher = object : TestWatcher() {
+        override fun failed(error: Throwable, description: Description) {
+            runCatching {
+                val context = InstrumentationRegistry.getInstrumentation().targetContext
+                evidence(
+                    context,
+                    "${description.className.substringAfterLast('.')}-${description.methodName}-failed",
+                    JSONObject().put("assertion_failure", error.toString()),
+                )
+            }
+        }
+    }
+
+    /** Model a process starting on an actual older snapshot without changing its market values. */
+    fun installHistoricalMemory(name: String) {
+        val parsed = SnapshotAutoUpdater.parseAndValidate(fixture(name))
+        GeneratedRealQuantSnapshot.installRuntimeSnapshot(
+            parsed.snapshotDate, parsed.priceCutoffDate, parsed.dartFileName, parsed.rows,
+            parsed.m01Available, parsed.m02Available, parsed.m03Available, parsed.m04Available,
+            parsed.completeCount,
+        )
+        FinancialSafetyRuntimeStore.clear()
+        FinalCandidateRuntimeStore.clear()
+    }
+
+    /** Capture the actual device screen and the values asserted in that screen's test. */
+    fun evidence(context: Context, name: String, extra: JSONObject = JSONObject()) {
+        val instrumentation = InstrumentationRegistry.getInstrumentation()
+        instrumentation.waitForIdleSync()
+        // AGP exports this directory before uninstalling the test application.
+        val additionalOutput = InstrumentationRegistry.getArguments().getString("additionalTestOutputDir")
+        val outputRoot = additionalOutput?.takeIf { it.isNotBlank() }?.let(::File)
+            ?: context.getExternalFilesDir(null)
+        val directory = File(outputRoot, "snapshot-e2e").apply { mkdirs() }
+        val result = SnapshotAutoUpdater.lastResult
+        val json = extra.put("source", result.source.name)
+            .put("snapshot_date_kst", result.snapshotDate)
+            .put("price_cutoff_date_kst", result.priceCutoffDate)
+            .put("network_succeeded", result.networkSucceeded)
+            .put("complete_count", GeneratedRealQuantSnapshot.completeCount)
+            .put("universe_count", GeneratedRealQuantSnapshot.universeCount)
+            .put("revision", result.revision)
+            .put("failure", result.failure ?: JSONObject.NULL)
+        File(directory, "$name.json").writeText(json.toString(2))
+        val screenshot = checkNotNull(instrumentation.uiAutomation.takeScreenshot()) {
+            "Device screenshot unavailable for $name"
+        }
+        File(directory, "$name.png").outputStream().use { output ->
+            check(screenshot.compress(Bitmap.CompressFormat.PNG, 100, output))
+        }
+        screenshot.recycle()
+    }
+
+    /** Keep unrelated instrumented tests independent of runtime installation order. */
+    class SavedRuntime {
+        private val date = GeneratedRealQuantSnapshot.snapshotDate
+        private val priceDate = GeneratedRealQuantSnapshot.priceCutoffDate
+        private val dartFile = GeneratedRealQuantSnapshot.dartFileName
+        private val rows = GeneratedRealQuantSnapshot.rows.toList()
+        private val m01 = GeneratedRealQuantSnapshot.m01Available
+        private val m02 = GeneratedRealQuantSnapshot.m02Available
+        private val m03 = GeneratedRealQuantSnapshot.m03Available
+        private val m04 = GeneratedRealQuantSnapshot.m04Available
+        private val complete = GeneratedRealQuantSnapshot.completeCount
+        private val safety = FinancialSafetyRepository.currentSnapshot()
+        private val candidateDate = FinalCandidateRuntimeStore.installedSnapshotDate()
+        private val candidates = FinalCandidateRuntimeStore.current(candidateDate).toList()
+
+        fun restore() {
+            GeneratedRealQuantSnapshot.installRuntimeSnapshot(
+                date, priceDate, dartFile, rows, m01, m02, m03, m04, complete,
+            )
+            FinancialSafetyRuntimeStore.clear()
+            safety?.let(FinancialSafetyRuntimeStore::install)
+            FinalCandidateRuntimeStore.clear()
+            if (candidateDate.isNotBlank()) FinalCandidateRuntimeStore.install(candidateDate, candidates)
+        }
+    }
+}

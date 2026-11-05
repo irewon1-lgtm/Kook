@@ -2,12 +2,15 @@ package com.krstock.v3.data.update
 
 import android.content.Context
 import com.krstock.v3.data.generated.GeneratedRealQuantSnapshot
-import com.krstock.v3.data.model.FinancialSafetySnapshot
+import com.krstock.v3.data.candidate.FinalCandidateRuntimeStore
+import com.krstock.v3.data.candidate.FinalCandidateSnapshotUpdater
 import com.krstock.v3.data.model.RealQuantRecord
 import com.krstock.v3.data.stage.FinancialSafetyRuntimeStore
-import com.krstock.v3.data.stage.FinancialSafetySnapshotParser
+import com.krstock.v3.data.stage.FinancialSafetySnapshotUpdater
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import org.json.JSONObject
 import java.io.File
 import java.io.FileOutputStream
@@ -17,7 +20,10 @@ import java.nio.file.AtomicMoveNotSupportedException
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
 import java.time.LocalDate
+import java.time.Instant
 import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 import kotlin.math.max
 
 /**
@@ -42,14 +48,17 @@ object SnapshotAutoUpdater {
         val priceCutoffDate: String,
         val message: String,
         val networkSucceeded: Boolean,
+        val refreshedAt: String = "",
+        val lastAttemptAt: String = "",
+        val failure: String? = null,
+        val revision: Long = 0,
     )
 
-    private data class ParsedSnapshot(
+    internal data class ParsedSnapshot(
         val snapshotDate: String,
         val priceCutoffDate: String,
         val dartFileName: String,
         val rows: List<RealQuantRecord>,
-        val financialSafety: FinancialSafetySnapshot,
         val m01Available: Int,
         val m02Available: Int,
         val m03Available: Int,
@@ -57,16 +66,16 @@ object SnapshotAutoUpdater {
         val completeCount: Int,
     )
 
-    @Volatile
-    var lastResult: Result = bundledResult("앱 내장 정상본")
-        private set
+    private val mutableState = MutableStateFlow(bundledResult("앱 내장 정상본"))
+    val state = mutableState.asStateFlow()
+    val lastResult: Result get() = state.value
 
     suspend fun bootstrap(context: Context): Result = withContext(Dispatchers.IO) {
-        refreshBlocking(context.applicationContext, installInMemory = true)
+        refreshBlocking(context.applicationContext)
     }
 
     suspend fun backgroundRefresh(context: Context): Result = withContext(Dispatchers.IO) {
-        refreshBlocking(context.applicationContext, installInMemory = false)
+        refreshBlocking(context.applicationContext)
     }
 
     /**
@@ -75,11 +84,18 @@ object SnapshotAutoUpdater {
      * on temp/cache/backup files.
      */
     @Synchronized
-    internal fun refreshBlocking(context: Context, installInMemory: Boolean): Result {
-        var active = bundledResult("앱 내장 정상본")
+    internal fun refreshBlocking(context: Context, fetch: () -> String = ::download): Result {
+        val attemptedAt = ZonedDateTime.now(KST).format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+        // Running memory is also a known-good version: a missing/corrupt disk
+        // cache must not let a worker downgrade a snapshot already on screen.
+        var active = lastResult.takeIf {
+            it.snapshotDate == GeneratedRealQuantSnapshot.snapshotDate &&
+                it.priceCutoffDate == GeneratedRealQuantSnapshot.priceCutoffDate
+        } ?: bundledResult("앱 내장 정상본")
+        active = active.copy(networkSucceeded = false, failure = null, lastAttemptAt = attemptedAt)
+        var activeBody: String? = null
         val cache = File(context.filesDir, CACHE_NAME)
         val backup = File(context.filesDir, BACKUP_NAME)
-        if (installInMemory) FinancialSafetyRuntimeStore.clear()
 
         // 1) Warm start from local known-good copies. Cache is preferred when
         // equally new, but a strictly newer valid rollback copy can still win.
@@ -90,31 +106,42 @@ object SnapshotAutoUpdater {
         )
         for ((file, source, message) in localCandidates) {
             if (!file.isFile || file.length() !in 1..MAX_BYTES.toLong()) continue
-            val parsed = runCatching { parseAndValidate(file.readText(Charsets.UTF_8)) }.getOrNull() ?: continue
+            val body = runCatching { file.readText(Charsets.UTF_8) }.getOrNull() ?: continue
+            val parsed = runCatching { parseAndValidate(body) }.getOrNull() ?: continue
             if (!isNotOlderThanBundled(parsed.snapshotDate, parsed.priceCutoffDate)) continue
             if (isOlderVersion(parsed.snapshotDate, parsed.priceCutoffDate, active.snapshotDate, active.priceCutoffDate)) continue
-            if (source == Source.BACKUP && isSameVersion(
+            if (source == Source.BACKUP && activeBody != null && active.source == Source.CACHE && isSameVersion(
                     parsed.snapshotDate,
                     parsed.priceCutoffDate,
                     active.snapshotDate,
                     active.priceCutoffDate,
                 )
             ) continue
-            if (installInMemory) install(parsed)
+            install(parsed)
+            activeBody = body
             active = Result(
                 source,
                 parsed.snapshotDate,
                 parsed.priceCutoffDate,
                 message,
                 false,
+                refreshedAt = Instant.ofEpochMilli(file.lastModified()).atZone(KST)
+                    .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME),
+                lastAttemptAt = attemptedAt,
             )
+        }
+        // Render a validated warm cache before the network completes. Optional
+        // Stage4 is validated separately and never gates these four metrics.
+        if (activeBody != null) {
+            refreshSafety(context, activeBody)
+            publish(active)
         }
 
         // 2) Network refresh. Compare against the selected local active version,
         // not just the APK-bundled version. This prevents a background worker
         // from overwriting a newer disk cache with an older remote snapshot.
         val network = runCatching {
-            val body = download()
+            val body = fetch()
             val parsed = parseAndValidate(body)
             require(!isOlderVersion(
                 parsed.snapshotDate,
@@ -125,20 +152,58 @@ object SnapshotAutoUpdater {
             // Only copy cache -> backup when cache is the selected newest local
             // normal form. If BACKUP won because it is newer, preserve it intact.
             saveAtomically(context, body, preserveExistingCache = active.source == Source.CACHE)
-            if (installInMemory) install(parsed)
-            Result(
+            install(parsed)
+            activeBody = body
+            val live = Result(
                 Source.LIVE,
                 parsed.snapshotDate,
                 parsed.priceCutoffDate,
                 "최신 검증본 자동갱신 완료",
                 true,
+                refreshedAt = ZonedDateTime.now(KST).format(DateTimeFormatter.ISO_OFFSET_DATE_TIME),
+                lastAttemptAt = attemptedAt,
             )
+            // Publish core data immediately, before any optional Stage4/candidate
+            // I/O. Their cleared HOLD state is safe until separately validated.
+            publish(live)
+            live
         }
 
-        lastResult = network.getOrElse { error ->
-            active.copy(message = "${active.message} · 네트워크 갱신 보류(${error.javaClass.simpleName})")
+        val result = network.getOrElse { error ->
+            active.copy(
+                message = "${active.message} · 갱신 실패",
+                failure = "${error.javaClass.simpleName}: ${error.message.orEmpty().take(180)}",
+            )
         }
-        return lastResult
+        if (network.isFailure) publish(result)
+        refreshSafety(context, activeBody)
+        if (FinancialSafetyRuntimeStore.current(result.snapshotDate) != null) {
+            runCatching { FinalCandidateSnapshotUpdater.refreshBlocking(context) }
+                .onFailure { FinalCandidateRuntimeStore.clear() }
+        } else {
+            FinalCandidateRuntimeStore.clear()
+        }
+        return publish(result)
+    }
+
+    private fun publish(result: Result): Result {
+        val published = result.copy(revision = state.value.revision + 1)
+        mutableState.value = published
+        return published
+    }
+
+    private fun refreshSafety(context: Context, body: String?) {
+        runCatching {
+            FinancialSafetySnapshotUpdater.refreshBlocking(
+                context,
+                GeneratedRealQuantSnapshot.snapshotDate,
+                GeneratedRealQuantSnapshot.rows.map { it.code }.toSet(),
+                body,
+            )
+        }.onFailure {
+            FinancialSafetyRuntimeStore.clear()
+            FinalCandidateRuntimeStore.clear()
+        }
     }
 
     private fun download(): String {
@@ -175,7 +240,7 @@ object SnapshotAutoUpdater {
         }
     }
 
-    private fun parseAndValidate(text: String): ParsedSnapshot {
+    internal fun parseAndValidate(text: String): ParsedSnapshot {
         require(text.length > 1000) { "snapshot payload too small" }
         val root = JSONObject(text)
         val snapshotDate = root.getString("snapshot_date_kst")
@@ -297,19 +362,11 @@ object SnapshotAutoUpdater {
         require(perExplained >= (universe * 0.985).toInt()) { "PER state explanation regression" }
         require(sourceErrors <= 15) { "too many provider/worker errors: $sourceErrors" }
 
-        require(root.has("financial_safety")) { "financial_safety section missing" }
-        val financialSafety = FinancialSafetySnapshotParser.parse(
-            safety = root.getJSONObject("financial_safety"),
-            expectedSnapshotDate = snapshotDate,
-            expectedCodes = bundledCodes,
-        )
-
         return ParsedSnapshot(
             snapshotDate = snapshotDate,
             priceCutoffDate = priceCutoffDate,
             dartFileName = root.optString("dart_bulk_file", ""),
             rows = parsed.sortedBy { it.code },
-            financialSafety = financialSafety,
             m01Available = c1,
             m02Available = c2,
             m03Available = c3,
@@ -330,6 +387,10 @@ object SnapshotAutoUpdater {
         if (!o.has(key) || o.isNull(key)) null else o.getInt(key)
 
     private fun install(p: ParsedSnapshot) {
+        // Clear dependent derived state before replacing even a same-day quant
+        // revision; it will be revalidated against the new active snapshot.
+        FinancialSafetyRuntimeStore.clear()
+        FinalCandidateRuntimeStore.clear()
         GeneratedRealQuantSnapshot.installRuntimeSnapshot(
             newSnapshotDate = p.snapshotDate,
             newPriceCutoffDate = p.priceCutoffDate,
@@ -341,7 +402,6 @@ object SnapshotAutoUpdater {
             newM04Available = p.m04Available,
             newCompleteCount = p.completeCount,
         )
-        FinancialSafetyRuntimeStore.install(p.financialSafety)
     }
 
     private fun isNotOlderThanBundled(snapshotDate: String, priceDate: String): Boolean =
@@ -392,6 +452,7 @@ object SnapshotAutoUpdater {
 
         if (preserveExistingCache && cache.isFile && cache.length() > 0) {
             cache.copyTo(backup, overwrite = true)
+            backup.setLastModified(cache.lastModified())
             FileOutputStream(backup, true).use { it.fd.sync() }
         }
 

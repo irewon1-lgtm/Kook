@@ -22,18 +22,20 @@ object StockRepository {
     private const val DART_SOURCE = "금융감독원 OpenDART 재무정보 일괄다운로드"
     private const val NAVER_SOURCE = "네이버증권 공개 주식 데이터"
 
-    private val quantByCode: Map<String, RealQuantRecord> by lazy {
-        require(GeneratedRealQuantSnapshot.snapshotDate != "PENDING") { "Real quant snapshot has not been generated" }
-        require(GeneratedRealQuantSnapshot.universeCount == 2649) {
-            "Unexpected real quant universe: ${GeneratedRealQuantSnapshot.universeCount}"
-        }
-        require(GeneratedRealQuantSnapshot.rows.size == GeneratedRealQuantSnapshot.universeCount) {
-            "Real quant row count does not match universeCount"
-        }
-        val map = GeneratedRealQuantSnapshot.rows.associateBy { it.code }
-        require(map.size == GeneratedRealQuantSnapshot.rows.size) { "Duplicate code in real quant snapshot" }
-        map
-    }
+    private data class RepositorySnapshot(
+        val rows: List<RealQuantRecord>,
+        val snapshotDate: String,
+        val priceCutoffDate: String,
+        val dartFileName: String,
+        val stocks: List<StockSummary>,
+    )
+
+    // Use the install monitor so rows and their metadata always come from one
+    // snapshot. Row identity also detects corrections published on the same date.
+    private var cachedSnapshot: RepositorySnapshot? = null
+
+    private val registeredStocks: List<StockSummary>
+        get() = currentSnapshot().stocks
 
     private data class MetricEducation(
         val description: String,
@@ -122,27 +124,27 @@ object StockRepository {
     private fun realStock(
         issuer: ListedIssuer,
         market: String,
-        identitySnapshotDate: String,
-        sourceUrl: String
+        sourceUrl: String,
+        q: RealQuantRecord,
+        snapshotDate: String,
+        priceCutoffDate: String,
+        dartFileName: String,
     ): StockSummary {
-        val q = quantByCode[issuer.code]
-            ?: error("Real quant snapshot missing registered issue code ${issuer.code}")
-
         val m01 = metric(
             "M01", "매출 증가율", "%", q.m01Raw, q.m01Percentile, q.m01ReasonCode, q.m01Basis,
-            "$DART_SOURCE · ${GeneratedRealQuantSnapshot.dartFileName}", GeneratedRealQuantSnapshot.snapshotDate
+            "$DART_SOURCE · $dartFileName", snapshotDate
         )
         val m02 = metric(
             "M02", "영업이익률", "%", q.m02Raw, q.m02Percentile, q.m02ReasonCode, q.m02Basis,
-            "$DART_SOURCE · ${GeneratedRealQuantSnapshot.dartFileName}", GeneratedRealQuantSnapshot.snapshotDate
+            "$DART_SOURCE · $dartFileName", snapshotDate
         )
         val m03 = metric(
             "M03", "실적 기준 PER", "배", q.m03Raw, q.m03Percentile, q.m03ReasonCode, q.m03Basis,
-            NAVER_SOURCE, GeneratedRealQuantSnapshot.priceCutoffDate
+            NAVER_SOURCE, priceCutoffDate
         )
         val m04 = metric(
             "M04", "최근 6개월 주가 상승률", "%", q.m04Raw, q.m04Percentile, q.m04ReasonCode, q.m04Basis,
-            NAVER_SOURCE, GeneratedRealQuantSnapshot.priceCutoffDate
+            NAVER_SOURCE, priceCutoffDate
         )
         val metrics = listOf(m01, m02, m03, m04)
         val allAvailable = metrics.all { it.isAvailable }
@@ -169,13 +171,31 @@ object StockRepository {
             compositeScore = q.compositeScore,
             rankOrder = q.rankOrder,
             isCompositeComplete = allAvailable,
-            asOfDate = GeneratedRealQuantSnapshot.snapshotDate,
+            asOfDate = snapshotDate,
             dataSource = "$KIND_SOURCE · $sourceUrl | $DART_SOURCE | $NAVER_SOURCE",
             status = if (availableCount > 0) DataStatus.REAL else DataStatus.REGISTERED
         )
     }
 
-    private val registeredStocks: List<StockSummary> by lazy {
+    private fun currentSnapshot(): RepositorySnapshot = synchronized(GeneratedRealQuantSnapshot) {
+        val rows = GeneratedRealQuantSnapshot.rows
+        val snapshotDate = GeneratedRealQuantSnapshot.snapshotDate
+        val priceCutoffDate = GeneratedRealQuantSnapshot.priceCutoffDate
+        val dartFileName = GeneratedRealQuantSnapshot.dartFileName
+        cachedSnapshot?.takeIf {
+            it.rows === rows && it.snapshotDate == snapshotDate &&
+                it.priceCutoffDate == priceCutoffDate && it.dartFileName == dartFileName
+        }?.let { return@synchronized it }
+
+        require(snapshotDate != "PENDING") { "Real quant snapshot has not been generated" }
+        require(GeneratedRealQuantSnapshot.universeCount == 2649) {
+            "Unexpected real quant universe: ${GeneratedRealQuantSnapshot.universeCount}"
+        }
+        require(rows.size == GeneratedRealQuantSnapshot.universeCount) {
+            "Real quant row count does not match universeCount"
+        }
+        val quantByCode = rows.associateBy { it.code }
+        require(quantByCode.size == rows.size) { "Duplicate code in real quant snapshot" }
         val identities = buildList {
             addAll(GeneratedKospiMaster.issuers.map { Triple(it, "KOSPI", GeneratedKospiMaster.sourceUrl) })
             addAll(GeneratedKosdaqMaster.issuers.map { Triple(it, "KOSDAQ", GeneratedKosdaqMaster.sourceUrl) })
@@ -186,16 +206,16 @@ object StockRepository {
         require(quantByCode.keys == identityCodes) { "Real quant snapshot identity set differs from KRX master" }
 
         val baseStocks = identities.map { (issuer, market, sourceUrl) ->
-            val identityDate = if (market == "KOSPI") GeneratedKospiMaster.snapshotDate else GeneratedKosdaqMaster.snapshotDate
-            realStock(issuer, market, identityDate, sourceUrl)
+            realStock(issuer, market, sourceUrl, quantByCode.getValue(issuer.code), snapshotDate, priceCutoffDate, dartFileName)
         }
 
-        PeerBenchmarkEngine.enrich(baseStocks).sortedWith(
+        val stocks = PeerBenchmarkEngine.enrich(baseStocks).sortedWith(
             compareBy<StockSummary> { it.rankOrder == null }
                 .thenBy { it.rankOrder ?: Int.MAX_VALUE }
                 .thenBy { it.market }
                 .thenBy { it.issuerId }
         )
+        RepositorySnapshot(rows, snapshotDate, priceCutoffDate, dartFileName, stocks).also { cachedSnapshot = it }
     }
 
     fun getAllStocks(): List<StockSummary> = registeredStocks
@@ -205,9 +225,9 @@ object StockRepository {
     fun realDataCount(): Int = registeredStocks.count { it.status == DataStatus.REAL }
     fun completeCount(): Int = registeredStocks.count { it.isCompositeComplete }
     fun masterSnapshotDate(): String = maxOf(GeneratedKospiMaster.snapshotDate, GeneratedKosdaqMaster.snapshotDate)
-    fun quantSnapshotDate(): String = GeneratedRealQuantSnapshot.snapshotDate
-    fun priceCutoffDate(): String = GeneratedRealQuantSnapshot.priceCutoffDate
-    fun dartFileName(): String = GeneratedRealQuantSnapshot.dartFileName
+    fun quantSnapshotDate(): String = currentSnapshot().snapshotDate
+    fun priceCutoffDate(): String = currentSnapshot().priceCutoffDate
+    fun dartFileName(): String = currentSnapshot().dartFileName
     fun masterSourceUrl(): String = "KOSPI=${GeneratedKospiMaster.sourceUrl} | KOSDAQ=${GeneratedKosdaqMaster.sourceUrl}"
 
     fun searchStocks(query: String): List<StockSummary> {
@@ -323,7 +343,7 @@ object StockRepository {
 
         return CompanyReport(
             issuerId = stock.issuerId,
-            recentChanges = "2026년 반기 OpenDART 재무자료와 ${GeneratedRealQuantSnapshot.priceCutoffDate}까지의 가격 자료를 연결했습니다.",
+            recentChanges = "2026년 반기 OpenDART 재무자료와 ${stock.m04Price6m.asOfDate}까지의 가격 자료를 연결했습니다.",
             changeReason = "등록 단계의 빈 지표를 실제 원천값으로 교체하고, 결측은 이유코드와 함께 그대로 보류하도록 변경했습니다.",
             positiveFactors = favorable,
             riskFactors = risks,

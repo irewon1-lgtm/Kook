@@ -23,6 +23,7 @@ import com.krstock.v3.data.ranking.RankMetric
 import com.krstock.v3.data.repository.StockRepository
 import com.krstock.v3.data.stage.FinancialSafetyRepository
 import com.krstock.v3.data.stage.ValuationBandPolicy
+import com.krstock.v3.data.update.SnapshotAutoUpdater
 import com.krstock.v3.ui.components.Stage45CompactPanel
 
 private enum class ListSortMode(val label: String) {
@@ -37,9 +38,12 @@ fun StockListScreen(
     onStockClick: (String) -> Unit,
     onBack: () -> Unit
 ) {
-    val stocks = remember { StockRepository.getAllStocks() }
-    val finalCandidateMap = remember(stocks) { FinalCandidateRepository.getFinalCandidateMap() }
-    val safetyByCode = remember(stocks) { FinancialSafetyRepository.getAll() }
+    val snapshotState by SnapshotAutoUpdater.state.collectAsState()
+    val stocks = remember(snapshotState.revision) { StockRepository.getAllStocks() }
+    val snapshotDate = stocks.firstOrNull()?.asOfDate ?: snapshotState.snapshotDate
+    val priceDate = stocks.firstOrNull()?.m04Price6m?.asOfDate ?: snapshotState.priceCutoffDate
+    val finalCandidateMap = remember(stocks, snapshotState.revision) { FinalCandidateRepository.getFinalCandidateMap() }
+    val safetyByCode = remember(stocks, snapshotState.revision) { FinancialSafetyRepository.getAll() }
     var searchQuery by remember { mutableStateOf("") }
     var selectedMarket by remember { mutableStateOf("전체") }
     var selectedCompleteOnly by remember { mutableStateOf(false) }
@@ -52,14 +56,21 @@ fun StockListScreen(
     }
 
     val filteredStocks = remember(
+        stocks,
         searchQuery,
         selectedMarket,
         selectedCompleteOnly,
         sortMode,
         dynamicRanks
     ) {
-        StockRepository.searchStocks(searchQuery)
-            .asSequence()
+        val query = searchQuery.trim()
+        stocks.asSequence()
+            .filter {
+                query.isEmpty() || it.name.contains(query, ignoreCase = true) ||
+                    it.issuerId.contains(query, ignoreCase = true) ||
+                    it.sector.contains(query, ignoreCase = true) ||
+                    it.market.contains(query, ignoreCase = true)
+            }
             .filter { selectedMarket == "전체" || it.market == selectedMarket }
             .filter { !selectedCompleteOnly || dynamicRanks[it.issuerId]?.isEligible == true }
             .sortedWith(sortComparator(sortMode, dynamicRanks))
@@ -125,6 +136,19 @@ fun StockListScreen(
         ) {
             item(key = "ranking_controls") {
                 Column {
+                    Text(
+                        "재무 $snapshotDate · 주가 $priceDate",
+                        modifier = Modifier.testTag("ranking_snapshot_dates"),
+                        fontSize = 11.sp,
+                        color = scheme.onSurfaceVariant,
+                    )
+                    Text(
+                        "4지표 완성 ${stocks.count { it.isCompositeComplete }}/${stocks.size}",
+                        modifier = Modifier.testTag("ranking_snapshot_count"),
+                        fontSize = 11.sp,
+                        color = scheme.onSurfaceVariant,
+                    )
+                    Spacer(Modifier.height(6.dp))
                     OutlinedTextField(
                 value = searchQuery,
                 onValueChange = { searchQuery = it },

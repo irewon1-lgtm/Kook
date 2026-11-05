@@ -1,0 +1,53 @@
+{
+  "description": "Unmodified historical public collector output for Android integration tests. Corrupted variants exist only in test memory to exercise rejection.",
+  "fixtures": [
+    {
+      "asset": "quant_20261105.json",
+      "source": "https://github.com/irewon1-lgtm/Kook/blob/caeacdede9ade7ebfc2b0c14f420874791546f0e/evidence/real_quant_snapshot.json",
+      "commit": "caeacdede9ade7ebfc2b0c14f420874791546f0e",
+      "sha256": "2cabfd926a0404ca552f678cbdb9a33e7c45dc0d4e7576251b4ff1245047f068",
+      "snapshot_date_kst": "2026-11-05",
+      "price_cutoff_date_kst": "2026-11-04",
+      "coverage": {
+        "m01_available": 2561,
+        "m02_available": 2410,
+        "m03_available": 2617,
+        "m04_available": 2619,
+        "complete_count": 2367,
+        "ranked_count": 2367
+      }
+    },
+    {
+      "asset": "quant_20261007_before.json",
+      "source": "https://github.com/irewon1-lgtm/Kook/blob/1e87cb7d81e945393b1bcfde722821313d5a714b/evidence/real_quant_snapshot.json",
+      "commit": "1e87cb7d81e945393b1bcfde722821313d5a714b",
+      "sha256": "40d3546f9130c4845d0cbf1820c27c61c2fcfaaea5012c9cba73bd90182ef827",
+      "snapshot_date_kst": "2026-10-07",
+      "price_cutoff_date_kst": "2026-10-07",
+      "coverage": {
+        "m01_available": 2561,
+        "m02_available": 2410,
+        "m03_available": 2633,
+        "m04_available": 2621,
+        "complete_count": 2378,
+        "ranked_count": 2378
+      }
+    },
+    {
+      "asset": "quant_20261007_after.json",
+      "source": "https://github.com/irewon1-lgtm/Kook/blob/f995000fc79aff3610d15571319991005e5895d6/evidence/real_quant_snapshot.json",
+      "commit": "f995000fc79aff3610d15571319991005e5895d6",
+      "sha256": "afc8b4452a8cbcd58113714be4359d98c81e82e24cde0bce0db8edfd83580191",
+      "snapshot_date_kst": "2026-10-07",
+      "price_cutoff_date_kst": "2026-10-07",
+      "coverage": {
+        "m01_available": 2561,
+        "m02_available": 2410,
+        "m03_available": 2633,
+        "m04_available": 2621,
+        "complete_count": 2378,
+        "ranked_count": 2378
+      }
+    }
+  ]
+}

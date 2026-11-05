@@ -3,7 +3,11 @@ package com.krstock.v3.data.candidate
 import android.content.Context
 import com.krstock.v3.data.model.CandidateMetricSnapshot
 import com.krstock.v3.data.model.FinalCandidateRecord
+import com.krstock.v3.data.model.FinancialSafetyStatus
+import com.krstock.v3.data.model.StockSummary
+import com.krstock.v3.data.model.MetricValue
 import com.krstock.v3.data.repository.StockRepository
+import com.krstock.v3.data.stage.FinancialSafetyRuntimeStore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
@@ -38,6 +42,10 @@ object FinalCandidateSnapshotUpdater {
     @Synchronized
     internal fun refreshBlocking(context: Context): Boolean {
         val expectedSnapshot = StockRepository.quantSnapshotDate()
+        if (FinancialSafetyRuntimeStore.current(expectedSnapshot) == null) {
+            FinalCandidateRuntimeStore.clear()
+            return false
+        }
         val cache = File(context.filesDir, CACHE_NAME)
         var installed = false
 
@@ -94,12 +102,21 @@ object FinalCandidateSnapshotUpdater {
         }
     }
 
-    internal fun parseAndValidate(text: String, expectedSnapshot: String): List<FinalCandidateRecord> {
+    internal fun parseAndValidate(
+        text: String,
+        expectedSnapshot: String,
+        activeStocks: Map<String, StockSummary> = StockRepository.getAllStocks().associateBy { it.issuerId },
+        expectedPriceCutoffDate: String = StockRepository.priceCutoffDate(),
+    ): List<FinalCandidateRecord> {
+        val currentSafety = requireNotNull(FinancialSafetyRuntimeStore.current(expectedSnapshot)) {
+            "current Stage4 financial safety unavailable"
+        }
         require(text.length > 200) { "candidate payload too small" }
         val root = JSONObject(text)
         require(root.getString("schema_version") == SCHEMA_VERSION) { "unexpected candidate schema" }
         require(root.getString("policy_version") == POLICY_VERSION) { "unexpected candidate policy" }
         require(root.getString("snapshot_date_kst") == expectedSnapshot) { "candidate snapshot mismatch" }
+        require(root.getString("price_cutoff_date_kst") == expectedPriceCutoffDate) { "candidate price cutoff mismatch" }
         require(root.getInt("universe_count") == 2649) { "candidate universe mismatch" }
         val count = root.getInt("candidate_count")
         require(count in 1..100) { "candidate count out of range: $count" }
@@ -114,8 +131,21 @@ object FinalCandidateSnapshotUpdater {
             val code = row.getString("code")
             require(code.matches(Regex("[0-9A-Z]{6}"))) { "invalid candidate code $code" }
             require(seen.add(code)) { "duplicate candidate code $code" }
+            require(currentSafety.records[code]?.status == FinancialSafetyStatus.PASS) {
+                "current Stage4 financial safety did not pass for $code"
+            }
+            require(row.getString("financial_snapshot_date") == expectedSnapshot) { "candidate row snapshot mismatch" }
             val candidateRank = row.getInt("candidate_rank")
             val sourceRank = row.getInt("source_rank")
+            val active = requireNotNull(activeStocks[code]) { "candidate absent from active quant: $code" }
+            require(active.issuerId == code && active.asOfDate == expectedSnapshot && active.isCompositeComplete) {
+                "candidate active quant identity/date/completeness mismatch for $code"
+            }
+            require(active.rankOrder == sourceRank) { "candidate rank differs from active quant for $code" }
+            require(sameNumber(row.getDouble("composite_score"), active.compositeScore)) {
+                "candidate composite differs from active quant for $code"
+            }
+            require(row.getString("price_cutoff_date") == expectedPriceCutoffDate) { "candidate row price cutoff mismatch" }
             require(candidateRank == index + 1) { "candidate rank gap" }
             require(sourceRank > previousSourceRank) { "source rank is not strictly increasing" }
             previousSourceRank = sourceRank
@@ -126,6 +156,10 @@ object FinalCandidateSnapshotUpdater {
             val m02 = metric(metrics.getJSONObject("M02"))
             val m03 = metric(metrics.getJSONObject("M03"))
             val m04 = metric(metrics.getJSONObject("M04"))
+            require(metricMatches(m01, active.m01RevGrowth) && metricMatches(m02, active.m02OpMargin) &&
+                metricMatches(m03, active.m03Per) && metricMatches(m04, active.m04Price6m)) {
+                "candidate metrics differ from active quant for $code"
+            }
             require(m03.rawValue > 0.0) { "nonpositive trailing PER candidate" }
 
             val safety = row.getJSONObject("financial_safety")
@@ -178,6 +212,14 @@ object FinalCandidateSnapshotUpdater {
         }
         return rows
     }
+
+    // Compare published values only; no candidate scoring or ranking is recomputed.
+    private fun sameNumber(received: Double, active: Double?): Boolean =
+        active != null && received.isFinite() && active.isFinite() && abs(received - active) <= 1e-6
+
+    private fun metricMatches(received: CandidateMetricSnapshot, active: MetricValue): Boolean =
+        active.isAvailable && received.id == active.id && received.asOfDate == active.asOfDate &&
+            sameNumber(received.rawValue, active.rawValue) && sameNumber(received.percentileScore, active.percentileScore)
 
     private fun metric(o: JSONObject): CandidateMetricSnapshot {
         val raw = o.getDouble("raw")

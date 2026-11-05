@@ -75,10 +75,12 @@ class AppSmokeTest {
     fun swipeNavigationAndMultiMetricRankingWorkEndToEnd() {
         waitForDisplayedTag("main_pager")
         composeRule.onNodeWithText("KR4 국내주식").assertIsDisplayed()
-        composeRule.onNodeWithText("실데이터 4지표 연결 완료").assertIsDisplayed()
+        composeRule.onNodeWithTag("snapshot_source").performScrollTo().assertIsDisplayed()
+        composeRule.onNodeWithTag("snapshot_dates").assertIsDisplayed()
+        composeRule.onNodeWithTag("snapshot_coverage").assertIsDisplayed()
 
         // The most important action must be immediately visible and open the searchable ranking list.
-        composeRule.onNodeWithTag("primary_stock_explorer").assertIsDisplayed().performClick()
+        composeRule.onNodeWithTag("primary_stock_explorer").performScrollTo().assertIsDisplayed().performClick()
         composeRule.waitForIdle()
         composeRule.onNodeWithText("국내주식 조합순위").assertIsDisplayed()
 

@@ -8,6 +8,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,6 +25,7 @@ import com.krstock.v3.data.model.StockSummary
 import com.krstock.v3.data.repository.StockRepository
 import com.krstock.v3.data.stage.FinancialSafetyRepository
 import com.krstock.v3.data.stage.ValuationBandPolicy
+import com.krstock.v3.data.update.SnapshotAutoUpdater
 import com.krstock.v3.ui.components.Stage45CompactPanel
 import com.krstock.v3.ui.components.StatusBadge
 
@@ -32,11 +35,14 @@ fun HomeScreen(
     onStockClick: (String) -> Unit,
     onNavigateToList: () -> Unit
 ) {
-    val stocks = remember { StockRepository.getAllStocks() }
+    val snapshotState by SnapshotAutoUpdater.state.collectAsState()
+    val stocks = remember(snapshotState.revision) { StockRepository.getAllStocks() }
+    val snapshotDate = stocks.firstOrNull()?.asOfDate ?: snapshotState.snapshotDate
+    val priceDate = stocks.firstOrNull()?.m04Price6m?.asOfDate ?: snapshotState.priceCutoffDate
     val stockByCode = remember(stocks) { stocks.associateBy { it.issuerId } }
     val rankedStocks = remember(stocks) { stocks.filter { it.rankOrder != null }.sortedBy { it.rankOrder } }
-    val finalCandidates = remember(stocks) { FinalCandidateRepository.getFinalCandidates() }
-    val safetyByCode = remember(stocks) { FinancialSafetyRepository.getAll() }
+    val finalCandidates = remember(stocks, snapshotState.revision) { FinalCandidateRepository.getFinalCandidates() }
+    val safetyByCode = remember(stocks, snapshotState.revision) { FinancialSafetyRepository.getAll() }
     val previewStocks = remember(finalCandidates, stockByCode) {
         finalCandidates.take(5).mapNotNull { candidate ->
             stockByCode[candidate.issuerId]?.let { stock -> candidate to stock }
@@ -90,9 +96,10 @@ fun HomeScreen(
             item {
                 SnapshotCompactCard(
                     total = stocks.size,
-                    complete = StockRepository.completeCount(),
-                    snapshotDate = StockRepository.quantSnapshotDate(),
-                    priceDate = StockRepository.priceCutoffDate()
+                    complete = rankedStocks.size,
+                    snapshotDate = snapshotDate,
+                    priceDate = priceDate,
+                    status = snapshotState,
                 )
             }
 
@@ -223,8 +230,15 @@ private fun PrimaryStockExplorer(total: Int, rankedCount: Int, candidateCount: I
 }
 
 @Composable
-private fun SnapshotCompactCard(total: Int, complete: Int, snapshotDate: String, priceDate: String) {
+private fun SnapshotCompactCard(
+    total: Int,
+    complete: Int,
+    snapshotDate: String,
+    priceDate: String,
+    status: SnapshotAutoUpdater.Result,
+) {
     val scheme = MaterialTheme.colorScheme
+    val statusMatchesSnapshot = status.snapshotDate == snapshotDate && status.priceCutoffDate == priceDate
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(14.dp),
@@ -236,14 +250,47 @@ private fun SnapshotCompactCard(total: Int, complete: Int, snapshotDate: String,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(Modifier.weight(1f)) {
-                Text("실데이터 4지표 연결 완료", fontWeight = FontWeight.SemiBold, fontSize = 12.sp)
                 Text(
-                    "4지표 완성 $complete/$total · 재무 $snapshotDate · 주가 $priceDate",
+                    if (statusMatchesSnapshot) "데이터 출처 ${status.source.name}" else "데이터 출처 확인 중",
+                    modifier = Modifier.testTag("snapshot_source"),
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 12.sp,
+                )
+                Text(
+                    "4지표 완성 $complete/$total",
+                    modifier = Modifier.testTag("snapshot_coverage"),
                     fontSize = 10.sp,
                     color = scheme.onSurfaceVariant,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
                 )
+                Text(
+                    "재무 $snapshotDate · 주가 $priceDate",
+                    modifier = Modifier.testTag("snapshot_dates"),
+                    fontSize = 10.sp,
+                    color = scheme.onSurfaceVariant,
+                )
+                Text(
+                    if (statusMatchesSnapshot) "최근 갱신 ${status.refreshedAt.ifBlank { "기록 없음" }}"
+                    else "최근 갱신 확인 중",
+                    modifier = Modifier.testTag("snapshot_last_refresh"),
+                    fontSize = 10.sp,
+                    color = scheme.onSurfaceVariant,
+                )
+                if (status.lastAttemptAt.isNotBlank()) {
+                    Text(
+                        "최근 확인 ${status.lastAttemptAt}",
+                        modifier = Modifier.testTag("snapshot_last_attempt"),
+                        fontSize = 10.sp,
+                        color = scheme.onSurfaceVariant,
+                    )
+                }
+                status.failure?.takeIf { statusMatchesSnapshot }?.let { failure ->
+                    Text(
+                        "갱신 실패 · $failure",
+                        modifier = Modifier.testTag("snapshot_failure"),
+                        fontSize = 10.sp,
+                        color = scheme.error,
+                    )
+                }
             }
             Surface(
                 shape = RoundedCornerShape(999.dp),
@@ -355,7 +402,8 @@ fun StockSummaryCard(
                             ) {
                                 Text(
                                     "${displayRank}위",
-                                    modifier = Modifier.padding(horizontal = 11.dp, vertical = 7.dp),
+                                    modifier = Modifier.padding(horizontal = 11.dp, vertical = 7.dp)
+                                        .testTag("stock_rank_${stock.issuerId}"),
                                     fontSize = 15.sp,
                                     fontWeight = FontWeight.Bold
                                 )
@@ -453,6 +501,7 @@ fun StockSummaryCard(
                     Spacer(Modifier.width(10.dp))
                     Text(
                         displayScore?.let { String.format("%.1f점", it) } ?: "미산출",
+                        modifier = Modifier.testTag("stock_score_${stock.issuerId}"),
                         fontWeight = FontWeight.Bold,
                         fontSize = 24.sp
                     )
