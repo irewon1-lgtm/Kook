@@ -376,6 +376,8 @@ fun financialSafetyReasonKo(reason: String): String = when (reason) {
     "SOURCE_UNAVAILABLE", "COLLECTION_ERROR" -> "공식 공시 서버 응답을 확보하지 못해 검증 보류"
     "DART_IDENTITY_UNCONFIRMED", "ISSUER_NAME_MISMATCH" -> "종목·법인·회사명 매핑을 검증하지 못해 보류"
     "CORRECTION_VALUES_NOT_RECONCILED" -> "정정공시와 원본 금액의 일치 여부를 확인하지 못해 보류"
+    "BULK_AMOUNT_MISMATCH" -> "정정공시 API와 재무상태표 원본 금액이 달라 보류"
+    "RECEIPT_MISMATCH" -> "정정공시 접수번호와 재무항목 API의 접수번호가 달라 보류"
     "MIXED_PERIOD" -> "서로 다른 보고기간의 원자료가 충돌해 보류"
     "MIXED_CURRENCY", "UNVERIFIED_CURRENCY_UNIT" -> "통화·단위를 검증하지 못해 보류"
     "NONFINITE_DERIVED_RATIO" -> "파생 재무비율이 유효한 유한값이 아니라 보류"

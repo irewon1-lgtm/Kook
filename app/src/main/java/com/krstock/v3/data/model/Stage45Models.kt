@@ -39,6 +39,9 @@ data class FinancialSafetyFacts(
     val correctionCheck: String,
     val verified: Boolean,
     val validationIssues: List<String>,
+    val correctionReconciled: Boolean = false,
+    val correctionProofSha256: String = "",
+    val reconciliationError: String = "",
 )
 
 data class FinancialSafetySnapshot(

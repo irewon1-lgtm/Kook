@@ -67,6 +67,37 @@ class VerifiedFinancialSafetyTest {
         root.getJSONObject("coverage").put("pass",0).put("fail",1)
         assertEquals(com.krstock.v3.data.model.FinancialSafetyStatus.FAIL,parse(root).records["000001"]!!.status)
     }
+    @Test fun correctedFilingRequiresExactIndependentAccountProof() {
+        val root=valid();val row=record(root)
+        row.put("correction_status","LATEST_CORRECTION").put("values_reconciled",true)
+        row.put("correction_reconciliation",JSONObject("""{
+          "receipt_no":"20260814000001","corp_code":"00123456","report_period":"2026-06-30","scope":"CFS","currency":"KRW",
+          "amounts":{"assets":100,"liabilities":50,"equity":50,"current_assets":80,"current_liabilities":50},
+          "bsns_year":"2026","reprt_code":"11012","mismatches":{},
+          "observed_receipt_nos":["20260814000001"],"observed_corp_codes":["00123456"],"observed_currencies":["KRW"],
+          "source_api_params":{"corp_code":"00123456","bsns_year":"2026","reprt_code":"11012","fs_div":"CFS"},
+          "bulk_amounts":{"assets":100,"liabilities":50,"equity":50,"current_assets":80,"current_liabilities":50},
+          "source_api_sha256":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "source_api_url":"https://opendart.fss.or.kr/api/fnlttSinglAcntAll.json?corp_code=00123456&bsns_year=2026&reprt_code=11012&fs_div=CFS"
+        }"""))
+        assertEquals(com.krstock.v3.data.model.FinancialSafetyStatus.PASS,parse(root).records["000001"]!!.status)
+        val proof=row.getJSONObject("correction_reconciliation")
+        for ((key, changed) in listOf("validation_error" to "RECEIPT_MISMATCH",
+            "observed_receipt_nos" to org.json.JSONArray(listOf("20260814009999")),
+            "observed_corp_codes" to org.json.JSONArray(listOf("99999999")),
+            "observed_currencies" to org.json.JSONArray(listOf("USD")),
+            "bsns_year" to "2025", "reprt_code" to "11013",
+            "source_api_params" to JSONObject("""{"corp_code":"00123456","bsns_year":"2026","reprt_code":"11012","fs_div":"OFS"}"""))) {
+            val original=proof.opt(key)
+            proof.put(key,changed)
+            try { parse(root);fail("Correction counterevidence must remain HOLD: $key") }
+            catch(_:IllegalArgumentException) { }
+            if (original == null) proof.remove(key) else proof.put(key,original)
+        }
+        proof.getJSONObject("amounts").put("assets",999)
+        try { parse(root);fail("An amended amount must not overwrite its original source observation") }
+        catch(_:IllegalArgumentException) { }
+    }
     private fun parse(root:JSONObject)=FinancialSafetySnapshotParser.parse(root,day,codes)
     private fun record(root:JSONObject)=root.getJSONObject("records").getJSONObject("000001")
     private fun valid()=JSONObject("""{

@@ -27,5 +27,9 @@ class FinancialSafetyPresentationTest {
         assertEquals("2026-08-14",rows["실제 공시일"])
         assertEquals(facts.sourceUrl,rows["공식 공시 출처"])
         assertTrue(rows["자료 검증"]!!.contains("검증 대기"))
+        val mismatch=safety.copy(facts=facts.copy(correctionStatus="LATEST_CORRECTION",reconciliationError="RECEIPT_MISMATCH"))
+        val correction=financialSafetyDetailRows(mismatch,"2026-11-05").toMap()["정정 확인"]!!
+        assertTrue(correction.contains("접수번호"))
+        assertFalse(correction.contains("대조 전"))
     }
 }

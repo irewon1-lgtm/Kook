@@ -239,6 +239,8 @@ jobs:
 
       - name: Live news/disclosure evidence source probe
         if: steps.app_scope.outputs.changed == 'true'
+        env:
+          OPENDART_API_KEY: ${{ secrets.OPENDART_API_KEY }}
         run: python3 scripts/probe_context_sources.py
 
       - name: Set up JDK 17

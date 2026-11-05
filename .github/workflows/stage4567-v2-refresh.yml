@@ -19,8 +19,12 @@ on:
     paths:
       - 'scripts/collect_financial_safety_verified.py'
       - 'scripts/dart_filing_provenance.py'
+      - 'scripts/opendart_filing_provenance.py'
+      - 'scripts/reconcile_financial_corrections.py'
       - 'tests/test_financial_safety_provenance.py'
       - 'tests/test_dart_filing_provenance.py'
+      - 'tests/test_opendart_filing_provenance.py'
+      - 'tests/test_financial_corrections.py'
       - '.github/workflows/stage4567-v2-refresh.yml'
 
 permissions:
@@ -48,7 +52,7 @@ jobs:
         run: pip install requests pytest
       - name: Financial provenance and unchanged-policy regression tests
         run: |
-          python -m pytest -q tests/test_dart_filing_provenance.py tests/test_financial_safety_provenance.py
+          python -m pytest -q tests/test_dart_filing_provenance.py tests/test_financial_safety_provenance.py tests/test_opendart_filing_provenance.py tests/test_financial_corrections.py
           python scripts/collect_financial_safety.py --self-test
       - name: Preserve read-only quant baseline
         run: |
@@ -69,6 +73,8 @@ jobs:
           mkdir -p "$RUNNER_TEMP/kr4-financial-raw"
           cp -a "$RUNNER_TEMP/previous-financial/_temp/kr4-financial-raw/." "$RUNNER_TEMP/kr4-financial-raw/"
       - name: Collect actual official BS and latest filing evidence
+        env:
+          OPENDART_API_KEY: ${{ secrets.OPENDART_API_KEY }}
         run: |
           python -u scripts/collect_financial_safety_verified.py \
             --quant evidence/real_quant_snapshot.json \
@@ -131,8 +137,24 @@ jobs:
           git commit -m '[skip ci] Refresh independent verified financial facts'
           git pull --rebase origin main
           git push origin HEAD:main
-      - name: Preserve raw official responses, source hashes and actual results
+      - name: Verify private authentication is absent from publication and raw evidence
+        id: credential_audit
         if: always()
+        env:
+          OPENDART_API_KEY: ${{ secrets.OPENDART_API_KEY }}
+        run: |
+          python - <<'PY'
+          import os
+          from pathlib import Path
+          credential=os.environ.get('OPENDART_API_KEY','').encode()
+          root=Path(os.environ['RUNNER_TEMP'])
+          paths=list((root/'kr4-financial-raw').rglob('*'))+[root/'financial_safety_snapshot.json',Path('evidence/financial_safety_snapshot.json')]
+          files=[p for p in paths if p.is_file()]
+          assert not credential or not any(credential in p.read_bytes() for p in files), 'private authentication found; evidence publication blocked'
+          print('CREDENTIAL_FREE_EVIDENCE_PASS',len(files))
+          PY
+      - name: Preserve raw official responses, source hashes and actual results
+        if: always() && steps.credential_audit.outcome == 'success'
         uses: actions/upload-artifact@v4
         with:
           name: KR4_Official_Financial_Collection

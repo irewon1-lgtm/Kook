@@ -7,6 +7,7 @@ import csv
 import hashlib
 import io
 import json
+import os
 import re
 import time
 import zipfile
@@ -14,6 +15,7 @@ from collections import Counter, defaultdict
 from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlparse, parse_qs
 
 import requests
 
@@ -170,12 +172,57 @@ def parse_bulk_sources(
     return result
 
 
+def correction_proof_matches(raw: dict[str, Any], filing: dict[str, Any]) -> bool:
+    proof = filing.get("correction_reconciliation")
+    if filing.get("values_reconciled") is not True or not isinstance(proof, dict):
+        return False
+    expected = {
+        "receipt_no": filing.get("receipt_no"), "corp_code": filing.get("corp_code"),
+        "report_period": raw["report_period"], "scope": raw["scope"], "currency": raw["currency"],
+    }
+    if any(proof.get(k) != value for k, value in expected.items()):
+        return False
+    if proof.get("validation_error") or proof.get("mismatches"):
+        return False
+    for key, value in (("observed_receipt_nos", expected["receipt_no"]),
+                       ("observed_corp_codes", expected["corp_code"]),
+                       ("observed_currencies", expected["currency"])):
+        if proof.get(key) != [value]:
+            return False
+    source_file = re.fullmatch(r"(\d{4})_([1-4])Q_BS_\d{14}\.zip", raw["source_file"])
+    if not source_file:
+        return False
+    report_code = {"1": "11013", "2": "11012", "3": "11014", "4": "11011"}[source_file[2]]
+    params = {"corp_code": expected["corp_code"], "bsns_year": source_file[1],
+              "reprt_code": report_code, "fs_div": expected["scope"]}
+    if proof.get("source_api_params") != params or proof.get("bsns_year") != source_file[1] or proof.get("reprt_code") != report_code:
+        return False
+    amounts = proof.get("amounts")
+    if not isinstance(amounts, dict) or set(amounts) != set(FIELDS):
+        return False
+    if any(type(amounts[k]) is not int or amounts[k] != raw[k] for k in FIELDS):
+        return False
+    if proof.get("bulk_amounts") != amounts:
+        return False
+    if not re.fullmatch(r"[a-f0-9]{64}", str(proof.get("source_api_sha256", ""))):
+        return False
+    source = urlparse(str(proof.get("source_api_url", "")))
+    if source.scheme != "https" or source.netloc != "opendart.fss.or.kr" or source.path != "/api/fnlttSinglAcntAll.json":
+        return False
+    if source.fragment or (source.query and parse_qs(source.query) != {k: [v] for k, v in params.items()}):
+        return False
+    return True
+
+
 def validate_record(raw: dict[str, Any], filing: dict[str, Any], as_of: str) -> dict[str, Any]:
     row = json.loads(json.dumps(raw))
     issues = list(row["validation_issues"])
     for key in ("corp_code", "receipt_no", "filing_date", "source_url", "report_name",
                 "correction_status", "correction_check", "search_sha256", "profile_sha256"):
         row[key] = filing.get(key) or ""
+    row["reconciliation_error"] = filing.get("reconciliation_error") or ""
+    row["values_reconciled"] = correction_proof_matches(raw, filing)
+    row["correction_reconciliation"] = filing["correction_reconciliation"] if row["values_reconciled"] else None
     if not filing.get("verified"):
         issues.append(filing.get("error") or "DART_FILING_UNVERIFIED")
     else:
@@ -193,7 +240,7 @@ def validate_record(raw: dict[str, Any], filing: dict[str, Any], as_of: str) -> 
             issues.append("DART_RECEIPT_URL_MISMATCH")
         # The bulk file has no receipt identifier: a corrected filing is not
         # proven to match its five amounts merely because the ZIP is newer.
-        if row["correction_status"] != "ORIGINAL" and not filing.get("values_reconciled"):
+        if row["correction_status"] != "ORIGINAL" and not row["values_reconciled"]:
             issues.append("CORRECTION_VALUES_NOT_RECONCILED")
     row["validation_issues"] = list(dict.fromkeys(issues))
     row["facts_verified"] = False
@@ -228,7 +275,7 @@ def build_snapshot(quant: dict[str, Any], raw: dict[str, Any], filings: dict[str
     return {
         "schema_version": 2, "policy_version": policy.POLICY_VERSION,
         "snapshot_date_kst": quant["snapshot_date_kst"],
-        "source": "FSS OpenDART bulk balance sheets + official public DART final-report search and corporation profile",
+        "source": "FSS OpenDART bulk balance sheets + " + ", ".join(sorted({str(r.get("source") or "PUBLIC_DART_FINAL_REPORT") for r in filings.values()})),
         "source_file": "|".join(files),
         "collected_at_utc": datetime.now(timezone.utc).isoformat(),
         "quant_records_sha256": hashlib.sha256(json.dumps(quant["records"], sort_keys=True, separators=(",", ":")).encode()).hexdigest(),
@@ -329,6 +376,7 @@ def main() -> None:
     parser.add_argument("--filings")
     parser.add_argument("--workers", type=int, default=6)
     parser.add_argument("--attempts", type=int, default=3)
+    parser.add_argument("--api-key-file", help="Private local credential file; never copied into collection evidence")
     args = parser.parse_args()
     quant = json.loads(Path(args.quant).read_text())
     issuers = {x.code: {"name": x.name, "sector": x.sector} for x in base.load_issuers()}
@@ -345,7 +393,21 @@ def main() -> None:
     if args.filings:
         filings = json.loads(Path(args.filings).read_text())
     else:
-        filings = collect_with_retry(expected, cache, args.workers, quant["snapshot_date_kst"], attempts=args.attempts)
+        api_key = Path(args.api_key_file).read_text().strip() if args.api_key_file else os.environ.get("OPENDART_API_KEY", "").strip()
+        collector = None
+        if api_key:
+            from opendart_filing_provenance import collect_authenticated_filing_provenance
+            from reconcile_financial_corrections import reconcile_corrections
+            def collector(expected, directory, *, workers, as_of):
+                filings = collect_authenticated_filing_provenance(expected, directory, api_key, as_of)
+                # A corrected receipt alone cannot validate the bulk values.
+                # Keep this inside the bounded retry so transient account API
+                # failures resume the same sanitized, hash-verified raw cache.
+                return reconcile_corrections(raw, filings, directory / "corrections", api_key)
+            print("OFFICIAL_FILING_PROVIDER", "OPENDART_AUTHENTICATED_API", flush=True)
+        else:
+            print("OFFICIAL_FILING_PROVIDER", "PUBLIC_DART", flush=True)
+        filings = collect_with_retry(expected, cache, args.workers, quant["snapshot_date_kst"], attempts=args.attempts, collector=collector)
     (cache / "filing_provenance.json").write_text(json.dumps(filings, ensure_ascii=False, indent=2))
     snapshot = build_snapshot(quant, raw, filings)
     out = Path(args.out)

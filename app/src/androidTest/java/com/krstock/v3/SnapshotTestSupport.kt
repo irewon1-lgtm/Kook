@@ -101,6 +101,9 @@ internal object SnapshotTestSupport {
             .put("viewport", if (configuration.smallestScreenWidthDp >= 600) "TABLET" else "PHONE")
             .put("font_scale", configuration.fontScale)
         File(directory, "$name.json").writeText(json.toString(2))
+        json.optString("accessibility_window_xml").takeIf { it.isNotBlank() }?.let {
+            File(directory, "$name.xml").writeText(it)
+        }
         val screenshot = checkNotNull(instrumentation.uiAutomation.takeScreenshot()) {
             "Device screenshot unavailable for $name"
         }

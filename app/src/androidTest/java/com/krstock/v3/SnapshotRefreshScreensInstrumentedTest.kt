@@ -27,6 +27,7 @@ import org.json.JSONObject
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
+import org.junit.Assert.assertSame
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
@@ -128,7 +129,9 @@ class SnapshotRefreshScreensInstrumentedTest {
         }
         composeRule.onNodeWithTag("stock_search").performTextInput("000020")
         hideKeyboard()
+        composeRule.onNodeWithTag("stock_search").assertTextEquals("000020")
         composeRule.onNodeWithTag("stock_rank_list").performScrollToIndex(1)
+        composeRule.onNodeWithTag("stock_000020").assertExists()
         composeRule.onNodeWithTag("stock_rank_000020", useUnmergedTree = true).assertTextEquals("576위")
         val previousRevision = SnapshotAutoUpdater.lastResult.revision
 
@@ -139,6 +142,7 @@ class SnapshotRefreshScreensInstrumentedTest {
 
         assertEquals("2026-10-07", result.snapshotDate)
         assertTrue(result.revision > previousRevision)
+        composeRule.onNodeWithTag("stock_000020").assertExists()
         composeRule.onNodeWithTag("stock_rank_000020", useUnmergedTree = true).assertTextEquals("578위")
         assertEquals(578, StockRepository.getStockDetail("000020")!!.summary.rankOrder)
         SnapshotTestSupport.evidence(context, "same-date-ranking", JSONObject().put("rank", 578))
@@ -227,12 +231,20 @@ class SnapshotRefreshScreensInstrumentedTest {
     }
 
     private fun hideKeyboard() {
+        val originalActivity = composeRule.activity
         composeRule.activity.runOnUiThread {
             val activity = composeRule.activity
             (activity.getSystemService(Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager)
                 .hideSoftInputFromWindow(activity.window.decorView.windowToken, 0)
             activity.window.decorView.requestFocus()
         }
-        composeRule.waitUntil(10_000) { composeRule.activity.window.decorView.hasWindowFocus() }
+        var launcherRecoveryAttempted = false
+        composeRule.waitUntil(10_000) {
+            if (!originalActivity.window.decorView.hasWindowFocus() && !launcherRecoveryAttempted) {
+                launcherRecoveryAttempted = LauncherAnrTestSupport.restoreExistingActivityIfLauncherAnr(originalActivity)
+            }
+            originalActivity.window.decorView.hasWindowFocus()
+        }
+        assertSame("Readiness recovery must retain the original mounted screen", originalActivity, composeRule.activity)
     }
 }

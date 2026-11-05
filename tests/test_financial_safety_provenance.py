@@ -1,5 +1,7 @@
 """Controlled fixtures only; these amounts are regression cases, never market data."""
 import io,json,sys,unittest,zipfile
+from unittest.mock import patch
+from types import SimpleNamespace
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'scripts'))
 import collect_financial_safety_verified as v
@@ -61,6 +63,31 @@ class FinancialFacts(unittest.TestCase):
  def test_missing_issuer_stays_present_with_explicit_reason(self):
   p=v.parse_bulk_sources({'000002':{'name':'자료없는회사','sector':'제조'}},[('2026_2Q_BS_20261105030346.zip',archive(rows()))],'2026-11-05')
   self.assertEqual(set(p),{'000002'});self.assertEqual(p['000002']['reason'],'DART_NO_BALANCE_SHEET')
+class AmendmentProof(unittest.TestCase):
+ def amended(self):
+  f=provenance();f['correction_status']='LATEST_CORRECTION';f['values_reconciled']=True
+  f['correction_reconciliation']={'receipt_no':f['receipt_no'],'corp_code':f['corp_code'],'report_period':'2026-06-30','scope':'CFS','currency':'KRW','amounts':{'assets':100,'liabilities':50,'equity':50,'current_assets':80,'current_liabilities':50},'source_api_sha256':'a'*64,'source_api_url':'https://opendart.fss.or.kr/api/fnlttSinglAcntAll.json?corp_code=00123456&bsns_year=2026&reprt_code=11012&fs_div=CFS'}
+  f['correction_reconciliation'].update(bsns_year='2026',reprt_code='11012',observed_receipt_nos=[f['receipt_no']],observed_corp_codes=[f['corp_code']],observed_currencies=['KRW'],source_api_params={'corp_code':f['corp_code'],'bsns_year':'2026','reprt_code':'11012','fs_div':'CFS'},bulk_amounts=dict(f['correction_reconciliation']['amounts']),mismatches={})
+  return f
+ def test_boolean_without_actual_matching_proof_cannot_promote_amendment(self):
+  f=self.amended();f.pop('correction_reconciliation')
+  self.assertEqual(v.validate_record(parse(rows()),f,'2026-11-05')['status'],'HOLD')
+ def test_all_five_actual_matching_values_can_validate_corrected_filing(self):
+  p=v.validate_record(parse(rows()),self.amended(),'2026-11-05')
+  self.assertEqual(p['status'],'PASS');self.assertTrue(p['values_reconciled']);self.assertEqual(p['assets'],100)
+ def test_different_corrected_value_never_replaces_bulk_or_promotes_risk(self):
+  f=self.amended();f['correction_reconciliation']['amounts']['assets']=999
+  p=v.validate_record(parse(rows()),f,'2026-11-05');self.assertEqual(p['status'],'HOLD');self.assertEqual(p['assets'],100)
+ def test_wrong_receipt_scope_or_credential_bearing_source_rejects_proof(self):
+  for field,value in [('receipt_no','20260814000002'),('scope','OFS'),('source_api_url','https://opendart.fss.or.kr/api/fnlttSinglAcntAll.json?crtfc_key=CONTROLLED')]:
+   f=self.amended();f['correction_reconciliation'][field]=value
+   self.assertEqual(v.validate_record(parse(rows()),f,'2026-11-05')['status'],'HOLD')
+ def test_internal_counterevidence_cannot_be_overridden_by_reconciled_boolean(self):
+  for field,value in [('validation_error','RECEIPT_MISMATCH'),('observed_receipt_nos',['20260814009999']),('observed_corp_codes',['99999999']),('observed_currencies',['USD']),('source_api_params',{'corp_code':'00123456','bsns_year':'2026','reprt_code':'11012','fs_div':'OFS'}),('bsns_year','2025'),('reprt_code','11013'),('mismatches',{'assets':{'bulk':100,'api':101}})]:
+   with self.subTest(field=field):
+    f=self.amended();f['correction_reconciliation'][field]=value
+    p=v.validate_record(parse(rows()),f,'2026-11-05')
+    self.assertEqual(p['status'],'HOLD');self.assertFalse(p['values_reconciled'])
 class OfficialSourceRetry(unittest.TestCase):
  def test_transient_source_failure_is_retried_without_marking_missing_evidence_valid(self):
   seen=[]
@@ -81,4 +108,33 @@ class OfficialSourceRetry(unittest.TestCase):
    seen.append(1);return {'000001':{'verified':False,'error':'REPORT_PERIOD_NOT_FOUND'}}
   v.collect_with_retry({'000001':{}},Path('/tmp/kr4-controlled-retry'),1,'2026-11-05',collector=fetch,pause=lambda _:None)
   self.assertEqual(len(seen),1)
+class AuthenticatedCollectionCli(unittest.TestCase):
+ def test_cli_reconciles_actual_correction_before_classification_without_mutating_quant(self):
+  import tempfile
+  import reconcile_financial_corrections as reconciliation
+  import opendart_filing_provenance as authenticated
+  with tempfile.TemporaryDirectory() as directory:
+   root=Path(directory); q=root/'quant.json'; out=root/'facts.json'; key=root/'private-key'
+   codes=[f'{number:06d}' for number in range(2649)]
+   quant={'snapshot_date_kst':'2026-11-05','records':{code:{} for code in codes}}
+   q.write_text(json.dumps(quant)); before=q.read_bytes(); key.write_text('CONTROLLED_CLI_SECRET'); (root/'cache').mkdir()
+   raw={code:dict(parse(rows()),issuer_code=code) for code in codes}
+   filings={code:provenance() for code in codes}
+   filings['000001']['correction_status']='LATEST_CORRECTION'
+   corrected=json.loads(json.dumps(filings)); corrected['000001']=AmendmentProof().amended()
+   def reconcile(actual_raw,actual_filings,cache,credential):
+    self.assertEqual(actual_raw,raw); self.assertEqual(actual_filings,filings)
+    self.assertEqual(credential,'CONTROLLED_CLI_SECRET')
+    return corrected
+   issuers=[SimpleNamespace(code=code,name='검증회사',sector='제조업') for code in codes]
+   argv=['collector','--quant',str(q),'--out',str(out),'--cache',str(root/'cache'),'--api-key-file',str(key)]
+   with patch.object(sys,'argv',argv),patch.object(v.base,'load_issuers',return_value=issuers),patch.object(v,'download_sources',return_value=[]),patch.object(v,'parse_bulk_sources',return_value=raw),patch.object(authenticated,'collect_authenticated_filing_provenance',return_value=filings),patch.object(reconciliation,'reconcile_corrections',side_effect=reconcile) as reconcile_call:
+    v.main()
+   reconcile_call.assert_called_once()
+   result=json.loads(out.read_text())
+   self.assertEqual(result['records']['000001']['status'],'PASS')
+   self.assertTrue(result['records']['000001']['values_reconciled'])
+   self.assertEqual(q.read_bytes(),before)
+   self.assertNotIn('CONTROLLED_CLI_SECRET',out.read_text())
+
 if __name__=='__main__':unittest.main(verbosity=2)

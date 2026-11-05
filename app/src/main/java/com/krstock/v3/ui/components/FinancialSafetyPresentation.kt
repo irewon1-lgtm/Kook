@@ -33,7 +33,11 @@ internal fun financialSafetyDetailRows(safety: FinancialSafetyRecord?, snapshotD
     rows += "공시 접수번호" to facts?.receiptNo.orEmpty().ifBlank { "미확보" }
     rows += "정정 확인" to when (facts?.correctionStatus) {
         "ORIGINAL" -> "최종보고서 조회 · 원공시 확인"
-        "LATEST_CORRECTION" -> "정정공시 발견 · 원문 수치 대조 전 보류"
+        "LATEST_CORRECTION" -> when {
+            facts.correctionReconciled -> "정정공시와 다섯 원문 금액 일치 확인"
+            facts.reconciliationError.isNotBlank() -> "정정공시 대조 보류 · " + financialSafetyReasonKo(facts.reconciliationError)
+            else -> "정정공시 발견 · 원문 수치 일치 미확인"
+        }
         else -> "미확보"
     }
     if (!facts?.validationIssues.isNullOrEmpty()) rows += "검증 보류 항목" to facts!!.validationIssues.joinToString("\n") { financialSafetyReasonKo(it) }
