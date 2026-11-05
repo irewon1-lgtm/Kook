@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -18,24 +19,24 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.krstock.v3.data.price.PriceHistoryRepository
+import com.krstock.v3.data.price.PriceHistoryAggregation
+import com.krstock.v3.data.price.PriceHistoryAggregation.Interval
 import java.time.format.DateTimeFormatter
 import kotlin.math.max
 
-/** Historical daily close/candle view, independent of the KR4 ranking engine. */
+/** Real OHLCV calendar candles, independent of the KR4 ranking engine. */
 @Composable
 fun PriceChartPanel(
     result: PriceHistoryRepository.Result?,
     loading: Boolean,
     modifier: Modifier = Modifier,
 ) {
-    var months by remember { mutableIntStateOf(6) }
-    var candleMode by remember { mutableStateOf(false) }
+    var months by rememberSaveable { mutableIntStateOf(6) }
+    var candleMode by rememberSaveable { mutableStateOf(false) }
+    var interval by rememberSaveable { mutableStateOf(Interval.DAY) }
     val scheme = MaterialTheme.colorScheme
-    val bars = remember(result, months) {
-        val all = result?.bars.orEmpty()
-        val latest = all.lastOrNull()?.date
-        if (latest == null) emptyList()
-        else all.filter { !it.date.isBefore(latest.minusMonths(months.toLong())) }
+    val bars = remember(result, months, interval) {
+        PriceHistoryAggregation.visible(result?.bars.orEmpty(), interval, months)
     }
 
     Card(
@@ -47,9 +48,19 @@ fun PriceChartPanel(
         Column(Modifier.padding(15.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
             Text("과거 주가 차트", fontWeight = FontWeight.Bold, fontSize = 17.sp)
             Text(
-                "마감 종가 기준 · 4지표 순위와 별도 참고자료",
+                "실제 일봉에서 집계 · 4지표 순위와 별도 참고자료",
                 fontSize = 11.sp, color = scheme.onSurfaceVariant,
             )
+            Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                Interval.entries.forEach { item ->
+                    FilterChip(
+                        selected = interval == item,
+                        onClick = { interval = item },
+                        label = { Text(item.label, fontSize = 11.sp) },
+                        modifier = Modifier.testTag("chart_interval_${item.name}"),
+                    )
+                }
+            }
             Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 listOf(1 to "1개월", 3 to "3개월", 6 to "6개월", 12 to "1년").forEach { (period, label) ->
                     FilterChip(
@@ -59,6 +70,16 @@ fun PriceChartPanel(
                         modifier = Modifier.testTag("chart_period_$period"),
                     )
                 }
+            }
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(if (candleMode) "캔들차트" else "선차트", fontSize = 11.sp)
+                Spacer(Modifier.width(6.dp))
+                Switch(
+                    checked = candleMode,
+                    onCheckedChange = { candleMode = it },
+                    modifier = Modifier.testTag("chart_candle_toggle"),
+                )
             }
 
             if (loading && result == null) {
@@ -71,7 +92,7 @@ fun PriceChartPanel(
                     Spacer(Modifier.width(12.dp))
                     Text("일별 주가 불러오는 중", fontSize = 12.sp)
                 }
-            } else if (bars.size < 2) {
+            } else if (bars.isEmpty()) {
                 Text(
                     result?.detail ?: "조회된 차트가 없습니다.",
                     modifier = Modifier.fillMaxWidth().padding(vertical = 50.dp),
@@ -98,16 +119,19 @@ fun PriceChartPanel(
                             color = if (change >= 0) Color(0xFFC62828) else Color(0xFF1976D2),
                         )
                     }
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("캔들", fontSize = 11.sp, color = scheme.onSurfaceVariant)
-                        Spacer(Modifier.width(4.dp))
-                        Switch(
-                            checked = candleMode,
-                            onCheckedChange = { candleMode = it },
-                            modifier = Modifier.testTag("chart_candle_toggle"),
-                        )
-                    }
                 }
+
+                Text(
+                    "시가 ${priceText(last.open)} · 고가 ${priceText(last.high)} · " +
+                        "저가 ${priceText(last.low)} · 종가 ${priceText(last.close)}",
+                    modifier = Modifier.testTag("chart_last_ohlc"),
+                    fontSize = 11.sp, color = scheme.onSurfaceVariant,
+                )
+                Text(
+                    "거래량 ${last.volume?.let { String.format("%,d주", it) } ?: "미확보"} · 실제 ${last.tradingDays}거래일",
+                    modifier = Modifier.testTag("chart_last_volume"),
+                    fontSize = 11.sp, color = scheme.onSurfaceVariant,
+                )
 
                 val lineColor = scheme.primary
                 val gridColor = scheme.outlineVariant
@@ -122,7 +146,7 @@ fun PriceChartPanel(
                     fun priceY(value: Double): Float =
                         paddingY + (((high - value) / range) * usableHeight).toFloat()
                     fun pointX(index: Int): Float =
-                        paddingX + if (count < 2) 0f else index.toFloat() / (count - 1) * usableWidth
+                        paddingX + if (count < 2) usableWidth / 2 else index.toFloat() / (count - 1) * usableWidth
 
                     for (i in 0..4) {
                         val y = paddingY + i * usableHeight / 4f
@@ -163,20 +187,31 @@ fun PriceChartPanel(
                 }
 
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                    Text(first.date.format(DateTimeFormatter.ISO_DATE), fontSize = 10.sp, color = scheme.onSurfaceVariant)
-                    Text(last.date.format(DateTimeFormatter.ISO_DATE), fontSize = 10.sp, color = scheme.onSurfaceVariant)
+                    Text(first.firstTradingDate.format(DateTimeFormatter.ISO_DATE), fontSize = 10.sp, color = scheme.onSurfaceVariant)
+                    Text(last.lastTradingDate.format(DateTimeFormatter.ISO_DATE), fontSize = 10.sp, color = scheme.onSurfaceVariant)
                 }
                 Text(
                     "최저 " + String.format("%,.0f", low) + "원 · 최고 " +
-                        String.format("%,.0f", high) + "원 · " + bars.size + "거래일",
+                        String.format("%,.0f", high) + "원 · " + bars.size + "개 ${interval.label}",
+                    modifier = Modifier.testTag("chart_bar_count"),
                     fontSize = 11.sp, color = scheme.onSurfaceVariant,
                 )
+                if (interval != Interval.DAY) {
+                    Text(
+                        "시작 ${interval.label}은 첫 거래일부터 집계합니다. " +
+                            if (result != null && last.periodEnd > result.priceCutoffDate)
+                                "마지막 ${interval.label}은 기준일까지의 부분 봉입니다." else "",
+                        modifier = Modifier.testTag("chart_aggregation_note"),
+                        fontSize = 10.sp, color = scheme.onSurfaceVariant,
+                    )
+                }
             }
             Text(
                 "출처: 네이버증권 · " +
-                    (result?.let { if (it.source == PriceHistoryRepository.Source.LIVE) "일봉 수신" else it.detail }
+                    (result?.let { "${it.source.name} · ${it.detail}" }
                         ?: "조회 대기") +
                     " · 기준 " + (result?.priceCutoffDate?.toString() ?: "-"),
+                modifier = Modifier.testTag("chart_source"),
                 fontSize = 10.sp, color = scheme.onSurfaceVariant,
             )
             Text(
@@ -187,3 +222,5 @@ fun PriceChartPanel(
         }
     }
 }
+
+private fun priceText(value: Double): String = String.format("%,.0f", value)

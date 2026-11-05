@@ -2,6 +2,18 @@ package com.krstock.v3
 
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.graphics.toPixelMap
+import androidx.compose.ui.test.captureToImage
+import androidx.compose.ui.test.onAllNodesWithTag
+import androidx.compose.ui.test.onFirst
+import androidx.compose.ui.test.onLast
+import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
@@ -49,30 +61,28 @@ class PriceChartAndRiskBadgeInstrumentedTest {
 
     @Test
     fun historicalLineAndCandleChartRenderWithoutLiveNetwork() {
-        val start = LocalDate.parse("2026-10-01")
-        val bars = (0..30).map { i ->
-            val close = 10000.0 + i * 50.0
-            PriceHistoryRepository.DailyBar(
-                date = start.plusDays(i.toLong()),
-                open = close - 10.0,
-                high = close + 40.0,
-                low = close - 30.0,
-                close = close,
-                volume = 1000L,
+        val bars = (1..5).flatMap { page ->
+            PriceHistoryRepository.parseBars(
+                SnapshotTestSupport.fixture("prices_005930_20261105/page$page.json"),
+                LocalDate.parse("2026-11-04"),
             )
         }
         val result = PriceHistoryRepository.Result(
             bars = bars,
-            source = PriceHistoryRepository.Source.LIVE,
+            source = PriceHistoryRepository.Source.CACHE,
             priceCutoffDate = LocalDate.parse("2026-11-04"),
-            detail = "테스트 일봉",
+            detail = "실제 수신 삼성전자 일봉 고정 샘플",
         )
-        composeRule.setContent { KRStockV3Theme { PriceChartPanel(result = result, loading = false) } }
+        composeRule.setContent { KRStockV3Theme {
+            Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
+                PriceChartPanel(result = result, loading = false)
+            }
+        } }
         composeRule.onNodeWithTag("price_chart_panel").assertIsDisplayed()
-        composeRule.onNodeWithTag("historical_price_chart").assertIsDisplayed()
-        composeRule.onNodeWithTag("chart_period_1").performClick()
-        composeRule.onNodeWithTag("chart_candle_toggle").performClick()
-        composeRule.onNodeWithTag("historical_price_chart").assertIsDisplayed()
+        composeRule.onNodeWithTag("historical_price_chart").performScrollTo().assertIsDisplayed()
+        composeRule.onNodeWithTag("chart_period_1").performScrollTo().performClick()
+        composeRule.onNodeWithTag("chart_candle_toggle").performScrollTo().performClick()
+        composeRule.onNodeWithTag("historical_price_chart").performScrollTo().assertIsDisplayed()
     }
 
     @Test
@@ -97,6 +107,10 @@ class PriceChartAndRiskBadgeInstrumentedTest {
         }
         composeRule.onNodeWithText("재무위험").assertIsDisplayed()
         composeRule.onNodeWithText("미확보").assertIsDisplayed()
-        assertTrue(true)
+        val riskPixels = composeRule.onAllNodesWithTag("financial_safety_badge").onFirst().captureToImage().toPixelMap()
+        val missingPixels = composeRule.onAllNodesWithTag("financial_safety_badge").onLast().captureToImage().toPixelMap()
+        assertEquals(Color(0xFFC62828).toArgb(), riskPixels[riskPixels.width / 20, riskPixels.height / 2].toArgb())
+        assertEquals(Color(0xFFEF6C00).toArgb(), missingPixels[missingPixels.width / 20, missingPixels.height / 2].toArgb())
+        assertEquals(2649, com.krstock.v3.data.repository.StockRepository.getAllStocks().size)
     }
 }
