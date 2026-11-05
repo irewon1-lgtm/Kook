@@ -1,0 +1,33 @@
+{
+  "issuer": "005930",
+  "source": "Naver Finance daily price API",
+  "price_cutoff": "2026-11-04",
+  "captured_at": "2026-11-05T14:09:01.920397+09:00",
+  "files": [
+    {
+      "file": "page1.json",
+      "url": "https://m.stock.naver.com/api/stock/005930/price?pageSize=60&page=1",
+      "sha256": "b05a6f0eab73c608c2d743a572e1d383fe6e853c39916208b2be2bcffc71cb37"
+    },
+    {
+      "file": "page2.json",
+      "url": "https://m.stock.naver.com/api/stock/005930/price?pageSize=60&page=2",
+      "sha256": "ef307ec171bc16b4c7025fda2b44fca9bed77f74b38f09049c48a5f129aca577"
+    },
+    {
+      "file": "page3.json",
+      "url": "https://m.stock.naver.com/api/stock/005930/price?pageSize=60&page=3",
+      "sha256": "e5f770c956e2c66422fd5466d91187500e259defb6f88d770c37133d5d7b45be"
+    },
+    {
+      "file": "page4.json",
+      "url": "https://m.stock.naver.com/api/stock/005930/price?pageSize=60&page=4",
+      "sha256": "93a98988971714f3181d0c60d1474891678c149293843258a7ccd64a468ee769"
+    },
+    {
+      "file": "page5.json",
+      "url": "https://m.stock.naver.com/api/stock/005930/price?pageSize=60&page=5",
+      "sha256": "52d10dbd6b2fd3ba8aa3ee58e0fd0b7836ff7ea46cde17d4f844d523983fc6f2"
+    }
+  ]
+}
