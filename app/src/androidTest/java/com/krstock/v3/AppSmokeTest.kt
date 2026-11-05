@@ -3,7 +3,9 @@ package com.krstock.v3
 import android.content.Context
 import android.view.inputmethod.InputMethodManager
 import com.krstock.v3.data.candidate.FinalCandidateRepository
+import com.krstock.v3.data.update.SnapshotAutoUpdater
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.isDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onFirst
@@ -14,24 +16,49 @@ import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.test.printToString
 import androidx.compose.ui.test.swipeLeft
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Assume.assumeTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import kotlinx.coroutines.runBlocking
 
 @RunWith(AndroidJUnit4::class)
 class AppSmokeTest {
 
-    @get:Rule
+    @get:Rule(order = 1)
     val composeRule = createAndroidComposeRule<MainActivity>()
+
+    @get:Rule(order = 2)
+    val failureEvidence = SnapshotTestSupport.failureEvidence()
 
     private fun waitForDisplayedTag(tag: String, timeoutMillis: Long = 25_000L) {
         composeRule.waitUntil(timeoutMillis = timeoutMillis) {
-            composeRule.onAllNodesWithTag(tag).fetchSemanticsNodes().isNotEmpty()
+            composeRule.onAllNodesWithTag(tag).fetchSemanticsNodes().isNotEmpty() &&
+                composeRule.onNodeWithTag(tag).isDisplayed()
         }
         composeRule.onNodeWithTag(tag).assertIsDisplayed()
+    }
+
+    private fun waitForDisplayedText(text: String) {
+        // Existence/idleness alone does not prove an animated pager has reached
+        // its target: the neighbouring page can already be composed offscreen.
+        try {
+            composeRule.waitUntil(timeoutMillis = 10_000L) {
+                composeRule.onNodeWithText(text).isDisplayed()
+            }
+            composeRule.onNodeWithText(text).assertIsDisplayed()
+        } catch (error: Throwable) {
+            runCatching {
+                SnapshotTestSupport.evidence(composeRule.activity, "smoke-navigation-target-not-displayed",
+                    org.json.JSONObject().put("expected_visible_text", text)
+                        .put("assertion_failure", error.toString())
+                        .put("compose_semantics", composeRule.onNodeWithTag("main_pager").printToString()))
+            }
+            throw error
+        }
     }
 
     private fun waitForTag(tag: String, timeoutMillis: Long = 10_000L) {
@@ -82,7 +109,7 @@ class AppSmokeTest {
         // The most important action must be immediately visible and open the searchable ranking list.
         composeRule.onNodeWithTag("primary_stock_explorer").performScrollTo().assertIsDisplayed().performClick()
         composeRule.waitForIdle()
-        composeRule.onNodeWithText("국내주식 조합순위").assertIsDisplayed()
+        waitForDisplayedText("국내주식 조합순위")
 
         // Exercise the actual Activity back dispatcher without Espresso's focused-root dependency.
         navigateBackThroughActivity()
@@ -92,7 +119,7 @@ class AppSmokeTest {
         // Horizontal swipe navigation remains supported.
         composeRule.onNodeWithTag("main_pager").performTouchInput { swipeLeft() }
         composeRule.waitForIdle()
-        composeRule.onNodeWithText("국내주식 조합순위").assertIsDisplayed()
+        waitForDisplayedText("국내주식 조합순위")
 
         // Phone regression: ranking controls and stock cards share one scroll container.
         // Browse lower rows, return to the scrollable controls, change the combination,
@@ -181,11 +208,20 @@ class AppSmokeTest {
     fun stage4567DataIsVisibleOnHomeListAndCandidateDetail() {
         waitForDisplayedTag("main_pager")
 
+        // The pager renders before the optional receipt completes. Inspecting
+        // candidates immediately can skip a valid current feed during bootstrap.
+        // Only this candidate test awaits the complete actual receive; the
+        // startup navigation test still operates while refresh is in progress.
+        val receipt = runBlocking {
+            SnapshotAutoUpdater.bootstrap(composeRule.activity.applicationContext)
+        }
+        composeRule.waitForIdle()
+
         // Stage4~7 is intentionally fail-closed when its remote snapshot date is
         // older than the active quant snapshot. In that valid stale-artifact state
         // there is no candidate UI to test, so skip this unrelated candidate test.
         val candidate = FinalCandidateRepository.getFinalCandidates().firstOrNull()
-        assumeTrue("No date-matched Stage4~7 candidate snapshot installed", candidate != null)
+        assumeTrue("No date-matched Stage4~7 candidate snapshot after completed ${receipt.source} receive for ${receipt.snapshotDate}", candidate != null)
         val candidateCode = candidate!!.issuerId
         val candidateRankLabel = "FINAL #${candidate.candidateRank}"
 

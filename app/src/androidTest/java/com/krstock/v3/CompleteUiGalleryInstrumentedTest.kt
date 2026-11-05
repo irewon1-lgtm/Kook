@@ -10,6 +10,8 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.krstock.v3.data.model.FinancialSafetyRecord
 import com.krstock.v3.data.model.FinancialSafetyStatus
+import com.krstock.v3.data.generated.GeneratedRealQuantSnapshot
+import com.krstock.v3.data.model.RealQuantRecord
 import com.krstock.v3.data.repository.StockRepository
 import com.krstock.v3.data.update.SnapshotAutoUpdater
 import com.krstock.v3.ui.components.FinancialSafetyBadge
@@ -29,11 +31,13 @@ import java.io.File
 /** Runs unchanged screens in each required Android14 viewport/theme CI cell. */
 @RunWith(AndroidJUnit4::class)
 class CompleteUiGalleryInstrumentedTest {
-    @get:Rule val composeRule = createAndroidComposeRule<ComponentActivity>()
-    @get:Rule val failureEvidence = SnapshotTestSupport.failureEvidence()
+    @get:Rule(order = 0) val snapshotIsolation = SnapshotTestSupport.isolatedSnapshotRuntime()
+    @get:Rule(order = 1) val composeRule = createAndroidComposeRule<ComponentActivity>()
+    @get:Rule(order = 2) val failureEvidence = SnapshotTestSupport.failureEvidence()
     private lateinit var context: Context
     private lateinit var isolated: Context
     private lateinit var saved: SnapshotTestSupport.SavedRuntime
+    private lateinit var recordedRows: List<RealQuantRecord>
 
     @Before fun prepareRecordedMarketData() {
         context = ApplicationProvider.getApplicationContext()
@@ -41,6 +45,7 @@ class CompleteUiGalleryInstrumentedTest {
         saved = SnapshotTestSupport.SavedRuntime()
         isolated = SnapshotTestSupport.isolatedContext(context)
         SnapshotTestSupport.installHistoricalMemory(SnapshotTestSupport.CURRENT)
+        recordedRows = GeneratedRealQuantSnapshot.rows.toList()
         assertEquals(2649, StockRepository.getAllStocks().size)
     }
 
@@ -73,6 +78,8 @@ class CompleteUiGalleryInstrumentedTest {
         val records = JSONObject(SnapshotTestSupport.fixture()).getJSONObject("records")
         var selected = 15
         for (mask in 1..15) {
+            assertTrue("Actual runtime rows must remain the recorded source throughout all15 combinations",
+                recordedRows == GeneratedRealQuantSnapshot.rows)
             controls()
             // Add before removing so the UI's last-selected protection is exercised honestly.
             for (bit in 0..3) if (mask and (1 shl bit) != 0 && selected and (1 shl bit) == 0) {
