@@ -3,13 +3,102 @@ from __future__ import annotations
 
 import math
 import sys
+from datetime import date
 from pathlib import Path
+from unittest.mock import Mock, patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
 import collect_quarterly_history as qh  # noqa: E402
 import collect_real_quant as base  # noqa: E402
+
+
+def listed_entries(as_of):
+    # Mirror the bulk index: future and newly opened reporting periods can
+    # already have links. Only the HTTP boundary is replaced; selection is real.
+    html = "\n".join(
+        f"download_ext002('{year}','{period}','PL','{year}_{period}.zip');"
+        for year in range(2023, 2027)
+        for period in ("FQ", "HY", "TQ", "FY")
+    )
+    response = Mock(text=html)
+    session = Mock()
+    session.post.return_value = response
+    with patch.object(qh.requests, "Session", return_value=session):
+        return qh.list_pl_entries(as_of)
+
+
+def test_preliminary_q3_does_not_displace_complete_eight_quarter_window():
+    entries = listed_entries(date(2026, 11, 5))[-12:]
+    qh.assert_contiguous_entries(entries, 12)
+    assert [f"{e['year']}Q{e['quarter']}" for e in entries[-8:]] == [
+        "2024Q3", "2024Q4", "2025Q1", "2025Q2",
+        "2025Q3", "2025Q4", "2026Q1", "2026Q2",
+    ]
+
+
+def test_q3_becomes_eligible_only_after_reporting_window_closes():
+    # Nov 14 is Saturday in 2026: filers still have Monday Nov 16.
+    for as_of, latest in [(date(2026, 11, 14), (2026, 2)),
+                          (date(2026, 11, 15), (2026, 2)),
+                          (date(2026, 11, 16), (2026, 2)),
+                          (date(2026, 11, 17), (2026, 3))]:
+        entries = listed_entries(as_of)
+        assert (entries[-1]["year"], entries[-1]["quarter"]) == latest
+
+
+def test_annual_window_uses_ninety_days_and_handles_leap_year():
+    for as_of, latest in [(date(2026, 3, 31), (2025, 3)),
+                          (date(2026, 4, 1), (2025, 4)),
+                          (date(2024, 3, 30), (2023, 3)),
+                          (date(2024, 4, 1), (2023, 3)),
+                          (date(2024, 4, 2), (2023, 4))]:
+        entries = listed_entries(as_of)
+        assert (entries[-1]["year"], entries[-1]["quarter"]) == latest
+
+
+def test_q1_and_half_year_windows_do_not_accept_early_bulk_links():
+    for as_of, latest in [(date(2026, 5, 15), (2025, 4)),
+                          (date(2026, 5, 16), (2026, 1)),
+                          (date(2026, 8, 14), (2026, 1)),
+                          (date(2026, 8, 15), (2026, 2)),
+                          (date(2026, 12, 31), (2026, 3))]:
+        entries = listed_entries(as_of)
+        assert (entries[-1]["year"], entries[-1]["quarter"]) == latest
+
+
+def test_eight_early_filers_do_not_erase_the_rest_of_the_universe():
+    # Synthetic reproduction of the incident, not substitute market data.
+    issuers = [base.Issuer(f"{i:06}", "테스트", "제조업", "2020-01-01", "KOSPI")
+               for i in range(2649)]
+    support = listed_entries(date(2026, 11, 5))[-12:]
+    preliminary = {"year": 2026, "quarter": 3, "index": 8107,
+        "period": "Q3", "file": "2026_TQ.zip"}
+    parsed = {}
+    for entry in support + [preliminary]:
+        label = f"{entry['year']}Q{entry['quarter']}"
+        parsed[label] = {}
+        for i, issuer in enumerate(issuers):
+            available = label != "2026Q3" or i < 8
+            quarter = entry["quarter"]
+            parsed[label][issuer.code] = {
+                "scope": "CFS" if available else "",
+                "direct_rev": 100.0 if available and quarter != 4 else None,
+                "direct_op": 10.0 if available and quarter != 4 else None,
+                "cum_rev": 100.0 * quarter if available else None,
+                "cum_op": 10.0 * quarter if available else None,
+                "source_file": entry["file"],
+                "reason": None if available else "DART_NO_REVENUE",
+            }
+    healthy = qh.derive_visible_history(issuers, support, parsed, 8)
+    assert qh.coverage(healthy)["stocks_with_8q"] == 2649
+    # Once Q3 is eligible, insufficient/malformed mature data must remain
+    # visible to the unchanged 1192-stock gate, with no data-based rollback.
+    mature_support = listed_entries(date(2026, 11, 17))[-12:]
+    partial = qh.derive_visible_history(issuers, mature_support, parsed, 8)
+    assert qh.coverage(partial)["stocks_with_8q"] == 8
+    assert partial[issuers[-1].code]["points"][-1]["revenue"] is None
 
 
 def entries_12():

@@ -12,6 +12,9 @@ Design:
 - Financial/insurance sectors keep revenue history, but operating margin is
   intentionally omitted because KR4 treats banking/insurance with dedicated KPIs.
 - Missing or ambiguous values stay null with an explicit reason. No estimates.
+- A bulk link can appear while only early filers are present. Use quarters
+  whose reporting window has closed (45 days, or 90 for FY), not merely the
+  newest link. Keep the normal coverage gates on the selected window.
 """
 from __future__ import annotations
 
@@ -24,7 +27,7 @@ import re
 import time
 import zipfile
 from collections import defaultdict
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Any
 from zoneinfo import ZoneInfo
@@ -61,6 +64,23 @@ def period_label(year: int, quarter: int) -> str:
     return f"{year}Q{quarter}"
 
 
+def reporting_window_end(year: int, quarter: int) -> date:
+    """Conservative calendar window; a date-only run waits through its last day.
+
+    This is an eligibility boundary, not a claim that a provider is complete.
+    Late filings, extensions and damaged mature bulk files must still fail the
+    unchanged downstream coverage gates instead of rolling back to older data.
+    """
+    next_quarter = date(year + 1, 1, 1) if quarter == 4 else date(year, quarter * 3 + 1, 1)
+    period_end = next_quarter - timedelta(days=1)
+    window_end = period_end + timedelta(days=90 if quarter == 4 else 45)
+    # Do not advance on Sunday when the nominal deadline fell on Saturday:
+    # that reporting cycle is still open on the following Monday.
+    while window_end.weekday() >= 5:
+        window_end += timedelta(days=1)
+    return window_end
+
+
 def assert_contiguous_entries(entries: list[dict[str, Any]], expected_count: int | None = None) -> None:
     if expected_count is not None and len(entries) != expected_count:
         raise RuntimeError(f"expected {expected_count} quarterly periods, got {len(entries)}")
@@ -87,7 +107,14 @@ def list_pl_entries(as_of: date) -> list[dict[str, Any]]:
             continue
         year = int(year_s)
         quarter = PERIOD_TO_Q[period]
-        if year > as_of.year:
+        window_end = reporting_window_end(year, quarter)
+        if as_of <= window_end:
+            print(
+                f"QUARTERLY_PERIOD_DEFERRED {period_label(year, quarter)} "
+                f"reporting_window_end={window_end} as_of={as_of} "
+                "reason=REPORTING_WINDOW_OPEN",
+                flush=True,
+            )
             continue
         key = (year, quarter)
         candidate = {
@@ -438,6 +465,7 @@ def main() -> None:
         "policy": {
             "visible_quarters": args.visible_quarters,
             "support_quarters": args.support_quarters,
+            "period_selection": "quarter end + 45 days; FY end + 90 days; weekend boundary extended to Monday; eligible next day; coverage gates still required",
             "direct_quarter_policy": "Q1/Q2/Q3 direct 3-month preferred",
             "fallback_policy": "same-scope cumulative delta only; Q4 = FY annual - Q3 cumulative",
             "scope_policy": "CFS preferred; CFS/OFS mismatch fails closed",

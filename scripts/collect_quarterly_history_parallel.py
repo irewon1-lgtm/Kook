@@ -101,6 +101,7 @@ def main() -> None:
         "policy": {
             "visible_quarters": args.visible_quarters,
             "support_quarters": args.support_quarters,
+            "period_selection": "quarter end + 45 days; FY end + 90 days; weekend boundary extended to Monday; eligible next day; coverage gates still required",
             "period_workers": args.period_workers,
             "parallelism": "process",
             "direct_quarter_policy": "Q1/Q2/Q3 direct 3-month preferred",
