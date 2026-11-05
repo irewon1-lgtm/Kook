@@ -54,7 +54,7 @@ class SnapshotRefreshScreensInstrumentedTest {
         saved = SnapshotTestSupport.SavedRuntime()
         isolated = SnapshotTestSupport.isolatedContext(context)
         SnapshotTestSupport.installHistoricalMemory(SnapshotTestSupport.BEFORE)
-        val initial = SnapshotAutoUpdater.refreshBlocking(isolated) {
+        val initial = SnapshotAutoUpdater.refreshBlocking(isolated, safetyFetch = { SnapshotTestSupport.fixture() }) {
             SnapshotTestSupport.fixture(SnapshotTestSupport.BEFORE)
         }
         assertTrue(initial.networkSucceeded)
@@ -76,7 +76,7 @@ class SnapshotRefreshScreensInstrumentedTest {
         composeRule.onNodeWithTag("snapshot_coverage").assertTextEquals("4지표 완성 2378/2649")
         val previousRevision = SnapshotAutoUpdater.lastResult.revision
 
-        val result = SnapshotAutoUpdater.refreshBlocking(isolated) { SnapshotTestSupport.fixture() }
+        val result = SnapshotAutoUpdater.refreshBlocking(isolated, safetyFetch = { SnapshotTestSupport.fixture() }) { SnapshotTestSupport.fixture() }
         composeRule.waitForIdle()
 
         assertTrue(result.networkSucceeded)
@@ -107,7 +107,7 @@ class SnapshotRefreshScreensInstrumentedTest {
         composeRule.onNodeWithTag("stock_rank_list").performScrollToIndex(1)
         composeRule.onNodeWithTag("stock_187870").assertIsDisplayed()
 
-        SnapshotAutoUpdater.refreshBlocking(isolated) { SnapshotTestSupport.fixture() }
+        SnapshotAutoUpdater.refreshBlocking(isolated, safetyFetch = { SnapshotTestSupport.fixture() }) { SnapshotTestSupport.fixture() }
         composeRule.waitForIdle()
 
         composeRule.onNodeWithTag("stock_rank_list").performScrollToIndex(1)
@@ -132,7 +132,7 @@ class SnapshotRefreshScreensInstrumentedTest {
         composeRule.onNodeWithTag("stock_rank_000020", useUnmergedTree = true).assertTextEquals("576위")
         val previousRevision = SnapshotAutoUpdater.lastResult.revision
 
-        val result = SnapshotAutoUpdater.refreshBlocking(isolated) {
+        val result = SnapshotAutoUpdater.refreshBlocking(isolated, safetyFetch = { SnapshotTestSupport.fixture() }) {
             SnapshotTestSupport.fixture(SnapshotTestSupport.SAME_DATE_AFTER)
         }
         composeRule.waitForIdle()
@@ -155,7 +155,7 @@ class SnapshotRefreshScreensInstrumentedTest {
         composeRule.onNodeWithTag("detail_m04_value").performScrollTo().assertTextEquals("-3.3%")
         val before = StockRepository.getStockDetail("000020")!!.summary.m04Price6m.rawValue
 
-        SnapshotAutoUpdater.refreshBlocking(isolated) {
+        SnapshotAutoUpdater.refreshBlocking(isolated, safetyFetch = { SnapshotTestSupport.fixture() }) {
             SnapshotTestSupport.fixture(SnapshotTestSupport.SAME_DATE_AFTER)
         }
         composeRule.waitForIdle()
@@ -177,7 +177,7 @@ class SnapshotRefreshScreensInstrumentedTest {
         val current = SnapshotTestSupport.fixture()
         File(isolated.filesDir, SnapshotTestSupport.CACHE).writeText(current)
         File(isolated.filesDir, SnapshotTestSupport.BACKUP).writeText(current)
-        var result = SnapshotAutoUpdater.refreshBlocking(isolated) { SnapshotTestSupport.offline() }
+        var result = SnapshotAutoUpdater.refreshBlocking(isolated, safetyFetch = { SnapshotTestSupport.fixture() }) { SnapshotTestSupport.offline() }
         assertEquals(SnapshotAutoUpdater.Source.CACHE, result.source)
         assertTrue(result.failure != null)
         composeRule.setContent {
@@ -189,7 +189,7 @@ class SnapshotRefreshScreensInstrumentedTest {
         SnapshotTestSupport.evidence(context, "offline-cache")
 
         File(isolated.filesDir, SnapshotTestSupport.CACHE).writeText("{corrupt-cache")
-        result = SnapshotAutoUpdater.refreshBlocking(isolated) { SnapshotTestSupport.offline() }
+        result = SnapshotAutoUpdater.refreshBlocking(isolated, safetyFetch = { SnapshotTestSupport.fixture() }) { SnapshotTestSupport.offline() }
         composeRule.waitForIdle()
         assertEquals(SnapshotAutoUpdater.Source.BACKUP, result.source)
         composeRule.onNodeWithTag("snapshot_source").performScrollTo().assertTextEquals("데이터 출처 BACKUP")
@@ -201,7 +201,7 @@ class SnapshotRefreshScreensInstrumentedTest {
     @Test
     fun invalidAndDowngradedNetworkUpdatesPreserveDiskMemoryAndVisibleValues() {
         val current = SnapshotTestSupport.fixture()
-        SnapshotAutoUpdater.refreshBlocking(isolated) { current }
+        SnapshotAutoUpdater.refreshBlocking(isolated, safetyFetch = { SnapshotTestSupport.fixture() }) { current }
         val cache = File(isolated.filesDir, SnapshotTestSupport.CACHE)
         val backup = File(isolated.filesDir, SnapshotTestSupport.BACKUP)
         val cacheBytes = cache.readBytes()
@@ -212,7 +212,7 @@ class SnapshotRefreshScreensInstrumentedTest {
 
         val invalid = JSONObject(current).apply { getJSONObject("coverage").put("complete_count", 1) }.toString()
         for (incoming in listOf(invalid, SnapshotTestSupport.fixture(SnapshotTestSupport.BEFORE))) {
-            val result = SnapshotAutoUpdater.refreshBlocking(isolated) { incoming }
+            val result = SnapshotAutoUpdater.refreshBlocking(isolated, safetyFetch = { SnapshotTestSupport.fixture() }) { incoming }
             composeRule.waitForIdle()
             assertTrue(!result.networkSucceeded)
             assertTrue(cacheBytes.contentEquals(cache.readBytes()))

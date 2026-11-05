@@ -14,24 +14,25 @@ import java.nio.file.StandardCopyOption
 
 /**
  * Receives the optional Stage4 section independently of M01–M04 installation.
- * The publisher augments real_quant_snapshot.json; it has no separate Stage4 file.
+ * The publisher supplies a separate, date-matched Stage4 artifact. Legacy
+ * augmented documents remain readable for existing exact-date caches.
  * A received document without valid matching safety is authoritative HOLD, while
  * transport failure alone permits a fully revalidated exact-date safety cache.
  */
 object FinancialSafetySnapshotUpdater {
     private const val REMOTE_URL =
-        "https://raw.githubusercontent.com/irewon1-lgtm/Kook/main/evidence/real_quant_snapshot.json"
+        "https://raw.githubusercontent.com/irewon1-lgtm/Kook/main/evidence/financial_safety_snapshot.json"
     private const val CACHE_NAME = "kr4_stage4_financial_safety_v1.json"
     private const val TEMP_NAME = "kr4_stage4_financial_safety_v1.tmp"
-    private const val MAX_BYTES = 8 * 1024 * 1024
+    private const val MAX_BYTES = 16 * 1024 * 1024
 
     @Synchronized
     internal fun refreshBlocking(
         context: Context,
         expectedSnapshotDate: String,
         expectedCodes: Set<String>,
-        quantText: String? = null,
-    ): Boolean = refreshBlocking(context.filesDir, expectedSnapshotDate, expectedCodes, quantText)
+        download: () -> String = ::download,
+    ): Boolean = refreshBlocking(context.filesDir, expectedSnapshotDate, expectedCodes, null, download)
 
     @Synchronized
     internal fun refreshBlocking(
@@ -57,7 +58,7 @@ object FinancialSafetySnapshotUpdater {
                 require(received.toByteArray(Charsets.UTF_8).size <= MAX_BYTES) { "Stage4 payload too large" }
                 val root = JSONObject(received)
                 require(root.getString("snapshot_date_kst") == expectedSnapshotDate) { "Stage4 source snapshot mismatch" }
-                root.getJSONObject("financial_safety")
+                if (root.optInt("schema_version") == 2) root else root.getJSONObject("financial_safety")
             }.getOrNull()
             val parsed = safety?.let {
                 runCatching { FinancialSafetySnapshotParser.parse(it, expectedSnapshotDate, expectedCodes) }.getOrNull()

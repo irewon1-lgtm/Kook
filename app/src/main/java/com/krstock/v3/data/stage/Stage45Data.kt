@@ -26,7 +26,8 @@ object FinancialSafetySnapshotParser {
         expectedSnapshotDate: String,
         expectedCodes: Set<String>,
     ): FinancialSafetySnapshot {
-        require(safety.getInt("schema_version") == 1) { "unexpected financial-safety schema" }
+        val schema = safety.getInt("schema_version")
+        require(schema in setOf(1, 2)) { "unexpected financial-safety schema" }
         require(safety.getString("policy_version") == POLICY_VERSION) { "unexpected financial-safety policy" }
         require(safety.getString("snapshot_date_kst") == expectedSnapshotDate) { "financial-safety snapshot mismatch" }
 
@@ -63,6 +64,7 @@ object FinancialSafetySnapshotParser {
             require(!parsed.containsKey(code)) { "duplicate financial-safety code $code" }
 
             val row = recordsJson.getJSONObject(code)
+            val facts = if (schema == 2) VerifiedFinancialFactsParser.parse(row, code, expectedSnapshotDate) else null
             val status = runCatching { FinancialSafetyStatus.valueOf(row.getString("status")) }
                 .getOrElse { throw IllegalArgumentException("invalid financial-safety status for $code") }
             val reason = row.getString("reason")
@@ -113,6 +115,10 @@ object FinancialSafetySnapshotParser {
 
                 FinancialSafetyStatus.HOLD -> {
                     when {
+                        schema == 2 -> {
+                            require(facts != null && !facts.verified && facts.validationIssues.isNotEmpty())
+                            require(reason in facts.validationIssues) { "HOLD reason has no matching verification issue" }
+                        }
                         reason.startsWith("MISSING_") -> {
                             require(debt == null && current == null && identity == null) {
                                 "missing-input HOLD ratios must be null for $code"
@@ -153,7 +159,7 @@ object FinancialSafetySnapshotParser {
 
                 FinancialSafetyStatus.NOT_APPLICABLE -> {
                     require(reason == "FINANCIAL_SECTOR_NOT_COMPARABLE") { "N/A reason mismatch for $code" }
-                    require(scope.isBlank() && basis.isBlank()) { "N/A scope/basis must be empty for $code" }
+                    if (schema == 1) require(scope.isBlank() && basis.isBlank()) { "N/A scope/basis must be empty for $code" }
                     require(debt == null && current == null && identity == null) { "N/A ratios must be null for $code" }
                     notApplicable++
                 }
@@ -168,6 +174,7 @@ object FinancialSafetySnapshotParser {
                 currentRatioPct = current,
                 accountingIdentityGapPct = identity,
                 basis = basis,
+                facts = facts,
             )
         }
 

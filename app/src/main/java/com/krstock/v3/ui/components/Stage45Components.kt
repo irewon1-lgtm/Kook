@@ -2,13 +2,20 @@ package com.krstock.v3.ui.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -18,6 +25,7 @@ import com.krstock.v3.data.model.FinancialSafetyRecord
 import com.krstock.v3.data.model.FinancialSafetyStatus
 import com.krstock.v3.data.model.MetricValue
 import com.krstock.v3.data.model.ValuationBand
+import com.krstock.v3.data.repository.StockRepository
 
 @Composable
 fun FinalCandidateBadge(candidateRank: Int, modifier: Modifier = Modifier) {
@@ -40,14 +48,16 @@ fun FinalCandidateBadge(candidateRank: Int, modifier: Modifier = Modifier) {
 @Composable
 fun FinancialSafetyBadge(safety: FinancialSafetyRecord?, modifier: Modifier = Modifier) {
     val scheme = MaterialTheme.colorScheme
+    var showDetails by remember { mutableStateOf(false) }
     val (label, colors) = when (safety?.status) {
-        FinancialSafetyStatus.PASS -> "재무자료 확인" to (scheme.secondaryContainer to scheme.onSecondaryContainer)
+        FinancialSafetyStatus.PASS -> "자료 확인" to (scheme.secondaryContainer to scheme.onSecondaryContainer)
         FinancialSafetyStatus.FAIL -> "재무위험" to (Color(0xFFC62828) to Color.White)
         FinancialSafetyStatus.HOLD -> "미확보" to (Color(0xFFEF6C00) to Color.White)
         FinancialSafetyStatus.NOT_APPLICABLE -> "비교제외" to (scheme.surfaceVariant to scheme.onSurfaceVariant)
         null -> "미확보" to (Color(0xFFEF6C00) to Color.White)
     }
     Surface(
+        onClick = { showDetails = true },
         modifier = modifier.testTag("financial_safety_badge"),
         shape = RoundedCornerShape(999.dp),
         color = colors.first,
@@ -59,6 +69,40 @@ fun FinancialSafetyBadge(safety: FinancialSafetyRecord?, modifier: Modifier = Mo
             fontSize = 10.sp,
             fontWeight = FontWeight.Bold,
         )
+    }
+    if (showDetails) {
+        AlertDialog(
+            modifier = Modifier.testTag("financial_safety_details"),
+            onDismissRequest = { showDetails = false },
+            title = { Text("재무자료와 판정 근거") },
+            text = {
+                Column(Modifier.heightIn(max = 520.dp).verticalScroll(rememberScrollState())) {
+                    FinancialSafetyEvidenceContent(safety, StockRepository.quantSnapshotDate())
+                }
+            },
+            confirmButton = { TextButton(onClick = { showDetails = false }) { Text("닫기") } },
+        )
+    }
+}
+
+@Composable
+private fun FinancialSafetyEvidenceContent(safety: FinancialSafetyRecord?, snapshotDate: String) {
+    val uriHandler = LocalUriHandler.current
+    Column(Modifier.fillMaxWidth().testTag("financial_safety_amounts")) {
+        financialSafetyDetailRows(safety, snapshotDate).forEach { (label, value) ->
+            Text(label, fontSize = 10.sp, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(
+                value, fontSize = 12.sp, lineHeight = 18.sp,
+                modifier = if (label == "공식 공시 출처") Modifier.testTag("financial_safety_source") else Modifier,
+            )
+            Spacer(Modifier.height(9.dp))
+        }
+        safety?.facts?.sourceUrl?.takeIf {
+            it.startsWith("https://dart.fss.or.kr/dsaf001/main.do?rcpNo=") && it.substringAfter("rcpNo=").matches(Regex("[0-9]{14}"))
+        }?.let { source ->
+            TextButton(onClick = { uriHandler.openUri(source) }) { Text("공식 공시 원문 열기") }
+        }
+        Text("재무 상태는 4지표 점수·순위를 변경하거나 종목을 숨기지 않습니다", fontSize = 10.sp)
     }
 }
 
@@ -212,39 +256,17 @@ fun FinancialSafetyCard(
                 FinancialSafetyBadge(safety)
             }
             Spacer(Modifier.height(10.dp))
-            if (safety == null) {
-                Text(
-                    "기준일이 일치하는 재무자료가 없어 HOLD(검증 보류) 상태입니다",
-                    fontSize = 11.sp,
-                    lineHeight = 17.sp,
-                    color = scheme.onSurfaceVariant,
-                )
-                return@Column
-            }
-
-            DetailRow("판정", financialSafetyStatusKo(safety.status))
-            safety.debtToEquityPct?.let { DetailRow("부채비율", "${String.format("%.2f", it)}%  (PASS 기준 ≤ 400%)") }
-            safety.currentRatioPct?.let { DetailRow("유동비율", "${String.format("%.2f", it)}%  (PASS 기준 ≥ 70%)") }
-            safety.accountingIdentityGapPct?.let { DetailRow("회계 identity gap", "${String.format("%.3f", it)}%  (허용 ≤ 5%)") }
-            DetailRow("재무 범위", safety.scope.ifBlank { "N/A" })
-            DetailRow("기준일", snapshotDate)
-            Spacer(Modifier.height(7.dp))
+            safety?.debtToEquityPct?.let { DetailRow("부채비율", String.format("%.2f%% (기준 ≤ 400%%)", it)) }
+            safety?.currentRatioPct?.let { DetailRow("유동비율", String.format("%.2f%% (기준 ≥ 70%%)", it)) }
+            safety?.facts?.reportPeriod?.takeIf { it.isNotBlank() }?.let { DetailRow("보고기간", it) }
+            safety?.facts?.filingDate?.takeIf { it.isNotBlank() }?.let { DetailRow("실제 공시일", it) }
             Text(
-                "판정 이유 · ${financialSafetyReasonKo(safety.reasonCode)}",
-                fontSize = 11.sp,
-                lineHeight = 17.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = when (safety.status) {
-                    FinancialSafetyStatus.FAIL -> scheme.error
-                    FinancialSafetyStatus.HOLD -> scheme.tertiary
-                    else -> scheme.onSurface
-                },
+                safety?.reasonCode?.let(::financialSafetyReasonKo) ?: "기준일이 일치하는 검증된 재무자료가 없습니다",
+                fontSize = 11.sp, lineHeight = 17.sp,
             )
-            if (safety.basis.isNotBlank()) {
-                Spacer(Modifier.height(7.dp))
-                Text("근거", fontSize = 9.sp, fontWeight = FontWeight.Bold, color = scheme.onSurfaceVariant)
-                Text(safety.basis, fontSize = 9.sp, lineHeight = 14.sp, color = scheme.onSurfaceVariant)
-            }
+            Spacer(Modifier.height(7.dp))
+            Text("상태 표시를 누르면 실제 금액·보고기간·공시 원문을 확인할 수 있습니다", fontSize = 10.sp, color = scheme.onSurfaceVariant)
+
         }
     }
 }
@@ -351,6 +373,11 @@ fun financialSafetyReasonKo(reason: String): String = when (reason) {
     "NONPOSITIVE_CURRENT_LIABILITIES" -> "유동부채가 유효한 양수 값이 아니라 비율 계산 보류"
     "DART_NO_BALANCE_SHEET" -> "OpenDART에서 검증 가능한 재무상태표를 찾지 못함"
     "FINANCIAL_SECTOR_NOT_COMPARABLE" -> "금융업은 일반기업 재무비율 gate와 직접 비교하지 않음"
+    "SOURCE_UNAVAILABLE", "COLLECTION_ERROR" -> "공식 공시 서버 응답을 확보하지 못해 검증 보류"
+    "DART_IDENTITY_UNCONFIRMED", "ISSUER_NAME_MISMATCH" -> "종목·법인·회사명 매핑을 검증하지 못해 보류"
+    "CORRECTION_VALUES_NOT_RECONCILED" -> "정정공시와 원본 금액의 일치 여부를 확인하지 못해 보류"
+    "MIXED_PERIOD" -> "서로 다른 보고기간의 원자료가 충돌해 보류"
+    "MIXED_CURRENCY", "UNVERIFIED_CURRENCY_UNIT" -> "통화·단위를 검증하지 못해 보류"
     "NONFINITE_DERIVED_RATIO" -> "파생 재무비율이 유효한 유한값이 아니라 보류"
     else -> if (reason.startsWith("MISSING_")) "필수 재무항목 누락으로 보류 ($reason)" else reason
 }

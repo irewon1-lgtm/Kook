@@ -21,6 +21,24 @@ data class FinancialSafetyRecord(
     val currentRatioPct: Double?,
     val accountingIdentityGapPct: Double?,
     val basis: String,
+    val facts: FinancialSafetyFacts? = null,
+)
+
+/** Exact source integers retain null and zero; currency is never converted. */
+data class FinancialSafetyFacts(
+    val amounts: Map<String, Long?>,
+    val currency: String,
+    val reportPeriod: String,
+    val filingDate: String,
+    val corporationCode: String,
+    val receiptNo: String,
+    val sourceUrl: String,
+    val sourceFile: String,
+    val sourceZipSha256: String,
+    val correctionStatus: String,
+    val correctionCheck: String,
+    val verified: Boolean,
+    val validationIssues: List<String>,
 )
 
 data class FinancialSafetySnapshot(

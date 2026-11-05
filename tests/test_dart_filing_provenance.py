@@ -367,3 +367,114 @@ def test_official_identity_is_preserved_even_when_global_filing_host_is_down(tmp
     assert row['error'] == 'SOURCE_UNAVAILABLE'
     assert row['receipt_no'] is None
     assert row['source_error_evidence'][0]['status_code'] == 503
+
+
+def test_global_identity_source_outage_returns_explicit_unknown_records(tmp_path):
+    def request(method, url, **kwargs):
+        response = module().requests.Response()
+        response.url = url
+        response.status_code = 503
+        response._content = b'official identity source unavailable'
+        return response
+    with patch.object(module().requests, 'request', side_effect=request), patch.object(module().time, 'sleep'):
+        rows = module().collect_filing_provenance({'005930': EXPECTED}, tmp_path,
+                                                 as_of='2026-11-05', global_search=True)
+    assert rows['005930']['verified'] is False
+    assert rows['005930']['error'] == 'SOURCE_UNAVAILABLE'
+    assert 'identity' in rows['005930']['live_refresh_error'].lower()
+
+OPENDART_REFERENCE_HTML = '''<table class="tb_result"><thead><tr><th>회사명</th><th>결산기준일</th></tr></thead><tbody>
+<tr><td><span class="tagCom_kospi">유</span><span onclick="openCorpInfo('00365387'); return false;" title="AJ네트웍스 기업개황 새창">AJ네트웍스</span></td>
+<td title="2026-06-30"><a id="r_20260814004027" onclick="openReportViewerDetail('20260814004027','5','','TA'); return false;">2026-06-30</a></td>
+<td><a id="r_20260814004027">6</a></td><td>2</td><td>2</td><td>-</td><td>-</td></tr>
+</tbody></table><div class="page_info">[1/1] [총 1건]</div>'''
+
+
+def test_opendart_reference_exposes_actual_period_and_receipt_without_inventing_filing_date():
+    rows = module().parse_opendart_reference_rows(OPENDART_REFERENCE_HTML)
+    assert rows == [{'corp_code': '00365387', 'company_name': 'AJ네트웍스',
+                     'receipt_no': '20260814004027', 'report_period': '2026-06-30'}]
+    assert 'filing_date' not in rows[0]
+
+
+def test_opendart_reference_pagination_keeps_every_exact_period_row(tmp_path):
+    class Response:
+        status_code = 200
+        content = OPENDART_REFERENCE_HTML.encode()
+        def raise_for_status(self):
+            pass
+    with patch.object(module().requests, 'request', return_value=Response()):
+        rows, evidence = module().collect_opendart_reference_rows(tmp_path, '11012', 2026)
+    assert rows[0]['receipt_no'] == '20260814004027'
+    assert evidence[0]['url'] == 'https://opendart.fss.or.kr/disclosureinfo/biz/list.do'
+
+
+def test_opendart_receipt_fallback_keeps_missing_date_and_correction_unverified(tmp_path):
+    mapping = CORP_MAPPING_HTML.replace('005930', '095570').replace('00126380', '00365387').replace('삼성전자', 'AJ네트웍스')
+    def request(method, url, **kwargs):
+        response = module().requests.Response()
+        response.url = url
+        response.status_code = 503 if url.startswith('https://dart.') else 200
+        if '/cmm/searchCorpL.do' in url:
+            response._content = mapping.encode()
+        elif '/disclosureinfo/biz/list.do' in url:
+            response._content = OPENDART_REFERENCE_HTML.encode()
+        else:
+            response._content = b'upstream connection termination'
+        return response
+    spec = {'095570': {'name': 'AJ네트웍스', 'period_end': '2026-06-30', 'report_kind': '반기보고서'}}
+    with patch.object(module().requests, 'request', side_effect=request), patch.object(module().time, 'sleep'):
+        row = module().collect_filing_provenance(spec, tmp_path, as_of='2026-11-05', global_search=True)['095570']
+    assert row['receipt_no'] == '20260814004027'
+    assert row['report_period'] == '2026-06-30'
+    assert row['filing_date'] is None
+    assert row['correction_status'] == 'UNKNOWN'
+    assert row['verified'] is False
+    assert row['error'] == 'SOURCE_UNAVAILABLE'
+
+
+def test_company_ir_badge_cannot_replace_the_official_company_name():
+    markup = OPENDART_REFERENCE_HTML.replace('</span></td>', '</span><span><a href="https://company.example/ir"><span class="tagCom_ir">IR</span></a></span></td>')
+    row = module().parse_opendart_reference_rows(markup)[0]
+    assert row['company_name'] == 'AJ네트웍스'
+
+
+def test_exact_reference_lookups_include_official_other_company_class_for_delisted_issuers(tmp_path):
+    class Response:
+        status_code = 200
+        content = OPENDART_REFERENCE_HTML.encode()
+        def raise_for_status(self):
+            pass
+    def request(method, url, **kwargs):
+        assert kwargs['data']['corpType'] == ['P', 'A', 'N', 'E']
+        assert kwargs['data']['corpTypeAll'] == '1'
+        return Response()
+    with patch.object(module().requests, 'request', side_effect=request):
+        rows, _ = module().collect_opendart_reference_rows(tmp_path, '11012', 2026, text_crp_cik='00365387')
+    assert rows[0]['corp_code'] == '00365387'
+
+
+# Actual first AJ Networks common-share row, public OpenDART LA table.
+OPENDART_LA_REFERENCE_HTML = '<table class="tb_result"><tbody><tr class="">\n\t\t\t\t\t\t\t<td class="tl">\n\t\t\t\t\t\t\t    \t<span class="tagCom_kospi" alt="유가증권시장">유</span><span class="com layerPop03 btnLayerPop"  onclick="openCorpInfo(\'00365387\'); return false;" title="AJ네트웍스 기업개황 새창">AJ네트웍스</span>\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t</td>\n\t\t\t\t\t\t\t<td title="2026-06-30"><a id="r_20260814004027" onclick="openReportViewerDetail(\'20260814004027\',\'5\',\'\',\'LA\'); return false;" title="보고서바로가기">2026-06-30</a></td>\n\t\t\t\t\t\t\t<td title="보통주"><a id="r_20260814004027" onclick="openReportViewerDetail(\'20260814004027\',\'5\',\'\',\'LA\'); return false;" title="보고서바로가기">보통주</a></td>\n\t\t\t\t\t\t\t<td class="tr" title="100,000,000"><a id="r_20260814004027" onclick="openReportViewerDetail(\'20260814004027\',\'5\',\'\',\'LA\'); return false;" title="보고서바로가기">100,000,000</a></td>\n\t\t\t\t\t\t\t<td class="tr" title="47,222,295"><a id="r_20260814004027" onclick="openReportViewerDetail(\'20260814004027\',\'5\',\'\',\'LA\'); return false;" title="보고서바로가기">47,222,295</a></td>\n\t\t\t\t\t\t\t<td class="tr" title="1,969,536"><a id="r_20260814004027" onclick="openReportViewerDetail(\'20260814004027\',\'5\',\'\',\'LA\'); return false;" title="보고서바로가기">1,969,536</a></td>\n\t\t\t\t\t\t\t<td class="tr" title="400,000"><a id="r_20260814004027" onclick="openReportViewerDetail(\'20260814004027\',\'5\',\'\',\'LA\'); return false;" title="보고서바로가기">400,000</a></td>\n\t\t\t\t\t\t\t<td class="tr" title="1,569,536"><a id="r_20260814004027" onclick="openReportViewerDetail(\'20260814004027\',\'5\',\'\',\'LA\'); return false;" title="보고서바로가기">1,569,536</a></td>\n\t\t\t\t\t\t\t<td class="tr" title="-"><a id="r_20260814004027" onclick="openReportViewerDetail(\'20260814004027\',\'5\',\'\',\'LA\'); return false;" title="보고서바로가기">-</a></td>\n\t\t\t\t\t\t\t<td class="tr" title="-"><a id="r_20260814004027" onclick="openReportViewerDetail(\'20260814004027\',\'5\',\'\',\'LA\'); return false;" title="보고서바로가기">-</a></td>\n\t\t\t\t\t\t\t<td class="tr" title="45,252,759"><a id="r_20260814004027" onclick="openReportViewerDetail(\'20260814004027\',\'5\',\'\',\'LA\'); return false;" title="보고서바로가기">45,252,759</a></td>\n\t\t\t\t\t\t\t<td class="tr" title="501,709"><a id="r_20260814004027" onclick="openReportViewerDetail(\'20260814004027\',\'5\',\'\',\'LA\'); return false;" title="보고서바로가기">501,709</a></td>\n\t\t\t\t\t\t\t<td class="tr" title="44,751,050"><a id="r_20260814004027" onclick="openReportViewerDetail(\'20260814004027\',\'5\',\'\',\'LA\'); return false;" title="보고서바로가기">44,751,050</a></td>\n\t\t\t\t\t\t</tr></tbody></table><div class="page_info">[1/1] [총 1건]</div>'
+
+
+def test_missing_optional_director_table_uses_actual_share_table_reference(tmp_path):
+    mapping = CORP_MAPPING_HTML.replace('005930', '095570').replace('00126380', '00365387').replace('삼성전자', 'AJ네트웍스')
+    def request(method, url, **kwargs):
+        response = module().requests.Response()
+        response.url = url
+        response.status_code = 503 if url.startswith('https://dart.') else 200
+        if '/cmm/searchCorpL.do' in url:
+            response._content = mapping.encode()
+        elif '/disclosureinfo/biz/list.do' in url:
+            response._content = (OPENDART_LA_REFERENCE_HTML if kwargs['data']['gubun'] == 'LA'
+                                 else '<table class="tb_result"><tr><td>조회 결과가 없습니다.</td></tr></table>').encode()
+        else:
+            response._content = b'upstream connection termination'
+        return response
+    spec = {'095570': {'name': 'AJ네트웍스', 'period_end': '2026-06-30', 'report_kind': '반기보고서'}}
+    with patch.object(module().requests, 'request', side_effect=request), patch.object(module().time, 'sleep'):
+        row = module().collect_filing_provenance(spec, tmp_path, as_of='2026-11-05', global_search=True)['095570']
+    assert row['receipt_no'] == '20260814004027'
+    assert row['filing_date'] is None
+    assert row['verified'] is False

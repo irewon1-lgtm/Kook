@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import com.krstock.v3.data.price.PriceHistoryRepository
 import com.krstock.v3.data.price.PriceHistoryAggregation
 import com.krstock.v3.data.price.PriceHistoryAggregation.Interval
+import com.krstock.v3.data.price.PriceAdjustmentProvenance
 import java.time.format.DateTimeFormatter
 import kotlin.math.max
 
@@ -35,6 +36,7 @@ fun PriceChartPanel(
     var candleMode by rememberSaveable { mutableStateOf(false) }
     var interval by rememberSaveable { mutableStateOf(Interval.DAY) }
     val scheme = MaterialTheme.colorScheme
+    val adjustment = result?.adjustment ?: PriceAdjustmentProvenance()
     val bars = remember(result, months, interval) {
         PriceHistoryAggregation.visible(result?.bars.orEmpty(), interval, months)
     }
@@ -51,6 +53,20 @@ fun PriceChartPanel(
                 "실제 일봉에서 집계 · 4지표 순위와 별도 참고자료",
                 fontSize = 11.sp, color = scheme.onSurfaceVariant,
             )
+            Surface(
+                color = scheme.tertiaryContainer,
+                contentColor = scheme.onTertiaryContainer,
+                shape = RoundedCornerShape(8.dp),
+                modifier = Modifier.fillMaxWidth().testTag("chart_adjustment_notice"),
+            ) {
+                Column(Modifier.padding(10.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    Text(adjustment.label, fontSize = 13.sp, fontWeight = FontWeight.Bold,
+                        modifier = Modifier.testTag("chart_adjustment_status"))
+                    Text(adjustment.reason, fontSize = 11.sp,
+                        modifier = Modifier.testTag("chart_adjustment_reason"))
+                    Text(adjustment.treatment, fontSize = 11.sp)
+                }
+            }
             Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 Interval.entries.forEach { item ->
                     FilterChip(
@@ -114,7 +130,7 @@ fun PriceChartPanel(
                     Column {
                         Text(String.format("%,.0f원", last.close), fontSize = 22.sp, fontWeight = FontWeight.Bold)
                         Text(
-                            String.format("선택 기간 %+.2f%%", change),
+                            String.format("선택 기간 원본 가격 변동 %+.2f%%", change),
                             fontSize = 11.sp,
                             color = if (change >= 0) Color(0xFFC62828) else Color(0xFF1976D2),
                         )
@@ -215,7 +231,12 @@ fun PriceChartPanel(
                 fontSize = 10.sp, color = scheme.onSurfaceVariant,
             )
             Text(
-                "과거 원시 주가입니다. 액면분할·병합 등 기업행사에 따른 수정주가가 아닐 수 있습니다. " +
+                adjustment.sourceDetail + "\n" + adjustment.priceSourceUrl,
+                modifier = Modifier.testTag("chart_adjustment_source"),
+                fontSize = 10.sp, color = scheme.onSurfaceVariant,
+            )
+            Text(
+                "분할·병합 전후의 가격 변동에는 기업행사 영향이 포함될 수 있습니다. " +
                     "결측 거래일은 임의로 채우지 않습니다.",
                 fontSize = 10.sp, color = scheme.onSurfaceVariant,
             )

@@ -402,14 +402,156 @@ def collect_public_filing_rows(cache_dir: Path, public_type: str, year: int, *,
     return all_rows, evidence
 
 
+def parse_opendart_reference_rows(markup: str) -> list[dict[str, str]]:
+    """Read the official biz table's explicit settlement date and receipt.
+
+    These references intentionally contain no filing date: that field is not
+    present in this public table and must never be guessed from an identifier.
+    """
+    result = []
+    for cells in _rows(markup):
+        if len(cells) < 3:
+            continue
+        corp = re.search(r"openCorpInfo\(\s*['\"](\d{8})['\"]", cells[0])
+        name = re.search(r'(?is)<span\b[^>]*openCorpInfo\([^>]*>(.*?)</span>', cells[0])
+        period = _text(cells[1])
+        receipts = set(re.findall(r'''id\s*=\s*['"]r_(\d{14})['"]''', ''.join(cells)))
+        if not corp or not name or not re.fullmatch(r'\d{4}-\d{2}-\d{2}', period):
+            continue
+        if len(receipts) != 1:
+            raise ValueError('ambiguous OpenDART reference receipt within one table row')
+        date.fromisoformat(period)
+        result.append({'corp_code': corp.group(1), 'company_name': _text(name.group(1)),
+                       'receipt_no': next(iter(receipts)), 'report_period': period})
+    return result
+
+
+def collect_opendart_reference_rows(cache_dir: Path, report_code: str, year: int, *,
+                                    cache_only: bool = False, gate: _HostGate | None = None,
+                                    text_crp_cik: str = '', gubun: str = 'TA') -> tuple[list[dict[str, str]], list[dict[str, Any]]]:
+    """Collect public final-report references, keeping unknown date/correction."""
+    cache_dir = Path(cache_dir)
+    cache_dir.mkdir(parents=True, exist_ok=True)
+    gate = gate or _HostGate()
+    all_rows, evidence, total, page_count, page_number, raw_count = [], [], None, 1, 1, 0
+    while page_number <= page_count:
+        data = {'textCrpCik': text_crp_cik, 'textCrpNm': '', 'selectYear': str(year),
+                'reportCode': report_code, 'gubun': gubun, 'corpType': ['P', 'A'],
+                'pageIndex': str(page_number), 'recordCountPerPage': '100',
+                'pageSize': '10', 'sortStdr': 'crp', 'sortOrdr': 'asc'}
+        if text_crp_cik:
+            data.update(corpType=['P', 'A', 'N', 'E'], corpTypeAll='1')
+        markup, item = _cached_request('POST', 'https://opendart.fss.or.kr/disclosureinfo/biz/list.do',
+                                       cache_dir, data, gate, cache_only)
+        evidence.append(item)
+        page = re.search(r'\[(\d+)\s*/\s*(\d+)\]\s*\[총\s*([\d,]+)건\]', _text(markup))
+        if '조회 결과가 없습니다' in _text(markup) and page_number == 1:
+            return [], evidence
+        if not page or int(page.group(1)) != page_number:
+            raise ValueError('invalid OpenDART reference page')
+        count, pages = int(page.group(3).replace(',', '')), int(page.group(2))
+        if pages > 200 or (total is not None and (count != total or pages != page_count)):
+            raise ValueError('OpenDART references changed or exceeded bounded pagination')
+        total, page_count = count, pages
+        raw_count += sum(bool(cells and 'openCorpInfo(' in cells[0]) for cells in _rows(markup))
+        all_rows.extend(parse_opendart_reference_rows(markup))
+        page_number += 1
+    if raw_count != total:
+        raise ValueError('incomplete OpenDART reference rows')
+    return all_rows, evidence
+
+
+def _supplement_opendart_references(expected: dict[str, dict[str, Any]], result: dict[str, dict[str, Any]],
+                                     mapping: dict[str, dict[str, Any]], cache_dir: Path,
+                                     cutoff: date, cache_only: bool):
+    """Recover actual identifiers while leaving unavailable filing facts unknown."""
+    report_codes = {'사업보고서': '11011', '반기보고서': '11012',
+                    '1분기보고서': '11013', '3분기보고서': '11014'}
+    groups: dict[tuple[str, int], list[str]] = {}
+    for code, spec in expected.items():
+        if _validate_expected(code, spec, cutoff) is None and spec['report_kind'] in report_codes:
+            groups.setdefault((report_codes[spec['report_kind']], int(spec['period_end'][:4])), []).append(code)
+    gate = _HostGate()
+    for (report_code, year), codes in sorted(groups.items()):
+        if not any(result[code]['error'] == 'SOURCE_UNAVAILABLE' for code in codes):
+            continue
+        batches = [[]] if len(codes) > 100 else [codes[i:i + 10] for i in range(0, len(codes), 10)]
+        for batch in batches:
+            try:
+                references, evidence = collect_opendart_reference_rows(cache_dir / 'report-references',
+                    report_code, year, cache_only=cache_only, gate=gate,
+                    text_crp_cik=' '.join(mapping[code]['corp_code'] for code in batch if code in mapping))
+            except (_SourceUnavailable, requests.RequestException, ValueError, OSError) as exc:
+                for code in batch or codes:
+                    result[code]['reference_collection_error'] = f'{type(exc).__name__}: {exc}'
+                continue
+            available = {(reference['corp_code'], reference['report_period']) for reference in references}
+            missing_codes = [code for code in batch or codes
+                             if result[code]['error'] == 'SOURCE_UNAVAILABLE' and not result[code]['receipt_no']
+                             and code in mapping and _name(mapping[code]['name']) == _name(expected[code]['name'])
+                             and (mapping[code]['corp_code'], expected[code]['period_end']) not in available]
+            # The directors table can be omitted from quarterly reports. The
+            # mandatory share table provides the same explicit report reference.
+            for offset in range(0, len(missing_codes), 10):
+                missing_batch = missing_codes[offset:offset + 10]
+                try:
+                    extra_rows, extra_evidence = collect_opendart_reference_rows(cache_dir / 'report-references',
+                        report_code, year, cache_only=cache_only, gate=gate, gubun='LA',
+                        text_crp_cik=' '.join(mapping[code]['corp_code'] for code in missing_batch))
+                    references.extend(extra_rows)
+                    evidence.extend(extra_evidence)
+                except (_SourceUnavailable, requests.RequestException, ValueError, OSError) as exc:
+                    for code in missing_batch:
+                        result[code]['reference_collection_error'] = f'{type(exc).__name__}: {exc}'
+            receipt_evidence = {}
+            for page in evidence:
+                for reference in parse_opendart_reference_rows(Path(page['raw_path']).read_text()):
+                    receipt_evidence[reference['receipt_no']] = page
+            for code in batch or codes:
+                row, spec, identity = result[code], expected[code], mapping.get(code)
+                if not identity or _name(identity['name']) != _name(spec['name']):
+                    continue
+                candidates = {r['receipt_no']: r for r in references
+                              if r['corp_code'] == identity['corp_code'] and r['report_period'] == spec['period_end']
+                              and _name(r['company_name']) == _name(spec['name'])}
+                if len(candidates) != 1:
+                    row['reference_match_error'] = 'AMBIGUOUS_REFERENCE' if candidates else 'REFERENCE_PERIOD_NOT_FOUND'
+                    continue
+                receipt, reference = next(iter(candidates.items()))
+                if receipt[:8] > cutoff.strftime('%Y%m%d'):
+                    row['reference_match_error'] = 'REFERENCE_IDENTIFIER_AFTER_AS_OF'
+                    continue
+                source = receipt_evidence[receipt]
+                row['reference_checked_at_utc'] = source['retrieved_at_utc']
+                row['reference_source'] = 'OPENDART_PUBLIC_BIZ_TABLE'
+                row['evidence'].append(source)
+                if row['verified']:
+                    if row['receipt_no'] != receipt:
+                        row.update(verified=False, error='FINAL_RECEIPT_MISMATCH', alternate_receipt_no=receipt)
+                elif row['error'] == 'SOURCE_UNAVAILABLE':
+                    row.update(receipt_no=receipt, report_period=reference['report_period'],
+                               source_url=DART + '/dsaf001/main.do?rcpNo=' + receipt,
+                               correction_check='OPENDART_REFERENCE_ONLY: exact identity and explicit period; '
+                                                'reception date and correction label unavailable')
+                (cache_dir / 'progress' / (code + '.json')).write_text(json.dumps(row, ensure_ascii=False, indent=2) + '\n')
+
+
 def _collect_global(expected: dict[str, dict[str, Any]], cache_dir: Path, workers: int,
                     cutoff: date, cache_only: bool, max_cache_age_seconds: float) -> dict[str, dict[str, Any]]:
     # Previously captured individual searches remain useful during a live host outage.
     result = collect_filing_provenance(expected, cache_dir, workers, as_of=cutoff,
                                        cache_only=True, global_search=False,
                                        max_cache_age_seconds=max_cache_age_seconds)
-    mapping = collect_public_corp_mapping(cache_dir / 'corp-map', cache_only=cache_only,
-                                          expected_codes=list(expected))
+    try:
+        mapping = collect_public_corp_mapping(cache_dir / 'corp-map', cache_only=cache_only,
+                                              expected_codes=list(expected))
+    except (_SourceUnavailable, requests.RequestException, ValueError, OSError) as exc:
+        for code, row in result.items():
+            row['live_refresh_error'] = f'Official identity source: {type(exc).__name__}: {exc}'
+            if isinstance(exc, _SourceUnavailable):
+                row['source_error_evidence'] = exc.evidence
+            (cache_dir / 'progress' / (code + '.json')).write_text(json.dumps(row, ensure_ascii=False, indent=2) + '\n')
+        return result
     groups: dict[tuple[str, int], list[str]] = {}
     for code, spec in expected.items():
         identity = mapping.get(code)
@@ -468,6 +610,7 @@ def _collect_global(expected: dict[str, dict[str, Any]], cache_dir: Path, worker
                     row.update(verified=False, error='STALE_CORRECTION_CHECK')
             result[code] = row
             (cache_dir / 'progress' / (code + '.json')).write_text(json.dumps(row, ensure_ascii=False, indent=2) + '\n')
+    _supplement_opendart_references(expected, result, mapping, cache_dir, cutoff, cache_only)
     return {code: result[code] for code in sorted(result)}
 
 
