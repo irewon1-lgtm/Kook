@@ -2,6 +2,11 @@ name: KR4 Independent Financial Facts
 
 on:
   workflow_dispatch:
+    inputs:
+      resume_run_id:
+        description: 'Resume validated official raw responses from a prior run of this collector'
+        required: false
+        type: string
   schedule:
     # Independent daily recovery after the two quant collection windows (KST).
     - cron: '50 9 * * 1-5'
@@ -20,6 +25,7 @@ on:
 
 permissions:
   contents: write
+  actions: read
 
 concurrency:
   group: kr4-independent-financial-${{ github.ref }}
@@ -48,9 +54,23 @@ jobs:
         run: |
           mkdir -p evidence/ci/financial
           cp evidence/real_quant_snapshot.json "$RUNNER_TEMP/kr4-financial-quant-baseline.json"
+      - name: Download previous official raw observations for bounded retry
+        if: github.event_name == 'workflow_dispatch' && inputs.resume_run_id != ''
+        uses: actions/download-artifact@v4
+        with:
+          name: KR4_Official_Financial_Collection
+          run-id: ${{ inputs.resume_run_id }}
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/previous-financial
+      - name: Resume hash-validated official raw cache
+        if: github.event_name == 'workflow_dispatch' && inputs.resume_run_id != ''
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/kr4-financial-raw"
+          cp -a "$RUNNER_TEMP/previous-financial/_temp/kr4-financial-raw/." "$RUNNER_TEMP/kr4-financial-raw/"
       - name: Collect actual official BS and latest filing evidence
         run: |
-          python scripts/collect_financial_safety_verified.py \
+          python -u scripts/collect_financial_safety_verified.py \
             --quant evidence/real_quant_snapshot.json \
             --out "$RUNNER_TEMP/financial_safety_snapshot.json" \
             --cache "$RUNNER_TEMP/kr4-financial-raw" --workers 4
@@ -72,7 +92,7 @@ jobs:
           assert sum(counts.values())==s['coverage']['total']==2649
           for status,key in [('PASS','pass'),('FAIL','fail'),('HOLD','hold'),('NOT_APPLICABLE','not_applicable')]:
               assert counts[status]==s['coverage'][key]
-          errors={c:r for c,r in s['records'].items() if any(x in ('COLLECTION_ERROR','SOURCE_UNAVAILABLE') for x in r['validation_issues'])}
+          errors={c:r for c,r in s['records'].items() if any(x in ('COLLECTION_ERROR','SOURCE_UNAVAILABLE','STALE_CORRECTION_CHECK') for x in r['validation_issues'])}
           print('ACTUAL_FINANCIAL_COVERAGE',json.dumps(s['coverage'],ensure_ascii=False))
           assert not errors, f'official_source_unavailable_for_{len(errors)}_issuers; no false complete claim'
           Path('evidence/ci/financial/collection-verification.json').write_text(json.dumps({'status':'PASS','event':os.environ['GITHUB_EVENT_NAME'],'quantUnchanged':True,'coverage':s['coverage'],'commit':os.environ['GITHUB_SHA']},ensure_ascii=False,indent=2))

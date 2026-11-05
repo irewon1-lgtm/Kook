@@ -61,4 +61,24 @@ class FinancialFacts(unittest.TestCase):
  def test_missing_issuer_stays_present_with_explicit_reason(self):
   p=v.parse_bulk_sources({'000002':{'name':'자료없는회사','sector':'제조'}},[('2026_2Q_BS_20261105030346.zip',archive(rows()))],'2026-11-05')
   self.assertEqual(set(p),{'000002'});self.assertEqual(p['000002']['reason'],'DART_NO_BALANCE_SHEET')
+class OfficialSourceRetry(unittest.TestCase):
+ def test_transient_source_failure_is_retried_without_marking_missing_evidence_valid(self):
+  seen=[]
+  def fetch(*args,**kwargs):
+   seen.append(1)
+   return {'000001':{'verified':len(seen)>1,'error':None if len(seen)>1 else 'SOURCE_UNAVAILABLE'}}
+  result=v.collect_with_retry({'000001':{}},Path('/tmp/kr4-controlled-retry'),1,'2026-11-05',collector=fetch,pause=lambda _:None)
+  self.assertEqual(len(seen),2);self.assertTrue(result['000001']['verified'])
+ def test_persistent_failure_stays_explicit_after_bounded_retries(self):
+  seen=[]
+  def fetch(*args,**kwargs):
+   seen.append(1);return {'000001':{'verified':False,'error':'COLLECTION_ERROR'}}
+  result=v.collect_with_retry({'000001':{}},Path('/tmp/kr4-controlled-retry'),1,'2026-11-05',collector=fetch,pause=lambda _:None)
+  self.assertEqual(len(seen),3);self.assertEqual(result['000001']['error'],'COLLECTION_ERROR');self.assertFalse(result['000001']['verified'])
+ def test_known_absence_is_not_hammered_as_transient_network_failure(self):
+  seen=[]
+  def fetch(*args,**kwargs):
+   seen.append(1);return {'000001':{'verified':False,'error':'REPORT_PERIOD_NOT_FOUND'}}
+  v.collect_with_retry({'000001':{}},Path('/tmp/kr4-controlled-retry'),1,'2026-11-05',collector=fetch,pause=lambda _:None)
+  self.assertEqual(len(seen),1)
 if __name__=='__main__':unittest.main(verbosity=2)

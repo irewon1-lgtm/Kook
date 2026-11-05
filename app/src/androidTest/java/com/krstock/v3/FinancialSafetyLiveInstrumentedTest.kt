@@ -43,17 +43,7 @@ class FinancialSafetyLiveInstrumentedTest {
         val before = StockRepository.getAllStocks().toList()
         assertEquals(2649, before.size)
         val ref = InstrumentationRegistry.getArguments().getString("financialEvidenceRef") ?: "main"
-        val url = "https://raw.githubusercontent.com/irewon1-lgtm/Kook/" + ref + "/evidence/financial_safety_snapshot.json"
-        val connection = (URL(url).openConnection() as HttpURLConnection).apply {
-            connectTimeout = 15_000
-            readTimeout = 30_000
-            useCaches = false
-            setRequestProperty("Cache-Control", "no-cache")
-        }
-        val bytes = try {
-            assertEquals("Published independent financial artifact",200,connection.responseCode)
-            connection.inputStream.use { input -> input.readBytes().also { require(it.size <= 16*1024*1024) } }
-        } finally { connection.disconnect() }
+        val (url, bytes) = downloadPublished(ref)
         val body = bytes.toString(Charsets.UTF_8)
         val published = JSONObject(body)
         val directory = File(context.cacheDir,"financial-http-proof").apply { mkdirs() }
@@ -101,6 +91,12 @@ class FinancialSafetyLiveInstrumentedTest {
                 val expected = row.optString(field,"")
                 if (expected.isNotBlank()) composeRule.onAllNodesWithText(expected).onFirst().performScrollTo().assertIsDisplayed()
             }
+            for (field in listOf("debt_to_equity_pct","current_ratio_pct")) {
+                if (!row.isNull(field)) {
+                    val ratio=String.format(Locale.KOREA,"%.2f%%",row.getDouble(field))
+                    composeRule.onAllNodesWithText(ratio).onFirst().performScrollTo().assertIsDisplayed()
+                }
+            }
             val sourceUrl = row.optString("source_url","")
             if (sourceUrl.isNotBlank()) composeRule.onNodeWithTag("financial_safety_source").performScrollTo().assertTextEquals(sourceUrl)
             SnapshotTestSupport.evidence(context,"financial-live-" + status + "-source",metadata(status,code,url,ref,bytes,row))
@@ -108,6 +104,57 @@ class FinancialSafetyLiveInstrumentedTest {
             composeRule.onNodeWithTag("financial_safety_details").assertDoesNotExist()
         }
         directory.deleteRecursively()
+    }
+
+    @Test fun independentBackgroundReceiptRepaintsAlreadyMountedFinancialDetailsAndPreservesRanks() {
+        val context=ApplicationProvider.getApplicationContext<Context>()
+        SnapshotTestSupport.stopPeriodicRefreshes(context)
+        val quant=runBlocking { SnapshotAutoUpdater.bootstrap(context) }
+        assertTrue(quant.networkSucceeded)
+        val before=StockRepository.getAllStocks().toList()
+        val actualQuant=File(context.filesDir,SnapshotTestSupport.CACHE).readText()
+        val ref=InstrumentationRegistry.getArguments().getString("financialEvidenceRef") ?: "main"
+        val (url,bytes)=downloadPublished(ref)
+        val body=bytes.toString(Charsets.UTF_8)
+        val published=JSONObject(body)
+        val row=published.getJSONObject("records").getJSONObject("005930")
+        val isolated=SnapshotTestSupport.isolatedContext(context)
+        SnapshotAutoUpdater.refreshBlocking(isolated,safetyFetch={ "{\"snapshot_date_kst\":\""+quant.snapshotDate+"\"}" }) { actualQuant }
+        assertNull(FinancialSafetyRepository.currentSnapshot())
+        composeRule.setContent { KRStockV3Theme { StockDetailScreen("005930",onBack={}) } }
+        composeRule.onNodeWithTag("financial_safety_badge").performScrollTo()
+        composeRule.onNodeWithText("미확보").assertIsDisplayed()
+        val oldRevision=SnapshotAutoUpdater.lastResult.revision
+        SnapshotAutoUpdater.refreshBlocking(isolated,safetyFetch={ body }) { actualQuant }
+        composeRule.waitForIdle()
+        assertTrue(SnapshotAutoUpdater.lastResult.revision>oldRevision)
+        assertEquals(before,StockRepository.getAllStocks())
+        composeRule.onNodeWithTag("financial_safety_badge").performScrollTo()
+        composeRule.onNodeWithText("자료 확인").assertIsDisplayed()
+        composeRule.onNodeWithTag("financial_safety_badge").performClick()
+        val expected=String.format(Locale.KOREA,"%,d원",row.getLong("assets"))
+        composeRule.onNodeWithText(expected).performScrollTo().assertIsDisplayed()
+        SnapshotTestSupport.evidence(context,"financial-background-repaint",metadata("PASS","005930",url,ref,bytes,row)
+            .put("evidence_kind","CONTROLLED_FIXTURE").put("controlled_state",true)
+            .put("scenario","actual published market facts; controlled missing-artifact then background receive")
+            .put("quant_values_and_ranks_unchanged",true))
+        composeRule.onNodeWithText("닫기").performClick()
+        isolated.filesDir.deleteRecursively()
+    }
+
+    private fun downloadPublished(ref:String):Pair<String,ByteArray> {
+        val url = "https://raw.githubusercontent.com/irewon1-lgtm/Kook/" + ref + "/evidence/financial_safety_snapshot.json"
+        val connection = (URL(url).openConnection() as HttpURLConnection).apply {
+            connectTimeout = 15_000
+            readTimeout = 30_000
+            useCaches = false
+            setRequestProperty("Cache-Control", "no-cache")
+        }
+        val bytes = try {
+            assertEquals("Published independent financial artifact",200,connection.responseCode)
+            connection.inputStream.use { input -> input.readBytes().also { require(it.size <= 16*1024*1024) } }
+        } finally { connection.disconnect() }
+        return url to bytes
     }
 
     private fun metadata(status:String,code:String,url:String,ref:String,bytes:ByteArray,row:JSONObject):JSONObject =

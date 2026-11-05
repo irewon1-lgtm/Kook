@@ -176,6 +176,13 @@ class CompleteUiGalleryInstrumentedTest {
         SnapshotAutoUpdater.refreshBlocking(isolated, safetyFetch = { SnapshotTestSupport.fixture() }) { SnapshotTestSupport.offline() }
         composeRule.waitForIdle()
         capture("CACHE")
+        // A first-ever successful receive has no prior normal cache to rotate.
+        // Exercise the real second successful receive before corrupting cache.
+        val rotated = SnapshotAutoUpdater.refreshBlocking(isolated, safetyFetch = { SnapshotTestSupport.fixture() }) { SnapshotTestSupport.fixture() }
+        assertTrue(rotated.networkSucceeded)
+        val backup = File(isolated.filesDir, SnapshotTestSupport.BACKUP)
+        assertTrue("Backup must be created by the real validated rotation", backup.isFile)
+        assertEquals(SnapshotTestSupport.fixture(), backup.readText())
         File(isolated.filesDir, SnapshotTestSupport.CACHE).writeText("{corrupt")
         SnapshotAutoUpdater.refreshBlocking(isolated, safetyFetch = { SnapshotTestSupport.fixture() }) { SnapshotTestSupport.offline() }
         composeRule.waitForIdle()

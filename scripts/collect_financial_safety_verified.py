@@ -271,6 +271,7 @@ def download_sources(cache: Path, as_of: str) -> list[tuple[str, bytes]]:
         raise RuntimeError("official BS listing did not expose four recent periods")
     sources = []
     for _, _, filename in chosen:
+        print("OFFICIAL_BS_START", filename, flush=True)
         local = cache / filename
         if local.exists() and local.stat().st_size:
             payload = local.read_bytes()
@@ -292,7 +293,32 @@ def download_sources(cache: Path, as_of: str) -> list[tuple[str, bytes]]:
             else:
                 raise RuntimeError(f"official BS download failed: {filename}: {last}")
         sources.append((filename, payload))
+        print("OFFICIAL_BS_RECEIVED", filename, len(payload), hashlib.sha256(payload).hexdigest(), flush=True)
     return sources
+
+
+def collect_with_retry(expected: dict[str, Any], cache: Path, workers: int, as_of: str,
+                       *, attempts: int = 3, collector=None, pause=time.sleep) -> dict[str, Any]:
+    if collector is None:
+        from dart_filing_provenance import collect_filing_provenance
+        collector = collect_filing_provenance
+    if not 1 <= attempts <= 3:
+        raise ValueError("official collection retry budget must be1..3")
+    cache.mkdir(parents=True, exist_ok=True)
+    for attempt in range(1, attempts + 1):
+        print("OFFICIAL_FILINGS_ATTEMPT_START", attempt, len(expected), flush=True)
+        rows = collector(expected, cache / "dart", workers=workers, as_of=as_of)
+        if set(rows) != set(expected):
+            raise ValueError("official collector dropped issuer identities")
+        errors = sum(r.get("error") in {"SOURCE_UNAVAILABLE", "COLLECTION_ERROR", "STALE_CORRECTION_CHECK"} for r in rows.values())
+        (cache / ("filing-attempt-" + str(attempt) + ".json")).write_text(json.dumps(rows, ensure_ascii=False, indent=2))
+        print("OFFICIAL_FILINGS_ATTEMPT_RESULT", attempt, "verified", sum(r.get("verified") is True for r in rows.values()),
+              "source_errors", errors, flush=True)
+        if not errors or attempt == attempts:
+            return rows
+        # Resume hash-verified successful requests and retry only unavailable ones.
+        pause(30)
+    raise AssertionError("unreachable")
 
 
 def main() -> None:
@@ -302,6 +328,7 @@ def main() -> None:
     parser.add_argument("--cache", default="/tmp/kr4-financial-raw")
     parser.add_argument("--filings")
     parser.add_argument("--workers", type=int, default=6)
+    parser.add_argument("--attempts", type=int, default=3)
     args = parser.parse_args()
     quant = json.loads(Path(args.quant).read_text())
     issuers = {x.code: {"name": x.name, "sector": x.sector} for x in base.load_issuers()}
@@ -310,6 +337,7 @@ def main() -> None:
     cache = Path(args.cache)
     sources = download_sources(cache / "bulk", quant["snapshot_date_kst"])
     raw = parse_bulk_sources(issuers, sources, quant["snapshot_date_kst"])
+    print("OFFICIAL_BS_PARSED", len(raw), "raw_available", sum(bool(r["source_file"]) for r in raw.values()), flush=True)
     (cache / "raw_facts.json").write_text(json.dumps(raw, ensure_ascii=False, indent=2))
     expected = {code: {"name": row["issuer_name"], "period_end": row["report_period"] or "",
                        "report_kind": row["report_kind"] or ""} for code, row in raw.items()}
@@ -317,8 +345,7 @@ def main() -> None:
     if args.filings:
         filings = json.loads(Path(args.filings).read_text())
     else:
-        from dart_filing_provenance import collect_filing_provenance
-        filings = collect_filing_provenance(expected, cache / "dart", workers=args.workers, as_of=quant["snapshot_date_kst"])
+        filings = collect_with_retry(expected, cache, args.workers, quant["snapshot_date_kst"], attempts=args.attempts)
     (cache / "filing_provenance.json").write_text(json.dumps(filings, ensure_ascii=False, indent=2))
     snapshot = build_snapshot(quant, raw, filings)
     out = Path(args.out)

@@ -272,26 +272,40 @@ def _cached_request(method: str, url: str, cache_dir: Path,
             try:
                 if gate:
                     gate.before_request()
+                request_started_at = datetime.now(timezone.utc).isoformat()
+                attempt_started = time.monotonic()
                 response = requests.request(method, url, data=data, headers=HEADERS, timeout=30)
                 response.raise_for_status()
                 if gate:
                     gate.success()
                 break
             except requests.RequestException as exc:
-                failure_evidence = None
+                failure_dir = cache_dir / 'errors'
+                failure_dir.mkdir(exist_ok=True)
+                failure_stem = key + '-' + str(time.time_ns())
+                failure_meta = {**request_data, 'status_code': None,
+                                'request_started_at_utc': request_started_at,
+                                'retrieved_at_utc': datetime.now(timezone.utc).isoformat(),
+                                'attempt': attempt + 1,
+                                'elapsed_seconds': round(time.monotonic() - attempt_started, 6),
+                                'response_received': response is not None,
+                                'error_type': type(exc).__name__, 'error_detail': str(exc)}
                 if response is not None:
-                    failure_dir = cache_dir / 'errors'
-                    failure_dir.mkdir(exist_ok=True)
-                    failure_path = failure_dir / (key + '-' + str(time.time_ns()) + '.html')
+                    failure_path = failure_dir / (failure_stem + '.html')
                     failure_meta_path = failure_path.with_suffix('.json')
-                    failure_meta = {**request_data, 'status_code': response.status_code,
-                                    'retrieved_at_utc': datetime.now(timezone.utc).isoformat(),
+                    failure_meta.update({'status_code': response.status_code,
                                     'sha256': hashlib.sha256(response.content).hexdigest(),
-                                    'bytes': len(response.content)}
+                                    'bytes': len(response.content)})
                     failure_path.write_bytes(response.content)
-                    failure_meta_path.write_text(json.dumps(failure_meta, ensure_ascii=False, indent=2) + '\n')
-                    failure_evidence = {**failure_meta, 'raw_path': str(failure_path.resolve()),
-                                        'metadata_path': str(failure_meta_path.resolve())}
+                    failure_raw_path = str(failure_path.resolve())
+                else:
+                    # A TLS/connection failure has no HTTP response body to
+                    # hash or save. Preserve the real request and timing only.
+                    failure_meta_path = failure_dir / (failure_stem + '.transport.json')
+                    failure_raw_path = None
+                failure_meta_path.write_text(json.dumps(failure_meta, ensure_ascii=False, indent=2) + '\n')
+                failure_evidence = {**failure_meta, 'raw_path': failure_raw_path,
+                                    'metadata_path': str(failure_meta_path.resolve())}
                 if gate:
                     gate.failure(exc, failure_evidence)
                 if attempt == 2:
@@ -566,11 +580,20 @@ def _collect_global(expected: dict[str, dict[str, Any]], cache_dir: Path, worker
     gate = _HostGate()
     index_dir = cache_dir / 'search-index'
     index_dir.mkdir(exist_ok=True)
-    for (public_type, year), codes in sorted(groups.items()):
+    # DART's public multiselect accepts at most ten company identifiers. A
+    # completed issuer batch remains independently verifiable if a later
+    # batch suffers a transport failure. Deterministic scopes also replay
+    # directly from the raw-response cache on a bounded retry run.
+    batches = []
+    for (public_type, year), group_codes in sorted(groups.items()):
+        ordered_codes = sorted(group_codes)
+        for offset in range(0, len(ordered_codes), 10):
+            batches.append((public_type, year, ordered_codes[offset:offset + 10]))
+    for public_type, year, codes in batches:
         try:
             rows, pages = collect_public_filing_rows(cache_dir, public_type, year, as_of=cutoff,
                 cache_only=cache_only, gate=gate,
-                text_crp_nm='/'.join(codes) if public_type == 'A001' and len(codes) <= 10 else '',
+                text_crp_nm='/'.join(codes),
                 max_cache_age_seconds=max_cache_age_seconds)
         except (_SourceUnavailable, requests.RequestException, ValueError, OSError) as exc:
             for code in codes:
@@ -601,7 +624,7 @@ def _collect_global(expected: dict[str, dict[str, Any]], cache_dir: Path, worker
             if not relevant_pages:
                 relevant_pages = pages[:1]
             row['evidence'] = identity['evidence'] + relevant_pages
-            row['search_completeness'] = {'pages': len(pages), 'rows': len(rows),
+            row['search_completeness'] = {'pages': len(pages), 'rows': len(rows), 'stock_codes': codes,
                                           'index_path': str(index_path.resolve()), 'index_sha256': index_hash}
             row['correction_checked_at_utc'] = relevant_pages[0]['retrieved_at_utc']
             if row['verified']:

@@ -340,7 +340,7 @@ def test_global_collector_uses_official_stock_map_without_per_company_profile_ca
         if url == 'https://opendart.fss.or.kr/cmm/searchCorpL.do':
             return Response(CORP_MAPPING_HTML)
         assert url == 'https://dart.fss.or.kr/dsab001/search.ax'
-        assert kwargs['data']['textCrpNm'] == ''
+        assert kwargs['data']['textCrpNm'].split('/') == ['005930']
         return Response(SEARCH)
     with patch.object(module().requests, 'request', side_effect=request), patch.object(module().time, 'sleep'):
         row = module().collect_filing_provenance({'005930': EXPECTED}, tmp_path,
@@ -478,3 +478,119 @@ def test_missing_optional_director_table_uses_actual_share_table_reference(tmp_p
     assert row['receipt_no'] == '20260814004027'
     assert row['filing_date'] is None
     assert row['verified'] is False
+
+
+# Eleven independently captured rows from GitHub run 41990569644, actual
+# DART A002 page 1 on 2026-11-05; expected receipts/dates are literal facts.
+BOUNDED_HY_ARTIFACT_ROWS = [['186230', '그린플러스', '00602279', '20261105000269', '2026.11.05', '<tr>\n\t\t\t\t\t<td >\n\t\t\t\t\t\t1\n\t\t\t\t\t</td>\n\t\t\t\t\t<td class="tL">\n\t\t\t\t\t\t<span class="innerWrap">\n\t\t\t\t    \t<span class="tagCom_kosdaq" title="코스닥시장" style="cursor:default">코</span>\n\t\t\t\t\t\t<a onclick="openCorpInfoNew(\'00602279\', \'winCorpInfo\', \'/dsae001/selectPopup.ax\');" style="cursor:pointer;" title="그린플러스 기업개황 새창" >\n\t\t\t\t\t\t\t그린플러스\n\t\t\t\t\t\t</a>\n\t\t\t\t\t\t</span>\n\t\t\t\t\t\t\n\t\t\t\t\t</td>\n\t\t\t\t\t\n\t\t\t\t\t<td class="tL">\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t<a href="/dsaf001/main.do?rcpNo=20261105000269" onclick="openReportViewer(\'20261105000269\',\'\'); return false;" id="r_20261105000269" title="반기보고서 공시뷰어 새창" >\n\t\t\t\t\t\t\t\t<span title="본 보고서명으로 이미 제출된 보고서의 기재내용이 변경되어 제출된 것임" class="txtCB">[기재정정]</span>반기보고서 \n\t\t\t\t\t\t\t\t(2026.06)\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t</a>\n\t\t\t\t\t\t\t <!-- 본문, 정정본문 -->\n\t\t\t\t\t\t\t     <!-- xbrl대상여부 -->\n\t\t\t\t\t\t\t    \t<img src="/images/xbrl/btn_xbrlviewer.png" style="cursor:pointer;" alt="반기보고서 XBRL뷰어 새창" title="반기보고서 XBRL뷰어 새창" onclick="openXbrlViewerNew(\'https://opendart.fss.or.kr\',\'20261105000269\',\'Y\',\'Y\');">\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t</td>\n\t\t\t\t\t<td class="tL ellipsis" title="그린플러스">\n\t\t\t\t\t\t그린플러스\n\t\t\t\t\t</td>\n\t\t\t\t\t<td>2026.11.05</td>\n\t\t\t\t\t\n\t\t\t\t\t<td></td>\n\t\t\t\t\t\n\t\t\t\t</tr>'], ['089140', '넥스턴앤롤코리아', '00416414', '20261104000260', '2026.11.04', '<tr>\n\t\t\t\t\t<td >\n\t\t\t\t\t\t2\n\t\t\t\t\t</td>\n\t\t\t\t\t<td class="tL">\n\t\t\t\t\t\t<span class="innerWrap">\n\t\t\t\t    \t<span class="tagCom_kosdaq" title="코스닥시장" style="cursor:default">코</span>\n\t\t\t\t\t\t<a onclick="openCorpInfoNew(\'00416414\', \'winCorpInfo\', \'/dsae001/selectPopup.ax\');" style="cursor:pointer;" title="넥스턴앤롤코리아 기업개황 새창" >\n\t\t\t\t\t\t\t넥스턴앤롤코리아\n\t\t\t\t\t\t</a>\n\t\t\t\t\t\t</span>\n\t\t\t\t\t\t\n\t\t\t\t\t</td>\n\t\t\t\t\t\n\t\t\t\t\t<td class="tL">\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t<a href="/dsaf001/main.do?rcpNo=20261104000260" onclick="openReportViewer(\'20261104000260\',\'\'); return false;" id="r_20261104000260" title="반기보고서 공시뷰어 새창" >\n\t\t\t\t\t\t\t\t<span title="본 보고서명으로 이미 제출된 보고서의 기재내용이 변경되어 제출된 것임" class="txtCB">[기재정정]</span>반기보고서 \n\t\t\t\t\t\t\t\t(2026.06)\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t</a>\n\t\t\t\t\t\t\t <!-- 본문, 정정본문 -->\n\t\t\t\t\t\t\t     <!-- xbrl대상여부 -->\n\t\t\t\t\t\t\t    \t<img src="/images/xbrl/btn_xbrlviewer.png" style="cursor:pointer;" alt="반기보고서 XBRL뷰어 새창" title="반기보고서 XBRL뷰어 새창" onclick="openXbrlViewerNew(\'https://opendart.fss.or.kr\',\'20261104000260\',\'Y\',\'Y\');">\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t</td>\n\t\t\t\t\t<td class="tL ellipsis" title="넥스턴앤롤코리아">\n\t\t\t\t\t\t넥스턴앤롤코리아\n\t\t\t\t\t</td>\n\t\t\t\t\t<td>2026.11.04</td>\n\t\t\t\t\t\n\t\t\t\t\t<td></td>\n\t\t\t\t\t\n\t\t\t\t</tr>'], ['224060', '더코디', '00530413', '20261104000170', '2026.11.04', '<tr>\n\t\t\t\t\t<td >\n\t\t\t\t\t\t3\n\t\t\t\t\t</td>\n\t\t\t\t\t<td class="tL">\n\t\t\t\t\t\t<span class="innerWrap">\n\t\t\t\t    \t<span class="tagCom_kosdaq" title="코스닥시장" style="cursor:default">코</span>\n\t\t\t\t\t\t<a onclick="openCorpInfoNew(\'00530413\', \'winCorpInfo\', \'/dsae001/selectPopup.ax\');" style="cursor:pointer;" title="더코디 기업개황 새창" >\n\t\t\t\t\t\t\t더코디\n\t\t\t\t\t\t</a>\n\t\t\t\t\t\t</span>\n\t\t\t\t\t\t\n\t\t\t\t\t</td>\n\t\t\t\t\t\n\t\t\t\t\t<td class="tL">\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t<a href="/dsaf001/main.do?rcpNo=20261104000170" onclick="openReportViewer(\'20261104000170\',\'\'); return false;" id="r_20261104000170" title="반기보고서 공시뷰어 새창" >\n\t\t\t\t\t\t\t\t<span title="본 보고서명으로 이미 제출된 보고서의 기재내용이 변경되어 제출된 것임" class="txtCB">[기재정정]</span>반기보고서 \n\t\t\t\t\t\t\t\t(2026.06)\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t</a>\n\t\t\t\t\t\t\t <!-- 본문, 정정본문 -->\n\t\t\t\t\t\t\t     <!-- xbrl대상여부 -->\n\t\t\t\t\t\t\t    \t<img src="/images/xbrl/btn_xbrlviewer.png" style="cursor:pointer;" alt="반기보고서 XBRL뷰어 새창" title="반기보고서 XBRL뷰어 새창" onclick="openXbrlViewerNew(\'https://opendart.fss.or.kr\',\'20261104000170\',\'Y\',\'Y\');">\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t</td>\n\t\t\t\t\t<td class="tL ellipsis" title="더코디">\n\t\t\t\t\t\t더코디\n\t\t\t\t\t</td>\n\t\t\t\t\t<td>2026.11.04</td>\n\t\t\t\t\t\n\t\t\t\t\t<td></td>\n\t\t\t\t\t\n\t\t\t\t</tr>'], ['032750', '삼진', '00173351', '20261104000146', '2026.11.04', '<tr>\n\t\t\t\t\t<td >\n\t\t\t\t\t\t4\n\t\t\t\t\t</td>\n\t\t\t\t\t<td class="tL">\n\t\t\t\t\t\t<span class="innerWrap">\n\t\t\t\t    \t<span class="tagCom_kosdaq" title="코스닥시장" style="cursor:default">코</span>\n\t\t\t\t\t\t<a onclick="openCorpInfoNew(\'00173351\', \'winCorpInfo\', \'/dsae001/selectPopup.ax\');" style="cursor:pointer;" title="삼진 기업개황 새창" >\n\t\t\t\t\t\t\t삼진\n\t\t\t\t\t\t</a>\n\t\t\t\t\t\t</span>\n\t\t\t\t\t\t\n\t\t\t\t\t</td>\n\t\t\t\t\t\n\t\t\t\t\t<td class="tL">\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t<a href="/dsaf001/main.do?rcpNo=20261104000146" onclick="openReportViewer(\'20261104000146\',\'\'); return false;" id="r_20261104000146" title="반기보고서 공시뷰어 새창" >\n\t\t\t\t\t\t\t\t<span title="본 보고서명으로 이미 제출된 보고서의 기재내용이 변경되어 제출된 것임" class="txtCB">[기재정정]</span>반기보고서 \n\t\t\t\t\t\t\t\t(2026.06)\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t</a>\n\t\t\t\t\t\t\t <!-- 본문, 정정본문 -->\n\t\t\t\t\t\t\t     <!-- xbrl대상여부 -->\n\t\t\t\t\t\t\t    \t<img src="/images/xbrl/btn_xbrlviewer.png" style="cursor:pointer;" alt="반기보고서 XBRL뷰어 새창" title="반기보고서 XBRL뷰어 새창" onclick="openXbrlViewerNew(\'https://opendart.fss.or.kr\',\'20261104000146\',\'Y\',\'Y\');">\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t</td>\n\t\t\t\t\t<td class="tL ellipsis" title="삼진">\n\t\t\t\t\t\t삼진\n\t\t\t\t\t</td>\n\t\t\t\t\t<td>2026.11.04</td>\n\t\t\t\t\t\n\t\t\t\t\t<td></td>\n\t\t\t\t\t\n\t\t\t\t</tr>'], ['900310', '컬러레이', '01236286', '20261102000187', '2026.11.02', '<tr>\n\t\t\t\t\t<td >\n\t\t\t\t\t\t5\n\t\t\t\t\t</td>\n\t\t\t\t\t<td class="tL">\n\t\t\t\t\t\t<span class="innerWrap">\n\t\t\t\t    \t<span class="tagCom_kosdaq" title="코스닥시장" style="cursor:default">코</span>\n\t\t\t\t\t\t<a onclick="openCorpInfoNew(\'01236286\', \'winCorpInfo\', \'/dsae001/selectPopup.ax\');" style="cursor:pointer;" title="컬러레이 기업개황 새창" >\n\t\t\t\t\t\t\t컬러레이\n\t\t\t\t\t\t</a>\n\t\t\t\t\t\t</span>\n\t\t\t\t\t\t\n\t\t\t\t\t</td>\n\t\t\t\t\t\n\t\t\t\t\t<td class="tL">\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t<a href="/dsaf001/main.do?rcpNo=20261102000187" onclick="openReportViewer(\'20261102000187\',\'\'); return false;" id="r_20261102000187" title="반기보고서 공시뷰어 새창" >\n\t\t\t\t\t\t\t\t<span title="본 보고서명으로 이미 제출된 보고서의 기재내용이 변경되어 제출된 것임" class="txtCB">[기재정정]</span>반기보고서 \n\t\t\t\t\t\t\t\t(2026.06)\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t</a>\n\t\t\t\t\t\t\t <!-- 본문, 정정본문 -->\n\t\t\t\t\t\t\t     <!-- xbrl대상여부 -->\n\t\t\t\t\t\t\t    \t<img src="/images/xbrl/btn_xbrlviewer.png" style="cursor:pointer;" alt="반기보고서 XBRL뷰어 새창" title="반기보고서 XBRL뷰어 새창" onclick="openXbrlViewerNew(\'https://opendart.fss.or.kr\',\'20261102000187\',\'Y\',\'Y\');">\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t</td>\n\t\t\t\t\t<td class="tL ellipsis" title="컬러레이">\n\t\t\t\t\t\t컬러레이\n\t\t\t\t\t</td>\n\t\t\t\t\t<td>2026.11.02</td>\n\t\t\t\t\t\n\t\t\t\t\t<td></td>\n\t\t\t\t\t\n\t\t\t\t</tr>'], ['017550', '수산세보틱스', '00135111', '20261030000662', '2026.10.30', '<tr>\n\t\t\t\t\t<td >\n\t\t\t\t\t\t7\n\t\t\t\t\t</td>\n\t\t\t\t\t<td class="tL">\n\t\t\t\t\t\t<span class="innerWrap">\n\t\t\t\t    \t<span class="tagCom_kospi" title="유가증권시장" style="cursor:default">유</span>\n\t\t\t\t\t\t<a onclick="openCorpInfoNew(\'00135111\', \'winCorpInfo\', \'/dsae001/selectPopup.ax\');" style="cursor:pointer;" title="수산세보틱스 기업개황 새창" >\n\t\t\t\t\t\t\t수산세보틱스\n\t\t\t\t\t\t</a>\n\t\t\t\t\t\t</span>\n\t\t\t\t\t\t\n\t\t\t\t\t</td>\n\t\t\t\t\t\n\t\t\t\t\t<td class="tL">\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t<a href="/dsaf001/main.do?rcpNo=20261030000662" onclick="openReportViewer(\'20261030000662\',\'\'); return false;" id="r_20261030000662" title="반기보고서 공시뷰어 새창" >\n\t\t\t\t\t\t\t\t<span title="본 보고서명으로 이미 제출된 보고서의 기재내용이 변경되어 제출된 것임" class="txtCB">[기재정정]</span>반기보고서 \n\t\t\t\t\t\t\t\t(2026.06)\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t</a>\n\t\t\t\t\t\t\t <!-- 본문, 정정본문 -->\n\t\t\t\t\t\t\t     <!-- xbrl대상여부 -->\n\t\t\t\t\t\t\t    \t<img src="/images/xbrl/btn_xbrlviewer.png" style="cursor:pointer;" alt="반기보고서 XBRL뷰어 새창" title="반기보고서 XBRL뷰어 새창" onclick="openXbrlViewerNew(\'https://opendart.fss.or.kr\',\'20261030000662\',\'Y\',\'Y\');">\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t</td>\n\t\t\t\t\t<td class="tL ellipsis" title="수산세보틱스">\n\t\t\t\t\t\t수산세보틱스\n\t\t\t\t\t</td>\n\t\t\t\t\t<td>2026.10.30</td>\n\t\t\t\t\t\n\t\t\t\t\t<td></td>\n\t\t\t\t\t\n\t\t\t\t</tr>'], ['036460', '한국가스공사', '00261285', '20261030000399', '2026.10.30', '<tr>\n\t\t\t\t\t<td >\n\t\t\t\t\t\t8\n\t\t\t\t\t</td>\n\t\t\t\t\t<td class="tL">\n\t\t\t\t\t\t<span class="innerWrap">\n\t\t\t\t    \t<span class="tagCom_kospi" title="유가증권시장" style="cursor:default">유</span>\n\t\t\t\t\t\t<a onclick="openCorpInfoNew(\'00261285\', \'winCorpInfo\', \'/dsae001/selectPopup.ax\');" style="cursor:pointer;" title="한국가스공사 기업개황 새창" >\n\t\t\t\t\t\t\t한국가스공사\n\t\t\t\t\t\t</a>\n\t\t\t\t\t\t</span>\n\t\t\t\t\t\t\n\t\t\t\t\t</td>\n\t\t\t\t\t\n\t\t\t\t\t<td class="tL">\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t<a href="/dsaf001/main.do?rcpNo=20261030000399" onclick="openReportViewer(\'20261030000399\',\'\'); return false;" id="r_20261030000399" title="반기보고서 공시뷰어 새창" >\n\t\t\t\t\t\t\t\t<span title="본 보고서명으로 이미 제출된 보고서의 기재내용이 변경되어 제출된 것임" class="txtCB">[기재정정]</span>반기보고서 \n\t\t\t\t\t\t\t\t(2026.06)\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t</a>\n\t\t\t\t\t\t\t <!-- 본문, 정정본문 -->\n\t\t\t\t\t\t\t     <!-- xbrl대상여부 -->\n\t\t\t\t\t\t\t    \t<img src="/images/xbrl/btn_xbrlviewer.png" style="cursor:pointer;" alt="반기보고서 XBRL뷰어 새창" title="반기보고서 XBRL뷰어 새창" onclick="openXbrlViewerNew(\'https://opendart.fss.or.kr\',\'20261030000399\',\'Y\',\'Y\');">\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t</td>\n\t\t\t\t\t<td class="tL ellipsis" title="한국가스공사">\n\t\t\t\t\t\t한국가스공사\n\t\t\t\t\t</td>\n\t\t\t\t\t<td>2026.10.30</td>\n\t\t\t\t\t\n\t\t\t\t\t<td></td>\n\t\t\t\t\t\n\t\t\t\t</tr>'], ['123690', '한국화장품', '00823429', '20261030000371', '2026.10.30', '<tr>\n\t\t\t\t\t<td >\n\t\t\t\t\t\t9\n\t\t\t\t\t</td>\n\t\t\t\t\t<td class="tL">\n\t\t\t\t\t\t<span class="innerWrap">\n\t\t\t\t    \t<span class="tagCom_kospi" title="유가증권시장" style="cursor:default">유</span>\n\t\t\t\t\t\t<a onclick="openCorpInfoNew(\'00823429\', \'winCorpInfo\', \'/dsae001/selectPopup.ax\');" style="cursor:pointer;" title="한국화장품 기업개황 새창" >\n\t\t\t\t\t\t\t한국화장품\n\t\t\t\t\t\t</a>\n\t\t\t\t\t\t</span>\n\t\t\t\t\t\t\n\t\t\t\t\t</td>\n\t\t\t\t\t\n\t\t\t\t\t<td class="tL">\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t<a href="/dsaf001/main.do?rcpNo=20261030000371" onclick="openReportViewer(\'20261030000371\',\'\'); return false;" id="r_20261030000371" title="반기보고서 공시뷰어 새창" >\n\t\t\t\t\t\t\t\t<span title="본 보고서명으로 이미 제출된 보고서의 기재내용이 변경되어 제출된 것임" class="txtCB">[기재정정]</span>반기보고서 \n\t\t\t\t\t\t\t\t(2026.06)\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t</a>\n\t\t\t\t\t\t\t <!-- 본문, 정정본문 -->\n\t\t\t\t\t\t\t     <!-- xbrl대상여부 -->\n\t\t\t\t\t\t\t    \t<img src="/images/xbrl/btn_xbrlviewer.png" style="cursor:pointer;" alt="반기보고서 XBRL뷰어 새창" title="반기보고서 XBRL뷰어 새창" onclick="openXbrlViewerNew(\'https://opendart.fss.or.kr\',\'20261030000371\',\'Y\',\'Y\');">\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t</td>\n\t\t\t\t\t<td class="tL ellipsis" title="한국화장품">\n\t\t\t\t\t\t한국화장품\n\t\t\t\t\t</td>\n\t\t\t\t\t<td>2026.10.30</td>\n\t\t\t\t\t\n\t\t\t\t\t<td></td>\n\t\t\t\t\t\n\t\t\t\t</tr>'], ['079000', '와토스코리아', '00455875', '20261030000325', '2026.10.30', '<tr>\n\t\t\t\t\t<td >\n\t\t\t\t\t\t10\n\t\t\t\t\t</td>\n\t\t\t\t\t<td class="tL">\n\t\t\t\t\t\t<span class="innerWrap">\n\t\t\t\t    \t<span class="tagCom_kosdaq" title="코스닥시장" style="cursor:default">코</span>\n\t\t\t\t\t\t<a onclick="openCorpInfoNew(\'00455875\', \'winCorpInfo\', \'/dsae001/selectPopup.ax\');" style="cursor:pointer;" title="와토스코리아 기업개황 새창" >\n\t\t\t\t\t\t\t와토스코리아\n\t\t\t\t\t\t</a>\n\t\t\t\t\t\t</span>\n\t\t\t\t\t\t\n\t\t\t\t\t</td>\n\t\t\t\t\t\n\t\t\t\t\t<td class="tL">\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t<a href="/dsaf001/main.do?rcpNo=20261030000325" onclick="openReportViewer(\'20261030000325\',\'\'); return false;" id="r_20261030000325" title="반기보고서 공시뷰어 새창" >\n\t\t\t\t\t\t\t\t<span title="본 보고서명으로 이미 제출된 보고서의 기재내용이 변경되어 제출된 것임" class="txtCB">[기재정정]</span>반기보고서 \n\t\t\t\t\t\t\t\t(2026.06)\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t</a>\n\t\t\t\t\t\t\t <!-- 본문, 정정본문 -->\n\t\t\t\t\t\t\t     <!-- xbrl대상여부 -->\n\t\t\t\t\t\t\t    \t<img src="/images/xbrl/btn_xbrlviewer.png" style="cursor:pointer;" alt="반기보고서 XBRL뷰어 새창" title="반기보고서 XBRL뷰어 새창" onclick="openXbrlViewerNew(\'https://opendart.fss.or.kr\',\'20261030000325\',\'Y\',\'Y\');">\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t</td>\n\t\t\t\t\t<td class="tL ellipsis" title="와토스코리아">\n\t\t\t\t\t\t와토스코리아\n\t\t\t\t\t</td>\n\t\t\t\t\t<td>2026.10.30</td>\n\t\t\t\t\t\n\t\t\t\t\t<td></td>\n\t\t\t\t\t\n\t\t\t\t</tr>'], ['192820', '코스맥스', '01009789', '20261029000602', '2026.10.29', '<tr>\n\t\t\t\t\t<td >\n\t\t\t\t\t\t11\n\t\t\t\t\t</td>\n\t\t\t\t\t<td class="tL">\n\t\t\t\t\t\t<span class="innerWrap">\n\t\t\t\t    \t<span class="tagCom_kospi" title="유가증권시장" style="cursor:default">유</span>\n\t\t\t\t\t\t<a onclick="openCorpInfoNew(\'01009789\', \'winCorpInfo\', \'/dsae001/selectPopup.ax\');" style="cursor:pointer;" title="코스맥스 기업개황 새창" >\n\t\t\t\t\t\t\t코스맥스\n\t\t\t\t\t\t</a>\n\t\t\t\t\t\t</span>\n\t\t\t\t\t\t\n\t\t\t\t\t</td>\n\t\t\t\t\t\n\t\t\t\t\t<td class="tL">\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t<a href="/dsaf001/main.do?rcpNo=20261029000602" onclick="openReportViewer(\'20261029000602\',\'\'); return false;" id="r_20261029000602" title="반기보고서 공시뷰어 새창" >\n\t\t\t\t\t\t\t\t<span title="본 보고서명으로 이미 제출된 보고서의 기재내용이 변경되어 제출된 것임" class="txtCB">[기재정정]</span>반기보고서 \n\t\t\t\t\t\t\t\t(2026.06)\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t</a>\n\t\t\t\t\t\t\t <!-- 본문, 정정본문 -->\n\t\t\t\t\t\t\t     <!-- xbrl대상여부 -->\n\t\t\t\t\t\t\t    \t<img src="/images/xbrl/btn_xbrlviewer.png" style="cursor:pointer;" alt="반기보고서 XBRL뷰어 새창" title="반기보고서 XBRL뷰어 새창" onclick="openXbrlViewerNew(\'https://opendart.fss.or.kr\',\'20261029000602\',\'Y\',\'Y\');">\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t</td>\n\t\t\t\t\t<td class="tL ellipsis" title="코스맥스">\n\t\t\t\t\t\t코스맥스\n\t\t\t\t\t</td>\n\t\t\t\t\t<td>2026.10.29</td>\n\t\t\t\t\t\n\t\t\t\t\t<td></td>\n\t\t\t\t\t\n\t\t\t\t</tr>'], ['221800', '지구홀딩스', '01026616', '20261029000449', '2026.10.29', '<tr>\n\t\t\t\t\t<td >\n\t\t\t\t\t\t12\n\t\t\t\t\t</td>\n\t\t\t\t\t<td class="tL">\n\t\t\t\t\t\t<span class="innerWrap">\n\t\t\t\t    \t<span class="tagCom_kosdaq" title="코스닥시장" style="cursor:default">코</span>\n\t\t\t\t\t\t<a onclick="openCorpInfoNew(\'01026616\', \'winCorpInfo\', \'/dsae001/selectPopup.ax\');" style="cursor:pointer;" title="지구홀딩스 기업개황 새창" >\n\t\t\t\t\t\t\t지구홀딩스\n\t\t\t\t\t\t</a>\n\t\t\t\t\t\t</span>\n\t\t\t\t\t\t\n\t\t\t\t\t</td>\n\t\t\t\t\t\n\t\t\t\t\t<td class="tL">\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t<a href="/dsaf001/main.do?rcpNo=20261029000449" onclick="openReportViewer(\'20261029000449\',\'\'); return false;" id="r_20261029000449" title="반기보고서 공시뷰어 새창" >\n\t\t\t\t\t\t\t\t<span title="본 보고서명으로 이미 제출된 보고서의 기재내용이 변경되어 제출된 것임" class="txtCB">[기재정정]</span>반기보고서 \n\t\t\t\t\t\t\t\t(2026.06)\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t</a>\n\t\t\t\t\t\t\t <!-- 본문, 정정본문 -->\n\t\t\t\t\t\t\t     <!-- xbrl대상여부 -->\n\t\t\t\t\t\t\t    \t<img src="/images/xbrl/btn_xbrlviewer.png" style="cursor:pointer;" alt="반기보고서 XBRL뷰어 새창" title="반기보고서 XBRL뷰어 새창" onclick="openXbrlViewerNew(\'https://opendart.fss.or.kr\',\'20261029000449\',\'Y\',\'Y\');">\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t</td>\n\t\t\t\t\t<td class="tL ellipsis" title="지구홀딩스">\n\t\t\t\t\t\t지구홀딩스\n\t\t\t\t\t</td>\n\t\t\t\t\t<td>2026.10.29</td>\n\t\t\t\t\t\n\t\t\t\t\t<td></td>\n\t\t\t\t\t\n\t\t\t\t</tr>']]
+
+
+def bounded_artifact_inputs():
+    expected = {code: {'name': name, 'period_end': '2026-06-30', 'report_kind': '반기보고서'}
+                for code, name, corp, receipt, filed, markup in BOUNDED_HY_ARTIFACT_ROWS}
+    rows = {row[0]: row for row in BOUNDED_HY_ARTIFACT_ROWS}
+    identity_rows = ''.join(CORP_MAPPING_HTML.split('<tbody>')[1].split('</tbody>')[0]
+                           .replace('005930', code).replace('00126380', corp).replace('삼성전자', name)
+                           for code, name, corp, receipt, filed, markup in BOUNDED_HY_ARTIFACT_ROWS)
+    mapping = '<table class="tb"><tbody>' + identity_rows + '</tbody></table><div class="page_info">[1/1] [총 11건]</div>'
+    return expected, rows, mapping
+
+
+def artifact_response(markup):
+    response = module().requests.Response()
+    response.status_code = 200
+    response._content = markup.encode('utf-8')
+    return response
+
+
+def bounded_search_response(codes, rows, page='1', pages='1', total=None):
+    selected = ''.join(rows[code][5] for code in codes)
+    total = len(codes) if total is None else total
+    return artifact_response('<table class="tbList"><tbody>' + selected +
+                             f'</tbody></table><div class="pageInfo">[{page}/{pages}] [총 {total}건]</div>')
+
+
+def test_auto_collection_bounds_stock_filters_and_verifies_actual_artifact_rows(tmp_path):
+    expected, rows, mapping = bounded_artifact_inputs()
+    queries = []
+    def request(method, url, **kwargs):
+        if '/cmm/searchCorpL.do' in url:
+            return artifact_response(mapping)
+        assert method == 'POST' and url == 'https://dart.fss.or.kr/dsab001/search.ax'
+        codes = kwargs['data']['textCrpNm'].split('/')
+        assert 1 <= len(codes) <= 10 and set(codes) <= rows.keys()
+        assert kwargs['data']['finalReport'] == 'recent'
+        queries.append(tuple(codes))
+        return bounded_search_response(codes, rows)
+    with patch.object(module().requests, 'request', side_effect=request), patch.object(module().time, 'sleep'):
+        actual = module().collect_filing_provenance(expected, tmp_path, as_of='2026-11-05', global_search=True)
+    assert all(row['verified'] for row in actual.values())
+    assert {code: row['receipt_no'] for code, row in actual.items()} == {
+        '186230': '20261105000269', '089140': '20261104000260', '224060': '20261104000170',
+        '032750': '20261104000146', '900310': '20261102000187', '017550': '20261030000662',
+        '036460': '20261030000399', '123690': '20261030000371', '079000': '20261030000325',
+        '192820': '20261029000602', '221800': '20261029000449'}
+    assert actual['186230']['filing_date'] == '2026-11-05'
+    assert sorted(len(query) for query in queries) == [1, 10]
+
+
+def test_completed_bounded_batch_survives_tls_failure_and_resumes_without_refetching(tmp_path):
+    expected, rows, mapping = bounded_artifact_inputs()
+    first_batch, last_code = sorted(expected)[:10], sorted(expected)[10]
+    calls = []
+    def interrupted(method, url, **kwargs):
+        if '/cmm/searchCorpL.do' in url:
+            return artifact_response(mapping)
+        if '/disclosureinfo/biz/list.do' in url:
+            return artifact_response('<table><tr><td>조회 결과가 없습니다.</td></tr></table>')
+        codes = kwargs['data']['textCrpNm'].split('/')
+        assert 1 <= len(codes) <= 10 and set(codes) <= rows.keys()
+        calls.append(tuple(codes))
+        if codes == [last_code]:
+            raise module().requests.exceptions.SSLError('UNEXPECTED_EOF_WHILE_READING')
+        return bounded_search_response(codes, rows)
+    with patch.object(module().requests, 'request', side_effect=interrupted), patch.object(module().time, 'sleep'):
+        partial = module().collect_filing_provenance(expected, tmp_path, as_of='2026-11-05', global_search=True)
+    assert all(partial[code]['verified'] for code in first_batch)
+    assert partial[last_code]['error'] == 'SOURCE_UNAVAILABLE'
+    assert calls.count((last_code,)) == 3
+    assert partial[last_code]['source_error_evidence'], 'TLS failures must retain the attempted request and timing'
+    transport = partial[last_code]['source_error_evidence'][0]
+    meta = json.loads(Path(transport['metadata_path']).read_text())
+    assert meta['data']['textCrpNm'] == last_code
+    assert meta['status_code'] is None
+    assert meta['response_received'] is False
+    assert meta['error_type'] == 'SSLError'
+    assert meta['elapsed_seconds'] >= 0
+    assert meta['attempt'] == 1
+    assert json.loads((tmp_path / 'progress' / (first_batch[0] + '.json')).read_text())['verified'] is True
+    resumed_calls = []
+    def resumed(method, url, **kwargs):
+        assert url == 'https://dart.fss.or.kr/dsab001/search.ax'
+        codes = kwargs['data']['textCrpNm'].split('/')
+        assert codes == [last_code], 'completed batches must replay from their cached official responses'
+        resumed_calls.append(tuple(codes))
+        return bounded_search_response(codes, rows)
+    with patch.object(module().requests, 'request', side_effect=resumed), patch.object(module().time, 'sleep'):
+        complete = module().collect_filing_provenance(expected, tmp_path, as_of='2026-11-05', global_search=True)
+    assert all(row['verified'] for row in complete.values())
+    assert resumed_calls == [(last_code,)]
+
+
+def test_bounded_batch_does_not_verify_rows_before_every_page_is_complete(tmp_path):
+    expected, rows, mapping = bounded_artifact_inputs()
+    def request(method, url, **kwargs):
+        if '/cmm/searchCorpL.do' in url:
+            return artifact_response(mapping)
+        if '/disclosureinfo/biz/list.do' in url:
+            return artifact_response('<table><tr><td>조회 결과가 없습니다.</td></tr></table>')
+        data = kwargs['data']
+        codes = data['textCrpNm'].split('/')
+        assert 1 <= len(codes) <= 10 and set(codes) <= rows.keys()
+        if data['currentPage'] == '2':
+            raise module().requests.exceptions.SSLError('page 2 TLS interruption')
+        return bounded_search_response(codes, rows, pages='2', total=11)
+    with patch.object(module().requests, 'request', side_effect=request), patch.object(module().time, 'sleep'):
+        actual = module().collect_filing_provenance(expected, tmp_path, as_of='2026-11-05', global_search=True)
+    assert all(row['verified'] is False for row in actual.values())
+    assert {row['error'] for row in actual.values()} == {'SOURCE_UNAVAILABLE'}
