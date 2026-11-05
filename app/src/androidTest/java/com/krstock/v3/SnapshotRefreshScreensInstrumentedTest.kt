@@ -89,11 +89,14 @@ class SnapshotRefreshScreensInstrumentedTest {
         assertEquals(2367, StockRepository.completeCount())
         assertNull(FinancialSafetyRepository.currentSnapshot())
         assertTrue(FinalCandidateRepository.getFinalCandidates().isEmpty())
-        composeRule.onNodeWithText("일치하는 Stage4 재무자료 없음 · 최종후보 HOLD")
+        composeRule.onNodeWithText("4지표 상위 순위")
             .performScrollTo().assertIsDisplayed()
-        composeRule.onNodeWithTag("stage4_status").performScrollTo()
-            .assertTextEquals("HOLD").assertIsDisplayed()
-        SnapshotTestSupport.evidence(context, "background-home", JSONObject().put("stage4_status", "HOLD"))
+        composeRule.onNodeWithTag("ranked_stock_count").performScrollTo()
+            .assertTextEquals("2367종목").assertIsDisplayed()
+        SnapshotTestSupport.evidence(
+            context, "background-home",
+            JSONObject().put("stage4_status", "MISSING").put("four_metric_ranked", 2367)
+        )
     }
 
     @Test

@@ -189,19 +189,11 @@ class AppSmokeTest {
         val candidateCode = candidate!!.issuerId
         val candidateRankLabel = "FINAL #${candidate.candidateRank}"
 
-        // Home must expose the V2 final-candidate state and its Stage4/5 context.
-        // Candidate cards are clickable and merge descendant semantics, so nested
-        // badge testTags are intentionally read from the unmerged tree.
-        composeRule.onNodeWithTag("home_list").performScrollToIndex(3)
+        // Home always shows the four-metric leaders regardless of Stage4 gate.
+        // Stage6 candidates are supplemental and may not belong to this top-five.
+        composeRule.onNodeWithTag("home_list").performScrollToIndex(2)
         composeRule.waitForIdle()
-        waitForTag("stock_$candidateCode")
-        composeRule.onNodeWithText(candidateRankLabel).performScrollTo().assertIsDisplayed()
-        composeRule.onAllNodesWithTag("financial_safety_badge", useUnmergedTree = true).onFirst()
-            .performScrollTo()
-            .assertIsDisplayed()
-        composeRule.onAllNodesWithTag("valuation_band_badge", useUnmergedTree = true).onFirst()
-            .performScrollTo()
-            .assertIsDisplayed()
+        composeRule.onNodeWithText("4지표 상위 순위").performScrollTo().assertIsDisplayed()
 
         // The full list must surface the same candidate identity without changing
         // its existing dynamic combination-ranking controls.

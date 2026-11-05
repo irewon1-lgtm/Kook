@@ -23,6 +23,7 @@ import com.krstock.v3.data.analysis.QuarterlyTrendAnalyzer
 import com.krstock.v3.data.candidate.FinalCandidateRepository
 import com.krstock.v3.data.evidence.ContextEvidenceRepository
 import com.krstock.v3.data.history.QuarterlyHistoryRepository
+import com.krstock.v3.data.price.PriceHistoryRepository
 import com.krstock.v3.data.model.*
 import com.krstock.v3.data.repository.StockRepository
 import com.krstock.v3.data.stage.FinancialSafetyRepository
@@ -30,6 +31,7 @@ import com.krstock.v3.data.stage.ValuationBandPolicy
 import com.krstock.v3.data.update.SnapshotAutoUpdater
 import com.krstock.v3.ui.components.FinalCandidateDetailCard
 import com.krstock.v3.ui.components.FinancialSafetyCard
+import com.krstock.v3.ui.components.PriceChartPanel
 import com.krstock.v3.ui.components.StatusBadge
 import com.krstock.v3.ui.components.ValuationCard
 import kotlinx.coroutines.launch
@@ -89,9 +91,22 @@ fun StockDetailScreen(issuerId: String, onBack: () -> Unit) {
         )
     }
 
-    val pagerState = rememberPagerState(initialPage = 0, pageCount = { 4 })
+    val pagerState = rememberPagerState(initialPage = 0, pageCount = { 5 })
     val scope = rememberCoroutineScope()
-    val tabs = listOf("요약", "4지표", "종합해석", "체크·출처")
+    val tabs = listOf("요약", "4지표", "종합해석", "체크·출처", "차트")
+    var priceChart by remember(issuerId, snapshotState.priceCutoffDate) {
+        mutableStateOf<PriceHistoryRepository.Result?>(null)
+    }
+    var chartLoading by remember(issuerId) { mutableStateOf(false) }
+    LaunchedEffect(issuerId, pagerState.currentPage, snapshotState.priceCutoffDate) {
+        if (pagerState.currentPage == 4) {
+            chartLoading = true
+            priceChart = runCatching {
+                PriceHistoryRepository.load(context, issuerId, StockRepository.priceCutoffDate())
+            }.getOrNull()
+            chartLoading = false
+        }
+    }
 
     Scaffold(
         containerColor = scheme.background,
@@ -162,7 +177,10 @@ fun StockDetailScreen(issuerId: String, onBack: () -> Unit) {
                     )
                     1 -> DetailMetricsPage(summary = summary)
                     2 -> DetailAnalysisPage(analysis = integrated, evidence = evidence, history = quarterlyHistory)
-                    else -> DetailCheckSourcePage(report = report, evidence = evidence)
+                    3 -> DetailCheckSourcePage(report = report, evidence = evidence)
+                    else -> PageColumn("detail_chart_page") {
+                        PriceChartPanel(result = priceChart, loading = chartLoading)
+                    }
                 }
             }
         }

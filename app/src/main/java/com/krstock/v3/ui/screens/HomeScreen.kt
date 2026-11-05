@@ -20,12 +20,14 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.krstock.v3.data.candidate.FinalCandidateRepository
+import com.krstock.v3.data.model.FinancialSafetyRecord
 import com.krstock.v3.data.model.MetricValue
 import com.krstock.v3.data.model.StockSummary
 import com.krstock.v3.data.repository.StockRepository
 import com.krstock.v3.data.stage.FinancialSafetyRepository
 import com.krstock.v3.data.stage.ValuationBandPolicy
 import com.krstock.v3.data.update.SnapshotAutoUpdater
+import com.krstock.v3.ui.components.FinancialSafetyBadge
 import com.krstock.v3.ui.components.Stage45CompactPanel
 import com.krstock.v3.ui.components.StatusBadge
 import java.time.OffsetDateTime
@@ -42,15 +44,11 @@ fun HomeScreen(
     val stocks = remember(snapshotState.revision) { StockRepository.getAllStocks() }
     val snapshotDate = stocks.firstOrNull()?.asOfDate ?: snapshotState.snapshotDate
     val priceDate = stocks.firstOrNull()?.m04Price6m?.asOfDate ?: snapshotState.priceCutoffDate
-    val stockByCode = remember(stocks) { stocks.associateBy { it.issuerId } }
     val rankedStocks = remember(stocks) { stocks.filter { it.rankOrder != null }.sortedBy { it.rankOrder } }
-    val finalCandidates = remember(stocks, snapshotState.revision) { FinalCandidateRepository.getFinalCandidates() }
+    val finalCandidateMap = remember(stocks, snapshotState.revision) { FinalCandidateRepository.getFinalCandidateMap() }
     val safetyByCode = remember(stocks, snapshotState.revision) { FinancialSafetyRepository.getAll() }
-    val previewStocks = remember(finalCandidates, stockByCode) {
-        finalCandidates.take(5).mapNotNull { candidate ->
-            stockByCode[candidate.issuerId]?.let { stock -> candidate to stock }
-        }
-    }
+    // The default home feed always uses the four-metric ranking, independent of Stage4 availability.
+    val previewStocks = remember(rankedStocks) { rankedStocks.take(5) }
     val m01Count = remember(stocks) { stocks.count { it.m01RevGrowth.isAvailable } }
     val m02Count = remember(stocks) { stocks.count { it.m02OpMargin.isAvailable } }
     val m03Count = remember(stocks) { stocks.count { it.m03Per.isAvailable } }
@@ -91,7 +89,6 @@ fun HomeScreen(
                 PrimaryStockExplorer(
                     total = stocks.size,
                     rankedCount = rankedStocks.size,
-                    candidateCount = finalCandidates.size,
                     onClick = onNavigateToList
                 )
             }
@@ -113,11 +110,10 @@ fun HomeScreen(
                     verticalAlignment = Alignment.Bottom
                 ) {
                     Column(modifier = Modifier.weight(1f)) {
-                        Text("최종 조사 후보", fontWeight = FontWeight.Bold, fontSize = 22.sp)
+                        Text("4지표 상위 순위", fontWeight = FontWeight.Bold, fontSize = 22.sp)
                         Spacer(Modifier.height(3.dp))
                         Text(
-                            if (safetyByCode.isEmpty()) "일치하는 Stage4 재무자료 없음 · 최종후보 HOLD"
-                            else "4지표 완성 · 양수 PER · 재무안정성 PASS · 기존 종합순위 재사용",
+                            "상위 5종목 미리보기 · 재무위험 정보는 순위에 영향 없음",
                             fontSize = 13.sp,
                             lineHeight = 18.sp,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -129,9 +125,9 @@ fun HomeScreen(
                         contentColor = MaterialTheme.colorScheme.onSurfaceVariant
                     ) {
                         Text(
-                            if (safetyByCode.isEmpty()) "HOLD" else "FINAL ${finalCandidates.size}",
+                            "${rankedStocks.size}종목",
                             modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp)
-                                .testTag("stage4_status"),
+                                .testTag("ranked_stock_count"),
                             fontSize = 11.sp,
                             fontWeight = FontWeight.Bold
                         )
@@ -139,16 +135,14 @@ fun HomeScreen(
                 }
             }
 
-            items(previewStocks, key = { (_, stock) -> "${stock.market}:${stock.issuerId}" }) { (candidate, stock) ->
+            items(previewStocks, key = { stock -> "${stock.market}:${stock.issuerId}" }) { stock ->
                 StockSummaryCard(
                     stock = stock,
                     onClick = { onStockClick(stock.issuerId) },
-                    displayRank = candidate.candidateRank,
-                    displayScore = candidate.compositeScore,
-                    scoreLabel = "최종 후보 · 기존 종합 ${candidate.sourceRank}위",
+                    financialSafety = safetyByCode[stock.issuerId],
                     stage45Content = {
                         Stage45CompactPanel(
-                            candidate = candidate,
+                            candidate = finalCandidateMap[stock.issuerId],
                             safety = safetyByCode[stock.issuerId],
                             valuation = ValuationBandPolicy.classify(stock.m03Per),
                             showRatios = true,
@@ -181,7 +175,7 @@ fun HomeScreen(
 }
 
 @Composable
-private fun PrimaryStockExplorer(total: Int, rankedCount: Int, candidateCount: Int, onClick: () -> Unit) {
+private fun PrimaryStockExplorer(total: Int, rankedCount: Int, onClick: () -> Unit) {
     val scheme = MaterialTheme.colorScheme
     Card(
         modifier = Modifier
@@ -215,14 +209,14 @@ private fun PrimaryStockExplorer(total: Int, rankedCount: Int, candidateCount: I
                 }
                 Spacer(Modifier.height(8.dp))
                 Text(
-                    "상위 조사 후보 전체보기",
+                    "4지표 전체 종목보기",
                     fontSize = 22.sp,
                     lineHeight = 28.sp,
                     fontWeight = FontWeight.Bold
                 )
                 Spacer(Modifier.height(5.dp))
                 Text(
-                    "${total}종목 검색 · 최종 후보 ${candidateCount}종목  |  전체 순위 ${rankedCount}종목",
+                    "${total}종목 공개 · 순위 산출 ${rankedCount}종목 · 결측 ${total - rankedCount}종목",
                     fontSize = 13.sp,
                     lineHeight = 19.sp,
                     color = scheme.onPrimary.copy(alpha = 0.88f)
@@ -383,6 +377,7 @@ fun StockSummaryCard(
     displayScore: Double? = stock.compositeScore,
     scoreLabel: String = "4지표 종합 상대점수",
     missingLabel: String = "실데이터 ${availableMetricCount(stock)}/4 · 순위 보류",
+    financialSafety: FinancialSafetyRecord? = null,
     stage45Content: (@Composable ColumnScope.() -> Unit)? = null,
 ) {
     val scheme = MaterialTheme.colorScheme
@@ -426,12 +421,15 @@ fun StockSummaryCard(
                         }
                         Text(
                             stock.name,
+                            modifier = Modifier.weight(1f, fill = false),
                             fontWeight = FontWeight.Bold,
-                            fontSize = 22.sp,
-                            lineHeight = 27.sp,
+                            fontSize = 20.sp,
+                            lineHeight = 25.sp,
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis
                         )
+                        Spacer(Modifier.width(6.dp))
+                        FinancialSafetyBadge(financialSafety)
                     }
                     Spacer(modifier = Modifier.height(7.dp))
                     Text(

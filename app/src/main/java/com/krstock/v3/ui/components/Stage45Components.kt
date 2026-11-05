@@ -6,6 +6,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
@@ -40,11 +41,11 @@ fun FinalCandidateBadge(candidateRank: Int, modifier: Modifier = Modifier) {
 fun FinancialSafetyBadge(safety: FinancialSafetyRecord?, modifier: Modifier = Modifier) {
     val scheme = MaterialTheme.colorScheme
     val (label, colors) = when (safety?.status) {
-        FinancialSafetyStatus.PASS -> "재무 PASS" to (scheme.secondaryContainer to scheme.onSecondaryContainer)
-        FinancialSafetyStatus.FAIL -> "재무 FAIL" to (scheme.errorContainer to scheme.onErrorContainer)
-        FinancialSafetyStatus.HOLD -> "재무 HOLD" to (scheme.tertiaryContainer to scheme.onTertiaryContainer)
-        FinancialSafetyStatus.NOT_APPLICABLE -> "재무 N/A" to (scheme.surfaceVariant to scheme.onSurfaceVariant)
-        null -> "재무 HOLD" to (scheme.surfaceVariant to scheme.onSurfaceVariant)
+        FinancialSafetyStatus.PASS -> "재무자료 확인" to (scheme.secondaryContainer to scheme.onSecondaryContainer)
+        FinancialSafetyStatus.FAIL -> "재무위험" to (Color(0xFFC62828) to Color.White)
+        FinancialSafetyStatus.HOLD -> "미확보" to (Color(0xFFEF6C00) to Color.White)
+        FinancialSafetyStatus.NOT_APPLICABLE -> "비교제외" to (scheme.surfaceVariant to scheme.onSurfaceVariant)
+        null -> "미확보" to (Color(0xFFEF6C00) to Color.White)
     }
     Surface(
         modifier = modifier.testTag("financial_safety_badge"),
@@ -139,7 +140,7 @@ fun Stage45CompactPanel(
             }
             Spacer(Modifier.height(5.dp))
             Text(
-                "Stage4=안전성 gate · Stage5=상대 PER 설명 · 기존 조합/종합순위에는 가산하지 않음",
+                "재무위험 표시는 참고자료입니다. 종목 공개와 기존 4지표 순위에는 영향을 주지 않습니다.",
                 fontSize = 9.sp,
                 lineHeight = 14.sp,
                 color = scheme.onSurfaceVariant,

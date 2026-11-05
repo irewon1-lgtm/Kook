@@ -409,6 +409,7 @@ fun StockListScreen(
                         val dynamic = dynamicRanks[stock.issuerId]
                         StockSummaryCard(
                             stock = stock,
+                            financialSafety = safetyByCode[stock.issuerId],
                             onClick = { onStockClick(stock.issuerId) },
                             displayRank = dynamic?.rank,
                             displayScore = dynamic?.score,
