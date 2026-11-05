@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -19,7 +20,10 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.semantics.text
 import androidx.compose.ui.text.AnnotatedString
@@ -35,7 +39,7 @@ import com.krstock.v3.data.price.PriceHistoryRepository
 import java.time.format.DateTimeFormatter
 import kotlin.math.max
 
-private val ChartRise = Color(0xFFFF5365)
+private val ChartRise = Color(0xFFFF3B45)
 private val ChartFall = Color(0xFF178CFF)
 
 /** Real OHLCV calendar candles, independent of the KR4 ranking engine. */
@@ -62,7 +66,7 @@ fun PriceChartPanel(
 
     Column(
         modifier = modifier.fillMaxWidth().testTag("price_chart_panel"),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         LatestPriceQuote(daily)
         Card(
@@ -71,7 +75,7 @@ fun PriceChartPanel(
             colors = CardDefaults.cardColors(containerColor = scheme.surface),
             border = BorderStroke(1.dp, scheme.outlineVariant),
         ) {
-            Column(Modifier.padding(10.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Column(Modifier.padding(9.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
@@ -115,7 +119,12 @@ fun PriceChartPanel(
                         )
                     }
                 }
-                Row(horizontalArrangement = Arrangement.spacedBy(7.dp)) {
+                Row(
+                    modifier = Modifier.widthIn(
+                        max = (236f * LocalConfiguration.current.fontScale.coerceAtLeast(1f)).dp,
+                    ).fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(7.dp),
+                ) {
                     listOf(1 to "1개월", 3 to "3개월", 6 to "6개월", 12 to "1년").forEach { (period, label) ->
                         ChartChoiceChip(
                             selected = months == period,
@@ -268,8 +277,10 @@ fun PriceChartPanel(
                     )
                 }
             }
-            Text(result?.detail ?: "조회 대기", modifier = Modifier.testTag("chart_source_detail"),
-                fontSize = 10.sp, lineHeight = 14.sp, color = scheme.onSurfaceVariant)
+            if (bars.isNotEmpty()) {
+                Text(result?.detail ?: "조회 대기", modifier = Modifier.testTag("chart_source_detail"),
+                    fontSize = 10.sp, lineHeight = 14.sp, color = scheme.onSurfaceVariant)
+            }
             Text(
                 adjustment.reason,
                 modifier = Modifier.testTag("chart_adjustment_reason"),
@@ -298,20 +309,20 @@ private fun ChartChoiceChip(
     modifier: Modifier = Modifier,
 ) {
     val scheme = MaterialTheme.colorScheme
-    FilterChip(
-        selected = selected,
-        onClick = onClick,
-        label = { Text(label, fontSize = 11.sp, lineHeight = 14.sp, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth()) },
+    Surface(
         shape = RoundedCornerShape(7.dp),
-        colors = FilterChipDefaults.filterChipColors(
-            containerColor = Color.Transparent,
-            labelColor = scheme.onSurface,
-            selectedContainerColor = scheme.primary.copy(alpha = 0.36f),
-            selectedLabelColor = Color.White,
-        ),
+        color = if (selected) scheme.primary.copy(alpha = 0.36f) else Color.Transparent,
+        contentColor = if (selected) Color.White else scheme.onSurface,
         border = BorderStroke(1.dp, if (selected) scheme.primary else scheme.outline),
-        modifier = modifier.height(28.dp),
-    )
+        modifier = modifier.height(28.dp)
+            .toggleable(value = selected, role = Role.Checkbox, onValueChange = { onClick() })
+            .semantics { this.selected = selected },
+    ) {
+        Box(Modifier.fillMaxSize().padding(horizontal = 8.dp), contentAlignment = Alignment.Center) {
+            Text(label, fontSize = 11.sp, lineHeight = 14.sp, textAlign = TextAlign.Center,
+                maxLines = 1, softWrap = false)
+        }
+    }
 }
 
 @Composable
@@ -328,7 +339,7 @@ private fun LatestPriceQuote(daily: List<Candle>) {
         Column(
             Modifier.fillMaxWidth()
                 .background(Brush.horizontalGradient(listOf(Color(0xFF103359), Color(0xFF0C213A))))
-                .padding(horizontal = 12.dp, vertical = 8.dp),
+                .padding(horizontal = 12.dp, vertical = 6.dp),
             verticalArrangement = Arrangement.spacedBy(3.dp),
         ) {
             if (last == null) {
@@ -445,14 +456,14 @@ private fun ObservedPricePlot(bars: List<Candle>, candleMode: Boolean, high: Dou
             }
         }
         Column(
-            modifier = Modifier.width(51.dp).fillMaxHeight().padding(vertical = 3.dp)
+            modifier = Modifier.width(42.dp).fillMaxHeight().padding(vertical = 3.dp)
                 .testTag("chart_price_axis"),
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.End,
         ) {
             for (i in 0..4) {
                 Text(
-                    priceText(high - i * range / 4.0), fontSize = 9.sp,
+                    priceText(high - i * range / 4.0), fontSize = 8.sp,
                     color = scheme.onSurfaceVariant, lineHeight = 14.sp,
                 )
             }
@@ -462,17 +473,18 @@ private fun ObservedPricePlot(bars: List<Candle>, candleMode: Boolean, high: Dou
 
 @Composable
 private fun ObservedDateAxis(bars: List<Candle>) {
-    val dates = listOf(0, bars.lastIndex / 2, bars.lastIndex).distinct()
+    val dates = (0..5).map { tick -> bars.lastIndex * tick / 5 }.distinct()
+    val dateFormat = DateTimeFormatter.ofPattern("MM-dd")
     Row(Modifier.fillMaxWidth().testTag("chart_date_axis")) {
         Row(Modifier.weight(1f), horizontalArrangement = Arrangement.SpaceBetween) {
             dates.forEach { index ->
                 Text(
-                    bars[index].lastTradingDate.format(DateTimeFormatter.ISO_DATE),
+                    bars[index].lastTradingDate.format(dateFormat),
                     fontSize = 8.sp, lineHeight = 10.sp, color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
         }
-        Spacer(Modifier.width(51.dp))
+        Spacer(Modifier.width(42.dp))
     }
 }
 

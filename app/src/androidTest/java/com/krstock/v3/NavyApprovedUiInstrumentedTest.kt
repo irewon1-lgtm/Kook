@@ -109,7 +109,7 @@ class NavyApprovedUiInstrumentedTest {
         composeRule.onNodeWithTag("main_home_tab").assertIsDisplayed().assertIsSelected()
         capture("home")
         if (isApprovedPhoneViewport()) {
-            composeRule.onNodeWithTag("home_full_ranking_action").assertIsDisplayed()
+            assertFullyVisible("home_full_ranking_action", "home_list")
         }
 
         composeRule.onNodeWithTag("main_ranking_tab").performClick()
@@ -120,7 +120,7 @@ class NavyApprovedUiInstrumentedTest {
         composeRule.onNodeWithTag("stock_rank_list").performScrollToIndex(0)
         capture("ranking", JSONObject().put("metric_mask", 15))
         if (isApprovedPhoneViewport()) {
-            composeRule.onNodeWithTag("ranking_full_list_action").assertIsDisplayed()
+            assertFullyVisible("ranking_full_list_action", "stock_rank_list")
         }
 
         openActualStock("005930")
@@ -157,7 +157,7 @@ class NavyApprovedUiInstrumentedTest {
         capture("detail", JSONObject().put("issuer", "005930").put("detail_tab", 1)
             .put("actual_record", samsung).put("actual_quote", lastQuote))
         if (isApprovedPhoneViewport()) {
-            composeRule.onNodeWithTag("financial_safety_evidence_entry").assertIsDisplayed()
+            assertFullyVisible("financial_safety_evidence_entry", "detail_pager")
         }
 
         composeRule.onNodeWithText("차트").performClick()
@@ -179,9 +179,9 @@ class NavyApprovedUiInstrumentedTest {
             .put("chart_source", "LIVE").put("chart_interval", "DAY").put("chart_months", 6)
             .put("chart_style", "CANDLE").put("daily_source", daily))
         if (isApprovedPhoneViewport()) {
-            composeRule.onNodeWithTag("chart_last_ohlc").assertIsDisplayed()
-            composeRule.onNodeWithTag("chart_last_volume").assertIsDisplayed()
-            composeRule.onNodeWithTag("chart_source").assertIsDisplayed()
+            assertFullyVisible("chart_last_ohlc", "detail_pager")
+            assertFullyVisible("chart_last_volume", "detail_pager")
+            assertFullyVisible("chart_source", "detail_pager")
         }
 
         checkLongestActualCompanyName()
@@ -189,6 +189,15 @@ class NavyApprovedUiInstrumentedTest {
 
     private fun isApprovedPhoneViewport(): Boolean = context.resources.configuration.let {
         it.screenWidthDp == 360 && it.fontScale <= 1.01f
+    }
+
+    private fun assertFullyVisible(tag: String, viewportTag: String) {
+        val bounds = composeRule.onNodeWithTag(tag).assertIsDisplayed().getUnclippedBoundsInRoot()
+        val viewport = composeRule.onNodeWithTag(viewportTag).getUnclippedBoundsInRoot()
+        assertTrue("$tag must fit fully above the viewport bottom: $bounds vs $viewport",
+            bounds.bottom.value <= viewport.bottom.value + 0.5f)
+        assertTrue("$tag must fit fully below the viewport top: $bounds vs $viewport",
+            bounds.top.value >= viewport.top.value - 0.5f)
     }
 
     private fun readAndCheckLiveOracle() {
@@ -216,8 +225,17 @@ class NavyApprovedUiInstrumentedTest {
         val stock = StockRepository.getAllStocks().maxWith(compareBy({ it.name.length }, { it.issuerId }))
         InstrumentationRegistry.getInstrumentation().uiAutomation.performGlobalAction(
             android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_BACK)
-        composeRule.waitForIdle()
+        // Android14 GLOBAL_ACTION_BACK injects an asynchronous DOWN/UP pair.
+        // Compose idle alone cannot prove the OS delivered it to the actual Activity.
+        composeRule.waitUntil(timeoutMillis = 10_000L) {
+            composeRule.onAllNodesWithTag("main_pager").fetchSemanticsNodes().isNotEmpty()
+        }
         composeRule.onNodeWithTag("main_ranking_tab").performClick()
+        composeRule.waitUntil(timeoutMillis = 10_000L) {
+            composeRule.onAllNodes(hasTestTag("main_ranking_tab") and isSelected())
+                .fetchSemanticsNodes().isNotEmpty() &&
+                composeRule.onAllNodesWithTag("stock_rank_list").fetchSemanticsNodes().isNotEmpty()
+        }
         composeRule.onNodeWithTag("stock_rank_list").performScrollToIndex(0)
         showSearchIfHidden()
         composeRule.onNodeWithTag("stock_search").performScrollTo().performTextReplacement(stock.issuerId)
@@ -243,6 +261,10 @@ class NavyApprovedUiInstrumentedTest {
         val layouts = mutableListOf<TextLayoutResult>()
         node.performSemanticsAction(SemanticsActions.GetTextLayoutResult) { action -> action(layouts) }
         assertTrue("$tag must expose its actual rendered text layout", layouts.isNotEmpty())
+        if (layouts.any { it.hasVisualOverflow || (0 until it.lineCount).any(it::isLineEllipsized) }) {
+            SnapshotTestSupport.evidence(context, "navy-text-layout-before-failure", baseMetadata()
+                .put("failing_text_tag", tag).put("semantics_before_teardown", composeRule.onRoot().printToString()))
+        }
         layouts.forEach { layout ->
             assertFalse("$tag clips actual company text", layout.hasVisualOverflow)
             assertTrue("$tag must not ellipsize an actual company name",

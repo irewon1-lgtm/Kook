@@ -68,6 +68,7 @@ fun NavyAppNavigation() {
     val navigationIntentGeneration = remember { mutableLongStateOf(0L) }
     val entry by navController.currentBackStackEntryAsState()
     var detailOrigin by rememberSaveable { mutableStateOf(MainMenu.HOME) }
+    var currentDetailTab by rememberSaveable { mutableIntStateOf(0) }
     val route = entry?.destination?.route ?: "main"
     val selectedMenu = when (route) {
         "search" -> MainMenu.SEARCH
@@ -88,6 +89,7 @@ fun NavyAppNavigation() {
     }
     fun showDetail(issuerId: String) {
         detailOrigin = selectedMenu
+        currentDetailTab = 0
         navController.navigate("detail/$issuerId")
     }
 
@@ -142,22 +144,25 @@ fun NavyAppNavigation() {
                     issuerId = detailEntry.arguments?.getString("issuerId").orEmpty(),
                     onBack = { navController.popBackStack() },
                     onSearch = { navController.navigate("search") { launchSingleTop = true } },
+                    onTabChanged = { currentDetailTab = it },
                 )
             }
         }
-        NavyBottomMenus(selectedMenu) { menu ->
-            // Mark the intent before launching a pager coroutine. During the
-            // same input frame its entry/page can still describe the old screen.
-            navigationIntentGeneration.longValue++
-            focusManager.clearFocus(force = true)
-            keyboard?.hide()
-            when (menu) {
-                MainMenu.HOME -> showMain(0)
-                MainMenu.RANKING -> showMain(1)
-                else -> navController.navigate(menu.route) {
-                    popUpTo("main") { saveState = true }
-                    launchSingleTop = true
-                    restoreState = true
+        if (route != "detail/{issuerId}" || currentDetailTab == 4) {
+            NavyBottomMenus(selectedMenu) { menu ->
+                // Mark the intent before launching a pager coroutine. During the
+                // same input frame its entry/page can still describe the old screen.
+                navigationIntentGeneration.longValue++
+                focusManager.clearFocus(force = true)
+                keyboard?.hide()
+                when (menu) {
+                    MainMenu.HOME -> showMain(0)
+                    MainMenu.RANKING -> showMain(1)
+                    else -> navController.navigate(menu.route) {
+                        popUpTo("main") { saveState = true }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
                 }
             }
         }

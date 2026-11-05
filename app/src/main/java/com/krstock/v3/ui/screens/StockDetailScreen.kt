@@ -10,6 +10,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -50,7 +51,12 @@ import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun StockDetailScreen(issuerId: String, onBack: () -> Unit, onSearch: (() -> Unit)? = null) {
+fun StockDetailScreen(
+    issuerId: String,
+    onBack: () -> Unit,
+    onSearch: (() -> Unit)? = null,
+    onTabChanged: (Int) -> Unit = {},
+) {
     val snapshotState by SnapshotAutoUpdater.state.collectAsState()
     val stockDetail = remember(issuerId, snapshotState.revision) { StockRepository.getStockDetail(issuerId) }
     val scheme = MaterialTheme.colorScheme
@@ -128,6 +134,7 @@ fun StockDetailScreen(issuerId: String, onBack: () -> Unit, onSearch: (() -> Uni
     }
 
     val pagerState = rememberPagerState(initialPage = 0, pageCount = { 5 })
+    LaunchedEffect(pagerState.currentPage) { onTabChanged(pagerState.currentPage) }
     val scope = rememberCoroutineScope()
     val tabs = listOf("요약", "4지표", "종합해석", "체크·출처", "차트")
     val tabFontSize = if (LocalConfiguration.current.screenWidthDp < 340 || LocalDensity.current.fontScale > 1.15f) 9.sp else 11.sp
@@ -177,11 +184,20 @@ fun StockDetailScreen(issuerId: String, onBack: () -> Unit, onSearch: (() -> Uni
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp).testTag("detail_tabs"),
                 containerColor = scheme.background,
                 contentColor = scheme.onSurface,
-                indicator = {},
+                indicator = { tabPositions ->
+                    if (pagerState.currentPage == 4) {
+                        TabRowDefaults.SecondaryIndicator(
+                            modifier = Modifier.tabIndicatorOffset(tabPositions[4]),
+                            height = 3.dp,
+                            color = scheme.primary,
+                        )
+                    }
+                },
                 divider = { HorizontalDivider(color = scheme.outline) },
             ) {
                 tabs.forEachIndexed { index, title ->
                     val selected = pagerState.currentPage == index
+                    val showPill = selected && pagerState.currentPage != 4
                     Tab(
                         selected = selected,
                         onClick = { scope.launch { pagerState.animateScrollToPage(index) } },
@@ -190,8 +206,8 @@ fun StockDetailScreen(issuerId: String, onBack: () -> Unit, onSearch: (() -> Uni
                         Surface(
                             modifier = Modifier.fillMaxWidth().padding(horizontal = 2.dp),
                             shape = RoundedCornerShape(7.dp),
-                            color = if (selected) scheme.primary.copy(alpha = .24f) else scheme.background,
-                            border = if (selected) BorderStroke(1.dp, scheme.primary.copy(alpha = .34f)) else null,
+                            color = if (showPill) scheme.primary.copy(alpha = .24f) else scheme.background,
+                            border = if (showPill) BorderStroke(1.dp, scheme.primary.copy(alpha = .34f)) else null,
                         ) {
                             Box(Modifier.fillMaxWidth().height(28.dp), contentAlignment = Alignment.Center) {
                                 Text(
@@ -485,7 +501,7 @@ private fun CompactMetricIcon(index: Int) {
 @Composable
 private fun CompactMetricsOverview(summary: StockSummary, tagMetricValues: Boolean = false) {
     val scheme = MaterialTheme.colorScheme
-    Column(verticalArrangement = Arrangement.spacedBy(7.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Box(Modifier.width(3.dp).height(20.dp).background(scheme.primary, RoundedCornerShape(3.dp)))
             Spacer(Modifier.width(8.dp))
@@ -494,18 +510,27 @@ private fun CompactMetricsOverview(summary: StockSummary, tagMetricValues: Boole
                 modifier = if (tagMetricValues) Modifier.weight(1f).testTag("detail_metrics_header") else Modifier.weight(1f),
                 fontSize = 17.sp, lineHeight = 21.sp, fontWeight = FontWeight.Bold,
             )
-            Text("원값 / 시장 상대점수", fontSize = 8.sp, lineHeight = 10.sp, color = scheme.onSurfaceVariant)
+            Surface(
+                shape = RoundedCornerShape(999.dp), color = scheme.surfaceVariant,
+                border = BorderStroke(1.dp, scheme.outlineVariant),
+            ) {
+                Text(
+                    "재무 ${summary.asOfDate.ifBlank { "미확보" }}",
+                    Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
+                    fontSize = 8.sp, lineHeight = 10.sp, color = scheme.onSurfaceVariant,
+                )
+            }
         }
         Surface(
             modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(11.dp),
             color = scheme.surface, border = BorderStroke(1.dp, scheme.outline),
         ) {
-            Column(Modifier.padding(horizontal = 10.dp, vertical = 1.dp)) {
+            Column(Modifier.padding(horizontal = 8.dp)) {
                 val metrics = listOf(summary.m01RevGrowth, summary.m02OpMargin, summary.m03Per, summary.m04Price6m)
                 metrics.forEachIndexed { index, metric ->
                     if (index > 0) HorizontalDivider(color = scheme.outlineVariant)
                     Row(
-                        Modifier.fillMaxWidth().padding(vertical = 5.dp),
+                        Modifier.fillMaxWidth().padding(vertical = 3.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(10.dp),
                     ) {

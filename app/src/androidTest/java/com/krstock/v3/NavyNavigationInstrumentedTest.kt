@@ -16,6 +16,9 @@ import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import com.krstock.v3.data.repository.StockRepository
 import com.krstock.v3.data.update.SnapshotAutoUpdater
 import org.json.JSONObject
@@ -84,7 +87,7 @@ class NavyNavigationInstrumentedTest {
 
         composeRule.onNodeWithTag("main_pager").performTouchInput { swipeLeft() }
         composeRule.onNodeWithTag("main_ranking_tab").assertIsSelected()
-        pressBack()
+        pressBack("main_home_tab", "home_list")
         composeRule.onNodeWithTag("main_home_tab").assertIsSelected()
         composeRule.onNodeWithTag("main_ranking_tab").performClick()
         composeRule.onNodeWithTag("stock_rank_list").assertIsDisplayed()
@@ -94,8 +97,12 @@ class NavyNavigationInstrumentedTest {
         composeRule.onNodeWithTag("stock_rank_list").performScrollToIndex(1)
         composeRule.onNodeWithTag("stock_005930").performClick()
         composeRule.onNodeWithTag("detail_title").assertIsDisplayed().assertTextContains("삼성전자", substring = true)
+        composeRule.onNodeWithTag("main_bottom_navigation").assertDoesNotExist()
+        composeRule.onNodeWithText("4지표").assertIsDisplayed().performClick()
+        composeRule.onNodeWithTag("main_bottom_navigation").assertDoesNotExist()
+        openChartAndAwaitMenu()
         composeRule.onNodeWithTag("main_search_tab").assertIsSelected()
-        pressBack()
+        pressBack("main_search_tab", "stock_rank_list")
 
         composeRule.onNodeWithTag("main_favorites_tab").performClick().assertIsSelected()
         composeRule.onNodeWithTag("favorites_empty").assertIsDisplayed()
@@ -112,8 +119,10 @@ class NavyNavigationInstrumentedTest {
         composeRule.onNodeWithTag("main_favorites_tab").performClick().assertIsSelected()
         composeRule.onNodeWithTag("favorite_stock_005930").assertIsDisplayed().performClick()
         composeRule.onNodeWithTag("detail_title").assertIsDisplayed()
+        composeRule.onNodeWithTag("main_bottom_navigation").assertDoesNotExist()
+        openChartAndAwaitMenu()
         composeRule.onNodeWithTag("main_favorites_tab").assertIsSelected()
-        pressBack()
+        pressBack("main_favorites_tab", "favorite_stock_005930")
         composeRule.onNodeWithTag("favorite_remove_005930").performClick()
         composeRule.onNodeWithTag("favorites_empty").assertIsDisplayed()
         assertEquals(emptySet<String>(), preferences.getStringSet("favorite_codes", emptySet()))
@@ -151,7 +160,7 @@ class NavyNavigationInstrumentedTest {
         composeRule.onNodeWithTag("main_search_tab").assertIsSelected()
         composeRule.onNodeWithTag("stock_search").assertIsDisplayed()
         hideKeyboard()
-        pressBack()
+        pressBack("main_home_tab", "home_list")
         composeRule.onNodeWithTag("main_home_tab").assertIsSelected()
 
         val pendingRankingClick = checkNotNull(composeRule.onNodeWithTag("main_ranking_tab")
@@ -168,7 +177,7 @@ class NavyNavigationInstrumentedTest {
         composeRule.waitForIdle()
         composeRule.onNodeWithTag("main_ranking_tab").assertIsSelected()
         composeRule.onNodeWithTag("stock_rank_list").assertIsDisplayed()
-        pressBack()
+        pressBack("main_home_tab", "home_list")
         composeRule.onNodeWithTag("main_home_tab").assertIsSelected()
 
         repeat(2) { cycle ->
@@ -178,8 +187,12 @@ class NavyNavigationInstrumentedTest {
             composeRule.onNodeWithTag("stock_rank_list").performScrollToIndex(1)
             composeRule.onNodeWithTag("stock_005930").assertIsDisplayed().performClick()
             composeRule.onNodeWithTag("detail_title").assertIsDisplayed()
+            composeRule.onNodeWithTag("main_bottom_navigation").assertDoesNotExist()
+            openChartAndAwaitMenu()
             if (cycle == 1) recreateAndWait()
             composeRule.onNodeWithTag("detail_title").assertIsDisplayed()
+            composeRule.onNodeWithTag("detail_chart_page").assertIsDisplayed()
+            composeRule.onNodeWithTag("main_bottom_navigation").assertIsDisplayed()
             val rankingClick = checkNotNull(composeRule.onNodeWithTag("main_ranking_tab")
                 .fetchSemanticsNode().config[SemanticsActions.OnClick].action)
 
@@ -214,11 +227,20 @@ class NavyNavigationInstrumentedTest {
             composeRule.onNodeWithTag("main_search_tab").assertIsSelected()
             composeRule.onNodeWithTag("stock_search").assertIsDisplayed()
             hideKeyboard()
-            pressBack()
+            pressBack("main_ranking_tab", "stock_rank_list")
             composeRule.onNodeWithTag("main_ranking_tab").assertIsSelected()
-            pressBack()
+            pressBack("main_home_tab", "home_list")
             composeRule.onNodeWithTag("main_home_tab").assertIsSelected()
         }
+    }
+
+    private fun openChartAndAwaitMenu() {
+        composeRule.onNodeWithText("차트").assertIsDisplayed().performClick()
+        composeRule.waitUntil(timeoutMillis = 10_000L) {
+            composeRule.onNodeWithTag("main_bottom_navigation").isDisplayed()
+        }
+        composeRule.onNodeWithTag("detail_chart_page").assertIsDisplayed()
+        composeRule.onNodeWithTag("main_bottom_navigation").assertIsDisplayed()
     }
 
     private fun waitForTag(tag: String) = composeRule.waitUntil(timeoutMillis = 90_000L) {
@@ -241,18 +263,48 @@ class NavyNavigationInstrumentedTest {
         dismissOptionalUpdate()
     }
 
-    private fun pressBack() {
-        InstrumentationRegistry.getInstrumentation().uiAutomation.performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK)
-        composeRule.waitForIdle()
+    private fun pressBack(expectedMenuTag: String, expectedContentTag: String) {
+        // GLOBAL_ACTION_BACK injects asynchronously in Android14. Compose can
+        // report idle before the system has delivered either key event.
+        assertTrue(InstrumentationRegistry.getInstrumentation().uiAutomation
+            .performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK))
+        try {
+            composeRule.waitUntil(timeoutMillis = 10_000L) {
+                composeRule.onAllNodesWithTag(expectedMenuTag).fetchSemanticsNodes().singleOrNull()
+                    ?.config?.getOrElse(SemanticsProperties.Selected) { false } == true &&
+                    composeRule.onNodeWithTag(expectedContentTag).isDisplayed()
+            }
+        } catch (failure: Throwable) {
+            // Capture before @After closes the Activity; the outer failure rule
+            // otherwise records the teardown launcher rather than this state.
+            runCatching {
+                SnapshotTestSupport.evidence(context, "nav-back-$expectedMenuTag-failed", JSONObject()
+                    .put("evidence_kind", "REAL_MARKET_RUNTIME").put("controlled_state", false)
+                    .put("expected_menu_tag", expectedMenuTag).put("expected_content_tag", expectedContentTag)
+                    .put("compose_semantics", composeRule.onRoot(useUnmergedTree = true).printToString()))
+            }
+            throw failure
+        }
+        composeRule.onNodeWithTag(expectedMenuTag).assertIsSelected()
+        composeRule.onNodeWithTag(expectedContentTag).assertIsDisplayed()
     }
 
     private fun hideKeyboard() {
         scenario!!.onActivity { activity ->
             (context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
                 .hideSoftInputFromWindow(activity.window.decorView.windowToken, 0)
-            activity.window.decorView.requestFocus()
+            activity.window.decorView.clearFocus()
+            WindowCompat.getInsetsController(activity.window, activity.window.decorView)
+                .hide(WindowInsetsCompat.Type.ime())
         }
-        composeRule.waitForIdle()
+        composeRule.waitUntil(timeoutMillis = 10_000L) {
+            var hidden = false
+            scenario!!.onActivity { activity ->
+                hidden = ViewCompat.getRootWindowInsets(activity.window.decorView)
+                    ?.isVisible(WindowInsetsCompat.Type.ime()) != true
+            }
+            hidden
+        }
     }
 
     private fun dismissOptionalUpdate() {

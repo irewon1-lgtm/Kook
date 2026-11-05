@@ -75,9 +75,9 @@ fun FinancialSafetyBadge(
         ) {
             Text(
                 label,
-                modifier = Modifier.padding(horizontal = if (compact) 5.dp else 8.dp, vertical = 3.dp),
-                fontSize = if (compact) 9.sp else 10.sp,
-                lineHeight = if (compact) 11.sp else 14.sp,
+                modifier = Modifier.padding(horizontal = if (compact) 3.dp else 8.dp, vertical = if (compact) 2.dp else 3.dp),
+                fontSize = if (compact) 7.sp else 10.sp,
+                lineHeight = if (compact) 9.sp else 14.sp,
                 fontWeight = FontWeight.Bold,
             )
         }
