@@ -43,6 +43,72 @@ def xml(*rows):
     return ET.tostring(root, encoding="unicode")
 
 
+def test_exact_search_content_description_is_a_real_touch_target():
+    icon = ET.Element("node", {"text": "", "content-desc": "종목 검색", "enabled": "true", "bounds": "[400,30][490,120]"})
+    assert helpers()["ui_bounds"](xml(icon), "종목 검색") == (445, 75)
+
+
+@pytest.mark.parametrize("attributes", [
+    {"content-desc": "종목 검색 열기"},
+    {"content-desc": "종목 검색", "enabled": "false"},
+    {"content-desc": "종목 검색", "bounds": "[0,0][0,0]"},
+])
+def test_search_icon_substrings_disabled_and_invisible_targets_are_rejected(attributes):
+    icon = ET.Element("node", {"text": "", "enabled": "true", "bounds": "[400,30][490,120]", **attributes})
+    with pytest.raises(ValueError):
+        helpers()["ui_bounds"](xml(icon), "종목 검색")
+
+
+def prepare_signed_search(title="종목 순위"):
+    """Run the actual installed-release CTA→search statements with a hidden field."""
+    workflow = (ROOT / ".github/workflows/android-build.yml").read_text()
+    code = workflow.split('cat > "$RUNNER_TEMP/kr4-stable-upgrade.py" <<\'PY\'\n', 1)[1].split("\n          PY", 1)[0]
+    tree = ast.parse(textwrap.dedent(code))
+    block = next(node for node in ast.walk(tree) if isinstance(node, ast.Try) and any(
+        isinstance(statement, ast.Expr) and isinstance(statement.value, ast.Call)
+        and isinstance(statement.value.func, ast.Name) and statement.value.func.id == "touch"
+        and statement.value.args and isinstance(statement.value.args[0], ast.Constant)
+        and statement.value.args[0].value == "4지표 전체 종목보기" for statement in node.body))
+    begin = next(index for index, statement in enumerate(block.body) if isinstance(statement, ast.Expr)
+                 and isinstance(statement.value, ast.Call) and isinstance(statement.value.func, ast.Name)
+                 and statement.value.func.id == "touch"
+                 and statement.value.args[0].value == "4지표 전체 종목보기")
+    end = next(index for index, statement in enumerate(block.body[begin:], begin) if isinstance(statement, ast.Assign)
+               and any(isinstance(target, ast.Name) and target.id == "edit" for target in statement.targets))
+    state = {"search_open": False, "events": []}
+
+    def read():
+        state["events"].append("read")
+        nodes = [ET.Element("node", text=title), ET.Element("node", {"text": "", "content-desc": "종목 검색", "enabled": "true", "bounds": "[400,30][490,120]"})]
+        if state["search_open"]:
+            nodes.append(ET.Element("node", {"class": "android.widget.EditText", "text": "", "enabled": "true", "bounds": "[20,140][480,210]"}))
+        return xml(*nodes)
+
+    def touch(label, **_options):
+        state["events"].append(label)
+        if label == "종목 검색":
+            helpers()["ui_bounds"](read(), label)
+            state["search_open"] = True
+
+    namespace = {"read_ui": read, "touch": touch, "capture": lambda *_: None, "ET": ET}
+    exec(compile(ast.Module(body=block.body[begin:end + 1], type_ignores=[]), "actual-release-search", "exec"), namespace)
+    return namespace["edit"], state
+
+
+def test_signed_release_opens_hidden_search_then_rereads_actual_editable_field():
+    edit, state = prepare_signed_search()
+    assert edit.get("class") == "android.widget.EditText"
+    assert state["search_open"] is True
+    assert state["events"].index("종목 검색") < len(state["events"]) - 1
+    assert state["events"][-1] == "read"
+
+
+@pytest.mark.parametrize("title", ["국내주식 조합순위", "종목 순위 설명"])
+def test_signed_release_requires_the_exact_current_ranking_title(title):
+    with pytest.raises(AssertionError):
+        prepare_signed_search(title)
+
+
 def test_original_search_xml_taps_exact_name_bounds_in_its_stock_card():
     # Actual name:[248,476][440,552]; badge is a separate clickable node.
     assert stock_bounds(ORIGINAL.read_text()) == (344, 514)
@@ -272,3 +338,57 @@ def test_duplicate_interval_label_or_mixed_control_is_ambiguous():
         control.append(copy.deepcopy(label if mode == "duplicate" else controls["주봉"][0]))
         with pytest.raises((AssertionError, ValueError)):
             chart_assertion(ET.tostring(tree, encoding="unicode"), "일봉")
+
+
+def received_daily_bars():
+    return [{"localTradedAt": day, "openPrice": opening, "highPrice": opening + 9,
+             "lowPrice": opening - 3, "closePrice": opening + 5, "accumulatedTradingVolume": volume}
+            for day, opening, volume in [("2026-11-27", 100, 10), ("2026-11-30", 120, 20),
+                                         ("2026-12-01", 130, 30), ("2026-12-02", 140, 40)]]
+
+
+def summary_xml(*texts):
+    return xml(*(ET.Element("node", {"text": text, "package": "com.krstock.v3", "enabled": "true",
+                                    "bounds": f"[10,{index * 35 + 10}][800,{index * 35 + 40}]"})
+                 for index, text in enumerate(texts)))
+
+
+@pytest.mark.parametrize("interval,ohlc,volume,days", [
+    ("DAY", "시가 140 · 고가 149 · 저가 137 · 종가 145", "거래량 40주 · 실제 1거래일", 1),
+    ("WEEK", "시가 120 · 고가 149 · 저가 117 · 종가 145", "거래량 90주 · 실제 3거래일", 3),
+    ("MONTH", "시가 130 · 고가 149 · 저가 127 · 종가 145", "거래량 70주 · 실제 2거래일", 2),
+])
+def test_signed_chart_summary_uses_independent_received_daily_ohlcv(interval, ohlc, volume, days):
+    module = helpers()
+    expected = module["expected_chart_summary"](received_daily_bars(), interval, "2026-12-02")
+    assert expected["ohlc"] == ohlc and expected["volume"] == volume and expected["trading_days"] == days
+    body = summary_xml(expected["anchor"], ohlc, volume)
+    assert module["ui_chart_summary_visible"](body, expected["label"])
+    assert module["ui_chart_summary_matches"](body, expected)
+
+
+def test_latest_daily_quote_cannot_satisfy_selected_weekly_or_monthly_summary():
+    module = helpers()
+    latest_only = summary_xml("최근 거래 가격", "시가 140 · 고가 149 · 저가 137 · 종가 145", "거래량 40주 · 실제 거래일 종가")
+    for interval, label in [("WEEK", "주봉"), ("MONTH", "월봉")]:
+        expected = module["expected_chart_summary"](received_daily_bars(), interval, "2026-12-02")
+        assert not module["ui_chart_summary_visible"](latest_only, label)
+        assert not module["ui_chart_summary_matches"](latest_only, expected)
+
+
+def test_selected_chart_anchor_still_requires_matching_received_prices_and_trading_days():
+    module = helpers()
+    expected = module["expected_chart_summary"](received_daily_bars(), "WEEK", "2026-12-02")
+    for body in [summary_xml("최근 일봉 · 제공 원본 OHLC", expected["ohlc"], expected["volume"]),
+                 summary_xml(expected["anchor"], "시가 140 · 고가 149 · 저가 137 · 종가 145", expected["volume"]),
+                 summary_xml(expected["anchor"], expected["ohlc"], "거래량 90주 · 실제 1거래일")]:
+        assert not module["ui_chart_summary_matches"](body, expected)
+
+
+@pytest.mark.parametrize("attribute,value", [("enabled", "false"), ("bounds", "[0,0][0,0]"), ("package", "another.app")])
+def test_invisible_disabled_or_foreign_summary_cannot_verify_actual_ohlcv(attribute, value):
+    module = helpers()
+    expected = module["expected_chart_summary"](received_daily_bars(), "DAY", "2026-12-02")
+    tree = ET.fromstring(summary_xml(expected["anchor"], expected["ohlc"], expected["volume"]))
+    tree[0].set(attribute, value)
+    assert not module["ui_chart_summary_matches"](ET.tostring(tree, encoding="unicode"), expected)

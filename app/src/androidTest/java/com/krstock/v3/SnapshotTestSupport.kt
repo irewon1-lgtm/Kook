@@ -3,6 +3,8 @@ package com.krstock.v3
 import android.content.Context
 import android.content.ContextWrapper
 import android.graphics.Bitmap
+import androidx.compose.ui.test.*
+import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.work.WorkManager
 import com.krstock.v3.data.candidate.FinalCandidateRuntimeStore
@@ -21,6 +23,30 @@ import java.util.concurrent.TimeUnit
 
 /** Test-only, byte-for-byte historical collector output; provenance is an adjacent asset. */
 internal object SnapshotTestSupport {
+    /** Approved dense controls are opened through their actual public actions. */
+    fun revealRankingSearch(rule: ComposeTestRule) {
+        if (rule.onAllNodesWithTag("stock_search").fetchSemanticsNodes().isEmpty()) {
+            rule.onNodeWithContentDescription("종목 검색").performClick()
+            rule.waitForIdle()
+        }
+    }
+
+    fun revealRankingMetrics(rule: ComposeTestRule) {
+        if (rule.onAllNodesWithTag("metric_toggle_M01").fetchSemanticsNodes().isEmpty()) {
+            rule.onNodeWithTag("metric_picker").performScrollTo().performClick()
+            rule.waitForIdle()
+        }
+    }
+
+    fun selectRankingSort(rule: ComposeTestRule, mode: String) {
+        rule.onNodeWithTag("sort_picker").performScrollTo().performClick()
+        rule.onNodeWithTag("sort_" + mode).performClick()
+        // Reopen to inspect the selected semantics, then close by selecting it.
+        rule.onNodeWithTag("sort_picker").performScrollTo().performClick()
+        rule.onNodeWithTag("sort_" + mode).assertIsSelected().performClick()
+        rule.waitForIdle()
+    }
+
     const val CURRENT = "quant_20261105.json"
     const val BEFORE = "quant_20261007_before.json"
     const val SAME_DATE_AFTER = "quant_20261007_after.json"

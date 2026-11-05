@@ -28,8 +28,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - {device: phone, profile: pixel_2, theme: light, night: 'no', font: '1.0'}
-          - {device: phone, profile: pixel_2, theme: dark, night: 'yes', font: '1.3'}
+          - {device: phone, profile: pixel_2, theme: light, night: 'no', font: '1.0', size: '1080x2280', density: '480'}
+          - {device: phone, profile: pixel_2, theme: dark, night: 'yes', font: '1.3', size: '1080x2280', density: '540'}
           - {device: tablet, profile: pixel_c, theme: light, night: 'no', font: '1.0'}
           - {device: tablet, profile: pixel_c, theme: dark, night: 'yes', font: '1.3'}
     steps:
@@ -42,11 +42,15 @@ jobs:
         with:
           gradle-version: '8.7'
       - name: Gallery provenance and original-file regression tests
-        run: python3 -m unittest discover -s tests -p test_ui_gallery.py
+        run: |
+          python3 -m unittest discover -s tests -p test_ui_gallery.py
+          python3 -m unittest discover -s tests -p test_navy_comparison.py
       - name: Prepare Android14 UI runner
         env:
           UI_NIGHT: ${{ matrix.night }}
           UI_FONT: ${{ matrix.font }}
+          UI_SIZE: ${{ matrix.size }}
+          UI_DENSITY: ${{ matrix.density }}
         run: |
           if [ -e /dev/kvm ]; then sudo chmod 666 /dev/kvm; fi
           cat > "$RUNNER_TEMP/kr4-ui-matrix.sh" <<'SH'
@@ -54,13 +58,15 @@ jobs:
           set -uo pipefail
           adb shell cmd uimode night "$UI_NIGHT"
           adb shell settings put system font_scale "$UI_FONT"
+          if [ -n "$UI_SIZE" ]; then adb shell wm size "$UI_SIZE"; fi
+          if [ -n "$UI_DENSITY" ]; then adb shell wm density "$UI_DENSITY"; fi
           mkdir -p evidence/ui-device
           adb devices -l > evidence/ui-device/available-devices.txt
           adb shell getprop > evidence/ui-device/device-properties.txt
           gradle :app:connectedDebugAndroidTest --stacktrace \
             -Pandroid.testInstrumentationRunnerArguments.deviceKind=EMULATOR \
             "-Pandroid.testInstrumentationRunnerArguments.financialEvidenceRef=$FINANCIAL_EVIDENCE_REF" \
-            -Pandroid.testInstrumentationRunnerArguments.class=com.krstock.v3.CompleteUiGalleryInstrumentedTest,com.krstock.v3.PriceChartTimeframeInstrumentedTest,com.krstock.v3.PriceChartAndRiskBadgeInstrumentedTest,com.krstock.v3.SnapshotLiveActivityInstrumentedTest,com.krstock.v3.PriceChartLiveInstrumentedTest,com.krstock.v3.SnapshotRefreshScreensInstrumentedTest,com.krstock.v3.FinancialSafetyLiveInstrumentedTest
+            -Pandroid.testInstrumentationRunnerArguments.class=com.krstock.v3.CompleteUiGalleryInstrumentedTest,com.krstock.v3.PriceChartTimeframeInstrumentedTest,com.krstock.v3.PriceChartAndRiskBadgeInstrumentedTest,com.krstock.v3.SnapshotLiveActivityInstrumentedTest,com.krstock.v3.PriceChartLiveInstrumentedTest,com.krstock.v3.SnapshotRefreshScreensInstrumentedTest,com.krstock.v3.FinancialSafetyLiveInstrumentedTest,com.krstock.v3.NavyApprovedUiInstrumentedTest,com.krstock.v3.NavyNavigationInstrumentedTest
           TEST_STATUS=$?
           adb logcat -d -v time > evidence/ui-device/logcat.txt
           adb pull /sdcard/Android/data/com.krstock.v3/files/snapshot-e2e evidence/ui-device/snapshot-e2e || true
@@ -71,6 +77,8 @@ jobs:
         env:
           UI_NIGHT: ${{ matrix.night }}
           UI_FONT: ${{ matrix.font }}
+          UI_SIZE: ${{ matrix.size }}
+          UI_DENSITY: ${{ matrix.density }}
         with:
           api-level: 34
           target: google_apis
@@ -101,8 +109,27 @@ jobs:
           assert combinations >= {(i,m,t) for i in ['DAY','WEEK','MONTH'] for m in [1,3,6,12] for t in ['LINE','CANDLE']}
           assert any(s['evidence_kind']=='REAL_MARKET_LIVE' for s in screens)
           assert any(s['name'].endswith('closed-and-relaunched-live') for s in screens)
+          navy=[s for s in screens if s.get('approved_screen')]
+          assert {s['approved_screen'] for s in navy} == {'home','ranking','detail','chart'}
+          assert all(s['activity_class']=='com.krstock.v3.MainActivity' and s['full_screen'] is True for s in navy)
+          assert all(s['evidence_kind']=='REAL_MARKET_LIVE' and s['source']=='LIVE' for s in navy)
+          if '${{ matrix.device }}' == 'phone':
+              expected_width=360 if '${{ matrix.theme }}'=='light' else 320
+              assert all(s['screen_width_dp']==expected_width for s in navy)
+              assert any(s['name'].endswith('navy-long-name-no-clipping') and s['text_layout_overflow'] is False for s in screens)
           print('REQUIRED_ANDROID14_UI_CELL_PASS',len(screens))
           PY
+      - name: Compare unchanged approved JPEGs with original live MAIN screenshots
+        if: success()
+        run: |
+          set -euo pipefail
+          python3 scripts/build_navy_comparison.py evidence/ui-input docs/design/approved-dark-navy evidence/navy-comparison
+          CHROME=$(command -v google-chrome || command -v chromium || command -v chromium-browser)
+          "$CHROME" --headless=new --no-sandbox --disable-gpu --disable-dev-shm-usage --hide-scrollbars \
+            --allow-file-access-from-files --virtual-time-budget=3000 --window-size=1800,6500 \
+            --screenshot="$PWD/evidence/navy-comparison/browser-comparison.png" \
+            "file://$PWD/evidence/navy-comparison/index.html"
+          test -s evidence/navy-comparison/browser-comparison.png
       - name: Upload original UI gallery and device test results
         if: always()
         uses: actions/upload-artifact@v4
@@ -110,6 +137,7 @@ jobs:
           name: KR4-UI-${{ matrix.device }}-${{ matrix.theme }}
           path: |
             evidence/ui-gallery/
+            evidence/navy-comparison/
             evidence/ui-device/
             app/build/reports/androidTests/
             app/build/outputs/androidTest-results/
@@ -136,10 +164,17 @@ jobs:
             cp -a "evidence/ui-matrix/KR4-UI-$CELL/evidence/ui-gallery/originals" "evidence/ui-combined-input/$CELL"
           done
           python3 scripts/build_ui_gallery.py evidence/ui-combined-input evidence/ui-complete-gallery
+          cp -a evidence/ui-matrix/KR4-UI-phone-light/evidence/navy-comparison evidence/navy-approved-comparison
       - uses: actions/upload-artifact@v4
         with:
           name: KR4-UI-complete-gallery
           path: evidence/ui-complete-gallery/
+          if-no-files-found: error
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        with:
+          name: KR4-navy-approved-comparison
+          path: evidence/navy-approved-comparison/
           if-no-files-found: error
           retention-days: 30
 
@@ -162,13 +197,18 @@ jobs:
         with:
           name: KR4-UI-complete-gallery
           path: evidence/ui-complete-gallery
+      - name: Download default 360dp approved versus actual comparison
+        uses: actions/download-artifact@v4
+        with:
+          name: KR4-navy-approved-comparison
+          path: evidence/navy-approved-comparison
 
       - name: Detect app source change
         id: app_scope
         run: |
           set -euo pipefail
           APP_CHANGED=true
-          if [ "${{ github.event_name }}" != "workflow_dispatch" ] && git rev-parse HEAD^ >/dev/null 2>&1 && git diff --quiet HEAD^ HEAD -- app/ scripts/build_ui_gallery.py tests/test_ui_gallery.py .github/workflows/android-build.yml; then
+          if [ "${{ github.event_name }}" != "workflow_dispatch" ] && git rev-parse HEAD^ >/dev/null 2>&1 && git diff --quiet HEAD^ HEAD -- app/ scripts/build_ui_gallery.py tests/test_ui_gallery.py scripts/build_navy_comparison.py tests/test_navy_comparison.py docs/design/approved-dark-navy/ .github/workflows/android-build.yml; then
             APP_CHANGED=false
           fi
           echo "changed=$APP_CHANGED" >> "$GITHUB_OUTPUT"
@@ -362,7 +402,7 @@ jobs:
           if [ "$GITHUB_REF" = "refs/heads/main" ]; then
             if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
               RELEASE_READY=true
-            elif git rev-parse HEAD^ >/dev/null 2>&1 && ! git diff --quiet HEAD^ HEAD -- app/ scripts/build_ui_gallery.py tests/test_ui_gallery.py .github/workflows/android-build.yml; then
+            elif git rev-parse HEAD^ >/dev/null 2>&1 && ! git diff --quiet HEAD^ HEAD -- app/ scripts/build_ui_gallery.py tests/test_ui_gallery.py scripts/build_navy_comparison.py tests/test_navy_comparison.py docs/design/approved-dark-navy/ .github/workflows/android-build.yml; then
               RELEASE_READY=true
             fi
           fi
@@ -734,6 +774,79 @@ jobs:
               count=f"4지표 완성 {market['coverage']['complete_count']}/{market['universe_count']}"
               return ui_snapshot_source(xml)=='LIVE' and dates in texts and count in texts
 
+          def expected_chart_summary(daily, interval, cutoff_date):
+              from datetime import date, timedelta
+              from decimal import Decimal
+              labels={'DAY':'일봉','WEEK':'주봉','MONTH':'월봉'}
+              label=labels[interval]
+              cutoff=date.fromisoformat(cutoff_date)
+              bars={}
+              for row in daily:
+                  day=date.fromisoformat(str(row['localTradedAt'])[:10])
+                  if day>cutoff or day.weekday()>=5:
+                      continue
+                  prices=[Decimal(str(row[key]).replace(',','')) for key in ['openPrice','highPrice','lowPrice','closePrice']]
+                  if not all(value.is_finite() and value>0 for value in prices):
+                      raise ValueError('Received OHLC must be finite positive actual prices')
+                  opening,high,low,close=prices
+                  if low>min(opening,close) or high<max(opening,close) or low>high:
+                      raise ValueError('Received OHLC bounds are inconsistent')
+                  volume=row.get('accumulatedTradingVolume')
+                  if volume is not None:
+                      number=Decimal(str(volume).replace(',',''))
+                      volume=int(number) if number.is_finite() and number>=0 and number==number.to_integral_value() else None
+                  if day in bars:
+                      raise ValueError('Received daily cache must retain unique trading dates')
+                  bars[day]=(opening,high,low,close,volume)
+              if not bars:
+                  raise ValueError('Received OHLCV history has no eligible trading days')
+              last=max(bars)
+              start=last if interval=='DAY' else last-timedelta(days=last.weekday()) if interval=='WEEK' else last.replace(day=1)
+              selected=[bars[day] for day in sorted(bars) if day>=start]
+              opening=selected[0][0]
+              high=max(bar[1] for bar in selected)
+              low=min(bar[2] for bar in selected)
+              close=selected[-1][3]
+              volume=sum(bar[4] for bar in selected) if all(bar[4] is not None for bar in selected) else None
+              if volume is not None and volume>9223372036854775807:
+                  volume=None
+              volume_text=f'{volume:,}주' if volume is not None else '미확보'
+              return {'label':label,'anchor':f'최근 {label} · 제공 원본 OHLC'+(' 집계' if interval!='DAY' else ''),
+                      'ohlc':f'시가 {opening:,.0f} · 고가 {high:,.0f} · 저가 {low:,.0f} · 종가 {close:,.0f}',
+                      'volume':f'거래량 {volume_text} · 실제 {len(selected)}거래일',
+                      'trading_days':len(selected),'last_trading_date':last.isoformat()}
+
+          def ui_chart_summary_texts(xml):
+              import xml.etree.ElementTree as ET
+              tree=ET.fromstring(xml)
+              parents={child:parent for parent in tree.iter() for child in parent}
+              texts=set()
+              for node in tree.iter('node'):
+                  text=node.get('text','')
+                  if node.get('package')!='com.krstock.v3' or not text:
+                      continue
+                  lineage=node
+                  while lineage is not None and lineage.get('enabled')!='false':
+                      lineage=parents.get(lineage)
+                  if lineage is not None:
+                      continue
+                  try:
+                      ui_bounds(ET.tostring(node,encoding='unicode'),text)
+                  except ValueError:
+                      continue
+                  texts.add(text)
+              return texts
+
+          def ui_chart_summary_visible(xml, label):
+              import re
+              texts=ui_chart_summary_texts(xml)
+              anchor=f'최근 {label} · 제공 원본 OHLC'+(' 집계' if label!='일봉' else '')
+              return anchor in texts and any(re.fullmatch(r'시가 [\d,]+ · 고가 [\d,]+ · 저가 [\d,]+ · 종가 [\d,]+',text) for text in texts) and any(re.fullmatch(r'거래량 (?:[\d,]+주|미확보) · 실제 [1-9]\d*거래일',text) for text in texts)
+
+          def ui_chart_summary_matches(xml, expected):
+              texts=ui_chart_summary_texts(xml)
+              return all(expected[key] in texts for key in ['anchor','ohlc','volume'])
+
           def ui_selected_chart_interval(xml):
               import re
               import xml.etree.ElementTree as ET
@@ -896,6 +1009,8 @@ jobs:
           try:
               adb('root')
               adb('wait-for-device')
+              adb('shell','wm','size','1080x2280')
+              adb('shell','wm','density','480')
               assert 'uid=0(root)' in adb('shell','id'), 'root_required_for_private_data_preservation_check'
               assert 'Success' in adb('install','--no-streaming',str(root/'baseline/KR4.apk'))
               adb('shell','cmd','uimode','night','yes')
@@ -963,10 +1078,12 @@ jobs:
               # installed signed release, without a debug-only navigation hook.
               touch('4지표 전체 종목보기',scroll=True,contains=True)
               ui=read_ui()
-              assert '국내주식 조합순위' in ui
+              import xml.etree.ElementTree as ET
+              assert any(node.get('text')=='종목 순위' for node in ET.fromstring(ui).iter('node')), 'installed_release_ranking_title_mismatch'
               capture('updated-all-stocks',ui,{'universe_count':2649})
               # Search the actual stock by code using the editable field bounds.
-              import xml.etree.ElementTree as ET
+              touch('종목 검색')
+              ui=read_ui()
               edit=next(n for n in ET.fromstring(ui).iter('node') if n.get('class')=='android.widget.EditText')
               x,y=ui_bounds(ET.tostring(edit,encoding='unicode'),edit.get('text') or edit.get('content-desc',''))
               adb('shell','input','tap',str(x),str(y))
@@ -1018,12 +1135,21 @@ jobs:
                   deadline=time.monotonic()+90
                   while True:
                       ui=read_ui()
-                      if all(value in ui for value in ['시가 ','종가 ','거래량 ']):
+                      if ui_chart_summary_visible(ui,label):
                           break
                       assert time.monotonic()<deadline, 'release_chart_actual_ohlcv_not_visible'
                       adb('shell','input','swipe',str(width//2),str(height*3//4),str(width//2),str(height//2),'250')
                       time.sleep(1)
-                  capture('updated-chart-'+interval,ui,{'chart_interval':interval,'actual_ohlcv_visible':True})
+                  daily_cache=root/('updated-chart-'+interval+'-received-daily.json')
+                  adb('pull',f'/data/user/0/{package}/files/price_history_v2/005930.json',str(daily_cache))
+                  daily_bytes=daily_cache.read_bytes()
+                  daily=json.loads(daily_bytes)
+                  assert len(daily)>200, 'release_chart_actual_trading_history_incomplete'
+                  expected=expected_chart_summary(daily,interval,snapshot['price_cutoff_date_kst'])
+                  assert ui_chart_summary_matches(ui,expected), 'release_chart_selected_ohlcv_differs_from_received_source'
+                  capture('updated-chart-'+interval,ui,{'chart_interval':interval,'actual_ohlcv_visible':True,
+                      'selected_summary_oracle':expected,'received_daily_sha256':hashlib.sha256(daily_bytes).hexdigest(),
+                      'received_daily_file':daily_cache.name})
               proof={'status':'PASS','baseline':baseline,'before':before,'after':after,
                      'dataMarkerPreserved':True,'installedApkSha256':installed_sha,
                      'dataMarkerPreservedAfterRelaunch':True,
@@ -1092,6 +1218,12 @@ jobs:
           test -s dist/ui-gallery/KR4-UI-gallery.zip
           test -s dist/ui-gallery/manifest.json
           test -s dist/ui-gallery/SHA256SUMS.txt
+          mkdir -p dist/navy-comparison
+          cp -a evidence/navy-approved-comparison/. dist/navy-comparison/
+          cp dist/navy-comparison/index.html dist/KR4-navy-comparison.html
+          cp dist/navy-comparison/browser-comparison.png dist/KR4-navy-browser-comparison.png
+          cp dist/navy-comparison/manifest.json dist/KR4-navy-comparison-manifest.json
+          test -s dist/navy-comparison/KR4-navy-comparison.zip
 
       - name: Upload complete original release gallery
         if: steps.release_gate.outputs.ready == 'true'
@@ -1101,6 +1233,10 @@ jobs:
           path: |
             dist/ui-gallery/
             dist/KR4-UI-gallery.html
+            dist/navy-comparison/
+            dist/KR4-navy-comparison.html
+            dist/KR4-navy-browser-comparison.png
+            dist/KR4-navy-comparison-manifest.json
           if-no-files-found: error
           retention-days: 30
 
@@ -1154,7 +1290,9 @@ jobs:
           if gh release view "$TAG" >/dev/null 2>&1; then
             gh release upload "$TAG" dist/KR4.apk dist/update.json dist/APK_SIGNING_CERT.txt \
               dist/KR4-UI-gallery.html dist/ui-gallery/KR4-UI-gallery.zip \
-              dist/ui-gallery/manifest.json dist/ui-gallery/SHA256SUMS.txt --clobber
+              dist/ui-gallery/manifest.json dist/ui-gallery/SHA256SUMS.txt \
+              dist/KR4-navy-comparison.html dist/KR4-navy-browser-comparison.png \
+              dist/KR4-navy-comparison-manifest.json dist/navy-comparison/KR4-navy-comparison.zip --clobber
             gh release edit "$TAG" --title "$TITLE" --notes "$NOTES" --latest
           else
             gh release create "$TAG" \
@@ -1165,6 +1303,10 @@ jobs:
               dist/ui-gallery/KR4-UI-gallery.zip \
               dist/ui-gallery/manifest.json \
               dist/ui-gallery/SHA256SUMS.txt \
+              dist/KR4-navy-comparison.html \
+              dist/KR4-navy-browser-comparison.png \
+              dist/KR4-navy-comparison-manifest.json \
+              dist/navy-comparison/KR4-navy-comparison.zip \
               --target "$GITHUB_SHA" \
               --title "$TITLE" \
               --notes "$NOTES" \
@@ -1174,13 +1316,19 @@ jobs:
           rm -rf "$RUNNER_TEMP/kr4-release-verify"
           mkdir -p "$RUNNER_TEMP/kr4-release-verify"
           gh release download "$TAG" -p KR4.apk -p update.json -p APK_SIGNING_CERT.txt \
-            -p KR4-UI-gallery.html -p KR4-UI-gallery.zip -p manifest.json -p SHA256SUMS.txt -D "$RUNNER_TEMP/kr4-release-verify"
+            -p KR4-UI-gallery.html -p KR4-UI-gallery.zip -p manifest.json -p SHA256SUMS.txt \
+            -p KR4-navy-comparison.html -p KR4-navy-browser-comparison.png \
+            -p KR4-navy-comparison-manifest.json -p KR4-navy-comparison.zip -D "$RUNNER_TEMP/kr4-release-verify"
           test "$(sha256sum dist/KR4.apk | awk '{print $1}')" = "$(sha256sum "$RUNNER_TEMP/kr4-release-verify/KR4.apk" | awk '{print $1}')"
           cmp -s dist/update.json "$RUNNER_TEMP/kr4-release-verify/update.json"
           cmp -s dist/KR4-UI-gallery.html "$RUNNER_TEMP/kr4-release-verify/KR4-UI-gallery.html"
           cmp -s dist/ui-gallery/KR4-UI-gallery.zip "$RUNNER_TEMP/kr4-release-verify/KR4-UI-gallery.zip"
           cmp -s dist/ui-gallery/manifest.json "$RUNNER_TEMP/kr4-release-verify/manifest.json"
           cmp -s dist/ui-gallery/SHA256SUMS.txt "$RUNNER_TEMP/kr4-release-verify/SHA256SUMS.txt"
+          cmp -s dist/KR4-navy-comparison.html "$RUNNER_TEMP/kr4-release-verify/KR4-navy-comparison.html"
+          cmp -s dist/KR4-navy-browser-comparison.png "$RUNNER_TEMP/kr4-release-verify/KR4-navy-browser-comparison.png"
+          cmp -s dist/KR4-navy-comparison-manifest.json "$RUNNER_TEMP/kr4-release-verify/KR4-navy-comparison-manifest.json"
+          cmp -s dist/navy-comparison/KR4-navy-comparison.zip "$RUNNER_TEMP/kr4-release-verify/KR4-navy-comparison.zip"
           python3 - <<'PY'
           import json, os
           p=os.path.join(os.environ['RUNNER_TEMP'],'kr4-release-verify','update.json')

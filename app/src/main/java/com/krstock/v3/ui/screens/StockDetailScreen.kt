@@ -1,6 +1,8 @@
 package com.krstock.v3.ui.screens
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -8,14 +10,24 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.krstock.v3.data.analysis.IntegratedInterpretationEngine
@@ -36,13 +48,43 @@ import com.krstock.v3.ui.components.StatusBadge
 import com.krstock.v3.ui.components.ValuationCard
 import kotlinx.coroutines.launch
 import kotlin.math.abs
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun StockDetailScreen(issuerId: String, onBack: () -> Unit) {
+fun StockDetailScreen(
+    issuerId: String,
+    onBack: () -> Unit,
+    onSearch: (() -> Unit)? = null,
+    onTabChanged: (Int) -> Unit = {},
+) {
     val snapshotState by SnapshotAutoUpdater.state.collectAsState()
     val stockDetail = remember(issuerId, snapshotState.revision) { StockRepository.getStockDetail(issuerId) }
     val scheme = MaterialTheme.colorScheme
+    var showUpdates by remember { mutableStateOf(false) }
+    if (showUpdates) {
+        val allStocks = remember(snapshotState.revision) { StockRepository.getAllStocks() }
+        val snapshotDate = allStocks.firstOrNull()?.asOfDate ?: snapshotState.snapshotDate
+        val priceDate = allStocks.firstOrNull()?.m04Price6m?.asOfDate ?: snapshotState.priceCutoffDate
+        AlertDialog(
+            modifier = Modifier.testTag("detail_snapshot_updates"),
+            onDismissRequest = { showUpdates = false },
+            title = { Text("데이터 갱신 상태") },
+            text = {
+                Column(Modifier.verticalScroll(rememberScrollState())) {
+                    SnapshotCompactCard(
+                        total = allStocks.size,
+                        complete = allStocks.count { it.isCompositeComplete },
+                        snapshotDate = snapshotDate,
+                        priceDate = priceDate,
+                        status = snapshotState,
+                    )
+                    Text(snapshotState.message, Modifier.padding(top = 10.dp), fontSize = 12.sp, lineHeight = 18.sp)
+                }
+            },
+            confirmButton = { TextButton(onClick = { showUpdates = false }) { Text("닫기") } },
+        )
+    }
 
     if (stockDetail == null) {
         Scaffold(
@@ -51,7 +93,8 @@ fun StockDetailScreen(issuerId: String, onBack: () -> Unit) {
                 TopAppBar(
                     colors = TopAppBarDefaults.topAppBarColors(containerColor = scheme.background),
                     title = { Text("종목을 찾을 수 없음", fontWeight = FontWeight.Bold) },
-                    navigationIcon = { TextButton(onClick = onBack) { Text("‹ 뒤로") } }
+                    navigationIcon = { TextButton(onClick = onBack) { Text("‹ 뒤로") } },
+                    actions = { NavyHeaderActions(onSearch = onSearch, onUpdates = { showUpdates = true }) },
                 )
             }
         ) { padding ->
@@ -92,74 +135,91 @@ fun StockDetailScreen(issuerId: String, onBack: () -> Unit) {
     }
 
     val pagerState = rememberPagerState(initialPage = 0, pageCount = { 5 })
+    LaunchedEffect(pagerState.currentPage) { onTabChanged(pagerState.currentPage) }
     val scope = rememberCoroutineScope()
     val tabs = listOf("요약", "4지표", "종합해석", "체크·출처", "차트")
+    val tabFontSize = if (LocalConfiguration.current.screenWidthDp < 340 || LocalDensity.current.fontScale > 1.15f) 9.sp else 11.sp
     var priceChart by remember(issuerId, snapshotState.priceCutoffDate) {
         mutableStateOf<PriceHistoryRepository.Result?>(null)
     }
     var chartLoading by remember(issuerId) { mutableStateOf(false) }
-    LaunchedEffect(issuerId, pagerState.currentPage, snapshotState.priceCutoffDate) {
-        if (pagerState.currentPage == 4) {
-            chartLoading = true
-            priceChart = runCatching {
-                PriceHistoryRepository.load(context, issuerId, StockRepository.priceCutoffDate())
-            }.getOrNull()
-            chartLoading = false
-        }
+    LaunchedEffect(issuerId, snapshotState.priceCutoffDate) {
+        chartLoading = true
+        priceChart = runCatching {
+            PriceHistoryRepository.load(context, issuerId, StockRepository.priceCutoffDate())
+        }.getOrNull()
+        chartLoading = false
     }
 
     Scaffold(
         containerColor = scheme.background,
         topBar = {
-            TopAppBar(
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = scheme.background,
-                    titleContentColor = scheme.onBackground
-                ),
-                title = {
-                    Column {
+            Surface(color = scheme.background) {
+                Row(
+                    modifier = Modifier.fillMaxWidth().statusBarsPadding().padding(horizontal = 10.dp, vertical = 4.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    IconButton(onClick = onBack, modifier = Modifier.size(34.dp).semantics { contentDescription = "뒤로" }) {
+                        Text("‹", fontSize = 30.sp, lineHeight = 32.sp)
+                    }
+                    Column(Modifier.weight(1f).padding(end = 8.dp)) {
                         Text(
                             "${summary.name} (${summary.issuerId})",
-                            modifier = Modifier.testTag("detail_title"),
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 18.sp,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
+                            modifier = Modifier.fillMaxWidth().testTag("detail_title"),
+                            fontWeight = FontWeight.Bold, fontSize = 16.sp, lineHeight = 20.sp,
                         )
                         Text(
                             "${summary.market} · ${summary.sector}",
-                            fontSize = 10.sp,
-                            color = scheme.onSurfaceVariant,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
+                            fontSize = 9.sp, lineHeight = 12.sp, color = scheme.onSurfaceVariant,
                         )
                     }
-                },
-                navigationIcon = { TextButton(onClick = onBack) { Text("‹ 뒤로") } }
-            )
+                    NavyHeaderActions(onSearch = onSearch, onUpdates = { showUpdates = true })
+                }
+            }
         }
     ) { padding ->
         Column(modifier = Modifier.fillMaxSize().padding(padding)) {
-            ScrollableTabRow(
+            if (pagerState.currentPage != 4) DetailQuotePanel(result = priceChart, loading = chartLoading)
+            TabRow(
                 selectedTabIndex = pagerState.currentPage,
-                edgePadding = 8.dp,
-                modifier = Modifier.fillMaxWidth().testTag("detail_tabs"),
-                containerColor = scheme.surface,
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp).testTag("detail_tabs"),
+                containerColor = scheme.background,
                 contentColor = scheme.onSurface,
-                divider = { HorizontalDivider(color = scheme.outlineVariant) }
+                indicator = { tabPositions ->
+                    if (pagerState.currentPage == 4) {
+                        TabRowDefaults.SecondaryIndicator(
+                            modifier = Modifier.tabIndicatorOffset(tabPositions[4]),
+                            height = 3.dp,
+                            color = scheme.primary,
+                        )
+                    }
+                },
+                divider = { HorizontalDivider(color = scheme.outline) },
             ) {
                 tabs.forEachIndexed { index, title ->
+                    val selected = pagerState.currentPage == index
+                    val showPill = selected && pagerState.currentPage != 4
                     Tab(
-                        selected = pagerState.currentPage == index,
+                        selected = selected,
                         onClick = { scope.launch { pagerState.animateScrollToPage(index) } },
-                        text = {
-                            Text(
-                                title,
-                                fontSize = 11.sp,
-                                fontWeight = if (pagerState.currentPage == index) FontWeight.Bold else FontWeight.Medium
-                            )
+                        modifier = Modifier.height(36.dp),
+                    ) {
+                        Surface(
+                            modifier = Modifier.fillMaxWidth().padding(horizontal = 2.dp),
+                            shape = RoundedCornerShape(7.dp),
+                            color = if (showPill) scheme.primary.copy(alpha = .24f) else scheme.background,
+                            border = if (showPill) BorderStroke(1.dp, scheme.primary.copy(alpha = .34f)) else null,
+                        ) {
+                            Box(Modifier.fillMaxWidth().height(28.dp), contentAlignment = Alignment.Center) {
+                                Text(
+                                    title, fontSize = tabFontSize, lineHeight = 14.sp,
+                                    maxLines = 1, softWrap = false,
+                                    fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
+                                    color = if (selected) scheme.onSurface else scheme.onSurfaceVariant,
+                                )
+                            }
                         }
-                    )
+                    }
                 }
             }
 
@@ -175,7 +235,7 @@ fun StockDetailScreen(issuerId: String, onBack: () -> Unit) {
                         financialSafety = financialSafety,
                         valuationBand = valuationBand,
                     )
-                    1 -> DetailMetricsPage(summary = summary)
+                    1 -> DetailMetricsPage(summary = summary, financialSafety = financialSafety)
                     2 -> DetailAnalysisPage(analysis = integrated, evidence = evidence, history = quarterlyHistory)
                     3 -> DetailCheckSourcePage(report = report, evidence = evidence)
                     else -> PageColumn("detail_chart_page") {
@@ -188,6 +248,122 @@ fun StockDetailScreen(issuerId: String, onBack: () -> Unit) {
 }
 
 @Composable
+private fun DetailQuotePanel(result: PriceHistoryRepository.Result?, loading: Boolean) {
+    val scheme = MaterialTheme.colorScheme
+    val fontScale = LocalDensity.current.fontScale
+    val showSparkline = LocalConfiguration.current.screenWidthDp >= 360 && fontScale <= 1.15f
+    val stackQuote = LocalConfiguration.current.screenWidthDp < 360 && fontScale > 1.15f
+    val bars = result?.bars.orEmpty().sortedBy { it.date }
+    val latest = bars.lastOrNull()
+    val previous = bars.getOrNull(bars.lastIndex - 1)
+    val change = if (latest != null && previous != null) latest.close - previous.close else null
+    val changeColor = if (change != null && change > 0) scheme.error else scheme.primary
+    val closeText = latest?.let { String.format(Locale.KOREA, "%,.0f원", it.close) }
+        ?: if (loading) "종가 확인 중" else "종가 미확보"
+    val changeText = if (change != null && previous != null) {
+        String.format(Locale.KOREA, "%s %+,.0f원 (%+.2f%%)",
+            if (change > 0) "▲" else if (change < 0) "▼" else "—",
+            change, change / previous.close * 100.0)
+    } else null
+    val sourceLabel = when (result?.source) {
+        PriceHistoryRepository.Source.CACHE -> "네이버증권 · 저장자료"
+        PriceHistoryRepository.Source.LIVE -> "네이버증권 · 완료 일봉"
+        else -> "네이버증권 · 완료 일봉 기준"
+    }
+    Surface(
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 4.dp)
+            .testTag("detail_quote_panel"),
+        shape = RoundedCornerShape(9.dp),
+        color = scheme.primaryContainer,
+        border = BorderStroke(1.dp, scheme.primary.copy(alpha = 0.32f)),
+    ) {
+        Box(
+            modifier = Modifier.background(
+                Brush.horizontalGradient(listOf(scheme.primary.copy(alpha = 0.14f), scheme.primaryContainer))
+            ),
+        ) {
+            if (showSparkline && bars.size > 1) {
+                val samples = bars.takeLast(24)
+                val lowest = samples.minOf { it.close }
+                val range = samples.maxOf { it.close } - lowest
+                Canvas(Modifier.align(Alignment.CenterEnd).offset(x = (-85).dp).width(110.dp).height(46.dp)) {
+                    val path = Path()
+                    samples.forEachIndexed { index, bar ->
+                        val x = index.toFloat() / samples.lastIndex * size.width
+                        val y = if (range > 0.0) size.height * (1f - ((bar.close - lowest) / range).toFloat()) else size.height / 2f
+                        if (index == 0) path.moveTo(x, y) else path.lineTo(x, y)
+                    }
+                    drawPath(path, color = scheme.primary.copy(alpha = 0.22f), style = Stroke(width = 2.dp.toPx()))
+                }
+            }
+            Row(
+                Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 7.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(9.dp),
+            ) {
+                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                    if (stackQuote) {
+                        Text(
+                            closeText,
+                            modifier = Modifier.testTag("detail_quote_close"),
+                            fontSize = if (latest == null) 16.sp else 20.sp, lineHeight = 24.sp,
+                            fontWeight = FontWeight.Bold, color = scheme.onSurface,
+                        )
+                        if (changeText != null) {
+                            Text(
+                                changeText,
+                                fontSize = 9.sp, lineHeight = 11.sp, fontWeight = FontWeight.SemiBold, color = changeColor,
+                            )
+                        }
+                    } else {
+                        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(7.dp)) {
+                            Text(
+                                closeText,
+                                modifier = Modifier.testTag("detail_quote_close"),
+                                fontSize = if (latest == null) 16.sp else 20.sp, lineHeight = 24.sp,
+                                fontWeight = FontWeight.Bold, color = scheme.onSurface,
+                            )
+                            if (changeText != null) {
+                                Text(
+                                    changeText, modifier = Modifier.weight(1f),
+                                    fontSize = 9.sp, lineHeight = 11.sp, fontWeight = FontWeight.SemiBold, color = changeColor,
+                                )
+                            }
+                        }
+                    }
+                    Text(
+                        latest?.let { "${it.date} · $sourceLabel" } ?: sourceLabel,
+                        fontSize = 7.sp, lineHeight = 9.sp, color = scheme.onSurfaceVariant,
+                    )
+                }
+                VerticalDivider(Modifier.height(45.dp), color = scheme.onSurfaceVariant.copy(alpha = .32f))
+                Column(
+                    Modifier.widthIn(min = 76.dp * fontScale.coerceAtLeast(1f)).width(IntrinsicSize.Max),
+                    verticalArrangement = Arrangement.spacedBy(2.dp),
+                ) {
+                    QuoteFact("시가", latest?.open?.let { String.format(Locale.KOREA, "%,.0f", it) })
+                    QuoteFact("고가", latest?.high?.let { String.format(Locale.KOREA, "%,.0f", it) })
+                    QuoteFact("저가", latest?.low?.let { String.format(Locale.KOREA, "%,.0f", it) })
+                    QuoteFact("거래량", latest?.volume?.let { String.format(Locale.KOREA, "%,d주", it) })
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun QuoteFact(label: String, value: String?) {
+    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+        Text(label, fontSize = 8.sp, lineHeight = 10.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Text(
+            value ?: "—", modifier = Modifier.weight(1f).testTag("detail_quote_fact_value_$label"),
+            fontSize = 8.sp, lineHeight = 10.sp, color = MaterialTheme.colorScheme.onSurface,
+            textAlign = TextAlign.End, maxLines = 1, softWrap = false,
+        )
+    }
+}
+
+@Composable
 private fun DetailSummaryPage(
     summary: StockSummary,
     analysis: IntegratedAnalysis,
@@ -196,61 +372,9 @@ private fun DetailSummaryPage(
     valuationBand: ValuationBand?,
 ) {
     val scheme = MaterialTheme.colorScheme
-    val availableCount = listOf(summary.m01RevGrowth, summary.m02OpMargin, summary.m03Per, summary.m04Price6m)
-        .count { it.isAvailable }
-
     PageColumn("detail_summary_page") {
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(
-                containerColor = scheme.primaryContainer,
-                contentColor = scheme.onPrimaryContainer
-            ),
-            border = BorderStroke(1.dp, scheme.primary.copy(alpha = 0.22f)),
-            shape = RoundedCornerShape(17.dp)
-        ) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.Top
-                ) {
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text("QUANT SNAPSHOT", fontSize = 9.sp, fontWeight = FontWeight.Bold, color = scheme.primary)
-                        Spacer(modifier = Modifier.height(5.dp))
-                        Text("실데이터 $availableCount/4", fontWeight = FontWeight.Bold, fontSize = 21.sp)
-                        Text(
-                            if (summary.isCompositeComplete) "4지표 완성 · 순위 산출 가능" else "결측값은 추정하지 않고 보류",
-                            fontSize = 10.sp,
-                            color = scheme.onPrimaryContainer.copy(alpha = 0.74f)
-                        )
-                        Text(
-                            "재무 ${summary.asOfDate} · 주가 ${summary.m04Price6m.asOfDate}",
-                            modifier = Modifier.testTag("detail_snapshot_dates"),
-                            fontSize = 10.sp,
-                            color = scheme.onPrimaryContainer.copy(alpha = 0.74f),
-                        )
-                    }
-                    StatusBadge(status = summary.status)
-                }
-
-                Spacer(modifier = Modifier.height(15.dp))
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    SummaryStat(
-                        label = "기본 4지표 순위",
-                        value = summary.rankOrder?.let { "${it}위" } ?: "보류",
-                        valueTag = "detail_summary_rank",
-                        modifier = Modifier.weight(1f)
-                    )
-                    SummaryStat(
-                        label = "종합 상대점수",
-                        value = summary.compositeScore?.let { String.format("%.1f점", it) } ?: "미산출",
-                        valueTag = "detail_summary_score",
-                        modifier = Modifier.weight(1f)
-                    )
-                }
-            }
-        }
+        CompositeScorePanel(summary, tagSummaryValues = true)
+        CompactMetricsOverview(summary)
 
         if (finalCandidate != null) {
             FinalCandidateDetailCard(finalCandidate)
@@ -292,43 +416,231 @@ private fun DetailSummaryPage(
 }
 
 @Composable
-private fun SummaryStat(label: String, value: String, valueTag: String, modifier: Modifier = Modifier) {
+private fun CompositeScorePanel(summary: StockSummary, tagSummaryValues: Boolean = false) {
     val scheme = MaterialTheme.colorScheme
-    Surface(
-        modifier = modifier,
+    val availableCount = listOf(summary.m01RevGrowth, summary.m02OpMargin, summary.m03Per, summary.m04Price6m)
+        .count { it.isAvailable }
+    Card(
+        modifier = Modifier.fillMaxWidth().testTag(if (tagSummaryValues) "detail_summary_composite" else "detail_metrics_composite"),
         shape = RoundedCornerShape(11.dp),
-        color = scheme.surface.copy(alpha = 0.58f),
-        contentColor = scheme.onPrimaryContainer,
-        border = BorderStroke(1.dp, scheme.primary.copy(alpha = 0.16f))
+        colors = CardDefaults.cardColors(containerColor = scheme.surface),
+        border = BorderStroke(1.dp, scheme.outline),
     ) {
-        Column(Modifier.padding(horizontal = 12.dp, vertical = 11.dp)) {
-            Text(label, fontSize = 9.sp, color = LocalContentColor.current.copy(alpha = 0.72f))
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(value, modifier = Modifier.testTag(valueTag), fontSize = 18.sp, fontWeight = FontWeight.Bold)
+        Column(Modifier.padding(horizontal = 11.dp, vertical = 8.dp)) {
+            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                Box(Modifier.width(3.dp).height(20.dp).background(scheme.primary, RoundedCornerShape(3.dp)))
+                Spacer(Modifier.width(8.dp))
+                Column(Modifier.weight(1f)) {
+                    Text("종합점수", fontSize = 17.sp, lineHeight = 20.sp, fontWeight = FontWeight.Bold)
+                    Text("4지표 종합 상대평가 · 백분위와 구분", fontSize = 8.sp, lineHeight = 10.sp, color = scheme.onSurfaceVariant)
+                }
+                Text(
+                    summary.compositeScore?.let { String.format("%.1f점", it) } ?: "미산출",
+                    modifier = if (tagSummaryValues) Modifier.testTag("detail_summary_score") else Modifier,
+                    fontWeight = FontWeight.Bold, fontSize = 22.sp, lineHeight = 26.sp,
+                )
+            }
+            Spacer(Modifier.height(6.dp))
+            HorizontalDivider(color = scheme.outlineVariant)
+            Row(Modifier.fillMaxWidth().padding(top = 6.dp)) {
+                ScoreFact("전체 종목", String.format(Locale.KOREA, "%,d종목", StockRepository.registeredCount()), Modifier.weight(1f))
+                VerticalDivider(Modifier.height(26.dp), color = scheme.outlineVariant)
+                ScoreFact(
+                    "기본 4지표 순위", summary.rankOrder?.let { "${it}위" } ?: "보류", Modifier.weight(1f),
+                    if (tagSummaryValues) "detail_summary_rank" else null,
+                )
+                VerticalDivider(Modifier.height(26.dp), color = scheme.outlineVariant)
+                ScoreFact("실데이터", "$availableCount/4", Modifier.weight(1f))
+            }
+            if (tagSummaryValues) {
+                Spacer(Modifier.height(7.dp))
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        "재무 ${summary.asOfDate} · 주가 ${summary.m04Price6m.asOfDate}",
+                        modifier = Modifier.weight(1f).testTag("detail_snapshot_dates"),
+                        fontSize = 8.sp, color = scheme.onSurfaceVariant,
+                    )
+                    StatusBadge(status = summary.status)
+                }
+                Text(
+                    if (summary.isCompositeComplete) "4지표 완성 · 순위 산출 가능" else "결측값은 추정하지 않고 보류",
+                    fontSize = 8.sp, color = scheme.onSurfaceVariant,
+                )
+            }
         }
     }
 }
 
 @Composable
-private fun DetailMetricsPage(summary: StockSummary) {
+private fun ScoreFact(label: String, value: String, modifier: Modifier = Modifier, tag: String? = null) {
+    Column(modifier.padding(horizontal = 8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(label, fontSize = 8.sp, lineHeight = 10.sp, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1)
+        Text(value, modifier = if (tag != null) Modifier.testTag(tag) else Modifier, fontSize = 13.sp, lineHeight = 16.sp, fontWeight = FontWeight.Bold)
+    }
+}
+
+@Composable
+private fun CompactMetricIcon(index: Int) {
+    val scheme = MaterialTheme.colorScheme
+    Surface(shape = RoundedCornerShape(6.dp), color = scheme.primary.copy(alpha = .10f)) {
+        Canvas(Modifier.size(25.dp).padding(5.dp)) {
+            val color = scheme.primary
+            val stroke = 1.1.dp.toPx()
+            val w = size.width
+            val h = size.height
+            when (index) {
+                0 -> {
+                    for (bar in 0..2) {
+                        val x = w * (.16f + .30f * bar)
+                        drawLine(color, Offset(x, h * (.65f - .23f * bar)), Offset(x, h * .91f), stroke)
+                        drawLine(color, Offset(x + w * .13f, h * (.65f - .23f * bar)), Offset(x + w * .13f, h * .91f), stroke)
+                    }
+                }
+                1 -> {
+                    drawOval(color, topLeft = Offset(w * .1f, h * .05f), size = androidx.compose.ui.geometry.Size(w * .8f, h * .3f), style = Stroke(stroke))
+                    drawLine(color, Offset(w * .1f, h * .2f), Offset(w * .1f, h * .8f), stroke)
+                    drawLine(color, Offset(w * .9f, h * .2f), Offset(w * .9f, h * .8f), stroke)
+                    drawArc(color, 0f, 180f, false, Offset(w * .1f, h * .37f), androidx.compose.ui.geometry.Size(w * .8f, h * .3f), style = Stroke(stroke))
+                    drawArc(color, 0f, 180f, false, Offset(w * .1f, h * .65f), androidx.compose.ui.geometry.Size(w * .8f, h * .3f), style = Stroke(stroke))
+                }
+                2 -> {
+                    val path = Path().apply {
+                        moveTo(w * .12f, h * .57f); lineTo(w * .56f, h * .1f)
+                        lineTo(w * .9f, h * .1f); lineTo(w * .9f, h * .44f)
+                        lineTo(w * .45f, h * .91f); close()
+                    }
+                    drawPath(path, color, style = Stroke(stroke))
+                    drawCircle(color, radius = w * .05f, center = Offset(w * .72f, h * .28f))
+                }
+                else -> {
+                    drawLine(color, Offset(w * .12f, h * .3f), Offset(w * .88f, h * .3f), stroke)
+                    drawLine(color, Offset(w * .68f, h * .12f), Offset(w * .88f, h * .3f), stroke)
+                    drawLine(color, Offset(w * .68f, h * .48f), Offset(w * .88f, h * .3f), stroke)
+                    drawLine(color, Offset(w * .88f, h * .72f), Offset(w * .12f, h * .72f), stroke)
+                    drawLine(color, Offset(w * .32f, h * .54f), Offset(w * .12f, h * .72f), stroke)
+                    drawLine(color, Offset(w * .32f, h * .9f), Offset(w * .12f, h * .72f), stroke)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun CompactMetricsOverview(summary: StockSummary, tagMetricValues: Boolean = false) {
+    val scheme = MaterialTheme.colorScheme
+    Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
+        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+            Box(Modifier.width(3.dp).height(20.dp).background(scheme.primary, RoundedCornerShape(3.dp)))
+            Spacer(Modifier.width(8.dp))
+            Text(
+                "4지표 상세",
+                modifier = if (tagMetricValues) Modifier.weight(1f).testTag("detail_metrics_header") else Modifier.weight(1f),
+                fontSize = 17.sp, lineHeight = 21.sp, fontWeight = FontWeight.Bold,
+            )
+            Surface(
+                shape = RoundedCornerShape(999.dp), color = scheme.surfaceVariant,
+                border = BorderStroke(1.dp, scheme.outlineVariant),
+            ) {
+                Text(
+                    "재무 ${summary.asOfDate.ifBlank { "미확보" }}",
+                    Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
+                    fontSize = 8.sp, lineHeight = 10.sp, color = scheme.onSurfaceVariant,
+                )
+            }
+        }
+        Surface(
+            modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(11.dp),
+            color = scheme.surface, border = BorderStroke(1.dp, scheme.outline),
+        ) {
+            Column(Modifier.padding(horizontal = 8.dp)) {
+                val metrics = listOf(summary.m01RevGrowth, summary.m02OpMargin, summary.m03Per, summary.m04Price6m)
+                metrics.forEachIndexed { index, metric ->
+                    if (index > 0) HorizontalDivider(color = scheme.outlineVariant)
+                    Row(
+                        Modifier.fillMaxWidth().padding(vertical = 3.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    ) {
+                        CompactMetricIcon(index)
+
+                        Column(Modifier.weight(0.9f)) {
+                            Text(listOf("성장", "수익성", "가치", "흐름")[index], fontSize = 13.sp, lineHeight = 16.sp, fontWeight = FontWeight.Bold)
+                            Text(listOf("매출 증가율", "영업이익률", "실적 PER", "6개월 수익률")[index], fontSize = 8.sp, lineHeight = 10.sp, color = scheme.onSurfaceVariant)
+                        }
+                        Column(Modifier.weight(1.3f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                            Text(
+                                metric.rawValue?.takeIf { metric.isAvailable }?.let { formatMetricValue(metric.id, it) } ?: "N/A",
+                                modifier = if (tagMetricValues) Modifier.testTag("detail_${metric.id.lowercase()}_value") else Modifier,
+                                fontSize = 11.sp, lineHeight = 14.sp, fontWeight = FontWeight.Medium,
+                            )
+                            if (metric.percentileScore != null) {
+                                RelativePositionBar(metric.percentileScore)
+                            } else {
+                                Surface(
+                                    Modifier.fillMaxWidth().height(5.dp),
+                                    shape = RoundedCornerShape(999.dp), color = scheme.outlineVariant,
+                                ) {}
+                            }
+                        }
+                        Text(
+                            metric.percentileScore?.let { String.format("%.1f점", it) } ?: "보류",
+                            modifier = Modifier.widthIn(min = 44.dp),
+                            fontSize = 15.sp, lineHeight = 18.sp, fontWeight = FontWeight.Bold,
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun DetailMetricsPage(summary: StockSummary, financialSafety: FinancialSafetyRecord?) {
     val scheme = MaterialTheme.colorScheme
     PageColumn("detail_metrics_page") {
+        CompositeScorePanel(summary)
+        CompactMetricsOverview(summary, tagMetricValues = true)
+        FinancialSafetyCard(financialSafety, summary.asOfDate)
+        FinancialSectorNote()
         Text(
-            "4대 정량지표",
-            modifier = Modifier.testTag("detail_metrics_header"),
-            fontWeight = FontWeight.Bold,
-            fontSize = 18.sp
+            "지표별 근거와 업종 비교",
+            fontSize = 15.sp, fontWeight = FontWeight.Bold,
         )
         Text(
             "값 · 업종 피어 중앙값 · 전체시장 상대위치 · 산출근거를 한 카드에서 확인합니다.",
-            fontSize = 11.sp,
-            color = scheme.onSurfaceVariant
+            fontSize = 10.sp, color = scheme.onSurfaceVariant,
         )
         MetricCard(summary.m01RevGrowth)
         MetricCard(summary.m02OpMargin)
         MetricCard(summary.m03Per, lossMaking = summary.isLossMaking)
         MetricCard(summary.m04Price6m)
         SwipeHint("← 밀어서 4지표 종합해석 보기")
+    }
+}
+
+@Composable
+private fun FinancialSectorNote() {
+    val scheme = MaterialTheme.colorScheme
+    Column(Modifier.fillMaxWidth().testTag("detail_financial_sector_note")) {
+        HorizontalDivider(color = scheme.outlineVariant)
+        Row(
+            Modifier.fillMaxWidth().background(scheme.surface.copy(alpha = .4f))
+                .padding(horizontal = 8.dp, vertical = 6.dp),
+            verticalAlignment = Alignment.Top,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            Canvas(Modifier.padding(top = 1.dp).size(12.dp)) {
+                val color = scheme.onSurfaceVariant
+                val stroke = 1.dp.toPx()
+                drawCircle(color, radius = size.width * .43f, style = Stroke(stroke))
+                drawCircle(color, radius = stroke * .7f, center = Offset(size.width * .5f, size.height * .3f))
+                drawLine(color, Offset(size.width * .5f, size.height * .46f), Offset(size.width * .5f, size.height * .72f), stroke)
+            }
+            Text(
+                "주의 · 은행·보험·증권 등 금융업은 일반기업의 부채·유동비율과 직접 비교하지 않아 비교에서 제외합니다.",
+                Modifier.weight(1f), fontSize = 7.5.sp, lineHeight = 11.sp, color = scheme.onSurfaceVariant,
+            )
+        }
     }
 }
 
@@ -612,8 +924,8 @@ private fun PageColumn(tag: String, content: @Composable ColumnScope.() -> Unit)
             .fillMaxSize()
             .testTag(tag)
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = 14.dp, vertical = 14.dp),
-        verticalArrangement = Arrangement.spacedBy(11.dp),
+            .padding(horizontal = 10.dp, vertical = 9.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
         content = content
     )
 }
@@ -683,7 +995,7 @@ private fun MetricCard(metric: MetricValue, lossMaking: Boolean = false) {
                             metric.id == "M03" -> String.format("%.2f배", metric.rawValue)
                             else -> String.format("%.1f%%", metric.rawValue)
                         },
-                        modifier = Modifier.testTag("detail_${metric.id.lowercase()}_value"),
+                        modifier = Modifier.testTag("detail_${metric.id.lowercase()}_expanded_value"),
                         fontWeight = FontWeight.Bold,
                         fontSize = 21.sp,
                         color = if (available) scheme.onSurface else scheme.onSurfaceVariant

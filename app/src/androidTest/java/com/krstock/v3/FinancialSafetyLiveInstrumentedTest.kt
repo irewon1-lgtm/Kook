@@ -123,14 +123,14 @@ class FinancialSafetyLiveInstrumentedTest {
         assertNull(FinancialSafetyRepository.currentSnapshot())
         composeRule.setContent { KRStockV3Theme { StockDetailScreen("005930",onBack={}) } }
         composeRule.onNodeWithTag("financial_safety_badge").performScrollTo()
-        composeRule.onNodeWithText("미확보").assertIsDisplayed()
+        composeRule.onNodeWithTag("financial_safety_badge").assertTextContains("미확보").assertIsDisplayed()
         val oldRevision=SnapshotAutoUpdater.lastResult.revision
         SnapshotAutoUpdater.refreshBlocking(isolated,safetyFetch={ body }) { actualQuant }
         composeRule.waitForIdle()
         assertTrue(SnapshotAutoUpdater.lastResult.revision>oldRevision)
         assertEquals(before,StockRepository.getAllStocks())
         composeRule.onNodeWithTag("financial_safety_badge").performScrollTo()
-        composeRule.onNodeWithText("자료 확인").assertIsDisplayed()
+        composeRule.onNodeWithTag("financial_safety_badge").assertTextContains("자료 확인").assertIsDisplayed()
         composeRule.onNodeWithTag("financial_safety_badge").performClick()
         val expected=String.format(Locale.KOREA,"%,d원",row.getLong("assets"))
         composeRule.onNodeWithText(expected).performScrollTo().assertIsDisplayed()

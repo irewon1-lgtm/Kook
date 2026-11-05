@@ -109,7 +109,7 @@ class AppSmokeTest {
         // The most important action must be immediately visible and open the searchable ranking list.
         composeRule.onNodeWithTag("primary_stock_explorer").performScrollTo().assertIsDisplayed().performClick()
         composeRule.waitForIdle()
-        waitForDisplayedText("국내주식 조합순위")
+        waitForDisplayedText("종목 순위")
 
         // Exercise the actual Activity back dispatcher without Espresso's focused-root dependency.
         navigateBackThroughActivity()
@@ -119,7 +119,7 @@ class AppSmokeTest {
         // Horizontal swipe navigation remains supported.
         composeRule.onNodeWithTag("main_pager").performTouchInput { swipeLeft() }
         composeRule.waitForIdle()
-        waitForDisplayedText("국내주식 조합순위")
+        waitForDisplayedText("종목 순위")
 
         // Phone regression: ranking controls and stock cards share one scroll container.
         // Browse lower rows, return to the scrollable controls, change the combination,
@@ -128,6 +128,7 @@ class AppSmokeTest {
         composeRule.waitForIdle()
 
         composeRule.onNodeWithTag("stock_rank_list").performScrollToIndex(0)
+        SnapshotTestSupport.revealRankingMetrics(composeRule)
         composeRule.onNodeWithTag("metric_toggle_M02").performClick()
         composeRule.waitForIdle()
         composeRule.onNodeWithTag("stock_rank_list").performScrollToIndex(1)
@@ -146,15 +147,16 @@ class AppSmokeTest {
         composeRule.onNodeWithText("3개 · 각 33.3%").assertIsDisplayed()
 
         // Sort controls remain reachable by scrolling the shared header item.
-        composeRule.onNodeWithTag("sort_CODE").performScrollTo().performClick()
+        SnapshotTestSupport.selectRankingSort(composeRule, "CODE")
         composeRule.waitForIdle()
-        composeRule.onNodeWithTag("sort_COMBINATION").performScrollTo().performClick()
+        SnapshotTestSupport.selectRankingSort(composeRule, "COMBINATION")
         composeRule.waitForIdle()
         composeRule.onNodeWithTag("stock_rank_list").performScrollToIndex(1)
         composeRule.onNodeWithText("1위").assertIsDisplayed()
 
         composeRule.onNodeWithTag("stock_rank_list").performScrollToIndex(0)
         composeRule.onNodeWithTag("market_KOSDAQ").performScrollTo().performClick()
+        SnapshotTestSupport.revealRankingSearch(composeRule)
         composeRule.onNodeWithTag("stock_search").performScrollTo().performTextInput("삼천당제약")
         hideKeyboardAndRestoreAppFocus()
         composeRule.onNodeWithTag("stock_rank_list").performScrollToIndex(1)
@@ -166,6 +168,7 @@ class AppSmokeTest {
         // comparison region instead of ambiguous axis text such as "성장", which also appears
         // elsewhere on the screen.
         composeRule.onNodeWithTag("stock_000250").performScrollTo()
+        composeRule.onNodeWithTag("stock_evidence_000250", useUnmergedTree = true).performScrollTo().performClick()
         composeRule.onNodeWithText("한눈 비교", useUnmergedTree = true)
             .performScrollTo()
             .assertIsDisplayed()
@@ -185,7 +188,7 @@ class AppSmokeTest {
         composeRule.onNodeWithTag("detail_pager").performTouchInput { swipeLeft() }
         composeRule.waitForIdle()
         composeRule.onNodeWithTag("detail_metrics_page").assertIsDisplayed()
-        composeRule.onNodeWithText("4대 정량지표").assertIsDisplayed()
+        composeRule.onNodeWithTag("detail_metrics_header").assertIsDisplayed()
         composeRule.onNodeWithTag("peer_benchmark_M01").performScrollTo().assertIsDisplayed()
 
         composeRule.onNodeWithTag("detail_pager").performTouchInput { swipeLeft() }
@@ -235,11 +238,13 @@ class AppSmokeTest {
         // its existing dynamic combination-ranking controls.
         composeRule.onNodeWithTag("main_pager").performTouchInput { swipeLeft() }
         composeRule.waitForIdle()
-        composeRule.onNodeWithTag("stock_search").performTextInput(candidateCode)
+        SnapshotTestSupport.revealRankingSearch(composeRule)
+        composeRule.onNodeWithTag("stock_search").performScrollTo().performTextInput(candidateCode)
         hideKeyboardAndRestoreAppFocus()
         composeRule.onNodeWithTag("stock_rank_list").performScrollToIndex(1)
         composeRule.waitForIdle()
         waitForTag("stock_$candidateCode")
+        composeRule.onNodeWithTag("stock_evidence_$candidateCode", useUnmergedTree = true).performScrollTo().performClick()
         composeRule.onNodeWithText(candidateRankLabel).performScrollTo().assertIsDisplayed()
         composeRule.onAllNodesWithTag("financial_safety_badge", useUnmergedTree = true).onFirst()
             .performScrollTo()
