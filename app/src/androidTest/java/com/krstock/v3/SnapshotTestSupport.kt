@@ -89,7 +89,21 @@ internal object SnapshotTestSupport {
             .put("universe_count", GeneratedRealQuantSnapshot.universeCount)
             .put("revision", result.revision)
             .put("failure", result.failure ?: JSONObject.NULL)
+        if (!json.has("evidence_kind")) json.put("evidence_kind", "CONTROLLED_FIXTURE")
+        if (!json.has("controlled_state")) json.put("controlled_state", true)
+        val configuration = context.resources.configuration
+        json.put("capture_method", "UI_AUTOMATION_ORIGINAL_PNG")
+            .put("api_level", android.os.Build.VERSION.SDK_INT)
+            .put("device_model", android.os.Build.MODEL)
+            .put("device_kind", InstrumentationRegistry.getArguments().getString("deviceKind") ?: "UNCLASSIFIED_DEVICE")
+            .put("theme", if (configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK ==
+                android.content.res.Configuration.UI_MODE_NIGHT_YES) "DARK" else "LIGHT")
+            .put("viewport", if (configuration.smallestScreenWidthDp >= 600) "TABLET" else "PHONE")
+            .put("font_scale", configuration.fontScale)
         File(directory, "$name.json").writeText(json.toString(2))
+        json.optString("accessibility_window_xml").takeIf { it.isNotBlank() }?.let {
+            File(directory, "$name.xml").writeText(it)
+        }
         val screenshot = checkNotNull(instrumentation.uiAutomation.takeScreenshot()) {
             "Device screenshot unavailable for $name"
         }

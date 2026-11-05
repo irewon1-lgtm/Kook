@@ -48,6 +48,8 @@ class PriceChartTimeframeInstrumentedTest {
         val details = JSONObject().put("chart_interval",interval.name).put("chart_bar_count",count)
             .put("chart_months",months).put("chart_style",if(candle) "CANDLE" else "LINE")
             .put("chart_fixture","prices_005930_20261105").put("chart_source","CACHE")
+            .put("evidence_kind","REAL_MARKET_RECORDED").put("controlled_state",false)
+            .put("source_provenance",JSONObject(SnapshotTestSupport.fixture("prices_005930_20261105/provenance.json")))
         composeRule.onNodeWithTag("chart_interval_${interval.name}").performScrollTo().assertIsSelected()
         composeRule.waitForIdle()
         SnapshotTestSupport.evidence(ApplicationProvider.getApplicationContext(),"$name-controls",JSONObject(details.toString()))
@@ -58,6 +60,12 @@ class PriceChartTimeframeInstrumentedTest {
 
     @Test fun allTwentyFourIntervalWindowStyleCombinationsRenderRealDataAndKeepSelections() {
         render(PriceHistoryRepository.Result(bars(),PriceHistoryRepository.Source.CACHE,cutoff,"실제 삼성전자 수신 샘플"))
+        composeRule.onNodeWithTag("chart_adjustment_status").performScrollTo()
+            .assertTextEquals("수정주가 미확인").assertIsDisplayed()
+        SnapshotTestSupport.evidence(ApplicationProvider.getApplicationContext(), "chart-adjustment-unverified",
+            JSONObject().put("adjustment_status", "UNVERIFIED").put("evidence_kind", "REAL_MARKET_RECORDED")
+                .put("controlled_state", false).put("source_provenance",
+                    JSONObject(SnapshotTestSupport.fixture("prices_005930_20261105/provenance.json"))))
         // Independent counts from the recorded source, not the production aggregation helper.
         val counts = mapOf(Interval.DAY to listOf(21,62,124,245),
             Interval.WEEK to listOf(5,14,27,53), Interval.MONTH to listOf(2,4,7,13))
@@ -80,10 +88,7 @@ class PriceChartTimeframeInstrumentedTest {
                         else "거래량 50,178,389주 · 실제 3거래일")
                     composeRule.onNodeWithTag("historical_price_chart").performScrollTo().assertIsDisplayed()
                     combinations++
-                    if (months==12) evidence("chart-${interval.name}-${if(candle) "candle" else "line"}",interval,n,months,candle)
-                    if (months==1 && interval==Interval.MONTH) {
-                        evidence("chart-month-one-${if(candle) "candle" else "line"}",interval,n,months,candle)
-                    }
+                    evidence("chart-${interval.name}-${months}m-${if(candle) "candle" else "line"}",interval,n,months,candle)
                     if (candle) click("chart_candle_toggle")
                 }
                 composeRule.onNodeWithTag("chart_interval_${interval.name}").assertIsSelected()

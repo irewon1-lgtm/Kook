@@ -97,6 +97,21 @@ class SnapshotLiveActivityInstrumentedTest {
         assertTrue(result.revision > beforeBackground)
         composeRule.waitForIdle()
         assertVisibleValuesMatchDownloadedJson("live-background")
+
+        scenario!!.moveToState(androidx.lifecycle.Lifecycle.State.CREATED)
+        scenario!!.moveToState(androidx.lifecycle.Lifecycle.State.RESUMED)
+        dismissOptionalAppUpdate()
+        assertVisibleValuesMatchDownloadedJson("foreground-after-background")
+        scenario!!.close()
+        val beforeRelaunch = SnapshotAutoUpdater.lastResult.revision
+        scenario = ActivityScenario.launch(MainActivity::class.java)
+        composeRule.waitUntil(timeoutMillis = 90_000L) {
+            SnapshotAutoUpdater.lastResult.revision > beforeRelaunch &&
+                SnapshotAutoUpdater.lastResult.networkSucceeded &&
+                SnapshotAutoUpdater.lastResult.source == SnapshotAutoUpdater.Source.LIVE
+        }
+        dismissOptionalAppUpdate()
+        assertVisibleValuesMatchDownloadedJson("closed-and-relaunched-live")
     }
 
     private fun waitForLiveSnapshot() {
@@ -139,7 +154,8 @@ class SnapshotLiveActivityInstrumentedTest {
             .config[SemanticsProperties.Text].joinToString { it.text }
         SnapshotTestSupport.evidence(
             context, name,
-            JSONObject().put("downloaded_complete_count", complete).put("visible_dates", visible),
+            JSONObject().put("downloaded_complete_count", complete).put("visible_dates", visible)
+                .put("evidence_kind", "REAL_MARKET_LIVE").put("controlled_state", false),
         )
     }
 }

@@ -84,7 +84,11 @@ object SnapshotAutoUpdater {
      * on temp/cache/backup files.
      */
     @Synchronized
-    internal fun refreshBlocking(context: Context, fetch: () -> String = ::download): Result {
+    internal fun refreshBlocking(
+        context: Context,
+        safetyFetch: (() -> String)? = null,
+        fetch: () -> String = ::download,
+    ): Result {
         val attemptedAt = ZonedDateTime.now(KST).format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
         // Running memory is also a known-good version: a missing/corrupt disk
         // cache must not let a worker downgrade a snapshot already on screen.
@@ -133,7 +137,6 @@ object SnapshotAutoUpdater {
         // Render a validated warm cache before the network completes. Optional
         // Stage4 is validated separately and never gates these four metrics.
         if (activeBody != null) {
-            refreshSafety(context, activeBody)
             publish(active)
         }
 
@@ -176,7 +179,7 @@ object SnapshotAutoUpdater {
             )
         }
         if (network.isFailure) publish(result)
-        refreshSafety(context, activeBody)
+        refreshSafety(context, safetyFetch)
         if (FinancialSafetyRuntimeStore.current(result.snapshotDate) != null) {
             runCatching { FinalCandidateSnapshotUpdater.refreshBlocking(context) }
                 .onFailure { FinalCandidateRuntimeStore.clear() }
@@ -192,13 +195,17 @@ object SnapshotAutoUpdater {
         return published
     }
 
-    private fun refreshSafety(context: Context, body: String?) {
+    private fun refreshSafety(context: Context, fetch: (() -> String)?) {
         runCatching {
-            FinancialSafetySnapshotUpdater.refreshBlocking(
+            if (fetch == null) FinancialSafetySnapshotUpdater.refreshBlocking(
                 context,
                 GeneratedRealQuantSnapshot.snapshotDate,
                 GeneratedRealQuantSnapshot.rows.map { it.code }.toSet(),
-                body,
+            ) else FinancialSafetySnapshotUpdater.refreshBlocking(
+                context,
+                GeneratedRealQuantSnapshot.snapshotDate,
+                GeneratedRealQuantSnapshot.rows.map { it.code }.toSet(),
+                download = fetch,
             )
         }.onFailure {
             FinancialSafetyRuntimeStore.clear()

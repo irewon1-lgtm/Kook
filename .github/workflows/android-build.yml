@@ -18,11 +18,138 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  ui-device-matrix:
+    name: Android14 UI ${{ matrix.device }} ${{ matrix.theme }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      FINANCIAL_EVIDENCE_REF: ${{ github.head_ref || github.ref_name }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {device: phone, profile: pixel_2, theme: light, night: 'no', font: '1.0'}
+          - {device: phone, profile: pixel_2, theme: dark, night: 'yes', font: '1.3'}
+          - {device: tablet, profile: pixel_c, theme: light, night: 'no', font: '1.0'}
+          - {device: tablet, profile: pixel_c, theme: dark, night: 'yes', font: '1.3'}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v5
+        with:
+          java-version: '17'
+          distribution: temurin
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+      - name: Gallery provenance and original-file regression tests
+        run: python3 -m unittest discover -s tests -p test_ui_gallery.py
+      - name: Prepare Android14 UI runner
+        env:
+          UI_NIGHT: ${{ matrix.night }}
+          UI_FONT: ${{ matrix.font }}
+        run: |
+          if [ -e /dev/kvm ]; then sudo chmod 666 /dev/kvm; fi
+          cat > "$RUNNER_TEMP/kr4-ui-matrix.sh" <<'SH'
+          #!/usr/bin/env bash
+          set -uo pipefail
+          adb shell cmd uimode night "$UI_NIGHT"
+          adb shell settings put system font_scale "$UI_FONT"
+          mkdir -p evidence/ui-device
+          adb devices -l > evidence/ui-device/available-devices.txt
+          adb shell getprop > evidence/ui-device/device-properties.txt
+          gradle :app:connectedDebugAndroidTest --stacktrace \
+            -Pandroid.testInstrumentationRunnerArguments.deviceKind=EMULATOR \
+            "-Pandroid.testInstrumentationRunnerArguments.financialEvidenceRef=$FINANCIAL_EVIDENCE_REF" \
+            -Pandroid.testInstrumentationRunnerArguments.class=com.krstock.v3.CompleteUiGalleryInstrumentedTest,com.krstock.v3.PriceChartTimeframeInstrumentedTest,com.krstock.v3.PriceChartAndRiskBadgeInstrumentedTest,com.krstock.v3.SnapshotLiveActivityInstrumentedTest,com.krstock.v3.PriceChartLiveInstrumentedTest,com.krstock.v3.SnapshotRefreshScreensInstrumentedTest,com.krstock.v3.FinancialSafetyLiveInstrumentedTest
+          TEST_STATUS=$?
+          adb logcat -d -v time > evidence/ui-device/logcat.txt
+          adb pull /sdcard/Android/data/com.krstock.v3/files/snapshot-e2e evidence/ui-device/snapshot-e2e || true
+          exit "$TEST_STATUS"
+          SH
+      - name: Run actual Android14 screen interactions
+        uses: reactivecircus/android-emulator-runner@v2
+        env:
+          UI_NIGHT: ${{ matrix.night }}
+          UI_FONT: ${{ matrix.font }}
+        with:
+          api-level: 34
+          target: google_apis
+          arch: x86_64
+          profile: ${{ matrix.profile }}
+          avd-name: kr4-ui-${{ matrix.device }}-${{ matrix.theme }}
+          disable-animations: true
+          script: bash "$RUNNER_TEMP/kr4-ui-matrix.sh"
+      - name: Package original screenshots with explicit provenance
+        if: success()
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/ui-input
+          cp -a app/build/outputs/connected_android_test_additional_output evidence/ui-input/agp
+          python3 scripts/build_ui_gallery.py evidence/ui-input evidence/ui-gallery
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          manifest=json.loads(Path('evidence/ui-gallery/manifest.json').read_text())
+          screens=manifest['screens']
+          assert all(s['api_level']==34 and s['device_kind']=='EMULATOR' for s in screens)
+          assert all(s['viewport']=='${{ matrix.device }}'.upper() and s['theme']=='${{ matrix.theme }}'.upper() for s in screens)
+          assert {s.get('metric_mask') for s in screens} >= set(range(1,16))
+          assert {s.get('detail_tab') for s in screens} >= set(range(5))
+          assert {s.get('scenario_source') for s in screens} >= {'LIVE','CACHE','BACKUP','BUNDLED','FAILED'}
+          assert {s.get('safety_status') for s in screens} >= {'PASS','FAIL','HOLD','NOT_APPLICABLE'}
+          combinations={(s.get('chart_interval'),s.get('chart_months'),s.get('chart_style')) for s in screens}
+          assert combinations >= {(i,m,t) for i in ['DAY','WEEK','MONTH'] for m in [1,3,6,12] for t in ['LINE','CANDLE']}
+          assert any(s['evidence_kind']=='REAL_MARKET_LIVE' for s in screens)
+          assert any(s['name'].endswith('closed-and-relaunched-live') for s in screens)
+          print('REQUIRED_ANDROID14_UI_CELL_PASS',len(screens))
+          PY
+      - name: Upload original UI gallery and device test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: KR4-UI-${{ matrix.device }}-${{ matrix.theme }}
+          path: |
+            evidence/ui-gallery/
+            evidence/ui-device/
+            app/build/reports/androidTests/
+            app/build/outputs/androidTest-results/
+            app/build/outputs/connected_android_test_additional_output/
+          if-no-files-found: error
+          retention-days: 30
+
+  ui-gallery-required:
+    name: Required Android14 galleries
+    needs: ui-device-matrix
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: KR4-UI-*
+          path: evidence/ui-matrix
+      - name: Assemble all four original device galleries
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/ui-combined-input
+          for CELL in phone-light phone-dark tablet-light tablet-dark; do
+            test -s "evidence/ui-matrix/KR4-UI-$CELL/evidence/ui-gallery/manifest.json"
+            cp -a "evidence/ui-matrix/KR4-UI-$CELL/evidence/ui-gallery/originals" "evidence/ui-combined-input/$CELL"
+          done
+          python3 scripts/build_ui_gallery.py evidence/ui-combined-input evidence/ui-complete-gallery
+      - uses: actions/upload-artifact@v4
+        with:
+          name: KR4-UI-complete-gallery
+          path: evidence/ui-complete-gallery/
+          if-no-files-found: error
+          retention-days: 30
+
   extreme-cleanpass:
+    needs: ui-gallery-required
     runs-on: ubuntu-latest
     timeout-minutes: 45
     env:
       EXPECTED_STABLE_CERT_SHA256: 1070e82beee574cd29ffd2dc3e693fd7f7862374f16d1606567db303ab152477
+      FINANCIAL_EVIDENCE_REF: ${{ github.head_ref || github.ref_name }}
 
     steps:
       - name: Checkout Repository
@@ -30,12 +157,18 @@ jobs:
         with:
           fetch-depth: 2
 
+      - name: Download required phone tablet light dark original gallery
+        uses: actions/download-artifact@v4
+        with:
+          name: KR4-UI-complete-gallery
+          path: evidence/ui-complete-gallery
+
       - name: Detect app source change
         id: app_scope
         run: |
           set -euo pipefail
           APP_CHANGED=true
-          if [ "${{ github.event_name }}" != "workflow_dispatch" ] && git rev-parse HEAD^ >/dev/null 2>&1 && git diff --quiet HEAD^ HEAD -- app/ .github/workflows/android-build.yml; then
+          if [ "${{ github.event_name }}" != "workflow_dispatch" ] && git rev-parse HEAD^ >/dev/null 2>&1 && git diff --quiet HEAD^ HEAD -- app/ scripts/build_ui_gallery.py tests/test_ui_gallery.py .github/workflows/android-build.yml; then
             APP_CHANGED=false
           fi
           echo "changed=$APP_CHANGED" >> "$GITHUB_OUTPUT"
@@ -47,7 +180,7 @@ jobs:
           python-version: '3.12'
 
       - name: Install Python collector dependency
-        run: pip install requests
+        run: pip install requests pytest
 
       - name: Validate masters and current committed snapshot without frozen dates
         run: |
@@ -100,8 +233,14 @@ jobs:
           python3 tests/test_auto_update_pipeline.py
           python3 tests/test_quarterly_history.py
 
+      - name: Complete Python regression including independent financial provenance
+        if: steps.app_scope.outputs.changed == 'true'
+        run: python3 -m pytest -q tests
+
       - name: Live news/disclosure evidence source probe
         if: steps.app_scope.outputs.changed == 'true'
+        env:
+          OPENDART_API_KEY: ${{ secrets.OPENDART_API_KEY }}
         run: python3 scripts/probe_context_sources.py
 
       - name: Set up JDK 17
@@ -148,7 +287,9 @@ jobs:
           cat > "$RUNNER_TEMP/kr4-debug-e2e.sh" <<'SH'
           #!/usr/bin/env bash
           set +e
-          gradle :app:connectedDebugAndroidTest --stacktrace
+          gradle :app:connectedDebugAndroidTest --stacktrace \
+            -Pandroid.testInstrumentationRunnerArguments.deviceKind=EMULATOR \
+            "-Pandroid.testInstrumentationRunnerArguments.financialEvidenceRef=$FINANCIAL_EVIDENCE_REF"
           TEST_STATUS=$?
           mkdir -p evidence/ci
           adb pull /sdcard/Android/data/com.krstock.v3/files/snapshot-e2e evidence/ci/snapshot-e2e
@@ -221,7 +362,7 @@ jobs:
           if [ "$GITHUB_REF" = "refs/heads/main" ]; then
             if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
               RELEASE_READY=true
-            elif git rev-parse HEAD^ >/dev/null 2>&1 && ! git diff --quiet HEAD^ HEAD -- app/ .github/workflows/android-build.yml; then
+            elif git rev-parse HEAD^ >/dev/null 2>&1 && ! git diff --quiet HEAD^ HEAD -- app/ scripts/build_ui_gallery.py tests/test_ui_gallery.py .github/workflows/android-build.yml; then
               RELEASE_READY=true
             fi
           fi
@@ -497,13 +638,137 @@ jobs:
                       'uid':int(re.search(r'\b(?:appId|userId)=(\d+)',dump)[1]),
                       'firstInstallTime':re.search(r'firstInstallTime=([^\r\n]+)',dump)[1].strip()}
 
+          # RELEASE_UI_HELPERS_BEGIN
+          def ui_bounds(xml, label):
+              import re
+              import xml.etree.ElementTree as ET
+              for node in ET.fromstring(xml).iter('node'):
+                  if node.get('text') != label and node.get('content-desc') != label:
+                      continue
+                  if node.get('enabled') == 'false':
+                      continue
+                  coordinates = re.fullmatch(r'\[(\d+),(\d+)\]\[(\d+),(\d+)\]', node.get('bounds', ''))
+                  if not coordinates:
+                      continue
+                  left, top, right, bottom = map(int, coordinates.groups())
+                  if right > left and bottom > top:
+                      return ((left + right) // 2, (top + bottom) // 2)
+              raise ValueError('Visible enabled exact UI control absent: ' + label)
+          # RELEASE_UI_HELPERS_END
+
+          def read_ui():
+              adb('shell','uiautomator','dump','/sdcard/kr4-upgrade-ui.xml')
+              return adb('shell','cat','/sdcard/kr4-upgrade-ui.xml')
+
+          def touch(label, scroll=False, attempts=12, contains=False):
+              for attempt in range(attempts):
+                  xml=read_ui()
+                  target=label
+                  if contains:
+                      import xml.etree.ElementTree as ET
+                      target=next((n.get('text') for n in ET.fromstring(xml).iter('node') if label in n.get('text','')),label)
+                  try:
+                      x,y=ui_bounds(xml,target)
+                  except ValueError:
+                      if scroll:
+                          dimensions=re.search(r'(\d+)x(\d+)',adb('shell','wm','size'))
+                          width,height=map(int,dimensions.groups())
+                          adb('shell','input','swipe',str(width//2),str(height*4//5),str(width//2),str(height//3),'350')
+                      time.sleep(1)
+                  else:
+                      adb('shell','input','tap',str(x),str(y))
+                      time.sleep(1)
+                      return
+              raise AssertionError('Installed release control unavailable: '+label)
+
+          def touch_stock(code, name):
+              import xml.etree.ElementTree as ET
+              for attempt in range(12):
+                  xml=read_ui()
+                  for node in ET.fromstring(xml).iter('node'):
+                      text=node.get('text','')
+                      if code in text and name in text:
+                          x,y=ui_bounds(xml,text)
+                          adb('shell','input','tap',str(x),str(y))
+                          time.sleep(1)
+                          return
+                  dimensions=re.search(r'(\d+)x(\d+)',adb('shell','wm','size'))
+                  width,height=map(int,dimensions.groups())
+                  adb('shell','input','swipe',str(width//2),str(height*4//5),str(width//2),str(height//3),'350')
+              raise AssertionError('Searched stock is not reachable in installed release: '+code)
+
+          def touch_safety():
+              for attempt in range(12):
+                  xml=read_ui()
+                  for label in ['자료 확인','재무자료 확인','재무위험','미확보','비교제외']:
+                      try:
+                          x,y=ui_bounds(xml,label)
+                      except ValueError:
+                          continue
+                      adb('shell','input','tap',str(x),str(y))
+                      time.sleep(1)
+                      return
+                  dimensions=re.search(r'(\d+)x(\d+)',adb('shell','wm','size'))
+                  width,height=map(int,dimensions.groups())
+                  adb('shell','input','swipe',str(width//2),str(height*4//5),str(width//2),str(height//3),'350')
+              raise AssertionError('No financial-safety badge on installed detail')
+
+          def capture(name, xml, details=None):
+              (root/(name+'.xml')).write_text(xml)
+              with (root/(name+'.png')).open('wb') as image:
+                  subprocess.run(['adb','exec-out','screencap','-p'],stdout=image,check=True)
+              # UI interaction probes use real downloaded market data, but this
+              # release gate controls system settings and install state explicitly.
+              metadata={'evidence_kind':'CONTROLLED_FIXTURE','controlled_state':True,
+                        'source':'LIVE' if '데이터 출처 LIVE' in xml else 'UNCONFIRMED',
+                        'device_kind':'EMULATOR','api_level':34,'theme':'DARK','viewport':'PHONE',
+                        'capture_method':'ADB_SCREENCAP_ORIGINAL_PNG','installed_release':True,
+                        'package':package,'version_code':expected_version}
+              metadata.update(details or {})
+              (root/(name+'.json')).write_text(json.dumps(metadata,ensure_ascii=False,indent=2)+'\n')
+
+          def wait_for_baseline_live_cache():
+              cache_path=f'/data/user/0/{package}/files/kr4_latest_snapshot.json'
+              local_cache=root/'baseline-market-cache.json'
+              deadline=time.monotonic()+120
+              while True:
+                  xml=read_ui()
+                  if '데이터 출처 LIVE' in xml:
+                      # Pull the original file; decoding adb text output would
+                      # lose its exact original bytes and trailing whitespace.
+                      adb('pull',cache_path,str(local_cache))
+                      original=local_cache.read_bytes()
+                      market=json.loads(original)
+                      assert market['universe_count']==len(market['records'])==2649
+                      count=f"{market['coverage']['complete_count']}/{market['universe_count']}"
+                      if market['snapshot_date_kst'] in xml and count in xml:
+                          digest=hashlib.sha256(original).hexdigest()
+                          capture('baseline-live-home',xml,{
+                              'evidence_kind':'REAL_MARKET_LIVE','controlled_state':False,
+                              'source':'LIVE','network_succeeded':True,
+                              'version_code':baseline['versionCode'],
+                              'snapshot_date_kst':market['snapshot_date_kst'],
+                              'price_cutoff_date_kst':market['price_cutoff_date_kst'],
+                              'cache_path':cache_path,'cache_sha256':digest,
+                              'source_provenance':{'cache_file':local_cache.name,'sha256':digest}})
+                          return cache_path,original,market,digest
+                  assert time.monotonic()<deadline, 'baseline_actual_live_market_cache_not_visible'
+                  time.sleep(2)
+
           try:
               adb('root')
               adb('wait-for-device')
               assert 'uid=0(root)' in adb('shell','id'), 'root_required_for_private_data_preservation_check'
               assert 'Success' in adb('install','--no-streaming',str(root/'baseline/KR4.apk'))
+              adb('shell','cmd','uimode','night','yes')
+              night_before=adb('shell','settings','get','secure','ui_night_mode')
+              assert night_before=='2', 'real_system_dark_theme_setting_not_applied'
               assert 'Status: ok' in adb('shell','am','start','-W','-n',component)
+              cache_path,baseline_cache,baseline_market,baseline_cache_sha=wait_for_baseline_live_cache()
               adb('shell','am','force-stop',package)
+              stopped_cache=root/'baseline-market-cache-before-upgrade.json'
+              adb('pull',cache_path,str(stopped_cache))
+              assert stopped_cache.read_bytes()==baseline_cache, 'baseline_market_cache_changed_before_upgrade'
               before=installed()
               assert before['versionCode']==baseline['versionCode']
               marker=f"kr4-upgrade-{os.environ['GITHUB_RUN_ID']}-{expected_version}"
@@ -517,11 +782,20 @@ jobs:
               adb('shell','chmod','600',private_marker)
               adb('shell','restorecon',private_marker)
               assert 'Success' in adb('install','--no-streaming','-r','dist/KR4.apk')
+              # Verify existing real market data before the new app can launch
+              # or perform any network refresh that could replace the cache.
+              upgraded_cache=root/'baseline-market-cache-after-upgrade-before-launch.json'
+              adb('pull',cache_path,str(upgraded_cache))
+              upgraded_cache_bytes=upgraded_cache.read_bytes()
+              upgraded_cache_sha=hashlib.sha256(upgraded_cache_bytes).hexdigest()
+              assert upgraded_cache_bytes==baseline_cache, 'actual_baseline_market_cache_bytes_not_preserved'
+              assert upgraded_cache_sha==baseline_cache_sha, 'actual_baseline_market_cache_sha256_not_preserved'
               after=installed()
               assert after['versionCode']==expected_version>before['versionCode']
               assert before['uid']==after['uid'], 'app_uid_changed'
               assert before['firstInstallTime']==after['firstInstallTime'], 'app_was_reinstalled_instead_of_upgraded'
               assert adb('shell','cat',private_marker)==marker, 'app_private_data_not_preserved'
+              assert adb('shell','settings','get','secure','ui_night_mode')==night_before, 'system_theme_setting_not_preserved'
               installed_path=adb('shell','pm','path',package).splitlines()[0].removeprefix('package:')
               installed_apk=root/'installed-KR4.apk'
               adb('pull',installed_path,str(installed_apk))
@@ -545,13 +819,101 @@ jobs:
                   assert time.monotonic()<deadline, 'updated_release_did_not_display_current_quant_snapshot'
                   time.sleep(2)
               assert adb('shell','pidof',package), 'updated_app_not_running'
-              with (root/'updated-home.png').open('wb') as image:
-                  subprocess.run(['adb','exec-out','screencap','-p'],stdout=image,check=True)
+              capture('updated-home',ui,{'displayed_snapshot_date':snapshot['snapshot_date_kst']})
+              # Force-stop/relaunch the actual upgraded release, retaining theme,
+              # UID, first installation identity, and application-private data.
+              adb('shell','am','force-stop',package)
+              assert 'Status: ok' in adb('shell','am','start','-W','-n',component)
+              assert adb('shell','settings','get','secure','ui_night_mode')==night_before
+              deadline=time.monotonic()+90
+              while True:
+                  ui=read_ui()
+                  if snapshot['snapshot_date_kst'] in ui and expected_count in ui:
+                      break
+                  assert time.monotonic()<deadline, 'relaunch_did_not_restore_current_data'
+                  time.sleep(2)
+              capture('updated-relaunched-home',ui,{'setting_ui_night_mode':night_before})
+              # All actions below are real accessibility-coordinate touches in the
+              # installed signed release, without a debug-only navigation hook.
+              touch('4지표 전체 종목보기',scroll=True,contains=True)
+              ui=read_ui()
+              assert '국내주식 조합순위' in ui
+              capture('updated-all-stocks',ui,{'universe_count':2649})
+              # Search the actual stock by code using the editable field bounds.
+              import xml.etree.ElementTree as ET
+              edit=next(n for n in ET.fromstring(ui).iter('node') if n.get('class')=='android.widget.EditText')
+              x,y=ui_bounds(ET.tostring(edit,encoding='unicode'),edit.get('text') or edit.get('content-desc',''))
+              adb('shell','input','tap',str(x),str(y))
+              adb('shell','input','text','005930')
+              adb('shell','input','keyevent','111')
+              touch_stock('005930','삼성전자')
+              ui=read_ui()
+              assert '005930' in ui
+              capture('updated-stock-detail',ui,{'issuer':'005930'})
+              # Safety evidence must remain reachable even when its actual state
+              # is HOLD; the status dialog exposes the recorded source/reason.
+              touch_safety()
+              safety_ui=read_ui()
+              assert '닫기' in safety_ui, 'financial_safety_dialog_did_not_open'
+              capture('updated-safety-details',safety_ui)
+              financial=json.loads(Path('evidence/financial_safety_snapshot.json').read_text())
+              financial=financial.get('financial_safety',financial)
+              samsung=financial['records']['005930']
+              currency=samsung.get('currency','')
+              required_facts=[format(samsung[key],',')+('원' if currency=='KRW' else ' '+currency)
+                              for key in ['assets','liabilities','equity','current_assets','current_liabilities']
+                              if samsung.get(key) is not None]
+              required_facts += [samsung[key] for key in ['report_period','filing_date','source_url'] if samsung.get(key)]
+              observed=safety_ui
+              for index in range(10):
+                  if all(value in observed for value in required_facts):
+                      break
+                  dimensions=re.search(r'(\d+)x(\d+)',adb('shell','wm','size'))
+                  width,height=map(int,dimensions.groups())
+                  adb('shell','input','swipe',str(width//2),str(height*3//4),str(width//2),str(height//3),'350')
+                  safety_ui=read_ui()
+                  observed+='\n'+safety_ui
+                  capture('updated-safety-facts-'+str(index),safety_ui,{'issuer':'005930','facts_verified':samsung.get('facts_verified',False)})
+              assert all(value in observed for value in required_facts), 'installed_release_financial_facts_differ_from_published_artifact'
+              touch('닫기')
+              touch('차트')
+              for interval,label in [('DAY','일봉'),('WEEK','주봉'),('MONTH','월봉')]:
+                  dimensions=re.search(r'(\d+)x(\d+)',adb('shell','wm','size'))
+                  width,height=map(int,dimensions.groups())
+                  for _ in range(3):
+                      adb('shell','input','swipe',str(width//2),str(height//3),str(width//2),str(height*4//5),'250')
+                  touch(label,scroll=True)
+                  ui=read_ui()
+                  # Save the selected controls and visible original chart evidence.
+                  assert '수정주가 미확인' in ui, 'adjustment_verification_warning_missing'
+                  capture('updated-chart-'+interval+'-controls',ui,{'chart_interval':interval})
+                  assert any(n.get('text')==label and (n.get('selected')=='true' or n.get('checked')=='true')
+                             for n in ET.fromstring(ui).iter('node')), 'release_chart_interval_did_not_select'
+                  deadline=time.monotonic()+90
+                  while True:
+                      ui=read_ui()
+                      if all(value in ui for value in ['시가 ','종가 ','거래량 ']):
+                          break
+                      assert time.monotonic()<deadline, 'release_chart_actual_ohlcv_not_visible'
+                      adb('shell','input','swipe',str(width//2),str(height*3//4),str(width//2),str(height//2),'250')
+                      time.sleep(1)
+                  capture('updated-chart-'+interval,ui,{'chart_interval':interval,'actual_ohlcv_visible':True})
               proof={'status':'PASS','baseline':baseline,'before':before,'after':after,
                      'dataMarkerPreserved':True,'installedApkSha256':installed_sha,
+                     'existingMarketDataPreserved':{
+                         'status':'PASS','source':'REAL_MARKET_LIVE','deviceCachePath':cache_path,
+                         'beforeSha256':baseline_cache_sha,'afterUpgradeBeforeLaunchSha256':upgraded_cache_sha,
+                         'exactOriginalBytesPreserved':True,'checkedBeforeUpgradedAppLaunch':True,
+                         'bytes':len(baseline_cache),'universeCount':baseline_market['universe_count'],
+                         'snapshotDate':baseline_market['snapshot_date_kst'],
+                         'priceCutoffDate':baseline_market['price_cutoff_date_kst'],
+                         'beforeFile':stopped_cache.name,'afterFile':upgraded_cache.name},
                      'signingCertificateSha256':expected_cert,
                      'displayedSnapshotDate':snapshot['snapshot_date_kst'],
-                     'displayedCompleteAndUniverse':expected_count,'commit':os.environ['GITHUB_SHA']}
+                     'displayedCompleteAndUniverse':expected_count,'commit':os.environ['GITHUB_SHA'],
+                     'settingPreserved':{'name':'ui_night_mode','value':night_before,'scope':'ANDROID_SYSTEM_THEME'},
+                     'releaseSafetyComparedWithPublishedArtifact':True,'releaseSafetyFactsVerified':samsung.get('facts_verified',False),
+                     'releaseRelaunchVerified':True,'releaseStockSafetyAndChartTouches':['005930','SAFETY','DAY','WEEK','MONTH']}
               (root/'signed-upgrade-verification.json').write_text(json.dumps(proof,indent=2)+'\n')
               print('STABLE_SIGNED_IN_PLACE_UPGRADE_PASS',json.dumps(proof))
           finally:
@@ -579,6 +941,30 @@ jobs:
           path: evidence/ci/upgrade/
           if-no-files-found: error
           retention-days: 14
+
+      - name: Combine required device galleries with signed release screenshots
+        if: steps.release_gate.outputs.ready == 'true'
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/ui-release-input
+          cp -a evidence/ui-complete-gallery/originals evidence/ui-release-input/required-matrix
+          cp -a evidence/ci/upgrade evidence/ui-release-input/signed-upgrade
+          python3 scripts/build_ui_gallery.py evidence/ui-release-input dist/ui-gallery
+          cp dist/ui-gallery/index.html dist/KR4-UI-gallery.html
+          test -s dist/ui-gallery/KR4-UI-gallery.zip
+          test -s dist/ui-gallery/manifest.json
+          test -s dist/ui-gallery/SHA256SUMS.txt
+
+      - name: Upload complete original release gallery
+        if: steps.release_gate.outputs.ready == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: KR4-UI-release-gallery
+          path: |
+            dist/ui-gallery/
+            dist/KR4-UI-gallery.html
+          if-no-files-found: error
+          retention-days: 30
 
       - name: Upload stable signed APK artifact
         if: steps.release_gate.outputs.ready == 'true'
@@ -628,13 +1014,19 @@ jobs:
           TITLE="KR4 ${KR4_VERSION_NAME}"
           NOTES="4지표 자동수신·화면 갱신 수정. Stage4 독립 검증/HOLD 및 실제 연결 상태 표시. 기존 고정서명 APK 위 업데이트 설치와 데이터 보존 검증 완료. commit ${GITHUB_SHA}."
           if gh release view "$TAG" >/dev/null 2>&1; then
-            gh release upload "$TAG" dist/KR4.apk dist/update.json dist/APK_SIGNING_CERT.txt --clobber
+            gh release upload "$TAG" dist/KR4.apk dist/update.json dist/APK_SIGNING_CERT.txt \
+              dist/KR4-UI-gallery.html dist/ui-gallery/KR4-UI-gallery.zip \
+              dist/ui-gallery/manifest.json dist/ui-gallery/SHA256SUMS.txt --clobber
             gh release edit "$TAG" --title "$TITLE" --notes "$NOTES" --latest
           else
             gh release create "$TAG" \
               dist/KR4.apk \
               dist/update.json \
               dist/APK_SIGNING_CERT.txt \
+              dist/KR4-UI-gallery.html \
+              dist/ui-gallery/KR4-UI-gallery.zip \
+              dist/ui-gallery/manifest.json \
+              dist/ui-gallery/SHA256SUMS.txt \
               --target "$GITHUB_SHA" \
               --title "$TITLE" \
               --notes "$NOTES" \
@@ -643,9 +1035,14 @@ jobs:
           test "$(gh api "repos/${GITHUB_REPOSITORY}/releases/latest" --jq '.tag_name')" = "$TAG"
           rm -rf "$RUNNER_TEMP/kr4-release-verify"
           mkdir -p "$RUNNER_TEMP/kr4-release-verify"
-          gh release download "$TAG" -p KR4.apk -p update.json -p APK_SIGNING_CERT.txt -D "$RUNNER_TEMP/kr4-release-verify"
+          gh release download "$TAG" -p KR4.apk -p update.json -p APK_SIGNING_CERT.txt \
+            -p KR4-UI-gallery.html -p KR4-UI-gallery.zip -p manifest.json -p SHA256SUMS.txt -D "$RUNNER_TEMP/kr4-release-verify"
           test "$(sha256sum dist/KR4.apk | awk '{print $1}')" = "$(sha256sum "$RUNNER_TEMP/kr4-release-verify/KR4.apk" | awk '{print $1}')"
           cmp -s dist/update.json "$RUNNER_TEMP/kr4-release-verify/update.json"
+          cmp -s dist/KR4-UI-gallery.html "$RUNNER_TEMP/kr4-release-verify/KR4-UI-gallery.html"
+          cmp -s dist/ui-gallery/KR4-UI-gallery.zip "$RUNNER_TEMP/kr4-release-verify/KR4-UI-gallery.zip"
+          cmp -s dist/ui-gallery/manifest.json "$RUNNER_TEMP/kr4-release-verify/manifest.json"
+          cmp -s dist/ui-gallery/SHA256SUMS.txt "$RUNNER_TEMP/kr4-release-verify/SHA256SUMS.txt"
           python3 - <<'PY'
           import json, os
           p=os.path.join(os.environ['RUNNER_TEMP'],'kr4-release-verify','update.json')

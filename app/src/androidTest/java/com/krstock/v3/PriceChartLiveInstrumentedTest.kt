@@ -72,6 +72,7 @@ class PriceChartLiveInstrumentedTest {
             composeRule.onNodeWithTag("historical_price_chart").performScrollTo().assertIsDisplayed()
             SnapshotTestSupport.evidence(context,"chart-live-$interval",JSONObject()
                 .put("issuer","005930").put("chart_source","LIVE").put("chart_interval",interval)
+                .put("evidence_kind","REAL_MARKET_LIVE").put("controlled_state",false)
                 .put("open",open).put("high",high).put("low",low).put("close",close)
                 .put("volume",volume).put("observed_days",actualDays.size).put("daily_source",source))
             composeRule.onNodeWithTag("chart_candle_toggle").performScrollTo().performClick()

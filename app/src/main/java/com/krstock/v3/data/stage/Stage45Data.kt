@@ -26,7 +26,8 @@ object FinancialSafetySnapshotParser {
         expectedSnapshotDate: String,
         expectedCodes: Set<String>,
     ): FinancialSafetySnapshot {
-        require(safety.getInt("schema_version") == 1) { "unexpected financial-safety schema" }
+        val schema = safety.getInt("schema_version")
+        require(schema in setOf(1, 2)) { "unexpected financial-safety schema" }
         require(safety.getString("policy_version") == POLICY_VERSION) { "unexpected financial-safety policy" }
         require(safety.getString("snapshot_date_kst") == expectedSnapshotDate) { "financial-safety snapshot mismatch" }
 
@@ -63,6 +64,7 @@ object FinancialSafetySnapshotParser {
             require(!parsed.containsKey(code)) { "duplicate financial-safety code $code" }
 
             val row = recordsJson.getJSONObject(code)
+            val facts = if (schema == 2) VerifiedFinancialFactsParser.parse(row, code, expectedSnapshotDate) else null
             val status = runCatching { FinancialSafetyStatus.valueOf(row.getString("status")) }
                 .getOrElse { throw IllegalArgumentException("invalid financial-safety status for $code") }
             val reason = row.getString("reason")
@@ -80,8 +82,13 @@ object FinancialSafetySnapshotParser {
                     require(reason == "PASS") { "PASS reason mismatch for $code" }
                     require(scope in setOf("CFS", "OFS")) { "PASS scope missing for $code" }
                     require(debt != null && current != null && identity != null) { "PASS ratios missing for $code" }
-                    require(debt <= DEBT_TO_EQUITY_MAX + 1e-9) { "PASS debt ratio violates policy for $code" }
-                    require(current >= CURRENT_RATIO_MIN - 1e-9) { "PASS current ratio violates policy for $code" }
+                    // Schema2 already recomputes the original policy from exact
+                    // source amounts. Six-decimal display serialization must not
+                    // reclassify a value on the other side of400/70.
+                    if (schema == 1) {
+                        require(debt <= DEBT_TO_EQUITY_MAX + 1e-9) { "PASS debt ratio violates policy for $code" }
+                        require(current >= CURRENT_RATIO_MIN - 1e-9) { "PASS current ratio violates policy for $code" }
+                    }
                     require(identity <= IDENTITY_TOLERANCE + 1e-9) { "PASS identity gap violates policy for $code" }
                     require(basis.isNotBlank()) { "PASS basis missing for $code" }
                     pass++
@@ -99,12 +106,14 @@ object FinancialSafetySnapshotParser {
                         }
                         "DEBT_TO_EQUITY_OVER_400" -> {
                             require(debt != null && current != null) { "debt FAIL ratios missing for $code" }
-                            require(debt > DEBT_TO_EQUITY_MAX) { "debt FAIL does not exceed threshold for $code" }
+                            if (schema == 1) require(debt > DEBT_TO_EQUITY_MAX) { "debt FAIL does not exceed threshold for $code" }
                         }
                         "CURRENT_RATIO_UNDER_70" -> {
                             require(debt != null && current != null) { "current-ratio FAIL ratios missing for $code" }
-                            require(debt <= DEBT_TO_EQUITY_MAX + 1e-9) { "current-ratio FAIL should have failed debt first for $code" }
-                            require(current < CURRENT_RATIO_MIN) { "current-ratio FAIL does not violate threshold for $code" }
+                            if (schema == 1) {
+                                require(debt <= DEBT_TO_EQUITY_MAX + 1e-9) { "current-ratio FAIL should have failed debt first for $code" }
+                                require(current < CURRENT_RATIO_MIN) { "current-ratio FAIL does not violate threshold for $code" }
+                            }
                         }
                         else -> throw IllegalArgumentException("unexpected financial-safety FAIL reason for $code: $reason")
                     }
@@ -113,6 +122,10 @@ object FinancialSafetySnapshotParser {
 
                 FinancialSafetyStatus.HOLD -> {
                     when {
+                        schema == 2 -> {
+                            require(facts != null && !facts.verified && facts.validationIssues.isNotEmpty())
+                            require(reason in facts.validationIssues) { "HOLD reason has no matching verification issue" }
+                        }
                         reason.startsWith("MISSING_") -> {
                             require(debt == null && current == null && identity == null) {
                                 "missing-input HOLD ratios must be null for $code"
@@ -153,7 +166,7 @@ object FinancialSafetySnapshotParser {
 
                 FinancialSafetyStatus.NOT_APPLICABLE -> {
                     require(reason == "FINANCIAL_SECTOR_NOT_COMPARABLE") { "N/A reason mismatch for $code" }
-                    require(scope.isBlank() && basis.isBlank()) { "N/A scope/basis must be empty for $code" }
+                    if (schema == 1) require(scope.isBlank() && basis.isBlank()) { "N/A scope/basis must be empty for $code" }
                     require(debt == null && current == null && identity == null) { "N/A ratios must be null for $code" }
                     notApplicable++
                 }
@@ -168,6 +181,7 @@ object FinancialSafetySnapshotParser {
                 currentRatioPct = current,
                 accountingIdentityGapPct = identity,
                 basis = basis,
+                facts = facts,
             )
         }
 

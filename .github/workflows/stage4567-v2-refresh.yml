@@ -1,136 +1,252 @@
-name: KR4 Stage4-7 Refresh V2
+name: KR4 Independent Financial Facts
 
 on:
+  workflow_dispatch:
+    inputs:
+      resume_run_id:
+        description: 'Resume validated official raw responses from a prior run of this collector'
+        required: false
+        type: string
+  schedule:
+    # Independent daily recovery after the two quant collection windows (KST).
+    - cron: '50 9 * * 1-5'
+    - cron: '50 13 * * 1-5'
+  workflow_run:
+    workflows: ['Collect Real KR4 Quant Snapshot']
+    types: [completed]
   push:
     branches: [main]
     paths:
-      - "evidence/real_quant_snapshot.json"
-      - "scripts/collect_financial_safety.py"
-      - "scripts/build_final_candidates_v2.py"
-      - "tests/test_stage4567.py"
-      - ".github/workflows/stage4567-v2-refresh.yml"
-  workflow_dispatch:
+      - 'scripts/collect_financial_safety_verified.py'
+      - 'scripts/dart_filing_provenance.py'
+      - 'scripts/opendart_filing_provenance.py'
+      - 'scripts/reconcile_financial_corrections.py'
+      - 'tests/test_financial_safety_provenance.py'
+      - 'tests/test_dart_filing_provenance.py'
+      - 'tests/test_opendart_filing_provenance.py'
+      - 'tests/test_financial_corrections.py'
+      - '.github/workflows/stage4567-v2-refresh.yml'
 
 permissions:
   contents: write
+  actions: read
 
 concurrency:
-  group: kr4-stage4567-v2-${{ github.ref }}
+  group: kr4-independent-financial-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
-  refresh-stage4567:
+  collect-financial-facts:
+    if: github.event_name != 'workflow_run' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main')
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 120
     steps:
-      - name: Checkout exact triggering main
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.ref_name }}
           fetch-depth: 0
-
-      - name: Set up Python 3.12
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-
-      - name: Install Stage4 dependencies
+      - name: Install official-source collector dependencies
+        run: pip install requests pytest
+      - name: Financial provenance and unchanged-policy regression tests
         run: |
-          set -euo pipefail
-          python -m pip install --upgrade pip
-          pip install requests pandas lxml
-
-      - name: Stage4-7 adversarial self-tests
-        run: |
-          set -euo pipefail
+          python -m pytest -q tests/test_dart_filing_provenance.py tests/test_financial_safety_provenance.py tests/test_opendart_filing_provenance.py tests/test_financial_corrections.py
           python scripts/collect_financial_safety.py --self-test
-          python scripts/build_final_candidates_v2.py --self-test
-          python tests/test_stage4567.py
-
-      - name: Build Stage4 safety on the exact quant snapshot
+      - name: Preserve read-only quant baseline
+        run: |
+          mkdir -p evidence/ci/financial
+          cp evidence/real_quant_snapshot.json "$RUNNER_TEMP/kr4-financial-quant-baseline.json"
+      - name: Download previous official raw observations for bounded retry
+        if: github.event_name == 'workflow_dispatch' && inputs.resume_run_id != ''
+        uses: actions/download-artifact@v4
+        with:
+          name: KR4_Official_Financial_Collection
+          run-id: ${{ inputs.resume_run_id }}
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/previous-financial
+      - name: Resume hash-validated official raw cache
+        if: github.event_name == 'workflow_dispatch' && inputs.resume_run_id != ''
         run: |
           set -euo pipefail
-          cp evidence/real_quant_snapshot.json /tmp/real_quant_stage4567.json
-          python scripts/collect_financial_safety.py \
-            --quant /tmp/real_quant_stage4567.json \
-            --out /tmp/real_quant_stage4567.json
-
-      - name: Structural Stage4 gate
+          mkdir -p "$RUNNER_TEMP/kr4-financial-raw"
+          cp -a "$RUNNER_TEMP/previous-financial/_temp/kr4-financial-raw/." "$RUNNER_TEMP/kr4-financial-raw/"
+      - name: Collect actual official BS and latest filing evidence
+        env:
+          OPENDART_API_KEY: ${{ secrets.OPENDART_API_KEY }}
         run: |
-          set -euo pipefail
+          python -u scripts/collect_financial_safety_verified.py \
+            --quant evidence/real_quant_snapshot.json \
+            --out "$RUNNER_TEMP/financial_safety_snapshot.json" \
+            --cache "$RUNNER_TEMP/kr4-financial-raw" --workers 4
+      - name: Validate full-universe facts and official-source availability
+        run: |
           python - <<'PY'
-          import json, sys
-          sys.path.insert(0, 'scripts')
-          import collect_financial_safety as fs
-          d=json.load(open('/tmp/real_quant_stage4567.json',encoding='utf-8'))
-          fs.validate_augmented(d)
-          c=d['financial_safety']['coverage']
-          assert sum(c[k] for k in ('pass','fail','hold','not_applicable')) == c['total'] == d['universe_count'] == 2649, c
-          assert d['financial_safety']['source_file'], d['financial_safety']
-          print('STAGE4_REFRESH_STRUCTURAL_GATE_PASS', c)
+          import collections, hashlib, json
+          from pathlib import Path
+          import os
+          q=Path('evidence/real_quant_snapshot.json')
+          assert q.read_bytes()==Path(os.environ['RUNNER_TEMP'],'kr4-financial-quant-baseline.json').read_bytes(), 'quant_must_not_change'
+          s=json.loads(Path(os.environ['RUNNER_TEMP'],'financial_safety_snapshot.json').read_text())
+          original=json.loads(q.read_text())
+          assert s['schema_version']==2 and s['policy_version']=='STAGE4_BS_SAFETY_V1'
+          assert s['snapshot_date_kst']==original['snapshot_date_kst']
+          assert set(s['records'])==set(original['records']) and len(s['records'])==2649
+          assert s['thresholds']=={'debt_to_equity_max_pct':400.0,'current_ratio_min_pct':70.0,'accounting_identity_tolerance_pct':5.0}
+          counts=collections.Counter(r['status'] for r in s['records'].values())
+          assert sum(counts.values())==s['coverage']['total']==2649
+          for status,key in [('PASS','pass'),('FAIL','fail'),('HOLD','hold'),('NOT_APPLICABLE','not_applicable')]:
+              assert counts[status]==s['coverage'][key]
+          errors={c:r for c,r in s['records'].items() if any(x in ('COLLECTION_ERROR','SOURCE_UNAVAILABLE','STALE_CORRECTION_CHECK') for x in r['validation_issues'])}
+          print('ACTUAL_FINANCIAL_COVERAGE',json.dumps(s['coverage'],ensure_ascii=False))
+          assert not errors, f'official_source_unavailable_for_{len(errors)}_issuers; no false complete claim'
+          Path('evidence/ci/financial/collection-verification.json').write_text(json.dumps({'status':'PASS','event':os.environ['GITHUB_EVENT_NAME'],'quantUnchanged':True,'coverage':s['coverage'],'commit':os.environ['GITHUB_SHA']},ensure_ascii=False,indent=2))
           PY
-
-      - name: Build and validate Stage5-7 V2 candidates
+      - name: Set up JVM for the actual Android financial parser
+        uses: actions/setup-java@v5
+        with:
+          java-version: '17'
+          distribution: temurin
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+      - name: Validate every collected record with the actual Android parser before publication
         run: |
           set -euo pipefail
-          python scripts/build_final_candidates_v2.py \
-            --quant /tmp/real_quant_stage4567.json \
-            --out /tmp/final_candidates_v2.json \
-            --limit 10
-          python - <<'PY'
-          import json, sys
-          sys.path.insert(0, 'scripts')
-          import build_final_candidates_v2 as fc
-          q=json.load(open('/tmp/real_quant_stage4567.json',encoding='utf-8'))
-          d=json.load(open('/tmp/final_candidates_v2.json',encoding='utf-8'))
-          fc.validate_payload(d)
-          assert d['schema_version']=='KR4_FINAL_CANDIDATE_V2'
-          assert d['policy_version']=='STAGE4567_SAFETY_AND_RELATIVE_PER_BAND_V1'
-          assert d['snapshot_date_kst']==q['snapshot_date_kst']
-          assert d['price_cutoff_date_kst']==q['price_cutoff_date_kst']
-          assert d['candidate_count']==10 and d['eligible_count']>=10, (d['candidate_count'], d['eligible_count'])
-          assert all(x['financial_safety']['status']=='PASS' for x in d['candidates'])
-          assert all(x['valuation']['changes_rank'] is False for x in d['candidates'])
-          print('STAGE567_REFRESH_V2_GATE_PASS', {'eligible':d['eligible_count'],'codes':[x['code'] for x in d['candidates']]})
-          PY
-
-      - name: Fail closed if main moved during live collection
+          cp "$RUNNER_TEMP/financial_safety_snapshot.json" evidence/financial_safety_snapshot.json
+          gradle :app:testDebugUnitTest --tests '*CommittedFinancialSnapshotTest' --stacktrace
+      - name: Publish independent facts without modifying quant or ranks
+        if: github.ref_name == 'main'
         run: |
           set -euo pipefail
           git fetch origin main --quiet
-          test "$(git rev-parse origin/main)" = "$GITHUB_SHA"
-          echo "STAGE4567_REFRESH_HEAD_GATE_PASS sha=$GITHUB_SHA"
-
-      - name: Promote Stage4 quant and Stage6-7 candidate snapshots
-        run: |
-          set -euo pipefail
-          cp /tmp/real_quant_stage4567.json evidence/real_quant_snapshot.json
-          cp /tmp/final_candidates_v2.json evidence/final_candidates.json
-          git add evidence/real_quant_snapshot.json evidence/final_candidates.json
-          git diff --cached --check
-          if git diff --cached --quiet; then
-            echo "STAGE4567_REFRESH_NO_CHANGE"
-            exit 0
-          fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          META=$(python - <<'PY'
-          import json
-          q=json.load(open('evidence/real_quant_snapshot.json',encoding='utf-8'))
-          d=json.load(open('evidence/final_candidates.json',encoding='utf-8'))
-          c=q['financial_safety']['coverage']
-          print(f"{q['snapshot_date_kst']} safety={c['pass']}/{c['fail']}/{c['hold']}/{c['not_applicable']} eligible={d['eligible_count']} candidates={d['candidate_count']}")
+          python - <<'PY'
+          import json, os, subprocess
+          from pathlib import Path
+          current=json.loads(subprocess.check_output(['git','show','origin/main:evidence/real_quant_snapshot.json']))
+          s=json.loads(Path(os.environ['RUNNER_TEMP'],'financial_safety_snapshot.json').read_text())
+          assert current['snapshot_date_kst']==s['snapshot_date_kst'] and set(current['records'])==set(s['records']), 'quant_date_or_identity_moved_during_collection'
           PY
-          )
-          git commit -m "[skip ci] Auto-refresh KR4 Stage4-7 V2: ${META}"
+          cp "$RUNNER_TEMP/financial_safety_snapshot.json" evidence/financial_safety_snapshot.json
+          git add evidence/financial_safety_snapshot.json
+          git diff --cached --check
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m '[skip ci] Refresh independent verified financial facts'
+          git pull --rebase origin main
           git push origin HEAD:main
-
-      - name: Upload Stage4-7 refresh proof
+      - name: Verify private authentication is absent from publication and raw evidence
+        id: credential_audit
+        if: always()
+        env:
+          OPENDART_API_KEY: ${{ secrets.OPENDART_API_KEY }}
+        run: |
+          python - <<'PY'
+          import os
+          from pathlib import Path
+          credential=os.environ.get('OPENDART_API_KEY','').encode()
+          root=Path(os.environ['RUNNER_TEMP'])
+          paths=list((root/'kr4-financial-raw').rglob('*'))+[root/'financial_safety_snapshot.json',Path('evidence/financial_safety_snapshot.json')]
+          files=[p for p in paths if p.is_file()]
+          assert not credential or not any(credential in p.read_bytes() for p in files), 'private authentication found; evidence publication blocked'
+          print('CREDENTIAL_FREE_EVIDENCE_PASS',len(files))
+          PY
+      - name: Preserve raw official responses, source hashes and actual results
+        if: always() && steps.credential_audit.outcome == 'success'
         uses: actions/upload-artifact@v4
         with:
-          name: KR4_Stage4567_V2_Refresh_Proof
+          name: KR4_Official_Financial_Collection
           path: |
-            evidence/real_quant_snapshot.json
-            evidence/final_candidates.json
-          if-no-files-found: error
-          retention-days: 14
+            ${{ runner.temp }}/financial_safety_snapshot.json
+            ${{ runner.temp }}/kr4-financial-raw/
+            evidence/ci/financial/
+          if-no-files-found: warn
+          retention-days: 30
+
+  refresh-final-candidates:
+    # Financial facts are already validated and published by the upstream job.
+    # Candidate failure cannot roll them back or gate the independent quant job.
+    needs: collect-financial-facts
+    if: github.ref_name == 'main' && needs.collect-financial-facts.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install requests pandas lxml
+      - name: Preserve original candidate policy and make a read-only staging join
+        run: |
+          set -euo pipefail
+          python scripts/build_final_candidates_v2.py --self-test
+          python tests/test_stage4567.py
+          python - <<'PY'
+          import hashlib,json,os,sys
+          from pathlib import Path
+          sys.path.insert(0,'scripts')
+          import collect_financial_safety as fs
+          quant=Path('evidence/real_quant_snapshot.json')
+          safety=Path('evidence/financial_safety_snapshot.json')
+          root=Path(os.environ['RUNNER_TEMP'])
+          q=json.loads(quant.read_text());s=json.loads(safety.read_text())
+          joined=fs.augment_quant(q,s)
+          fs.validate_augmented(joined)
+          (root/'candidate-staging-quant.json').write_text(json.dumps(joined,ensure_ascii=False))
+          (root/'candidate-input-hashes.json').write_text(json.dumps({str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in (quant,safety)}))
+          PY
+      - name: Build and validate original Stage5-7 candidates independently
+        run: |
+          set -euo pipefail
+          python scripts/build_final_candidates_v2.py --quant "$RUNNER_TEMP/candidate-staging-quant.json" \
+            --out "$RUNNER_TEMP/final_candidates.json" --limit 10
+          python - <<'PY'
+          import json,os,sys
+          from pathlib import Path
+          sys.path.insert(0,'scripts')
+          import build_final_candidates_v2 as fc
+          p=Path(os.environ['RUNNER_TEMP'])
+          q=json.loads((p/'candidate-staging-quant.json').read_text())
+          d=json.loads((p/'final_candidates.json').read_text())
+          fc.validate_payload(d)
+          assert d['snapshot_date_kst']==q['snapshot_date_kst'] and d['price_cutoff_date_kst']==q['price_cutoff_date_kst']
+          assert d['candidate_count']==10 and d['eligible_count']>=10
+          assert all(x['financial_safety']['status']=='PASS' and x['valuation']['changes_rank'] is False for x in d['candidates'])
+          print('ORIGINAL_CANDIDATE_POLICY_PASS',d['eligible_count'],d['candidate_count'])
+          PY
+      - name: Publish candidates only when their financial and quant inputs still match
+        run: |
+          set -euo pipefail
+          git fetch origin main --quiet
+          python - <<'PY'
+          import hashlib,json,os,subprocess
+          from pathlib import Path
+          hashes=json.loads(Path(os.environ['RUNNER_TEMP'],'candidate-input-hashes.json').read_text())
+          for path,digest in hashes.items():
+              current=subprocess.check_output(['git','show','origin/main:'+path])
+              assert hashlib.sha256(current).hexdigest()==digest,'candidate_inputs_moved_during_build'
+          PY
+          cp "$RUNNER_TEMP/final_candidates.json" evidence/final_candidates.json
+          git add evidence/final_candidates.json
+          git diff --cached --check
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m '[skip ci] Refresh independently verified final candidates'
+          git pull --rebase origin main
+          git push origin HEAD:main
+      - name: Preserve candidate verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: KR4_Independent_Final_Candidates
+          path: |
+            ${{ runner.temp }}/final_candidates.json
+            ${{ runner.temp }}/candidate-input-hashes.json
+          if-no-files-found: warn
+          retention-days: 30

@@ -40,12 +40,14 @@ object PriceHistoryRepository {
         val source: Source,
         val priceCutoffDate: LocalDate,
         val detail: String,
+        val adjustment: PriceAdjustmentProvenance = PriceAdjustmentProvenance(),
     )
 
     suspend fun load(context: Context, issuerId: String, cutoffDate: String): Result =
         withContext(Dispatchers.IO) {
             require(CODE.matches(issuerId)) { "Invalid issue code" }
             val cutoff = LocalDate.parse(cutoffDate)
+            val adjustment = PriceAdjustmentProvenance("$BASE_URL/$issuerId/price")
             // Never reuse v1 caches: that parser synthesized missing OHLC.
             val cacheDir = File(context.applicationContext.filesDir, "price_history_v2")
             val cacheFile = File(cacheDir, "$issuerId.json")
@@ -74,14 +76,14 @@ object PriceHistoryRepository {
                         tmp.delete()
                     }
                 }
-                Result(loaded, Source.LIVE, cutoff, "네이버증권 과거 일봉")
+                Result(loaded, Source.LIVE, cutoff, "네이버증권 과거 일봉", adjustment)
             } catch (cancelled: CancellationException) {
                 throw cancelled
             } catch (_: Exception) {
                 if (cached.isNotEmpty()) {
-                    Result(cached, Source.CACHE, cutoff, "네트워크 연결 실패 · 저장된 차트")
+                    Result(cached, Source.CACHE, cutoff, "네트워크 연결 실패 · 저장된 차트", adjustment)
                 } else {
-                    Result(emptyList(), Source.MISSING, cutoff, "과거 종가 자료 미확보")
+                    Result(emptyList(), Source.MISSING, cutoff, "과거 종가 자료 미확보", adjustment)
                 }
             }
         }
