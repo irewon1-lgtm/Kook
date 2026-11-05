@@ -31,7 +31,7 @@ class PriceChartTimeframeInstrumentedTest {
     private fun render(result: PriceHistoryRepository.Result?) {
         composeRule.setContent { KRStockV3Theme {
             Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
-                PriceChartPanel(result, loading = false)
+                PriceChartPanel(result, loading = false, initialCandleMode = false)
             }
         } }
     }

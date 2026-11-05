@@ -75,7 +75,7 @@ class PriceChartAndRiskBadgeInstrumentedTest {
         )
         composeRule.setContent { KRStockV3Theme {
             Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
-                PriceChartPanel(result = result, loading = false)
+                PriceChartPanel(result = result, loading = false, initialCandleMode = false)
             }
         } }
         composeRule.onNodeWithTag("price_chart_panel").assertIsDisplayed()

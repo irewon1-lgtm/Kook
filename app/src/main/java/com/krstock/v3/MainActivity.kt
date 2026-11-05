@@ -1,37 +1,37 @@
 package com.krstock.v3
 
 import android.os.Bundle
+import android.os.Build
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
+import androidx.core.view.WindowCompat
 import com.krstock.v3.data.update.SnapshotAutoUpdater
-import com.krstock.v3.ui.screens.HomeScreen
-import com.krstock.v3.ui.screens.StockDetailScreen
-import com.krstock.v3.ui.screens.StockListScreen
 import com.krstock.v3.ui.theme.KRStockV3Theme
+import com.krstock.v3.ui.navigation.NavyAppNavigation
 import com.krstock.v3.update.AppAutoUpdater
-import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.statusBarColor = 0xFF061321.toInt()
+        window.navigationBarColor = 0xFF061321.toInt()
+        WindowCompat.getInsetsController(window, window.decorView).apply {
+            isAppearanceLightStatusBars = false
+            isAppearanceLightNavigationBars = false
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            window.isStatusBarContrastEnforced = false
+            window.isNavigationBarContrastEnforced = false
+        }
         setContent {
             KRStockV3Theme {
                 var ready by remember { mutableStateOf(false) }
@@ -62,48 +62,7 @@ class MainActivity : ComponentActivity() {
                 }
 
                 Surface(modifier = Modifier.fillMaxSize()) {
-                    val navController = rememberNavController()
-                    NavHost(
-                        navController = navController,
-                        startDestination = "main",
-                        modifier = Modifier.fillMaxSize(),
-                        enterTransition = { EnterTransition.None },
-                        exitTransition = { ExitTransition.None },
-                        popEnterTransition = { EnterTransition.None },
-                        popExitTransition = { ExitTransition.None }
-                    ) {
-                        composable("main") {
-                            val pagerState = rememberPagerState(initialPage = 0, pageCount = { 2 })
-                            val scope = rememberCoroutineScope()
-
-                            BackHandler(enabled = pagerState.currentPage != 0) {
-                                scope.launch { pagerState.scrollToPage(0) }
-                            }
-
-                            HorizontalPager(
-                                state = pagerState,
-                                modifier = Modifier.fillMaxSize().testTag("main_pager")
-                            ) { page ->
-                                when (page) {
-                                    0 -> HomeScreen(
-                                        onStockClick = { issuerId -> navController.navigate("detail/$issuerId") },
-                                        onNavigateToList = { scope.launch { pagerState.animateScrollToPage(1) } }
-                                    )
-                                    else -> StockListScreen(
-                                        onStockClick = { issuerId -> navController.navigate("detail/$issuerId") },
-                                        onBack = { scope.launch { pagerState.scrollToPage(0) } }
-                                    )
-                                }
-                            }
-                        }
-                        composable("detail/{issuerId}") { backStackEntry ->
-                            val issuerId = backStackEntry.arguments?.getString("issuerId").orEmpty()
-                            StockDetailScreen(
-                                issuerId = issuerId,
-                                onBack = { navController.popBackStack() }
-                            )
-                        }
-                    }
+                    NavyAppNavigation()
                 }
 
                 pendingUpdate?.let { prepared ->

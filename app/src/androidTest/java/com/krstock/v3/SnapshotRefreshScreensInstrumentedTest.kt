@@ -130,7 +130,8 @@ class SnapshotRefreshScreensInstrumentedTest {
         composeRule.setContent {
             KRStockV3Theme { StockListScreen(onStockClick = {}, onBack = {}) }
         }
-        composeRule.onNodeWithTag("stock_search").performTextInput("000020")
+        SnapshotTestSupport.revealRankingSearch(composeRule)
+        composeRule.onNodeWithTag("stock_search").performScrollTo().performTextInput("000020")
         hideKeyboard()
         composeRule.onNodeWithTag("stock_search").assertTextEquals("000020")
         composeRule.onNodeWithTag("stock_rank_list").performScrollToIndex(1)

@@ -61,7 +61,11 @@ class CompleteUiGalleryInstrumentedTest {
             .put("source_provenance", JSONObject(SnapshotTestSupport.fixture("quant_fixture_provenance.json"))))
     }
 
-    private fun controls() = composeRule.onNodeWithTag("stock_rank_list").performScrollToIndex(0)
+    private fun controls() {
+        composeRule.onNodeWithTag("stock_rank_list").performScrollToIndex(0)
+        SnapshotTestSupport.revealRankingSearch(composeRule)
+        SnapshotTestSupport.revealRankingMetrics(composeRule)
+    }
     private fun click(tag: String) = composeRule.onNodeWithTag(tag).performScrollTo().performClick()
     private fun hideKeyboard() {
         composeRule.activity.runOnUiThread {
@@ -109,12 +113,11 @@ class CompleteUiGalleryInstrumentedTest {
         }
         for (sort in listOf("CODE", "NAME", "COMBINATION")) {
             controls()
-            click("sort_$sort")
-            composeRule.onNodeWithTag("sort_$sort").assertIsSelected()
+            SnapshotTestSupport.selectRankingSort(composeRule, sort)
             recorded("ranking-sort-$sort", JSONObject().put("sort", sort))
         }
         controls()
-        click("sort_CODE")
+        SnapshotTestSupport.selectRankingSort(composeRule, "CODE")
         // Includes every issuer, including unranked companies with missing metric reasons.
         composeRule.onNodeWithTag("stock_rank_list").performScrollToIndex(2649)
         val lastCode = StockRepository.getAllStocks().maxBy { it.issuerId }.issuerId
