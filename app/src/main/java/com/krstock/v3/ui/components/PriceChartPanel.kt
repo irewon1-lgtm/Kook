@@ -185,8 +185,8 @@ fun PriceChartPanel(
                         border = BorderStroke(1.dp, scheme.outlineVariant),
                     ) {
                         Column(
-                            Modifier.fillMaxWidth().padding(8.dp),
-                            verticalArrangement = Arrangement.spacedBy(5.dp),
+                            Modifier.fillMaxWidth().padding(7.dp),
+                            verticalArrangement = Arrangement.spacedBy(4.dp),
                         ) {
                             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                                 Column(Modifier.weight(1.25f), verticalArrangement = Arrangement.spacedBy(1.dp)) {
@@ -199,10 +199,8 @@ fun PriceChartPanel(
                                         "${first.firstTradingDate.format(shortDate)} ~ ${last.lastTradingDate.format(shortDate)}",
                                         fontSize = 8.sp, lineHeight = 10.sp, color = scheme.onSurfaceVariant,
                                     )
-                                    Text("최근 ${interval.label}", fontSize = 8.sp, lineHeight = 10.sp,
-                                        color = scheme.onSurfaceVariant)
                                 }
-                                VerticalDivider(Modifier.height(35.dp), color = scheme.outlineVariant)
+                                VerticalDivider(Modifier.height(30.dp), color = scheme.outlineVariant)
                                 Spacer(Modifier.width(8.dp))
                                 val ohlcText = "시가 ${priceText(last.open)} · 고가 ${priceText(last.high)} · " +
                                     "저가 ${priceText(last.low)} · 종가 ${priceText(last.close)}"

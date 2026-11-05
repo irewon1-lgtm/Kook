@@ -601,6 +601,7 @@ private fun DetailMetricsPage(summary: StockSummary, financialSafety: FinancialS
         CompositeScorePanel(summary)
         CompactMetricsOverview(summary, tagMetricValues = true)
         FinancialSafetyCard(financialSafety, summary.asOfDate)
+        FinancialSectorNote()
         Text(
             "지표별 근거와 업종 비교",
             fontSize = 15.sp, fontWeight = FontWeight.Bold,
@@ -614,6 +615,32 @@ private fun DetailMetricsPage(summary: StockSummary, financialSafety: FinancialS
         MetricCard(summary.m03Per, lossMaking = summary.isLossMaking)
         MetricCard(summary.m04Price6m)
         SwipeHint("← 밀어서 4지표 종합해석 보기")
+    }
+}
+
+@Composable
+private fun FinancialSectorNote() {
+    val scheme = MaterialTheme.colorScheme
+    Column(Modifier.fillMaxWidth().testTag("detail_financial_sector_note")) {
+        HorizontalDivider(color = scheme.outlineVariant)
+        Row(
+            Modifier.fillMaxWidth().background(scheme.surface.copy(alpha = .4f))
+                .padding(horizontal = 8.dp, vertical = 6.dp),
+            verticalAlignment = Alignment.Top,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            Canvas(Modifier.padding(top = 1.dp).size(12.dp)) {
+                val color = scheme.onSurfaceVariant
+                val stroke = 1.dp.toPx()
+                drawCircle(color, radius = size.width * .43f, style = Stroke(stroke))
+                drawCircle(color, radius = stroke * .7f, center = Offset(size.width * .5f, size.height * .3f))
+                drawLine(color, Offset(size.width * .5f, size.height * .46f), Offset(size.width * .5f, size.height * .72f), stroke)
+            }
+            Text(
+                "주의 · 은행·보험·증권 등 금융업은 일반기업의 부채·유동비율과 직접 비교하지 않아 비교에서 제외합니다.",
+                Modifier.weight(1f), fontSize = 7.5.sp, lineHeight = 11.sp, color = scheme.onSurfaceVariant,
+            )
+        }
     }
 }
 

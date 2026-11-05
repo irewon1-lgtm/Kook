@@ -250,14 +250,14 @@ private fun NavyBottomMenus(selectedMenu: MainMenu, onSelect: (MainMenu) -> Unit
     val scheme = MaterialTheme.colorScheme
     Column(Modifier.fillMaxWidth().background(scheme.background)) {
         HorizontalDivider(color = scheme.outlineVariant)
-        Row(Modifier.fillMaxWidth().height(61.dp).testTag("main_bottom_navigation")) {
+        Row(Modifier.fillMaxWidth().height(52.dp).testTag("main_bottom_navigation")) {
             MainMenu.entries.forEach { menu ->
                 val selected = selectedMenu == menu
                 val color = if (selected) scheme.primary else scheme.onSurfaceVariant
                 Column(
                     modifier = Modifier.weight(1f).fillMaxHeight()
                         .selectable(selected = selected, role = Role.Tab, onClick = { onSelect(menu) })
-                        .testTag(menu.tag).padding(vertical = 7.dp),
+                        .testTag(menu.tag).padding(vertical = 5.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterVertically),
                 ) {
@@ -272,7 +272,7 @@ private fun NavyBottomMenus(selectedMenu: MainMenu, onSelect: (MainMenu) -> Unit
 
 @Composable
 private fun MainMenuIcon(menu: MainMenu, color: Color, selected: Boolean) {
-    Canvas(Modifier.size(23.dp)) {
+    Canvas(Modifier.size(20.dp)) {
         val unit = size.width / 24f
         val stroke = Stroke(width = 1.7f * unit, cap = StrokeCap.Round)
         fun point(x: Float, y: Float) = Offset(x * unit, y * unit)

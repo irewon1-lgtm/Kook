@@ -216,7 +216,7 @@ fun StockListScreen(onStockClick: (String) -> Unit, onBack: () -> Unit, initialS
                         NavyFullListAction("전체 순위 보기 (${eligibleShown}종목)  ›", "ranking_full_list_action") {
                             scope.launch { listState.animateScrollToItem(11) }
                         }
-                        Spacer(Modifier.height(7.dp))
+                        Spacer(Modifier.height(40.dp))
                     }
                 }
             }

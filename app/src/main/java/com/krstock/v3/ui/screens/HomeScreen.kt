@@ -23,11 +23,11 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -242,16 +242,23 @@ fun SnapshotCompactCard(total: Int, complete: Int, snapshotDate: String, priceDa
 @Composable
 internal fun SnapshotSourceHeading(status: SnapshotAutoUpdater.Result, matches: Boolean, tag: String) {
     val scheme = MaterialTheme.colorScheme
-    Row(verticalAlignment = Alignment.CenterVertically) {
+    val sourceSentence = if (matches) "데이터 출처 ${status.source.name}" else "데이터 출처 확인 중"
+    Row(
+        modifier = Modifier.clearAndSetSemantics {
+            this[SemanticsProperties.TestTag] = tag
+            this[SemanticsProperties.Text] = listOf(AnnotatedString(sourceSentence))
+        },
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
         Box(Modifier.size(6.dp).background(if (matches && status.failure == null) Color(0xFF1BCF7B) else scheme.onSurfaceVariant, RoundedCornerShape(99.dp)))
         Spacer(Modifier.width(5.dp))
-        Text(
-            buildAnnotatedString {
-                append(if (matches) "데이터 출처 " else "데이터 출처 확인 중")
-                if (matches) withStyle(SpanStyle(background = Color(0xFF165EA6), color = Color.White)) { append(status.source.name) }
-            },
-            Modifier.testTag(tag), fontSize = 11.sp, lineHeight = 15.sp, fontWeight = FontWeight.Bold,
-        )
+        Text(if (matches) "데이터 출처" else sourceSentence, fontSize = 11.sp, lineHeight = 15.sp, fontWeight = FontWeight.Bold)
+        if (matches) {
+            Spacer(Modifier.width(5.dp))
+            Surface(shape = RoundedCornerShape(99.dp), color = Color(0xFF165EA6), contentColor = Color.White, border = BorderStroke(.5.dp, Color(0xFF367DBB))) {
+                Text(status.source.name, Modifier.padding(horizontal = 6.dp, vertical = 2.dp), fontSize = 10.sp, lineHeight = 12.sp, fontWeight = FontWeight.Bold)
+            }
+        }
     }
 }
 
@@ -273,6 +280,16 @@ private fun SnapshotOutlineIcon(kind: String, modifier: Modifier) {
         val w = size.width
         val h = size.height
         when (kind) {
+            "warning" -> {
+                val top = Offset(w * .5f, h * .08f)
+                val left = Offset(w * .08f, h * .88f)
+                val right = Offset(w * .92f, h * .88f)
+                drawLine(color, top, left, stroke, StrokeCap.Round)
+                drawLine(color, left, right, stroke, StrokeCap.Round)
+                drawLine(color, right, top, stroke, StrokeCap.Round)
+                drawLine(color, Offset(w * .5f, h * .35f), Offset(w * .5f, h * .57f), stroke, StrokeCap.Round)
+                drawCircle(color, radius = stroke * .55f, center = Offset(w * .5f, h * .73f))
+            }
             "calendar" -> {
                 drawRoundRect(color, Offset(w * .12f, h * .2f), androidx.compose.ui.geometry.Size(w * .76f, h * .7f), androidx.compose.ui.geometry.CornerRadius(w * .08f), style = Stroke(stroke))
                 drawLine(color, Offset(w * .12f, h * .43f), Offset(w * .88f, h * .43f), stroke)
@@ -325,7 +342,7 @@ internal fun NavyUniverseCounts(total: Int, ranked: Int, modifier: Modifier = Mo
                             Canvas(Modifier.size(15.dp)) {
                                 for (bar in 0..2) drawLine(scheme.primary, Offset(size.width * (.15f + bar * .3f), size.height * .9f), Offset(size.width * (.15f + bar * .3f), size.height * (.65f - bar * .25f)), 3.dp.toPx(), StrokeCap.Round)
                             }
-                        } else SnapshotOutlineIcon(if (index == 0) "layers" else "check", Modifier.size(15.dp))
+                        } else SnapshotOutlineIcon(if (index == 0) "layers" else "warning", Modifier.size(15.dp))
                         Spacer(Modifier.width(7.dp))
                         Column(Modifier.weight(1f)) {
                             Text(label, fontSize = 8.sp, lineHeight = 11.sp, color = scheme.onSurfaceVariant)
