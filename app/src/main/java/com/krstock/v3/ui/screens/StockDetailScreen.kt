@@ -14,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -129,6 +130,7 @@ fun StockDetailScreen(issuerId: String, onBack: () -> Unit, onSearch: (() -> Uni
     val pagerState = rememberPagerState(initialPage = 0, pageCount = { 5 })
     val scope = rememberCoroutineScope()
     val tabs = listOf("요약", "4지표", "종합해석", "체크·출처", "차트")
+    val tabFontSize = if (LocalConfiguration.current.screenWidthDp < 340 || LocalDensity.current.fontScale > 1.15f) 9.sp else 11.sp
     var priceChart by remember(issuerId, snapshotState.priceCutoffDate) {
         mutableStateOf<PriceHistoryRepository.Result?>(null)
     }
@@ -146,21 +148,21 @@ fun StockDetailScreen(issuerId: String, onBack: () -> Unit, onSearch: (() -> Uni
         topBar = {
             Surface(color = scheme.background) {
                 Row(
-                    modifier = Modifier.fillMaxWidth().statusBarsPadding().padding(horizontal = 8.dp, vertical = 8.dp),
+                    modifier = Modifier.fillMaxWidth().statusBarsPadding().padding(horizontal = 10.dp, vertical = 4.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    IconButton(onClick = onBack, modifier = Modifier.semantics { contentDescription = "뒤로" }) {
-                        Text("‹", fontSize = 34.sp)
+                    IconButton(onClick = onBack, modifier = Modifier.size(34.dp).semantics { contentDescription = "뒤로" }) {
+                        Text("‹", fontSize = 30.sp, lineHeight = 32.sp)
                     }
                     Column(Modifier.weight(1f).padding(end = 8.dp)) {
                         Text(
                             "${summary.name} (${summary.issuerId})",
-                            modifier = Modifier.testTag("detail_title"),
-                            fontWeight = FontWeight.Bold, fontSize = 20.sp,
+                            modifier = Modifier.fillMaxWidth().testTag("detail_title"),
+                            fontWeight = FontWeight.Bold, fontSize = 16.sp, lineHeight = 20.sp,
                         )
                         Text(
                             "${summary.market} · ${summary.sector}",
-                            fontSize = 11.sp, color = scheme.onSurfaceVariant,
+                            fontSize = 9.sp, lineHeight = 12.sp, color = scheme.onSurfaceVariant,
                         )
                     }
                     NavyHeaderActions(onSearch = onSearch, onUpdates = { showUpdates = true })
@@ -172,23 +174,35 @@ fun StockDetailScreen(issuerId: String, onBack: () -> Unit, onSearch: (() -> Uni
             if (pagerState.currentPage != 4) DetailQuotePanel(result = priceChart, loading = chartLoading)
             TabRow(
                 selectedTabIndex = pagerState.currentPage,
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp).testTag("detail_tabs"),
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp).testTag("detail_tabs"),
                 containerColor = scheme.background,
                 contentColor = scheme.onSurface,
-                divider = { HorizontalDivider(color = scheme.outlineVariant) }
+                indicator = {},
+                divider = { HorizontalDivider(color = scheme.outline) },
             ) {
                 tabs.forEachIndexed { index, title ->
+                    val selected = pagerState.currentPage == index
                     Tab(
-                        selected = pagerState.currentPage == index,
+                        selected = selected,
                         onClick = { scope.launch { pagerState.animateScrollToPage(index) } },
-                        text = {
-                            Text(
-                                title,
-                                fontSize = 12.sp,
-                                fontWeight = if (pagerState.currentPage == index) FontWeight.Bold else FontWeight.Medium
-                            )
+                        modifier = Modifier.height(36.dp),
+                    ) {
+                        Surface(
+                            modifier = Modifier.fillMaxWidth().padding(horizontal = 2.dp),
+                            shape = RoundedCornerShape(7.dp),
+                            color = if (selected) scheme.primary.copy(alpha = .24f) else scheme.background,
+                            border = if (selected) BorderStroke(1.dp, scheme.primary.copy(alpha = .34f)) else null,
+                        ) {
+                            Box(Modifier.fillMaxWidth().height(28.dp), contentAlignment = Alignment.Center) {
+                                Text(
+                                    title, fontSize = tabFontSize, lineHeight = 14.sp,
+                                    maxLines = 1, softWrap = false,
+                                    fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
+                                    color = if (selected) scheme.onSurface else scheme.onSurfaceVariant,
+                                )
+                            }
                         }
-                    )
+                    }
                 }
             }
 
@@ -232,61 +246,67 @@ private fun DetailQuotePanel(result: PriceHistoryRepository.Result?, loading: Bo
         else -> "네이버증권 · 완료 일봉 기준"
     }
     Surface(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 5.dp)
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 4.dp)
             .testTag("detail_quote_panel"),
-        shape = RoundedCornerShape(11.dp),
+        shape = RoundedCornerShape(9.dp),
         color = scheme.primaryContainer,
         border = BorderStroke(1.dp, scheme.primary.copy(alpha = 0.32f)),
     ) {
-        Row(
+        Box(
             modifier = Modifier.background(
                 Brush.horizontalGradient(listOf(scheme.primary.copy(alpha = 0.14f), scheme.primaryContainer))
-            ).padding(horizontal = 14.dp, vertical = 11.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            ),
         ) {
-            Column(Modifier.weight(1.35f)) {
-                Text(
-                    latest?.let { String.format(Locale.KOREA, "%,.0f원", it.close) }
-                        ?: if (loading) "종가 확인 중" else "종가 미확보",
-                    modifier = Modifier.testTag("detail_quote_close"),
-                    fontSize = if (latest == null) 19.sp else if (fontScale > 1.15f) 22.sp else 25.sp,
-                    lineHeight = if (latest == null) 23.sp else 29.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = scheme.onSurface,
-                )
-                if (change != null && previous != null) {
-                    Text(
-                        String.format(Locale.KOREA, "%s %+,.0f원 (%+.2f%%)",
-                            if (change > 0) "▲" else if (change < 0) "▼" else "—",
-                            change, change / previous.close * 100.0),
-                        fontSize = 11.sp, lineHeight = 14.sp, fontWeight = FontWeight.SemiBold, color = changeColor,
-                    )
-                }
-                Text(
-                    latest?.let { "${it.date} · $sourceLabel" } ?: sourceLabel,
-                    fontSize = 8.sp, lineHeight = 10.sp, color = scheme.onSurfaceVariant, maxLines = 2,
-                )
-            }
             if (showSparkline && bars.size > 1) {
                 val samples = bars.takeLast(24)
                 val lowest = samples.minOf { it.close }
                 val range = samples.maxOf { it.close } - lowest
-                Canvas(Modifier.weight(0.55f).height(42.dp)) {
+                Canvas(Modifier.align(Alignment.CenterEnd).offset(x = (-85).dp).width(110.dp).height(46.dp)) {
                     val path = Path()
                     samples.forEachIndexed { index, bar ->
                         val x = index.toFloat() / samples.lastIndex * size.width
                         val y = if (range > 0.0) size.height * (1f - ((bar.close - lowest) / range).toFloat()) else size.height / 2f
                         if (index == 0) path.moveTo(x, y) else path.lineTo(x, y)
                     }
-                    drawPath(path, color = scheme.primary.copy(alpha = 0.76f), style = Stroke(width = 2.dp.toPx()))
+                    drawPath(path, color = scheme.primary.copy(alpha = 0.22f), style = Stroke(width = 2.dp.toPx()))
                 }
             }
-            Column(Modifier.weight(0.95f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                QuoteFact("시가", latest?.open?.let { String.format(Locale.KOREA, "%,.0f", it) })
-                QuoteFact("고가", latest?.high?.let { String.format(Locale.KOREA, "%,.0f", it) })
-                QuoteFact("저가", latest?.low?.let { String.format(Locale.KOREA, "%,.0f", it) })
-                QuoteFact("거래량", latest?.volume?.let { String.format(Locale.KOREA, "%,d주", it) })
+            Row(
+                Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 7.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(9.dp),
+            ) {
+                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(7.dp)) {
+                        Text(
+                            latest?.let { String.format(Locale.KOREA, "%,.0f원", it.close) }
+                                ?: if (loading) "종가 확인 중" else "종가 미확보",
+                            modifier = Modifier.testTag("detail_quote_close"),
+                            fontSize = if (latest == null) 16.sp else 20.sp, lineHeight = 24.sp,
+                            fontWeight = FontWeight.Bold, color = scheme.onSurface,
+                        )
+                        if (change != null && previous != null) {
+                            Text(
+                                String.format(Locale.KOREA, "%s %+,.0f원 (%+.2f%%)",
+                                    if (change > 0) "▲" else if (change < 0) "▼" else "—",
+                                    change, change / previous.close * 100.0),
+                                modifier = Modifier.weight(1f),
+                                fontSize = 9.sp, lineHeight = 11.sp, fontWeight = FontWeight.SemiBold, color = changeColor,
+                            )
+                        }
+                    }
+                    Text(
+                        latest?.let { "${it.date} · $sourceLabel" } ?: sourceLabel,
+                        fontSize = 7.sp, lineHeight = 9.sp, color = scheme.onSurfaceVariant,
+                    )
+                }
+                VerticalDivider(Modifier.height(45.dp), color = scheme.onSurfaceVariant.copy(alpha = .32f))
+                Column(Modifier.width(if (fontScale > 1.15f) 82.dp else 76.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                    QuoteFact("시가", latest?.open?.let { String.format(Locale.KOREA, "%,.0f", it) })
+                    QuoteFact("고가", latest?.high?.let { String.format(Locale.KOREA, "%,.0f", it) })
+                    QuoteFact("저가", latest?.low?.let { String.format(Locale.KOREA, "%,.0f", it) })
+                    QuoteFact("거래량", latest?.volume?.let { String.format(Locale.KOREA, "%,d주", it) })
+                }
             }
         }
     }
@@ -368,13 +388,13 @@ private fun CompositeScorePanel(summary: StockSummary, tagSummaryValues: Boolean
                 Box(Modifier.width(3.dp).height(20.dp).background(scheme.primary, RoundedCornerShape(3.dp)))
                 Spacer(Modifier.width(8.dp))
                 Column(Modifier.weight(1f)) {
-                    Text("종합점수", fontSize = 19.sp, lineHeight = 22.sp, fontWeight = FontWeight.Bold)
+                    Text("종합점수", fontSize = 17.sp, lineHeight = 20.sp, fontWeight = FontWeight.Bold)
                     Text("4지표 종합 상대평가 · 백분위와 구분", fontSize = 8.sp, lineHeight = 10.sp, color = scheme.onSurfaceVariant)
                 }
                 Text(
                     summary.compositeScore?.let { String.format("%.1f점", it) } ?: "미산출",
                     modifier = if (tagSummaryValues) Modifier.testTag("detail_summary_score") else Modifier,
-                    fontWeight = FontWeight.Bold, fontSize = 25.sp, lineHeight = 29.sp,
+                    fontWeight = FontWeight.Bold, fontSize = 22.sp, lineHeight = 26.sp,
                 )
             }
             Spacer(Modifier.height(6.dp))
@@ -417,6 +437,52 @@ private fun ScoreFact(label: String, value: String, modifier: Modifier = Modifie
 }
 
 @Composable
+private fun CompactMetricIcon(index: Int) {
+    val scheme = MaterialTheme.colorScheme
+    Surface(shape = RoundedCornerShape(6.dp), color = scheme.primary.copy(alpha = .10f)) {
+        Canvas(Modifier.size(25.dp).padding(5.dp)) {
+            val color = scheme.primary
+            val stroke = 1.1.dp.toPx()
+            val w = size.width
+            val h = size.height
+            when (index) {
+                0 -> {
+                    for (bar in 0..2) {
+                        val x = w * (.16f + .30f * bar)
+                        drawLine(color, Offset(x, h * (.65f - .23f * bar)), Offset(x, h * .91f), stroke)
+                        drawLine(color, Offset(x + w * .13f, h * (.65f - .23f * bar)), Offset(x + w * .13f, h * .91f), stroke)
+                    }
+                }
+                1 -> {
+                    drawOval(color, topLeft = Offset(w * .1f, h * .05f), size = androidx.compose.ui.geometry.Size(w * .8f, h * .3f), style = Stroke(stroke))
+                    drawLine(color, Offset(w * .1f, h * .2f), Offset(w * .1f, h * .8f), stroke)
+                    drawLine(color, Offset(w * .9f, h * .2f), Offset(w * .9f, h * .8f), stroke)
+                    drawArc(color, 0f, 180f, false, Offset(w * .1f, h * .37f), androidx.compose.ui.geometry.Size(w * .8f, h * .3f), style = Stroke(stroke))
+                    drawArc(color, 0f, 180f, false, Offset(w * .1f, h * .65f), androidx.compose.ui.geometry.Size(w * .8f, h * .3f), style = Stroke(stroke))
+                }
+                2 -> {
+                    val path = Path().apply {
+                        moveTo(w * .12f, h * .57f); lineTo(w * .56f, h * .1f)
+                        lineTo(w * .9f, h * .1f); lineTo(w * .9f, h * .44f)
+                        lineTo(w * .45f, h * .91f); close()
+                    }
+                    drawPath(path, color, style = Stroke(stroke))
+                    drawCircle(color, radius = w * .05f, center = Offset(w * .72f, h * .28f))
+                }
+                else -> {
+                    drawLine(color, Offset(w * .12f, h * .3f), Offset(w * .88f, h * .3f), stroke)
+                    drawLine(color, Offset(w * .68f, h * .12f), Offset(w * .88f, h * .3f), stroke)
+                    drawLine(color, Offset(w * .68f, h * .48f), Offset(w * .88f, h * .3f), stroke)
+                    drawLine(color, Offset(w * .88f, h * .72f), Offset(w * .12f, h * .72f), stroke)
+                    drawLine(color, Offset(w * .32f, h * .54f), Offset(w * .12f, h * .72f), stroke)
+                    drawLine(color, Offset(w * .32f, h * .9f), Offset(w * .12f, h * .72f), stroke)
+                }
+            }
+        }
+    }
+}
+
+@Composable
 private fun CompactMetricsOverview(summary: StockSummary, tagMetricValues: Boolean = false) {
     val scheme = MaterialTheme.colorScheme
     Column(verticalArrangement = Arrangement.spacedBy(7.dp)) {
@@ -439,17 +505,12 @@ private fun CompactMetricsOverview(summary: StockSummary, tagMetricValues: Boole
                 metrics.forEachIndexed { index, metric ->
                     if (index > 0) HorizontalDivider(color = scheme.outlineVariant)
                     Row(
-                        Modifier.fillMaxWidth().padding(vertical = 6.dp),
+                        Modifier.fillMaxWidth().padding(vertical = 5.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(10.dp),
                     ) {
-                        Surface(shape = RoundedCornerShape(7.dp), color = scheme.primary.copy(alpha = 0.10f)) {
-                            Text(
-                                listOf("↗", "▤", "₩", "⇄")[index],
-                                modifier = Modifier.padding(horizontal = 7.dp, vertical = 4.dp),
-                                fontSize = 18.sp, lineHeight = 20.sp, color = scheme.primary,
-                            )
-                        }
+                        CompactMetricIcon(index)
+
                         Column(Modifier.weight(0.9f)) {
                             Text(listOf("성장", "수익성", "가치", "흐름")[index], fontSize = 13.sp, lineHeight = 16.sp, fontWeight = FontWeight.Bold)
                             Text(listOf("매출 증가율", "영업이익률", "실적 PER", "6개월 수익률")[index], fontSize = 8.sp, lineHeight = 10.sp, color = scheme.onSurfaceVariant)
@@ -784,8 +845,8 @@ private fun PageColumn(tag: String, content: @Composable ColumnScope.() -> Unit)
             .fillMaxSize()
             .testTag(tag)
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = 12.dp, vertical = 11.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
+            .padding(horizontal = 10.dp, vertical = 9.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
         content = content
     )
 }

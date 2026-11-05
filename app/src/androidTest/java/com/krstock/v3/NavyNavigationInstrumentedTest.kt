@@ -7,6 +7,8 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.BackEventCompat
+import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createEmptyComposeRule
@@ -134,6 +136,89 @@ class NavyNavigationInstrumentedTest {
             .put("evidence_kind", "REAL_MARKET_RUNTIME").put("controlled_state", false)
             .put("favorite_issuer", "005930").put("favorite_name", "삼성전자")
             .put("favorite_add_and_remove_persisted", true).put("manual_refresh_invoked", true))
+    }
+
+    @Test fun backGestureAndImmediateBottomNavigationRemainSafeAfterRecreation() {
+        val launchRevision = SnapshotAutoUpdater.lastResult.revision
+        scenario = ActivityScenario.launch(Intent(context, MainActivity::class.java)
+            .setAction(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER))
+        waitForTag("main_home_tab")
+        waitForRefresh(launchRevision)
+        dismissOptionalUpdate()
+
+        // The Home magnifier opens the real search route and its editable field.
+        composeRule.onNodeWithContentDescription("종목 검색").performClick()
+        composeRule.onNodeWithTag("main_search_tab").assertIsSelected()
+        composeRule.onNodeWithTag("stock_search").assertIsDisplayed()
+        hideKeyboard()
+        pressBack()
+        composeRule.onNodeWithTag("main_home_tab").assertIsSelected()
+
+        val pendingRankingClick = checkNotNull(composeRule.onNodeWithTag("main_ranking_tab")
+            .fetchSemanticsNode().config[SemanticsActions.OnClick].action)
+        scenario!!.onActivity { activity ->
+            val dispatcher = activity.onBackPressedDispatcher
+            dispatcher.dispatchOnBackStarted(BackEventCompat(0f, 0f, 0f, BackEventCompat.EDGE_LEFT))
+            assertTrue(pendingRankingClick())
+            // The pager coroutine has not run: entry and currentPage still look
+            // like Home, so the synchronous navigation intent must cancel Back.
+            dispatcher.onBackPressed()
+            assertFalse("Pending Ranking navigation must not be mistaken for a root Back", activity.isFinishing)
+        }
+        composeRule.waitForIdle()
+        composeRule.onNodeWithTag("main_ranking_tab").assertIsSelected()
+        composeRule.onNodeWithTag("stock_rank_list").assertIsDisplayed()
+        pressBack()
+        composeRule.onNodeWithTag("main_home_tab").assertIsSelected()
+
+        repeat(2) { cycle ->
+            composeRule.onNodeWithTag("main_search_tab").performClick()
+            composeRule.onNodeWithTag("stock_search").performScrollTo().performTextReplacement("005930")
+            hideKeyboard()
+            composeRule.onNodeWithTag("stock_rank_list").performScrollToIndex(1)
+            composeRule.onNodeWithTag("stock_005930").assertIsDisplayed().performClick()
+            composeRule.onNodeWithTag("detail_title").assertIsDisplayed()
+            if (cycle == 1) recreateAndWait()
+            composeRule.onNodeWithTag("detail_title").assertIsDisplayed()
+            val rankingClick = checkNotNull(composeRule.onNodeWithTag("main_ranking_tab")
+                .fetchSemanticsNode().config[SemanticsActions.OnClick].action)
+
+            // Deliberately change the actual production back stack within the same
+            // input frame as Android's predictive Back dispatch. No idle wait may
+            // hide the stale callback that crashed Navigation Compose2.8.0.
+            scenario!!.onActivity { activity ->
+                val dispatcher = activity.onBackPressedDispatcher
+                dispatcher.dispatchOnBackStarted(BackEventCompat(0f, 0f, 0f, BackEventCompat.EDGE_LEFT))
+                assertTrue(rankingClick())
+                dispatcher.dispatchOnBackProgressed(BackEventCompat(0f, 0f, 0.5f, BackEventCompat.EDGE_LEFT))
+                dispatcher.onBackPressed()
+                assertFalse("A Back gesture from the old detail must not close the new destination", activity.isFinishing)
+            }
+            composeRule.waitForIdle()
+            composeRule.onNodeWithTag("main_ranking_tab").assertIsSelected()
+            composeRule.onNodeWithTag("stock_rank_list").assertIsDisplayed()
+            composeRule.onNodeWithTag("detail_title").assertDoesNotExist()
+
+            // Returning from detail recomposes main. Its Back handling must still
+            // respect a Search selection made during a Ranking-origin gesture.
+            val searchClick = checkNotNull(composeRule.onNodeWithTag("main_search_tab")
+                .fetchSemanticsNode().config[SemanticsActions.OnClick].action)
+            scenario!!.onActivity { activity ->
+                val dispatcher = activity.onBackPressedDispatcher
+                dispatcher.dispatchOnBackStarted(BackEventCompat(0f, 0f, 0f, BackEventCompat.EDGE_LEFT))
+                assertTrue(searchClick())
+                dispatcher.onBackPressed()
+                assertFalse("The new Search destination must remain open", activity.isFinishing)
+            }
+            composeRule.waitForIdle()
+            composeRule.onNodeWithTag("main_search_tab").assertIsSelected()
+            composeRule.onNodeWithTag("stock_search").assertIsDisplayed()
+            hideKeyboard()
+            pressBack()
+            composeRule.onNodeWithTag("main_ranking_tab").assertIsSelected()
+            pressBack()
+            composeRule.onNodeWithTag("main_home_tab").assertIsSelected()
+        }
     }
 
     private fun waitForTag(tag: String) = composeRule.waitUntil(timeoutMillis = 90_000L) {

@@ -15,7 +15,9 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.krstock.v3.data.generated.GeneratedRealQuantSnapshot
+import com.krstock.v3.data.model.FinancialSafetyStatus
 import com.krstock.v3.data.repository.StockRepository
+import com.krstock.v3.data.stage.FinancialSafetyRepository
 import com.krstock.v3.data.update.SnapshotAutoUpdater
 import org.json.JSONArray
 import org.json.JSONObject
@@ -82,10 +84,33 @@ class NavyApprovedUiInstrumentedTest {
         }
         dismissOptionalUpdate()
         readAndCheckLiveOracle()
+        // Core LIVE intentionally appears before optional finance I/O finishes.
+        // Capture the independently validated published finance state, not that safe HOLD placeholder.
+        composeRule.waitUntil(timeoutMillis = 90_000L) {
+            FinancialSafetyRepository.currentSnapshot()?.let {
+                it.snapshotDate == StockRepository.quantSnapshotDate() && it.records.size == 2649
+            } == true
+        }
+        val first = StockRepository.getAllStocks().filter { it.rankOrder != null }.minBy { it.rankOrder!! }
+        val firstSafety = requireNotNull(FinancialSafetyRepository.get(first.issuerId))
+        val expectedSafety = when (firstSafety.status) {
+            FinancialSafetyStatus.PASS -> "자료 확인"
+            FinancialSafetyStatus.FAIL -> "재무위험"
+            FinancialSafetyStatus.HOLD -> "미확보"
+            FinancialSafetyStatus.NOT_APPLICABLE -> "비교제외"
+        }
+        composeRule.waitUntil(timeoutMillis = 90_000L) {
+            composeRule.onAllNodes(hasTestTag("stock_${first.issuerId}") and
+                hasAnyDescendant(hasText(expectedSafety))).fetchSemanticsNodes().isNotEmpty()
+        }
+        composeRule.waitForIdle()
 
         composeRule.onNodeWithTag("home_list").performScrollToIndex(0)
         composeRule.onNodeWithTag("main_home_tab").assertIsDisplayed().assertIsSelected()
         capture("home")
+        if (isApprovedPhoneViewport()) {
+            composeRule.onNodeWithTag("home_full_ranking_action").assertIsDisplayed()
+        }
 
         composeRule.onNodeWithTag("main_ranking_tab").performClick()
         composeRule.onNodeWithTag("stock_rank_list").performScrollToIndex(0)
@@ -94,8 +119,24 @@ class NavyApprovedUiInstrumentedTest {
         composeRule.onNodeWithTag("metric_picker").performScrollTo().performClick()
         composeRule.onNodeWithTag("stock_rank_list").performScrollToIndex(0)
         capture("ranking", JSONObject().put("metric_mask", 15))
+        if (isApprovedPhoneViewport()) {
+            composeRule.onNodeWithTag("ranking_full_list_action").assertIsDisplayed()
+        }
 
         openActualStock("005930")
+        // A loading placeholder is truthful, but cannot prove the approved quote view.
+        // Wait for the real HTTP OHLCV result and compare the visible close with that body.
+        composeRule.waitUntil(timeoutMillis = 90_000L) {
+            composeRule.onAllNodesWithTag("detail_quote_close").fetchSemanticsNodes().any { node ->
+                node.config.getOrElse(SemanticsProperties.Text) { emptyList() }
+                    .any { it.text.endsWith("원") }
+            }
+        }
+        val quoteBars = JSONArray(File(context.filesDir, "price_history_v2/005930.json").readText())
+        val lastQuote = quoteBars.getJSONObject(quoteBars.length() - 1)
+        composeRule.onNodeWithTag("detail_quote_close")
+            .assertTextEquals(String.format(java.util.Locale.KOREA, "%,.0f원", lastQuote.getDouble("closePrice")))
+            .assertIsDisplayed()
         composeRule.onNodeWithText("4지표").performClick()
         composeRule.onNodeWithTag("detail_metrics_page").assertIsDisplayed()
         val samsung = downloaded.getJSONObject("records").getJSONObject("005930")
@@ -114,7 +155,10 @@ class NavyApprovedUiInstrumentedTest {
             for (id in 1..4) composeRule.onNodeWithTag("detail_m0${id}_value").assertIsDisplayed()
         }
         capture("detail", JSONObject().put("issuer", "005930").put("detail_tab", 1)
-            .put("actual_record", samsung))
+            .put("actual_record", samsung).put("actual_quote", lastQuote))
+        if (isApprovedPhoneViewport()) {
+            composeRule.onNodeWithTag("financial_safety_evidence_entry").assertIsDisplayed()
+        }
 
         composeRule.onNodeWithText("차트").performClick()
         composeRule.waitUntil(timeoutMillis = 90_000L) {
@@ -134,8 +178,17 @@ class NavyApprovedUiInstrumentedTest {
         capture("chart", JSONObject().put("issuer", "005930").put("detail_tab", 4)
             .put("chart_source", "LIVE").put("chart_interval", "DAY").put("chart_months", 6)
             .put("chart_style", "CANDLE").put("daily_source", daily))
+        if (isApprovedPhoneViewport()) {
+            composeRule.onNodeWithTag("chart_last_ohlc").assertIsDisplayed()
+            composeRule.onNodeWithTag("chart_last_volume").assertIsDisplayed()
+            composeRule.onNodeWithTag("chart_source").assertIsDisplayed()
+        }
 
         checkLongestActualCompanyName()
+    }
+
+    private fun isApprovedPhoneViewport(): Boolean = context.resources.configuration.let {
+        it.screenWidthDp == 360 && it.fontScale <= 1.01f
     }
 
     private fun readAndCheckLiveOracle() {

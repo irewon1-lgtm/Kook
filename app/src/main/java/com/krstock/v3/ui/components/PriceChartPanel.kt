@@ -9,6 +9,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -61,7 +62,7 @@ fun PriceChartPanel(
 
     Column(
         modifier = modifier.fillMaxWidth().testTag("price_chart_panel"),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
         LatestPriceQuote(daily)
         Card(
@@ -70,7 +71,7 @@ fun PriceChartPanel(
             colors = CardDefaults.cardColors(containerColor = scheme.surface),
             border = BorderStroke(1.dp, scheme.outlineVariant),
         ) {
-            Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(9.dp)) {
+            Column(Modifier.padding(10.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
@@ -82,7 +83,7 @@ fun PriceChartPanel(
                                 .background(scheme.primary, RoundedCornerShape(2.dp))
                         )
                         Spacer(Modifier.width(8.dp))
-                        Text("주가 차트", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                        Text("주가 차트", fontWeight = FontWeight.Bold, fontSize = 16.sp, lineHeight = 20.sp)
                     }
                     Surface(
                         color = Color.Transparent,
@@ -92,13 +93,13 @@ fun PriceChartPanel(
                         modifier = Modifier.testTag("chart_adjustment_notice"),
                     ) {
                         Row(
-                            Modifier.padding(horizontal = 8.dp, vertical = 6.dp),
+                            Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                             horizontalArrangement = Arrangement.spacedBy(5.dp),
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
-                            Text("⚠", fontSize = 12.sp)
+                            Text("⚠", fontSize = 12.sp, lineHeight = 14.sp)
                             Text(
-                                adjustment.label, fontSize = 10.sp, fontWeight = FontWeight.Medium,
+                                adjustment.label, fontSize = 10.sp, lineHeight = 14.sp, fontWeight = FontWeight.Medium,
                                 modifier = Modifier.testTag("chart_adjustment_status"),
                             )
                         }
@@ -125,11 +126,11 @@ fun PriceChartPanel(
                     }
                 }
                 Row(
-                    modifier = Modifier.height(34.dp),
+                    modifier = Modifier.height(28.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(9.dp),
                 ) {
-                    Text(if (candleMode) "캔들차트" else "선차트", fontSize = 12.sp)
+                    Text(if (candleMode) "캔들차트" else "선차트", fontSize = 11.sp, lineHeight = 14.sp)
                     Switch(
                         checked = candleMode,
                         onCheckedChange = { candleMode = it },
@@ -141,7 +142,7 @@ fun PriceChartPanel(
                             uncheckedTrackColor = scheme.surfaceVariant,
                             uncheckedBorderColor = scheme.outline,
                         ),
-                        modifier = Modifier.testTag("chart_candle_toggle"),
+                        modifier = Modifier.height(28.dp).scale(0.82f).testTag("chart_candle_toggle"),
                     )
                 }
 
@@ -167,8 +168,6 @@ fun PriceChartPanel(
                     val high = bars.maxOf { if (candleMode) it.high else it.close }
                     val low = bars.minOf { if (candleMode) it.low else it.close }
                     val range = max(0.01, high - low)
-                    val change = (last.close / first.close - 1.0) * 100.0
-
                     ObservedPricePlot(bars, candleMode, high, range)
                     ObservedDateAxis(bars)
                     Surface(
@@ -177,78 +176,63 @@ fun PriceChartPanel(
                         border = BorderStroke(1.dp, scheme.outlineVariant),
                     ) {
                         Column(
-                            Modifier.fillMaxWidth().padding(10.dp),
-                            verticalArrangement = Arrangement.spacedBy(7.dp),
+                            Modifier.fillMaxWidth().padding(8.dp),
+                            verticalArrangement = Arrangement.spacedBy(5.dp),
                         ) {
-                            Row(
-                                Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically,
-                            ) {
-                                Text(
-                                    if (months == 12) "1년 기준" else "${months}개월 기준",
-                                    fontSize = 11.sp, fontWeight = FontWeight.Bold,
-                                )
-                                Text(
-                                    "${first.firstTradingDate} ~ ${last.lastTradingDate}",
-                                    fontSize = 9.sp, color = scheme.onSurfaceVariant,
-                                )
-                            }
-                            Text(
-                                "최근 ${interval.label} · 제공 원본 OHLC${if (interval != Interval.DAY) " 집계" else ""}",
-                                fontSize = 9.sp, color = scheme.onSurfaceVariant,
-                            )
-                            val ohlcText = "시가 ${priceText(last.open)} · 고가 ${priceText(last.high)} · " +
-                                "저가 ${priceText(last.low)} · 종가 ${priceText(last.close)}"
-                            Row(
-                                modifier = Modifier.fillMaxWidth().clearAndSetSemantics {
-                                    testTag = "chart_last_ohlc"
-                                    text = AnnotatedString(ohlcText)
-                                },
-                            ) {
-                                listOf("시가" to last.open, "고가" to last.high, "저가" to last.low, "종가" to last.close)
-                                    .forEach { (label, price) ->
-                                        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
-                                            Text(label, fontSize = 10.sp, color = scheme.onSurfaceVariant)
-                                            Text(priceText(price), fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
+                            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                                Column(Modifier.weight(1.25f), verticalArrangement = Arrangement.spacedBy(1.dp)) {
+                                    Text(
+                                        if (months == 12) "1년 기준" else "${months}개월 기준",
+                                        fontSize = 10.sp, lineHeight = 13.sp, fontWeight = FontWeight.Bold,
+                                    )
+                                    val shortDate = DateTimeFormatter.ofPattern("MM.dd")
+                                    Text(
+                                        "${first.firstTradingDate.format(shortDate)} ~ ${last.lastTradingDate.format(shortDate)}",
+                                        fontSize = 8.sp, lineHeight = 10.sp, color = scheme.onSurfaceVariant,
+                                    )
+                                    Text("최근 ${interval.label}", fontSize = 8.sp, lineHeight = 10.sp,
+                                        color = scheme.onSurfaceVariant)
+                                }
+                                VerticalDivider(Modifier.height(35.dp), color = scheme.outlineVariant)
+                                Spacer(Modifier.width(8.dp))
+                                val ohlcText = "시가 ${priceText(last.open)} · 고가 ${priceText(last.high)} · " +
+                                    "저가 ${priceText(last.low)} · 종가 ${priceText(last.close)}"
+                                Row(
+                                    modifier = Modifier.weight(3.75f).clearAndSetSemantics {
+                                        testTag = "chart_last_ohlc"
+                                        text = AnnotatedString(ohlcText)
+                                    },
+                                ) {
+                                    listOf("시가" to last.open, "고가" to last.high, "저가" to last.low, "종가" to last.close)
+                                        .forEach { (label, price) ->
+                                            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp),
+                                                horizontalAlignment = Alignment.CenterHorizontally) {
+                                                Text(label, fontSize = 9.sp, lineHeight = 12.sp, color = scheme.onSurfaceVariant)
+                                                Text(priceText(price), fontSize = 10.sp, lineHeight = 14.sp,
+                                                    fontWeight = FontWeight.SemiBold)
+                                            }
                                         }
-                                    }
+                                }
                             }
                             HorizontalDivider(color = scheme.outlineVariant)
                             Text(
+                                "최근 ${interval.label} · 제공 원본 OHLC${if (interval != Interval.DAY) " 집계" else ""}",
+                                fontSize = 8.sp, lineHeight = 10.sp, color = scheme.onSurfaceVariant,
+                            )
+                            Text(
                                 "거래량 ${last.volume?.let { String.format("%,d주", it) } ?: "미확보"} · 실제 ${last.tradingDays}거래일",
                                 modifier = Modifier.testTag("chart_last_volume"),
-                                fontSize = 10.sp, color = scheme.onSurfaceVariant,
+                                fontSize = 10.sp, lineHeight = 14.sp, color = scheme.onSurfaceVariant,
                             )
                         }
-                    }
-                    Text(
-                        "최저 " + String.format("%,.0f", low) + "원 · 최고 " +
-                            String.format("%,.0f", high) + "원 · " + bars.size + "개 ${interval.label}",
-                        modifier = Modifier.testTag("chart_bar_count"),
-                        fontSize = 10.sp, color = scheme.onSurfaceVariant,
-                    )
-                    Text(
-                        String.format("선택 기간 원본 가격 변동 %+.2f%%", change),
-                        fontSize = 10.sp,
-                        color = if (change >= 0) ChartRise else ChartFall,
-                    )
-                    if (interval != Interval.DAY) {
-                        Text(
-                            "시작 ${interval.label}은 첫 거래일부터 집계합니다. " +
-                                if (result != null && last.periodEnd > result.priceCutoffDate)
-                                    "마지막 ${interval.label}은 기준일까지의 부분 봉입니다." else "",
-                            modifier = Modifier.testTag("chart_aggregation_note"),
-                            fontSize = 10.sp, color = scheme.onSurfaceVariant,
-                        )
                     }
                 }
                 Text(
                     "ⓘ 데이터 출처: 네이버증권 · " +
-                        (result?.let { "${it.source.name} · ${it.detail}" } ?: "조회 대기") +
+                        (result?.source?.name ?: "조회 대기") +
                         " · 기준 " + (result?.priceCutoffDate?.toString() ?: "-"),
                     modifier = Modifier.testTag("chart_source"),
-                    fontSize = 10.sp, color = scheme.onSurfaceVariant,
+                    fontSize = 9.sp, lineHeight = 12.sp, color = scheme.onSurfaceVariant,
                 )
             }
         }
@@ -256,6 +240,36 @@ fun PriceChartPanel(
             Modifier.padding(horizontal = 2.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
+            if (bars.isNotEmpty()) {
+                val first = bars.first()
+                val last = bars.last()
+                val high = bars.maxOf { if (candleMode) it.high else it.close }
+                val low = bars.minOf { if (candleMode) it.low else it.close }
+                val change = (last.close / first.close - 1.0) * 100.0
+                Text(
+                    "최저 " + String.format("%,.0f", low) + "원 · 최고 " +
+                        String.format("%,.0f", high) + "원 · " + bars.size + "개 ${interval.label}",
+                    modifier = Modifier.testTag("chart_bar_count"),
+                    fontSize = 10.sp, lineHeight = 14.sp, color = scheme.onSurfaceVariant,
+                )
+                Text(String.format("선택 기간 원본 가격 변동 %+.2f%%", change),
+                    fontSize = 10.sp, lineHeight = 14.sp, color = if (change >= 0) ChartRise else ChartFall)
+                Text(
+                    "${first.firstTradingDate} ~ ${last.lastTradingDate} · 제공 원본 OHLC${if (interval != Interval.DAY) " 집계" else ""}",
+                    fontSize = 10.sp, lineHeight = 14.sp, color = scheme.onSurfaceVariant,
+                )
+                if (interval != Interval.DAY) {
+                    Text(
+                        "시작 ${interval.label}은 첫 거래일부터 집계합니다. " +
+                            if (result != null && last.periodEnd > result.priceCutoffDate)
+                                "마지막 ${interval.label}은 기준일까지의 부분 봉입니다." else "",
+                        modifier = Modifier.testTag("chart_aggregation_note"),
+                        fontSize = 10.sp, lineHeight = 14.sp, color = scheme.onSurfaceVariant,
+                    )
+                }
+            }
+            Text(result?.detail ?: "조회 대기", modifier = Modifier.testTag("chart_source_detail"),
+                fontSize = 10.sp, lineHeight = 14.sp, color = scheme.onSurfaceVariant)
             Text(
                 adjustment.reason,
                 modifier = Modifier.testTag("chart_adjustment_reason"),
@@ -287,7 +301,7 @@ private fun ChartChoiceChip(
     FilterChip(
         selected = selected,
         onClick = onClick,
-        label = { Text(label, fontSize = 12.sp, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth()) },
+        label = { Text(label, fontSize = 11.sp, lineHeight = 14.sp, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth()) },
         shape = RoundedCornerShape(7.dp),
         colors = FilterChipDefaults.filterChipColors(
             containerColor = Color.Transparent,
@@ -296,7 +310,7 @@ private fun ChartChoiceChip(
             selectedLabelColor = Color.White,
         ),
         border = BorderStroke(1.dp, if (selected) scheme.primary else scheme.outline),
-        modifier = modifier.height(32.dp),
+        modifier = modifier.height(28.dp),
     )
 }
 
@@ -314,17 +328,17 @@ private fun LatestPriceQuote(daily: List<Candle>) {
         Column(
             Modifier.fillMaxWidth()
                 .background(Brush.horizontalGradient(listOf(Color(0xFF103359), Color(0xFF0C213A))))
-                .padding(horizontal = 14.dp, vertical = 11.dp),
-            verticalArrangement = Arrangement.spacedBy(6.dp),
+                .padding(horizontal = 12.dp, vertical = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(3.dp),
         ) {
             if (last == null) {
                 Text("최근 거래 가격", fontSize = 11.sp, color = scheme.onSurfaceVariant)
                 Text("가격 자료 대기", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.White)
             } else {
                 Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                    Column(Modifier.weight(1.1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                    Column(Modifier.weight(1.1f), verticalArrangement = Arrangement.spacedBy(1.dp)) {
                         Text(
-                            "${priceText(last.close)}원", fontSize = 25.sp,
+                            "${priceText(last.close)}원", fontSize = 22.sp, lineHeight = 24.sp,
                             fontWeight = FontWeight.Bold, color = Color.White,
                             modifier = Modifier.testTag("chart_latest_close"),
                         )
@@ -334,17 +348,17 @@ private fun LatestPriceQuote(daily: List<Candle>) {
                             Text(
                                 (if (delta < 0) "▼ " else if (delta > 0) "▲ " else "") +
                                     String.format("%+,.0f원 (%+.2f%%)", delta, change),
-                                fontSize = 10.sp, fontWeight = FontWeight.SemiBold,
+                                fontSize = 9.sp, lineHeight = 12.sp, fontWeight = FontWeight.SemiBold,
                                 color = if (delta >= 0) ChartRise else ChartFall,
                                 modifier = Modifier.testTag("chart_latest_change"),
                             )
                         } else {
-                            Text("전 거래일 비교자료 미확보", fontSize = 9.sp, color = scheme.onSurfaceVariant)
+                            Text("전 거래일 비교자료 미확보", fontSize = 9.sp, lineHeight = 12.sp, color = scheme.onSurfaceVariant)
                         }
                     }
-                    VerticalDivider(Modifier.height(39.dp), color = Color(0xFF36516C))
+                    VerticalDivider(Modifier.height(34.dp), color = Color(0xFF36516C))
                     Spacer(Modifier.width(12.dp))
-                    Column(Modifier.weight(1.25f), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Column(Modifier.weight(1.25f), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                             QuoteValue("시가", last.open)
                             QuoteValue("고가", last.high)
@@ -356,8 +370,8 @@ private fun LatestPriceQuote(daily: List<Candle>) {
                     }
                 }
                 Text(
-                    "${last.lastTradingDate} · 거래량 ${last.volume?.let { String.format("%,d주", it) } ?: "미확보"} · 실제 거래일 종가",
-                    fontSize = 9.sp, color = Color(0xFFB3C6D9),
+                    "${last.lastTradingDate} · 거래량 ${last.volume?.let { String.format("%,d주", it) } ?: "미확보"}",
+                    fontSize = 8.sp, lineHeight = 10.sp, color = Color(0xFFB3C6D9),
                     modifier = Modifier.testTag("chart_latest_volume"),
                 )
             }
@@ -367,7 +381,7 @@ private fun LatestPriceQuote(daily: List<Candle>) {
 
 @Composable
 private fun QuoteValue(label: String, price: Double) {
-    Text("$label ${priceText(price)}", fontSize = 9.sp, color = Color(0xFFE4ECF5))
+    Text("$label ${priceText(price)}", fontSize = 9.sp, lineHeight = 13.sp, color = Color(0xFFE4ECF5))
 }
 
 @Composable
@@ -454,7 +468,7 @@ private fun ObservedDateAxis(bars: List<Candle>) {
             dates.forEach { index ->
                 Text(
                     bars[index].lastTradingDate.format(DateTimeFormatter.ISO_DATE),
-                    fontSize = 8.sp, color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    fontSize = 8.sp, lineHeight = 10.sp, color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
         }

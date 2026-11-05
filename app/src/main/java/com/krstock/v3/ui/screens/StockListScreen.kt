@@ -4,7 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -31,6 +31,7 @@ import com.krstock.v3.data.stage.FinancialSafetyRepository
 import com.krstock.v3.data.stage.ValuationBandPolicy
 import com.krstock.v3.data.update.SnapshotAutoUpdater
 import com.krstock.v3.ui.components.Stage45CompactPanel
+import kotlinx.coroutines.launch
 
 private enum class ListSortMode(val label: String) {
     COMBINATION("종합점수 순"), CODE("종목코드"), NAME("회사명")
@@ -58,6 +59,7 @@ fun StockListScreen(onStockClick: (String) -> Unit, onBack: () -> Unit, initialS
     var showSort by remember { mutableStateOf(false) }
     var showInfo by remember { mutableStateOf(false) }
     val listState = rememberLazyListState()
+    val scope = rememberCoroutineScope()
     val focusRequester = remember { FocusRequester() }
     val keyboard = LocalSoftwareKeyboardController.current
     val scheme = MaterialTheme.colorScheme
@@ -104,12 +106,12 @@ fun StockListScreen(onStockClick: (String) -> Unit, onBack: () -> Unit, initialS
                 Column {
                     Row(Modifier.fillMaxWidth().padding(horizontal = 4.dp), verticalAlignment = Alignment.CenterVertically) {
                         Column(Modifier.weight(1f)) {
-                            Text("종목 순위", Modifier.testTag("ranking_title"), fontSize = 20.sp, lineHeight = 25.sp, fontWeight = FontWeight.Bold)
-                            Text("${selectedCount}지표 기반 종목의 종합 상대점수 순위입니다.", fontSize = 11.sp, lineHeight = 17.sp, color = scheme.onSurfaceVariant)
+                            Text("종목 순위", Modifier.testTag("ranking_title"), fontSize = 19.sp, lineHeight = 23.sp, fontWeight = FontWeight.Bold)
+                            Text("${selectedCount}지표 기반 종목의 종합 상대점수 순위입니다.", fontSize = 10.sp, lineHeight = 14.sp, color = scheme.onSurfaceVariant)
                         }
                         IconButton(onClick = { showInfo = true }, modifier = Modifier.size(29.dp).testTag("ranking_info")) { Text("ⓘ", fontSize = 20.sp, color = scheme.onSurfaceVariant) }
                     }
-                    Spacer(Modifier.height(8.dp))
+                    Spacer(Modifier.height(6.dp))
                     RankingSnapshotPanel(stocks.size, stocks.count { it.isCompositeComplete }, snapshotDate, priceDate, snapshotState)
                     if (showSearch) {
                         Spacer(Modifier.height(7.dp))
@@ -125,7 +127,7 @@ fun StockListScreen(onStockClick: (String) -> Unit, onBack: () -> Unit, initialS
                             colors = OutlinedTextFieldDefaults.colors(focusedContainerColor = scheme.surface, unfocusedContainerColor = scheme.surface, unfocusedBorderColor = scheme.outline),
                         )
                     }
-                    Spacer(Modifier.height(7.dp))
+                    Spacer(Modifier.height(6.dp))
                     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(5.dp)) {
                         listOf("전체", "KOSPI", "KOSDAQ").forEach { market ->
                             CompactFilter(market, selectedMarket == market, { selectedMarket = market }, Modifier.testTag("market_$market"))
@@ -156,7 +158,8 @@ fun StockListScreen(onStockClick: (String) -> Unit, onBack: () -> Unit, initialS
                             }
                         }
                     }
-                    FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(4.dp), verticalArrangement = Arrangement.spacedBy(0.dp)) {
+                    Spacer(Modifier.height(5.dp))
+                    FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(4.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                         Box {
                             CompactFilter("↕ ${sortMode.label}  ⌄", false, { showSort = true }, Modifier.testTag("sort_picker"))
                             DropdownMenu(expanded = showSort, onDismissRequest = { showSort = false }) {
@@ -173,11 +176,12 @@ fun StockListScreen(onStockClick: (String) -> Unit, onBack: () -> Unit, initialS
                             CompactFilter(filter.label, safetyFilter == filter, { safetyFilter = filter }, Modifier.testTag("safety_filter_${filter.name}"), small = true)
                         }
                     }
-                    NavyUniverseCounts(stocks.size, rankedCount)
+                    Spacer(Modifier.height(6.dp))
+                    NavyUniverseCounts(stocks.size, rankedCount, inline = true)
                     if (searchQuery.isNotBlank() || selectedMarket != "전체" || completeOnly || safetyFilter != SafetyFilter.ALL) {
                         Text("검색 결과 ${filteredStocks.size}개 종목 · 순위 가능 ${eligibleShown}개", Modifier.padding(horizontal = 3.dp, vertical = 5.dp).testTag("ranking_result_count"), fontSize = 10.sp, color = scheme.onSurfaceVariant)
                     }
-                    Spacer(Modifier.height(7.dp))
+                    Spacer(Modifier.height(6.dp))
                     StockTableHeading(showMetrics = false)
                 }
             }
@@ -191,7 +195,7 @@ fun StockListScreen(onStockClick: (String) -> Unit, onBack: () -> Unit, initialS
                     }
                 }
             } else {
-                items(filteredStocks, key = { "${it.market}:${it.issuerId}" }) { stock ->
+                itemsIndexed(filteredStocks, key = { _, stock -> "${stock.market}:${stock.issuerId}" }) { index, stock ->
                     val dynamic = dynamicRanks[stock.issuerId]
                     CompositionLocalProvider(LocalStockRowMetrics provides false) {
                         StockSummaryCard(
@@ -204,6 +208,13 @@ fun StockListScreen(onStockClick: (String) -> Unit, onBack: () -> Unit, initialS
                             missingLabel = "선택지표 결측 · 조합순위 보류",
                             stage45Content = { Stage45CompactPanel(candidates[stock.issuerId], safety[stock.issuerId], ValuationBandPolicy.classify(stock.m03Per), showRatios = false) },
                         )
+                    }
+                    if (index == 9 && filteredStocks.size > 10) {
+                        Spacer(Modifier.height(7.dp))
+                        NavyFullListAction("전체 순위 보기 (${eligibleShown}종목)  ›", "ranking_full_list_action") {
+                            scope.launch { listState.animateScrollToItem(11) }
+                        }
+                        Spacer(Modifier.height(7.dp))
                     }
                 }
             }
@@ -218,18 +229,22 @@ fun StockListScreen(onStockClick: (String) -> Unit, onBack: () -> Unit, initialS
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun CompactFilter(label: String, selected: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier, small: Boolean = false) {
     val scheme = MaterialTheme.colorScheme
-    FilterChip(
-        selected = selected,
-        onClick = onClick,
-        modifier = modifier.heightIn(min = 29.dp),
-        shape = RoundedCornerShape(10.dp),
-        label = { Text(label, fontSize = if (small) 11.sp else 12.sp, lineHeight = 13.sp, fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal) },
-        colors = FilterChipDefaults.filterChipColors(selectedContainerColor = scheme.primary, selectedLabelColor = scheme.onPrimary, containerColor = scheme.background, labelColor = scheme.onSurfaceVariant),
-        border = FilterChipDefaults.filterChipBorder(enabled = true, selected = selected, borderColor = scheme.outline, selectedBorderColor = scheme.primary),
-    )
+    CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides 0.dp) {
+        Surface(
+            onClick = onClick,
+            modifier = modifier.heightIn(min = 23.dp).semantics { this.selected = selected },
+            shape = RoundedCornerShape(10.dp),
+            color = if (selected) scheme.primary else scheme.background,
+            contentColor = if (selected) scheme.onPrimary else scheme.onSurfaceVariant,
+            border = BorderStroke(1.dp, if (selected) scheme.primary else scheme.outline),
+        ) {
+            Text(label, Modifier.padding(horizontal = if (small) 9.dp else 11.dp, vertical = 4.dp), fontSize = if (small) 10.sp else 11.sp, lineHeight = 14.sp, fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal)
+        }
+    }
 }
 
 @Composable
@@ -237,22 +252,22 @@ private fun RankingSnapshotPanel(total: Int, complete: Int, snapshotDate: String
     val scheme = MaterialTheme.colorScheme
     val matches = status.snapshotDate == snapshotDate && status.priceCutoffDate == priceDate
     Surface(Modifier.fillMaxWidth(), color = scheme.primaryContainer.copy(alpha = .4f), shape = RoundedCornerShape(8.dp), border = BorderStroke(1.dp, scheme.outline)) {
-        Column(Modifier.padding(horizontal = 11.dp, vertical = 8.dp)) {
-            Text(if (matches) "●  데이터 출처 ${status.source.name}" else "데이터 출처 확인 중", Modifier.testTag("ranking_snapshot_source"), fontSize = 11.sp, fontWeight = FontWeight.Bold)
-            Spacer(Modifier.height(4.dp))
+        Column(Modifier.padding(horizontal = 11.dp, vertical = 5.dp)) {
+            SnapshotSourceHeading(status, matches, "ranking_snapshot_source")
+            Spacer(Modifier.height(3.dp))
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1.3f)) {
-                    Text(if (matches) "최근 갱신 ${snapshotTimeText(status.refreshedAt)}" else "최근 갱신 확인 중", fontSize = 9.sp, lineHeight = 14.sp, color = scheme.onSurfaceVariant)
-                    Text("최근 확인 ${snapshotTimeText(status.lastAttemptAt)}", fontSize = 9.sp, lineHeight = 14.sp, color = scheme.onSurfaceVariant)
+                    SnapshotMetadata("refresh", if (matches) "최근 갱신 ${snapshotTimeText(status.refreshedAt)}" else "최근 갱신 확인 중")
+                    SnapshotMetadata("check", "최근 확인 ${snapshotTimeText(status.lastAttemptAt)}")
                 }
-                Box(Modifier.padding(horizontal = 8.dp).width(.5.dp).height(26.dp).background(scheme.outline))
+                Box(Modifier.padding(horizontal = 8.dp).width(.5.dp).height(24.dp).background(scheme.outline))
                 Column(Modifier.weight(1f)) {
-                    Text("4지표 완성 $complete/$total", Modifier.testTag("ranking_snapshot_count"), fontSize = 9.sp, lineHeight = 14.sp, color = scheme.onSurfaceVariant)
-                    Text("전체 종목 ${String.format("%,d", total)}종목", fontSize = 10.sp, lineHeight = 14.sp, fontWeight = FontWeight.SemiBold)
+                    SnapshotMetadata("layers", "4지표 완성 $complete/$total", "ranking_snapshot_count")
+                    Text("전체 종목 ${String.format("%,d", total)}종목", fontSize = 10.sp, lineHeight = 13.sp, fontWeight = FontWeight.SemiBold)
                 }
             }
-            Text("재무 $snapshotDate · 주가 $priceDate", Modifier.padding(top = 3.dp).testTag("ranking_snapshot_dates"), fontSize = 9.sp, lineHeight = 13.sp, color = scheme.onSurfaceVariant)
-            if (matches && status.failure != null) Text("갱신 실패 · 마지막 정상 자료를 표시합니다", Modifier.testTag("ranking_snapshot_failure"), fontSize = 9.sp, color = scheme.error)
+            Text("재무 $snapshotDate · 주가 $priceDate", Modifier.padding(top = 2.dp).testTag("ranking_snapshot_dates"), fontSize = 8.sp, lineHeight = 11.sp, color = scheme.onSurfaceVariant)
+            if (matches && status.failure != null) Text("갱신 실패 · 마지막 정상 자료를 표시합니다", Modifier.testTag("ranking_snapshot_failure"), fontSize = 9.sp, lineHeight = 12.sp, color = scheme.error)
         }
     }
 }

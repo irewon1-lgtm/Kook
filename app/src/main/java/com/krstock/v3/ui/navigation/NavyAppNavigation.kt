@@ -1,12 +1,18 @@
 package com.krstock.v3.ui.navigation
 
-import androidx.activity.compose.BackHandler
+import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
+import androidx.activity.BackEventCompat
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.material3.HorizontalDivider
@@ -23,12 +29,15 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -56,6 +65,7 @@ fun NavyAppNavigation() {
     // This state stays attached to the app while a detail or auxiliary route is open.
     val pagerState = rememberPagerState(initialPage = 0, pageCount = { 2 })
     val scope = rememberCoroutineScope()
+    val navigationIntentGeneration = remember { mutableLongStateOf(0L) }
     val entry by navController.currentBackStackEntryAsState()
     var detailOrigin by rememberSaveable { mutableStateOf(MainMenu.HOME) }
     val route = entry?.destination?.route ?: "main"
@@ -92,9 +102,6 @@ fun NavyAppNavigation() {
             popExitTransition = { ExitTransition.None },
         ) {
             composable("main") {
-                BackHandler(enabled = pagerState.currentPage != 0) {
-                    scope.launch { pagerState.scrollToPage(0) }
-                }
                 HorizontalPager(
                     state = pagerState,
                     modifier = Modifier.fillMaxSize().testTag("main_pager"),
@@ -102,11 +109,21 @@ fun NavyAppNavigation() {
                     when (page) {
                         0 -> HomeScreen(
                             onStockClick = ::showDetail,
-                            onNavigateToList = { scope.launch { pagerState.animateScrollToPage(1) } },
+                            onNavigateToList = {
+                                navigationIntentGeneration.longValue++
+                                scope.launch { pagerState.animateScrollToPage(1) }
+                            },
+                            onSearch = {
+                                navigationIntentGeneration.longValue++
+                                navController.navigate("search") { launchSingleTop = true }
+                            },
                         )
                         else -> StockListScreen(
                             onStockClick = ::showDetail,
-                            onBack = { scope.launch { pagerState.scrollToPage(0) } },
+                            onBack = {
+                                navigationIntentGeneration.longValue++
+                                scope.launch { pagerState.scrollToPage(0) }
+                            },
                         )
                     }
                 }
@@ -129,6 +146,9 @@ fun NavyAppNavigation() {
             }
         }
         NavyBottomMenus(selectedMenu) { menu ->
+            // Mark the intent before launching a pager coroutine. During the
+            // same input frame its entry/page can still describe the old screen.
+            navigationIntentGeneration.longValue++
             focusManager.clearFocus(force = true)
             keyboard?.hide()
             when (menu) {
@@ -142,6 +162,73 @@ fun NavyAppNavigation() {
             }
         }
     }
+    GuardedNavigationBackHandler(navController, pagerState, navigationIntentGeneration) {
+        scope.launch { pagerState.scrollToPage(0) }
+    }
+}
+
+/**
+ * Navigation Compose2.8.0's predictive callback can still run after a menu click
+ * has reduced its captured stack to one entry. Own dispatch after the NavHost,
+ * and resolve Back from the live controller without indexing that stale stack.
+ */
+@Composable
+private fun GuardedNavigationBackHandler(
+    navController: NavHostController,
+    pagerState: PagerState,
+    navigationIntentGeneration: State<Long>,
+    returnHome: () -> Unit,
+) {
+    val dispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher ?: return
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val activity = LocalContext.current.findActivity()
+    val latestReturnHome by rememberUpdatedState(returnHome)
+    val callback = remember(navController, pagerState, navigationIntentGeneration, activity) {
+        object : OnBackPressedCallback(true) {
+            private var startedEntryId: String? = null
+            private var startedPage: Int? = null
+            private var startedNavigationIntentGeneration: Long? = null
+
+            override fun handleOnBackStarted(backEvent: BackEventCompat) {
+                startedEntryId = navController.currentBackStackEntry?.id
+                startedPage = pagerState.currentPage
+                startedNavigationIntentGeneration = navigationIntentGeneration.value
+            }
+
+            override fun handleOnBackCancelled() {
+                startedEntryId = null
+                startedPage = null
+                startedNavigationIntentGeneration = null
+            }
+
+            override fun handleOnBackPressed() {
+                val originId = startedEntryId
+                val originPage = startedPage
+                val originNavigationGeneration = startedNavigationIntentGeneration
+                handleOnBackCancelled()
+                // A menu selection during the gesture already changed the
+                // destination. Committing the old gesture must not pop or close it.
+                if (originPage != null &&
+                    (navigationIntentGeneration.value != originNavigationGeneration ||
+                        navController.currentBackStackEntry?.id != originId || pagerState.currentPage != originPage)) return
+                when {
+                    navController.previousBackStackEntry != null -> navController.popBackStack()
+                    pagerState.currentPage != 0 -> latestReturnHome()
+                    else -> activity?.finish()
+                }
+            }
+        }
+    }
+    DisposableEffect(dispatcher, lifecycleOwner, callback) {
+        dispatcher.addCallback(lifecycleOwner, callback)
+        onDispose { callback.remove() }
+    }
+}
+
+private tailrec fun Context.findActivity(): Activity? = when (this) {
+    is Activity -> this
+    is ContextWrapper -> baseContext.findActivity()
+    else -> null
 }
 
 @Composable

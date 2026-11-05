@@ -1,6 +1,7 @@
 package com.krstock.v3.ui.components
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -13,6 +14,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -245,6 +247,7 @@ fun FinalCandidateDetailCard(candidate: FinalCandidateRecord, modifier: Modifier
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FinancialSafetyCard(
     safety: FinancialSafetyRecord?,
@@ -254,72 +257,98 @@ fun FinancialSafetyCard(
     val scheme = MaterialTheme.colorScheme
     var showDetails by remember { mutableStateOf(false) }
     val facts = safety?.facts
-    Card(
-        modifier = modifier.fillMaxWidth().testTag("financial_safety_card"),
-        shape = RoundedCornerShape(11.dp),
-        colors = CardDefaults.cardColors(containerColor = scheme.surface),
-        border = BorderStroke(1.dp, scheme.outline),
-    ) {
-        Column(Modifier.padding(horizontal = 10.dp, vertical = 6.dp)) {
-            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                Surface(Modifier.width(3.dp).height(18.dp), color = scheme.primary, shape = RoundedCornerShape(3.dp)) {}
-                Spacer(Modifier.width(7.dp))
-                Text("재무현황", fontWeight = FontWeight.Bold, fontSize = 16.sp, lineHeight = 20.sp)
-                Spacer(Modifier.width(7.dp))
-                Text("Stage4 재무안정성", Modifier.weight(1f), fontSize = 8.sp, lineHeight = 10.sp, color = scheme.onSurfaceVariant)
-                TextButton(
-                    onClick = { showDetails = true }, modifier = Modifier.height(22.dp), contentPadding = PaddingValues(0.dp),
-                ) { Text("근거 ›", fontSize = 10.sp, lineHeight = 12.sp) }
-            }
-            Spacer(Modifier.height(4.dp))
-            Surface(
-                shape = RoundedCornerShape(8.dp), color = scheme.background.copy(alpha = 0.52f),
-                border = BorderStroke(1.dp, scheme.outlineVariant),
-            ) {
-                Column(Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 4.dp)) {
-                    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                        Text("재무 상태", Modifier.width(53.dp), fontSize = 9.sp, lineHeight = 11.sp, fontWeight = FontWeight.SemiBold)
-                        FinancialSafetyBadge(safety, compact = true)
-                        Spacer(Modifier.width(7.dp))
-                        Text(
-                            when (safety?.status) {
-                                FinancialSafetyStatus.PASS -> "기존 안전성 기준 통과"
-                                FinancialSafetyStatus.FAIL -> "기존 안전성 기준 탈락"
-                                FinancialSafetyStatus.NOT_APPLICABLE -> "금융업 일반비율 비교 제외"
-                                else -> "검증된 자료·요건 확인 보류"
-                            },
-                            Modifier.weight(1f), fontSize = 8.sp, lineHeight = 10.sp, color = scheme.onSurfaceVariant,
+    Column(verticalArrangement = Arrangement.spacedBy(7.dp)) {
+        Card(
+            modifier = modifier.fillMaxWidth().testTag("financial_safety_card"),
+            shape = RoundedCornerShape(11.dp),
+            colors = CardDefaults.cardColors(containerColor = scheme.surface),
+            border = BorderStroke(1.dp, scheme.outline),
+        ) {
+            Column(Modifier.padding(horizontal = 10.dp, vertical = 6.dp)) {
+                Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                    Surface(Modifier.width(3.dp).height(18.dp), color = scheme.primary, shape = RoundedCornerShape(3.dp)) {}
+                    Spacer(Modifier.width(7.dp))
+                    Text("재무현황", fontWeight = FontWeight.Bold, fontSize = 16.sp, lineHeight = 20.sp)
+                    Spacer(Modifier.width(7.dp))
+                    Text("Stage4 재무안정성", Modifier.weight(1f), fontSize = 8.sp, lineHeight = 10.sp, color = scheme.onSurfaceVariant)
+                }
+                Spacer(Modifier.height(4.dp))
+                Surface(
+                    shape = RoundedCornerShape(8.dp), color = scheme.background.copy(alpha = 0.52f),
+                    border = BorderStroke(1.dp, scheme.outlineVariant),
+                ) {
+                    Column(Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 4.dp)) {
+                        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                            Text("재무 상태", Modifier.width(53.dp), fontSize = 9.sp, lineHeight = 11.sp, fontWeight = FontWeight.SemiBold)
+                            FinancialSafetyBadge(safety, compact = true)
+                            Spacer(Modifier.width(7.dp))
+                            Text(
+                                when (safety?.status) {
+                                    FinancialSafetyStatus.PASS -> "기존 안전성 기준 통과"
+                                    FinancialSafetyStatus.FAIL -> "기존 안전성 기준 탈락"
+                                    FinancialSafetyStatus.NOT_APPLICABLE -> "금융업 일반비율 비교 제외"
+                                    else -> "검증된 자료·요건 확인 보류"
+                                },
+                                Modifier.weight(1f), fontSize = 8.sp, lineHeight = 10.sp, color = scheme.onSurfaceVariant,
+                            )
+                        }
+                        Spacer(Modifier.height(3.dp))
+                        FinancialStatusRow(
+                            "회계 일치", safety?.accountingIdentityGapPct?.let { String.format("오차 %.3f%%", it) } ?: "미확보",
+                            "허용 오차 ≤ 5%",
+                        )
+                        Spacer(Modifier.height(3.dp))
+                        FinancialStatusRow(
+                            "자료 상태", if (facts?.verified == true) "검증 완료" else if (facts != null) "검증 대기" else "미확보",
+                            if (facts?.verified == true) "공식 공시·원문 수치 확인" else "공시·원자료 검증 필요",
                         )
                     }
-                    Spacer(Modifier.height(3.dp))
-                    FinancialStatusRow(
-                        "회계 일치", safety?.accountingIdentityGapPct?.let { String.format("오차 %.3f%%", it) } ?: "미확보",
-                        "허용 오차 ≤ 5%",
-                    )
-                    Spacer(Modifier.height(3.dp))
-                    FinancialStatusRow(
-                        "자료 상태", if (facts?.verified == true) "검증 완료" else if (facts != null) "검증 대기" else "미확보",
-                        if (facts?.verified == true) "공식 공시·원문 수치 확인" else "공시·원자료 검증 필요",
+                }
+                Row(Modifier.fillMaxWidth().padding(vertical = 6.dp), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                    FinancialMetric("유동비율", safety?.currentRatioPct?.let { String.format("%.2f%%", it) } ?: "미확보", Modifier.weight(1f))
+                    VerticalDivider(Modifier.height(28.dp), color = scheme.outlineVariant)
+                    FinancialMetric("부채비율", safety?.debtToEquityPct?.let { String.format("%.2f%%", it) } ?: "미확보", Modifier.weight(1f))
+                    VerticalDivider(Modifier.height(28.dp), color = scheme.outlineVariant)
+                    FinancialMetric(
+                        "자본총계",
+                        facts?.amounts?.get("equity")?.let { amount ->
+                            if (facts.currency == "KRW") String.format(java.util.Locale.KOREA, "%,.1f억원", amount / 100_000_000.0)
+                            else String.format(java.util.Locale.KOREA, "%,d %s", amount, facts.currency)
+                        } ?: "미확보", Modifier.weight(1f),
                     )
                 }
-            }
-            Row(Modifier.fillMaxWidth().padding(vertical = 6.dp), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                FinancialMetric("유동비율", safety?.currentRatioPct?.let { String.format("%.2f%%", it) } ?: "미확보", Modifier.weight(1f))
-                VerticalDivider(Modifier.height(28.dp), color = scheme.outlineVariant)
-                FinancialMetric("부채비율", safety?.debtToEquityPct?.let { String.format("%.2f%%", it) } ?: "미확보", Modifier.weight(1f))
-                VerticalDivider(Modifier.height(28.dp), color = scheme.outlineVariant)
-                FinancialMetric(
-                    "자본총계",
-                    facts?.amounts?.get("equity")?.let { amount ->
-                        if (facts.currency == "KRW") String.format(java.util.Locale.KOREA, "%,.1f억원", amount / 100_000_000.0)
-                        else String.format(java.util.Locale.KOREA, "%,d %s", amount, facts.currency)
-                    } ?: "미확보", Modifier.weight(1f),
+                Text(
+                    "OpenDART · ${facts?.reportPeriod.orEmpty().ifBlank { "보고기간 미확보" }} · 기준일 $snapshotDate",
+                    fontSize = 7.sp, lineHeight = 9.sp, color = scheme.onSurfaceVariant,
                 )
             }
-            Text(
-                "OpenDART · ${facts?.reportPeriod.orEmpty().ifBlank { "보고기간 미확보" }} · 기준일 $snapshotDate",
-                fontSize = 7.sp, lineHeight = 9.sp, color = scheme.onSurfaceVariant,
-            )
+        }
+        CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides 0.dp) {
+            Surface(
+                onClick = { showDetails = true },
+                modifier = Modifier.fillMaxWidth().testTag("financial_safety_evidence_entry"),
+                shape = RoundedCornerShape(9.dp), color = scheme.surface,
+                border = BorderStroke(1.dp, scheme.outline),
+            ) {
+                Row(
+                    Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 6.dp),
+                    verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp),
+                ) {
+                    Canvas(Modifier.size(17.dp)) {
+                        val stroke = 1.dp.toPx()
+                        drawRect(scheme.onSurfaceVariant, topLeft = Offset(size.width * .15f, size.height * .05f), size = androidx.compose.ui.geometry.Size(size.width * .7f, size.height * .9f), style = androidx.compose.ui.graphics.drawscope.Stroke(stroke))
+                        for (line in 0..2) {
+                            val y = size.height * (.34f + line * .19f)
+                            drawLine(scheme.onSurfaceVariant, Offset(size.width * .32f, y), Offset(size.width * .68f, y), stroke)
+                        }
+                    }
+                    Column(Modifier.weight(1f)) {
+                        Text("근거 및 참고정보", fontSize = 11.sp, lineHeight = 14.sp, fontWeight = FontWeight.SemiBold)
+                        Text("계산식, 실제 금액, 데이터 출처, 기준일 확인", fontSize = 8.sp, lineHeight = 10.sp, color = scheme.onSurfaceVariant)
+                    }
+                    Text("›", fontSize = 21.sp, lineHeight = 22.sp, color = scheme.onSurfaceVariant)
+                }
+            }
         }
     }
     if (showDetails) FinancialSafetyEvidenceDialog(safety, snapshotDate) { showDetails = false }

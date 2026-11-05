@@ -66,7 +66,7 @@ jobs:
           gradle :app:connectedDebugAndroidTest --stacktrace \
             -Pandroid.testInstrumentationRunnerArguments.deviceKind=EMULATOR \
             "-Pandroid.testInstrumentationRunnerArguments.financialEvidenceRef=$FINANCIAL_EVIDENCE_REF" \
-            -Pandroid.testInstrumentationRunnerArguments.class=com.krstock.v3.CompleteUiGalleryInstrumentedTest,com.krstock.v3.PriceChartTimeframeInstrumentedTest,com.krstock.v3.PriceChartAndRiskBadgeInstrumentedTest,com.krstock.v3.SnapshotLiveActivityInstrumentedTest,com.krstock.v3.PriceChartLiveInstrumentedTest,com.krstock.v3.SnapshotRefreshScreensInstrumentedTest,com.krstock.v3.FinancialSafetyLiveInstrumentedTest,com.krstock.v3.NavyApprovedUiInstrumentedTest
+            -Pandroid.testInstrumentationRunnerArguments.class=com.krstock.v3.CompleteUiGalleryInstrumentedTest,com.krstock.v3.PriceChartTimeframeInstrumentedTest,com.krstock.v3.PriceChartAndRiskBadgeInstrumentedTest,com.krstock.v3.SnapshotLiveActivityInstrumentedTest,com.krstock.v3.PriceChartLiveInstrumentedTest,com.krstock.v3.SnapshotRefreshScreensInstrumentedTest,com.krstock.v3.FinancialSafetyLiveInstrumentedTest,com.krstock.v3.NavyApprovedUiInstrumentedTest,com.krstock.v3.NavyNavigationInstrumentedTest
           TEST_STATUS=$?
           adb logcat -d -v time > evidence/ui-device/logcat.txt
           adb pull /sdcard/Android/data/com.krstock.v3/files/snapshot-e2e evidence/ui-device/snapshot-e2e || true

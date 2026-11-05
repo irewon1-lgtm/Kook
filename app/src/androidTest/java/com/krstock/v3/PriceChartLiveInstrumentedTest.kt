@@ -38,7 +38,7 @@ class PriceChartLiveInstrumentedTest {
         val cache = File(context.filesDir,"price_history_v2/005930.json")
         cache.delete()
         composeRule.setContent { KRStockV3Theme { StockDetailScreen("005930",onBack={}) } }
-        composeRule.onNodeWithText("차트").performScrollTo().performClick()
+        composeRule.onNodeWithText("차트").assertIsDisplayed().performClick()
         composeRule.waitUntil(timeoutMillis=90_000) {
             composeRule.onAllNodesWithTag("chart_source").fetchSemanticsNodes()
                 .any { node -> node.config.getOrElse(androidx.compose.ui.semantics.SemanticsProperties.Text) { emptyList() }
