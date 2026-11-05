@@ -12,6 +12,7 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 ORIGINAL = ROOT / "tests/fixtures/release-ui/42023412855-samsung-search.xml"
+CHART_ORIGINAL = ROOT / "tests/fixtures/release-ui/42031830546-chart-day-controls.xml"
 
 
 def helpers():
@@ -184,3 +185,90 @@ def test_matching_cache_never_satisfies_actual_release_gate_or_extends_90_second
         wait("updated-home", market())
     assert state["now"] == 90
     assert state["pulls"] == 0 and state["captures"] == []
+
+
+def chart_assertion(ui, label):
+    workflow = (ROOT / ".github/workflows/android-build.yml").read_text()
+    code = workflow.split('cat > "$RUNNER_TEMP/kr4-stable-upgrade.py" <<\'PY\'\n', 1)[1].split("\n          PY", 1)[0]
+    definitions = ast.parse(textwrap.dedent(code))
+    assertion = next(node for node in ast.walk(definitions) if isinstance(node, ast.Assert)
+                     and isinstance(node.msg, ast.Constant) and node.msg.value == "release_chart_interval_did_not_select")
+    namespace = {**helpers(), "ET": ET, "ui": ui, "label": label}
+    exec(compile(ast.Module(body=[assertion], type_ignores=[]), "actual-release-chart-assertion", "exec"), namespace)
+
+
+def chart_tree(selected="일봉"):
+    tree = ET.fromstring(CHART_ORIGINAL.read_text())
+    parents = {child: parent for parent in tree.iter() for child in parent}
+    controls = {}
+    for node in tree.iter("node"):
+        if node.get("text") in ("일봉", "주봉", "월봉"):
+            control = parents[node]
+            control.set("checked", "true" if node.get("text") == selected else "false")
+            controls[node.get("text")] = (node, control)
+    return tree, controls
+
+
+def test_actual_signed_day_chip_selection_belongs_to_parent_not_text():
+    chart_assertion(CHART_ORIGINAL.read_text(), "일봉")
+    with pytest.raises(AssertionError):
+        chart_assertion(CHART_ORIGINAL.read_text(), "주봉")
+
+
+@pytest.mark.parametrize("selected", ["일봉", "주봉", "월봉"])
+def test_exactly_the_checked_chip_passes_the_actual_release_assertion(selected):
+    tree, _ = chart_tree(selected)
+    body = ET.tostring(tree, encoding="unicode")
+    chart_assertion(body, selected)
+    for other in {"일봉", "주봉", "월봉"} - {selected}:
+        with pytest.raises(AssertionError):
+            chart_assertion(body, other)
+
+
+@pytest.mark.parametrize("selected", [None, "TWO"])
+def test_missing_or_multiple_checked_intervals_cannot_pass(selected):
+    tree, controls = chart_tree(None)
+    if selected == "TWO":
+        controls["일봉"][1].set("checked", "true")
+        controls["주봉"][1].set("checked", "true")
+    with pytest.raises((AssertionError, ValueError)):
+        chart_assertion(ET.tostring(tree, encoding="unicode"), "일봉")
+
+
+@pytest.mark.parametrize("target", ["label", "control", "ancestor"])
+def test_disabled_chart_identity_or_ancestor_cannot_claim_selection(target):
+    tree, controls = chart_tree()
+    label, control = controls["일봉"]
+    parents = {child: parent for parent in tree.iter() for child in parent}
+    node = label if target == "label" else control if target == "control" else parents[control]
+    node.set("enabled", "false")
+    with pytest.raises((AssertionError, ValueError)):
+        chart_assertion(ET.tostring(tree, encoding="unicode"), "일봉")
+
+
+@pytest.mark.parametrize("target", ["label", "control"])
+def test_nonvisible_or_foreign_chart_control_is_rejected(target):
+    for attribute, value in [("bounds", "[0,0][0,0]"), ("package", "another.app")]:
+        tree, controls = chart_tree()
+        controls["일봉"][0 if target == "label" else 1].set(attribute, value)
+        with pytest.raises((AssertionError, ValueError)):
+            chart_assertion(ET.tostring(tree, encoding="unicode"), "일봉")
+
+
+def test_checked_unrelated_container_or_child_does_not_select_a_chip():
+    for target in ["ancestor", "label"]:
+        tree, controls = chart_tree(None)
+        parents = {child: parent for parent in tree.iter() for child in parent}
+        node = parents[controls["일봉"][1]] if target == "ancestor" else controls["일봉"][0]
+        node.set("selected", "true")
+        with pytest.raises((AssertionError, ValueError)):
+            chart_assertion(ET.tostring(tree, encoding="unicode"), "일봉")
+
+
+def test_duplicate_interval_label_or_mixed_control_is_ambiguous():
+    for mode in ["duplicate", "mixed"]:
+        tree, controls = chart_tree()
+        label, control = controls["일봉"]
+        control.append(copy.deepcopy(label if mode == "duplicate" else controls["주봉"][0]))
+        with pytest.raises((AssertionError, ValueError)):
+            chart_assertion(ET.tostring(tree, encoding="unicode"), "일봉")
