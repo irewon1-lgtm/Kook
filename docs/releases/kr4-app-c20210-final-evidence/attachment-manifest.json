@@ -1,0 +1,90 @@
+{
+  "KR4-chart.json": {
+    "bytes": 61382,
+    "sha256": "01da6096f87ad97f92554ef8cdea051d39d7a9d3907786f07f5016ae9c8fff7c"
+  },
+  "KR4-chart.png": {
+    "bytes": 253432,
+    "sha256": "1c067fe1c0bb5a5a13ad33ff4c12999961bf5e08727a256c7b9cda01bf162c5a"
+  },
+  "KR4-ci-comparison-mobile-verification.json": {
+    "bytes": 2454,
+    "sha256": "b4bcd1991115e1b25b01ebd42767386f48a4eaa4c7675ff7ff345cb12d7f73de"
+  },
+  "KR4-compare-chart.png": {
+    "bytes": 483227,
+    "sha256": "8da3dfbb3b5a06e6566b7c9c84043d999552dbdef6b4a2551af87e1d8f7c4d7a"
+  },
+  "KR4-compare-detail.png": {
+    "bytes": 608559,
+    "sha256": "ae72f0f1d34db23145e9f75f5b3c3aefad326d046db2386ac42deae27f20cae5"
+  },
+  "KR4-compare-home.png": {
+    "bytes": 634382,
+    "sha256": "950a8164405c5b802aafd35972fc42ff2f893325147c1525dab82457a84ac036"
+  },
+  "KR4-compare-ranking.png": {
+    "bytes": 657949,
+    "sha256": "7f7f714c81d27c3ac3f538511ad9c135c0059696e2b9018c816e80a4bcde21d7"
+  },
+  "KR4-detail.json": {
+    "bytes": 2164,
+    "sha256": "4e890ae4f484c95e1729f35ef0240c5416f0efbc2bd511fe80c8ab8e880b2be8"
+  },
+  "KR4-detail.png": {
+    "bytes": 311600,
+    "sha256": "e60a0cf9a94f258b2d902b7fea5f272ec9f78089a040bb6f8eb49249bd24e288"
+  },
+  "KR4-final-comparison-mobile-verification.json": {
+    "bytes": 2446,
+    "sha256": "3a08c8a5aeae8a34eccbf79e4d2d1a49704123e6fc413d5e8aa438b096de1cf1"
+  },
+  "KR4-final-reviewed-gallery.html": {
+    "bytes": 2385391,
+    "sha256": "78ac90a2b5952f510d0fe5ea51c030155fe9993710fe3ccd987a9d26279756b9"
+  },
+  "KR4-gallery-mobile-verification.json": {
+    "bytes": 676,
+    "sha256": "7a3f22f3f34b12a8d1636eb9cc78a565d9ee794dd236619ea1a0de8ce5be31a2"
+  },
+  "KR4-home.json": {
+    "bytes": 1145,
+    "sha256": "4c91502b26b3563b2fd6d1ef4895ee78b52eeda22c0d094122cf4e8f5b4e2125"
+  },
+  "KR4-home.png": {
+    "bytes": 399534,
+    "sha256": "ad6fa28ecb2cfa26f0a7366738d0783e5579b10f902835fb1970c21b3908cffe"
+  },
+  "KR4-ranking.json": {
+    "bytes": 1169,
+    "sha256": "2cedd6de9018e14bbe9e35a332a541b77d87b205f92b7a61c2858464fda41504"
+  },
+  "KR4-ranking.png": {
+    "bytes": 322217,
+    "sha256": "ff8df3ff628e66b85ceeaee236f7b13a7ccb118718951eeb2e1ef56f1865ae18"
+  },
+  "KR4-upgrade-proof.zip": {
+    "bytes": 22058703,
+    "sha256": "8aaaf8d88727943814f012f3dbb62cf44d2615c5bc91d78ed7073c84feafe166"
+  },
+  "KR4-validation-report.md": {
+    "bytes": 13464,
+    "sha256": "b9062a5f40b45c6e80b1436e1bec1db701c7e4f2d28d07a685a344b991e41dbb"
+  },
+  "KR4-visual-review.md": {
+    "bytes": 6378,
+    "sha256": "c57a88bfb24dc9b51db64237677697fd93fa0b137992c49fd7f27a93fabb6705"
+  },
+  "main-preservation-proof.json": {
+    "bytes": 2137,
+    "sha256": "f44a24c347da81b5764ee0c35f80607232edf82fe01b417c5705f58012b4de29"
+  },
+  "public-delivery-verification.json": {
+    "bytes": 9203,
+    "sha256": "be21b230d3bf18e98cce594b1d251053e3d1246eeec17cd66e18ef78b617e2b2"
+  },
+  "visual-review-main-8b1-evidence.json": {
+    "bytes": 13149,
+    "sha256": "eb7439044aaa24992abbf18d9974033db9bbf60ff8d341943bffbe1e85dad478"
+  }
+}

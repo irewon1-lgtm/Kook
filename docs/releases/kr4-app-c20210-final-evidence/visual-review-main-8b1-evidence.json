@@ -1,0 +1,287 @@
+{
+  "schema_version": 1,
+  "reviewed_commit": "8b1b45671072636dff59f1ced48aa311204fe2ff",
+  "review_kind": "INDEPENDENT_VISUAL",
+  "max_score": 100,
+  "target_score": 95,
+  "total_score": 95.25,
+  "critical_count": 0,
+  "critical_scope": "No unreadable overlap, clipped required canonical control, visibly covered essential control or visibly inconsistent numeric rendering observed in the reviewed canonical captures; static inspection does not independently establish upstream data accuracy.",
+  "categories_maximum": {
+    "color": 5,
+    "layout": 5,
+    "typography": 4,
+    "spacing": 4,
+    "readability": 4,
+    "information": 3
+  },
+  "ci_manifest": {
+    "path": "/workspace/kr4-navy-final/main-8b1/KR4-UI-phone-light/evidence/navy-comparison/manifest.json",
+    "sha256": "b4ab02edeb72a3e6860146f50651f1c76dca091223b6b6ed28951635931e48cf"
+  },
+  "all_original_and_metadata_hashes_match_ci_manifest": true,
+  "screens": {
+    "home": {
+      "score": 24.0,
+      "max_score": 25,
+      "category_scores": {
+        "color": 4.75,
+        "layout": 4.5,
+        "typography": 3.75,
+        "spacing": 4,
+        "readability": 4,
+        "information": 3
+      },
+      "critical_count": 0,
+      "residuals": [
+        "Metric bars are shorter relative to identity/value columns than the reference.",
+        "Outlines and some typography remain slightly stronger.",
+        "A tiny top border of secondary coverage content is visible near the viewport bottom."
+      ],
+      "actual_png": {
+        "path": "/workspace/kr4-navy-final/main-8b1/KR4-UI-phone-light/app/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected/emulator-5554 - 14/snapshot-e2e/navy-approved-home.png",
+        "sha256": "ad6fa28ecb2cfa26f0a7366738d0783e5579b10f902835fb1970c21b3908cffe"
+      },
+      "actual_metadata": {
+        "path": "/workspace/kr4-navy-final/main-8b1/KR4-UI-phone-light/app/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected/emulator-5554 - 14/snapshot-e2e/navy-approved-home.json",
+        "sha256": "4c91502b26b3563b2fd6d1ef4895ee78b52eeda22c0d094122cf4e8f5b4e2125"
+      },
+      "approved_jpeg": {
+        "path": "/workspace/Kook/docs/design/approved-dark-navy/home.jpg",
+        "sha256": "e0c407f25aca3d888e579aee5bf583606c65dc23e90fbe5b6705643ad5d4f906"
+      },
+      "browser_pair": {
+        "path": "/workspace/kr4-navy-final/main-8b1-comparison/browser-pair-home.png",
+        "sha256": "ccd57c7a30571cb47aaeaab3ba9d226da42b42c4069a7a63ff6689cc1857ef63"
+      },
+      "capture": {
+        "api_level": 34,
+        "screen_width_dp": 360,
+        "font_scale": 1,
+        "theme": "LIGHT",
+        "source": "LIVE",
+        "network_succeeded": true,
+        "evidence_kind": "REAL_MARKET_LIVE",
+        "controlled_state": false,
+        "activity_class": "com.krstock.v3.MainActivity",
+        "snapshot_date_kst": "2026-11-05",
+        "price_cutoff_date_kst": "2026-11-05",
+        "source_provenance": {
+          "cache_file": "kr4_latest_snapshot.json",
+          "sha256": "a7e296f069387674d52c9fdf39bd18088dc331c68127e153417f3447b4119745"
+        }
+      },
+      "all_images_freshly_viewed": true
+    },
+    "ranking": {
+      "score": 24.0,
+      "max_score": 25,
+      "category_scores": {
+        "color": 4.75,
+        "layout": 4.75,
+        "typography": 3.75,
+        "spacing": 3.75,
+        "readability": 4,
+        "information": 3
+      },
+      "critical_count": 0,
+      "residuals": [
+        "Column separators and the score-heading information treatment are simplified.",
+        "Header and numeric typography remain slightly stronger than the reference."
+      ],
+      "actual_png": {
+        "path": "/workspace/kr4-navy-final/main-8b1/KR4-UI-phone-light/app/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected/emulator-5554 - 14/snapshot-e2e/navy-approved-ranking.png",
+        "sha256": "ff8df3ff628e66b85ceeaee236f7b13a7ccb118718951eeb2e1ef56f1865ae18"
+      },
+      "actual_metadata": {
+        "path": "/workspace/kr4-navy-final/main-8b1/KR4-UI-phone-light/app/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected/emulator-5554 - 14/snapshot-e2e/navy-approved-ranking.json",
+        "sha256": "2cedd6de9018e14bbe9e35a332a541b77d87b205f92b7a61c2858464fda41504"
+      },
+      "approved_jpeg": {
+        "path": "/workspace/Kook/docs/design/approved-dark-navy/ranking.jpg",
+        "sha256": "c89d0e6b640bed0b7ce6305a355a9d364cc14cbdd4fd4f12bd8143aa40afd26f"
+      },
+      "browser_pair": {
+        "path": "/workspace/kr4-navy-final/main-8b1-comparison/browser-pair-ranking.png",
+        "sha256": "2b0c1bf52d22f9922efa15e08d314a63d31d45a4425a25b188271c723e4e4c21"
+      },
+      "capture": {
+        "api_level": 34,
+        "screen_width_dp": 360,
+        "font_scale": 1,
+        "theme": "LIGHT",
+        "source": "LIVE",
+        "network_succeeded": true,
+        "evidence_kind": "REAL_MARKET_LIVE",
+        "controlled_state": false,
+        "activity_class": "com.krstock.v3.MainActivity",
+        "snapshot_date_kst": "2026-11-05",
+        "price_cutoff_date_kst": "2026-11-05",
+        "source_provenance": {
+          "cache_file": "kr4_latest_snapshot.json",
+          "sha256": "a7e296f069387674d52c9fdf39bd18088dc331c68127e153417f3447b4119745"
+        }
+      },
+      "all_images_freshly_viewed": true
+    },
+    "detail": {
+      "score": 23.5,
+      "max_score": 25,
+      "category_scores": {
+        "color": 4.75,
+        "layout": 4.5,
+        "typography": 3.75,
+        "spacing": 3.5,
+        "readability": 4,
+        "information": 3
+      },
+      "critical_count": 0,
+      "residuals": [
+        "The quote uses a line sparkline rather than faint candle decoration.",
+        "Small composite/metric icon and chevron treatments are simplified.",
+        "The financial note has a short orphaned ending on its second line."
+      ],
+      "actual_png": {
+        "path": "/workspace/kr4-navy-final/main-8b1/KR4-UI-phone-light/app/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected/emulator-5554 - 14/snapshot-e2e/navy-approved-detail.png",
+        "sha256": "e60a0cf9a94f258b2d902b7fea5f272ec9f78089a040bb6f8eb49249bd24e288"
+      },
+      "actual_metadata": {
+        "path": "/workspace/kr4-navy-final/main-8b1/KR4-UI-phone-light/app/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected/emulator-5554 - 14/snapshot-e2e/navy-approved-detail.json",
+        "sha256": "4e890ae4f484c95e1729f35ef0240c5416f0efbc2bd511fe80c8ab8e880b2be8"
+      },
+      "approved_jpeg": {
+        "path": "/workspace/Kook/docs/design/approved-dark-navy/detail.jpg",
+        "sha256": "6ae973d5a809ecbb3255d2734643bb585d433485e317138d91e70b14ffab78c1"
+      },
+      "browser_pair": {
+        "path": "/workspace/kr4-navy-final/main-8b1-comparison/browser-pair-detail.png",
+        "sha256": "39be41c6c62b66a5ebab954e5cd536e9730a852e0e241e585b058decb6cc73f5"
+      },
+      "capture": {
+        "api_level": 34,
+        "screen_width_dp": 360,
+        "font_scale": 1,
+        "theme": "LIGHT",
+        "source": "LIVE",
+        "network_succeeded": true,
+        "evidence_kind": "REAL_MARKET_LIVE",
+        "controlled_state": false,
+        "activity_class": "com.krstock.v3.MainActivity",
+        "snapshot_date_kst": "2026-11-05",
+        "price_cutoff_date_kst": "2026-11-05",
+        "source_provenance": {
+          "cache_file": "kr4_latest_snapshot.json",
+          "sha256": "a7e296f069387674d52c9fdf39bd18088dc331c68127e153417f3447b4119745"
+        }
+      },
+      "all_images_freshly_viewed": true
+    },
+    "chart": {
+      "score": 23.75,
+      "max_score": 25,
+      "category_scores": {
+        "color": 4.75,
+        "layout": 4.5,
+        "typography": 3.75,
+        "spacing": 3.75,
+        "readability": 4,
+        "information": 3
+      },
+      "critical_count": 0,
+      "residuals": [
+        "Price-axis grid density and short date-label format differ from the reference.",
+        "A supplemental range/bar-count line begins at the viewport bottom; the required source footer remains fully visible."
+      ],
+      "actual_png": {
+        "path": "/workspace/kr4-navy-final/main-8b1/KR4-UI-phone-light/app/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected/emulator-5554 - 14/snapshot-e2e/navy-approved-chart.png",
+        "sha256": "1c067fe1c0bb5a5a13ad33ff4c12999961bf5e08727a256c7b9cda01bf162c5a"
+      },
+      "actual_metadata": {
+        "path": "/workspace/kr4-navy-final/main-8b1/KR4-UI-phone-light/app/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected/emulator-5554 - 14/snapshot-e2e/navy-approved-chart.json",
+        "sha256": "01da6096f87ad97f92554ef8cdea051d39d7a9d3907786f07f5016ae9c8fff7c"
+      },
+      "approved_jpeg": {
+        "path": "/workspace/Kook/docs/design/approved-dark-navy/chart.jpg",
+        "sha256": "4f6f09806da3146629d9474c941d77b9e04f01b4209a24260260472b44ba395d"
+      },
+      "browser_pair": {
+        "path": "/workspace/kr4-navy-final/main-8b1-comparison/browser-pair-chart.png",
+        "sha256": "56c7827dfc341dae8e83e229886c5b61c321d3effe965ebb841c53a6764f4942"
+      },
+      "capture": {
+        "api_level": 34,
+        "screen_width_dp": 360,
+        "font_scale": 1,
+        "theme": "LIGHT",
+        "source": "LIVE",
+        "network_succeeded": true,
+        "evidence_kind": "REAL_MARKET_LIVE",
+        "controlled_state": false,
+        "activity_class": "com.krstock.v3.MainActivity",
+        "snapshot_date_kst": "2026-11-05",
+        "price_cutoff_date_kst": "2026-11-05",
+        "source_provenance": {
+          "cache_file": "kr4_latest_snapshot.json",
+          "sha256": "a7e296f069387674d52c9fdf39bd18088dc331c68127e153417f3447b4119745"
+        }
+      },
+      "all_images_freshly_viewed": true
+    }
+  },
+  "phone_dark_spot_check": {
+    "observations": [
+      "Complete actual volume 38,429,384주 is visible with a label/value gap.",
+      "All five 52dp navigation icons and labels are visible without detected clipping at 320dp/font1.3."
+    ],
+    "captures": {
+      "detail": {
+        "actual_png": {
+          "path": "/workspace/kr4-navy-final/main-8b1/KR4-UI-phone-dark/app/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected/emulator-5554 - 14/snapshot-e2e/navy-approved-detail.png",
+          "sha256": "b84a7d51b52b8a7c118514e91b1802c8b9b35a4224579f9a91246af34de9f330"
+        },
+        "actual_metadata": {
+          "path": "/workspace/kr4-navy-final/main-8b1/KR4-UI-phone-dark/app/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected/emulator-5554 - 14/snapshot-e2e/navy-approved-detail.json",
+          "sha256": "7d0826145a6c7093366587a7b681dab6e201f6ccd7b77fd731f13562bfd3b680"
+        },
+        "screen_width_dp": 320,
+        "font_scale": 1.3,
+        "freshly_viewed": true
+      },
+      "chart": {
+        "actual_png": {
+          "path": "/workspace/kr4-navy-final/main-8b1/KR4-UI-phone-dark/app/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected/emulator-5554 - 14/snapshot-e2e/navy-approved-chart.png",
+          "sha256": "97a9f49c296b08379324565f5d8ff1af946908abe8a0d9d442e919db13c79f69"
+        },
+        "actual_metadata": {
+          "path": "/workspace/kr4-navy-final/main-8b1/KR4-UI-phone-dark/app/build/outputs/connected_android_test_additional_output/debugAndroidTest/connected/emulator-5554 - 14/snapshot-e2e/navy-approved-chart.json",
+          "sha256": "f2e02fbdc2cc5758c3003c6eebd19608f2759520f1c8e6cd6d5460f649dacffa"
+        },
+        "screen_width_dp": 320,
+        "font_scale": 1.3,
+        "freshly_viewed": true
+      }
+    },
+    "ci_manifest": {
+      "path": "/workspace/kr4-navy-final/main-8b1/KR4-UI-phone-dark/evidence/navy-comparison/manifest.json",
+      "sha256": "218a1b390d901bb4862ffe3ba88ed79f3ad5b5165f838d10b291abf1394fca03"
+    }
+  },
+  "limitations": [
+    "The score covers the four canonical normal-phone views from fresh main captures; supplemental phone-dark views are unscored.",
+    "An original PNG establishes visible layout, not touch reliability or unseen runtime behavior.",
+    "This review does not establish completion of pending main tablet, full-suite, signed-install or public-release gates.",
+    "No app source edits, builds or tests were performed by this reviewer. Only review artifacts were written."
+  ],
+  "ci_run_id": "42070717369",
+  "review_method": "Fresh inspection of all four main original PNGs, four approved JPEGs and four complete browser pairs. Category scores independently reconfirmed after image inspection; supplemental main phone-dark detail/chart inspected separately.",
+  "reviewed_image_counts": {
+    "canonical_original_png": 4,
+    "approved_jpeg": 4,
+    "browser_pair_png": 4,
+    "supplemental_phone_dark_png": 2
+  },
+  "comparison_html": {
+    "path": "/workspace/kr4-navy-final/main-8b1/KR4-UI-phone-light/evidence/navy-comparison/index.html",
+    "sha256": "881cda49d2eb0e389755c90b6053c73bf466842ff619976ebd8fc0887b9401cc"
+  }
+}

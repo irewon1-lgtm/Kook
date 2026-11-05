@@ -1,0 +1,45 @@
+{
+  "baseline_commit": "55697269bacc3733b54b4010d9d2032d4d7ef633",
+  "main_commit": "8b1b45671072636dff59f1ced48aa311204fe2ff",
+  "reviewed_commit": "a6cf967817bfd1d2fc07929f8736da0125af94d4",
+  "reviewed_tree_sha1": "6ba21b1b1c1305a38c83988d11d8511685793e9a",
+  "main_tree_sha1": "6ba21b1b1c1305a38c83988d11d8511685793e9a",
+  "protected": {
+    "app/src/main/java/com/krstock/v3/data": {
+      "baseline_git_object_sha1": "2e7d2435b5c4de30ca4a44c0505c94774571a982",
+      "main_git_object_sha1": "2e7d2435b5c4de30ca4a44c0505c94774571a982",
+      "unchanged": true
+    },
+    "app/build.gradle.kts": {
+      "baseline_git_object_sha1": "2e8a5b8bdd3af4fe1ad1964b82e2754a00d32c3b",
+      "main_git_object_sha1": "2e8a5b8bdd3af4fe1ad1964b82e2754a00d32c3b",
+      "unchanged": true,
+      "sha256": "3aa45fb5293406ce397d6a235b1b0e619044151728e0ff3b8f37938442b5b316"
+    },
+    "app/src/main/AndroidManifest.xml": {
+      "baseline_git_object_sha1": "f3ac618f16542027025124b9ef608641387fb6b3",
+      "main_git_object_sha1": "f3ac618f16542027025124b9ef608641387fb6b3",
+      "unchanged": true,
+      "sha256": "5c138afc47622247c21dd8ef28e9d5abb54d30023292a138035e676034d5f7bb"
+    },
+    "evidence/real_quant_snapshot.json": {
+      "baseline_git_object_sha1": "f158a1d0de6557ef10b8cb18a881f0825744b9ac",
+      "main_git_object_sha1": "f158a1d0de6557ef10b8cb18a881f0825744b9ac",
+      "unchanged": true,
+      "sha256": "a7e296f069387674d52c9fdf39bd18088dc331c68127e153417f3447b4119745"
+    },
+    "evidence/financial_safety_snapshot.json": {
+      "baseline_git_object_sha1": "05b87d0f115a3193d0fc77b37f9e879f404e7aa2",
+      "main_git_object_sha1": "05b87d0f115a3193d0fc77b37f9e879f404e7aa2",
+      "unchanged": true,
+      "sha256": "bdb7fe532250c6d516454de822bef2700dded37c36caab88cb8d7e3c1ffbd358"
+    },
+    "evidence/quarterly_history.json": {
+      "baseline_git_object_sha1": "5b04aad3bb4e8872517b3e649d158d0f81158f89",
+      "main_git_object_sha1": "5b04aad3bb4e8872517b3e649d158d0f81158f89",
+      "unchanged": true,
+      "sha256": "33def49a1a5864836e4f704ae2a4829cfadcec4be566ece49dcca1a7fd5d7ee1"
+    }
+  },
+  "status": "PASS"
+}

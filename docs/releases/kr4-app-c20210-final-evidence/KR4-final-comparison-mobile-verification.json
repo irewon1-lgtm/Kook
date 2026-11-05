@@ -1,0 +1,117 @@
+{
+  "status": "PASS",
+  "evidenceKind": "BROWSER_COMPARISON_PREVIEW_NOT_ANDROID_CAPTURE",
+  "inputHtml": "/workspace/kr4-navy-final/KR4-final-reviewed-gallery.html",
+  "inputSha256": "78ac90a2b5952f510d0fe5ea51c030155fe9993710fe3ccd987a9d26279756b9",
+  "transport": "LOOPBACK_HTTP_UNMODIFIED_PUBLIC_ARTIFACT",
+  "initial": {
+    "width": 390,
+    "scrollWidth": 390,
+    "screens": [
+      "home",
+      "ranking",
+      "detail",
+      "chart"
+    ],
+    "images": [
+      {
+        "originalEmbedded": true,
+        "width": 606,
+        "height": 1280
+      },
+      {
+        "originalEmbedded": true,
+        "width": 1080,
+        "height": 2280
+      },
+      {
+        "originalEmbedded": true,
+        "width": 606,
+        "height": 1280
+      },
+      {
+        "originalEmbedded": true,
+        "width": 1080,
+        "height": 2280
+      },
+      {
+        "originalEmbedded": true,
+        "width": 606,
+        "height": 1280
+      },
+      {
+        "originalEmbedded": true,
+        "width": 1080,
+        "height": 2280
+      },
+      {
+        "originalEmbedded": true,
+        "width": 606,
+        "height": 1280
+      },
+      {
+        "originalEmbedded": true,
+        "width": 1080,
+        "height": 2280
+      }
+    ],
+    "fragmentLinksValid": true,
+    "viewport": "width=device-width,initial-scale=1",
+    "explicitlyBrowserComparison": true
+  },
+  "expanded": {
+    "width": 390,
+    "scrollWidth": 390,
+    "screens": [
+      "home",
+      "ranking",
+      "detail",
+      "chart"
+    ],
+    "images": [
+      {
+        "originalEmbedded": true,
+        "width": 606,
+        "height": 1280
+      },
+      {
+        "originalEmbedded": true,
+        "width": 1080,
+        "height": 2280
+      },
+      {
+        "originalEmbedded": true,
+        "width": 606,
+        "height": 1280
+      },
+      {
+        "originalEmbedded": true,
+        "width": 1080,
+        "height": 2280
+      },
+      {
+        "originalEmbedded": true,
+        "width": 606,
+        "height": 1280
+      },
+      {
+        "originalEmbedded": true,
+        "width": 1080,
+        "height": 2280
+      },
+      {
+        "originalEmbedded": true,
+        "width": 606,
+        "height": 1280
+      },
+      {
+        "originalEmbedded": true,
+        "width": 1080,
+        "height": 2280
+      }
+    ],
+    "fragmentLinksValid": true,
+    "viewport": "width=device-width,initial-scale=1",
+    "explicitlyBrowserComparison": true
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "activity_class": "com.krstock.v3.MainActivity",
+  "launch_action": "android.intent.action.MAIN",
+  "launch_category": "android.intent.category.LAUNCHER",
+  "full_screen": true,
+  "evidence_kind": "REAL_MARKET_LIVE",
+  "controlled_state": false,
+  "scenario_source": "LIVE",
+  "screen_width_dp": 360,
+  "source_provenance": {
+    "cache_file": "kr4_latest_snapshot.json",
+    "sha256": "a7e296f069387674d52c9fdf39bd18088dc331c68127e153417f3447b4119745"
+  },
+  "approved_screen": "detail",
+  "palette_pixel_counts": {
+    "background": 82724,
+    "surface": 112114,
+    "text": 5158,
+    "primary": 2619,
+    "sample_step_px": 3
+  },
+  "issuer": "005930",
+  "detail_tab": 1,
+  "actual_record": {
+    "name": "삼성전자",
+    "market": "KOSPI",
+    "sector": "통신 및 방송 장비 제조업",
+    "listing_date": "1975-06-11",
+    "m01": {
+      "raw": 129.995897,
+      "percentile": 95,
+      "reason": null,
+      "basis": "2026HY_3M_CFS"
+    },
+    "m02": {
+      "raw": 52.182326,
+      "percentile": 99.086758,
+      "reason": null,
+      "basis": "2026HY_3M_CFS"
+    },
+    "m03": {
+      "raw": 9.08,
+      "percentile": 52.219162,
+      "reason": null,
+      "basis": "2026-11-05_NAVER_REPORTED_TRAILING_PER"
+    },
+    "m04": {
+      "raw": -12.903226,
+      "percentile": 79.067991,
+      "reason": null,
+      "basis": "2026-05-04->2026-11-05_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
+    },
+    "composite": 81.343478,
+    "rank": 22
+  },
+  "actual_quote": {
+    "localTradedAt": "2026-11-05",
+    "openPrice": 211500,
+    "highPrice": 214000,
+    "lowPrice": 199800,
+    "closePrice": 201500,
+    "accumulatedTradingVolume": 38429384
+  },
+  "source": "LIVE",
+  "snapshot_date_kst": "2026-11-05",
+  "price_cutoff_date_kst": "2026-11-05",
+  "network_succeeded": true,
+  "complete_count": 2376,
+  "universe_count": 2649,
+  "revision": 79,
+  "runtime_snapshot_date_kst": "2026-11-05",
+  "runtime_price_cutoff_date_kst": "2026-11-05",
+  "failure": null,
+  "capture_method": "UI_AUTOMATION_ORIGINAL_PNG",
+  "api_level": 34,
+  "device_model": "sdk_gphone64_x86_64",
+  "device_kind": "EMULATOR",
+  "theme": "LIGHT",
+  "viewport": "PHONE",
+  "font_scale": 1
+}

@@ -1,0 +1,68 @@
+{
+  "APK_SIGNING_CERT.txt": {
+    "id": 714230452,
+    "size": 1075,
+    "digest": "sha256:6843911941bc4540f06cb26fe7487076fbec12f3696192003ad94003e4e06c01",
+    "updated_at": "2026-11-05T17:34:09Z"
+  },
+  "KR4-navy-browser-comparison.png": {
+    "id": 714230530,
+    "size": 1429222,
+    "digest": "sha256:e6b00847ccd0333e0ee3026047b1ae8f98cfe0674b14fd4eea21ef08491225c2",
+    "updated_at": "2026-11-05T17:34:11Z"
+  },
+  "KR4-navy-comparison-manifest.json": {
+    "id": 714230540,
+    "size": 87328,
+    "digest": "sha256:b4ab02edeb72a3e6860146f50651f1c76dca091223b6b6ed28951635931e48cf",
+    "updated_at": "2026-11-05T17:34:11Z"
+  },
+  "KR4-navy-comparison.html": {
+    "id": 714230529,
+    "size": 2465720,
+    "digest": "sha256:881cda49d2eb0e389755c90b6053c73bf466842ff619976ebd8fc0887b9401cc",
+    "updated_at": "2026-11-05T17:34:11Z"
+  },
+  "KR4-navy-comparison.zip": {
+    "id": 714230570,
+    "size": 3314886,
+    "digest": "sha256:45107eb7d78e11221caf8a0286b3ccc79341304766a519f2da03a10f09ef076f",
+    "updated_at": "2026-11-05T17:34:12Z"
+  },
+  "KR4-UI-gallery.html": {
+    "id": 714230453,
+    "size": 221986907,
+    "digest": "sha256:132dfe2028b54471ffbe4c90fbc4e26ec86dfeda0f980241ce14112c9ed14adb",
+    "updated_at": "2026-11-05T17:34:21Z"
+  },
+  "KR4-UI-gallery.zip": {
+    "id": 714230450,
+    "size": 312909581,
+    "digest": "sha256:e9f1a43360dd0ed926cdfff5adacb536fbb36455922f30545bbf96dd729e9916",
+    "updated_at": "2026-11-05T17:34:19Z"
+  },
+  "KR4.apk": {
+    "id": 714230448,
+    "size": 8619719,
+    "digest": "sha256:579d25b95a02e5795c31a05526c4ef4bbcdbddb1f0334b843828b7b40a1c0017",
+    "updated_at": "2026-11-05T17:34:10Z"
+  },
+  "manifest.json": {
+    "id": 714230505,
+    "size": 3180204,
+    "digest": "sha256:1d14133c700136b8d3a94b61abb0bd2daf038a1b6040d81f588f6a2ed4cd3ced",
+    "updated_at": "2026-11-05T17:34:10Z"
+  },
+  "SHA256SUMS.txt": {
+    "id": 714230507,
+    "size": 245855,
+    "digest": "sha256:da99da8a55f3554ff032e8e5ea6b0f1eaa27a8cf629b7c937af382736b5989b2",
+    "updated_at": "2026-11-05T17:34:10Z"
+  },
+  "update.json": {
+    "id": 714230454,
+    "size": 568,
+    "digest": "sha256:c71307adc63899d176a0ed211bf47efd3923dc61a82a8ace8fae25f88c81ee3b",
+    "updated_at": "2026-11-05T17:34:09Z"
+  }
+}

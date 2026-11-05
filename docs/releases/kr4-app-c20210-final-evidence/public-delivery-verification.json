@@ -1,0 +1,244 @@
+{
+  "status": "PASS",
+  "versionCode": 20210,
+  "versionName": "4.3.210",
+  "commit": "8b1b45671072636dff59f1ced48aa311204fe2ff",
+  "package": "com.krstock.v3",
+  "apkSha256": "579d25b95a02e5795c31a05526c4ef4bbcdbddb1f0334b843828b7b40a1c0017",
+  "certificateSha256": "1070e82beee574cd29ffd2dc3e693fd7f7862374f16d1606567db303ab152477",
+  "actualBaselineVersionCode": 20209,
+  "publicBuildInstalledApkBytesIdentical": true,
+  "upgrade": {
+    "status": "PASS",
+    "baseline": {
+      "tag": "kr4-app-c20209",
+      "versionCode": 20209,
+      "versionName": "4.3.209",
+      "sha256": "3051d0c999284b3718e7d6f2274590f580c8d7fc2ad7bd72856b25aba2fc731c",
+      "signingCertificateSha256": "1070e82beee574cd29ffd2dc3e693fd7f7862374f16d1606567db303ab152477",
+      "packageName": "com.krstock.v3",
+      "apkUrl": "https://github.com/irewon1-lgtm/Kook/releases/download/kr4-app-c20209/KR4.apk"
+    },
+    "before": {
+      "versionCode": 20209,
+      "uid": 10192,
+      "firstInstallTime": "2026-11-05 17:31:05"
+    },
+    "after": {
+      "versionCode": 20210,
+      "uid": 10192,
+      "firstInstallTime": "2026-11-05 17:31:05"
+    },
+    "dataMarkerPreserved": true,
+    "installedApkSha256": "579d25b95a02e5795c31a05526c4ef4bbcdbddb1f0334b843828b7b40a1c0017",
+    "dataMarkerPreservedAfterRelaunch": true,
+    "upgradedReleaseLiveReceive": {
+      "source": "LIVE",
+      "firstLaunchCacheSha256": "a7e296f069387674d52c9fdf39bd18088dc331c68127e153417f3447b4119745",
+      "relaunchCacheSha256": "a7e296f069387674d52c9fdf39bd18088dc331c68127e153417f3447b4119745",
+      "universeCount": 2649,
+      "snapshotDate": "2026-11-05",
+      "priceCutoffDate": "2026-11-05"
+    },
+    "existingMarketDataPreserved": {
+      "status": "PASS",
+      "source": "REAL_MARKET_LIVE",
+      "deviceCachePath": "/data/user/0/com.krstock.v3/files/kr4_latest_snapshot.json",
+      "beforeSha256": "a7e296f069387674d52c9fdf39bd18088dc331c68127e153417f3447b4119745",
+      "afterUpgradeBeforeLaunchSha256": "a7e296f069387674d52c9fdf39bd18088dc331c68127e153417f3447b4119745",
+      "exactOriginalBytesPreserved": true,
+      "checkedBeforeUpgradedAppLaunch": true,
+      "bytes": 2328697,
+      "universeCount": 2649,
+      "snapshotDate": "2026-11-05",
+      "priceCutoffDate": "2026-11-05",
+      "beforeFile": "baseline-market-cache-before-upgrade.json",
+      "afterFile": "baseline-market-cache-after-upgrade-before-launch.json"
+    },
+    "signingCertificateSha256": "1070e82beee574cd29ffd2dc3e693fd7f7862374f16d1606567db303ab152477",
+    "displayedSnapshotDate": "2026-11-05",
+    "displayedCompleteAndUniverse": "2376/2649",
+    "commit": "8b1b45671072636dff59f1ced48aa311204fe2ff",
+    "settingPreserved": {
+      "name": "ui_night_mode",
+      "value": "2",
+      "scope": "ANDROID_SYSTEM_THEME"
+    },
+    "releaseSafetyComparedWithPublishedArtifact": true,
+    "releaseSafetyFactsVerified": true,
+    "releaseRelaunchVerified": true,
+    "releaseStockSafetyAndChartTouches": [
+      "005930",
+      "SAFETY",
+      "DAY",
+      "WEEK",
+      "MONTH"
+    ]
+  },
+  "matrix": {
+    "PHONE_LIGHT": {
+      "screens": 155,
+      "live": 37,
+      "realFinancial": 24,
+      "all24ChartModes": true,
+      "all15MetricCombinations": true,
+      "allFiveSources": true,
+      "allFourSafetyStates": true,
+      "allFourOriginalMainCaptures": true,
+      "actualLongestNameWithoutClipping": true
+    },
+    "PHONE_DARK": {
+      "screens": 155,
+      "live": 37,
+      "realFinancial": 24,
+      "all24ChartModes": true,
+      "all15MetricCombinations": true,
+      "allFiveSources": true,
+      "allFourSafetyStates": true,
+      "allFourOriginalMainCaptures": true,
+      "actualLongestNameWithoutClipping": true
+    },
+    "TABLET_LIGHT": {
+      "screens": 155,
+      "live": 37,
+      "realFinancial": 24,
+      "all24ChartModes": true,
+      "all15MetricCombinations": true,
+      "allFiveSources": true,
+      "allFourSafetyStates": true,
+      "allFourOriginalMainCaptures": true,
+      "actualLongestNameWithoutClipping": true
+    },
+    "TABLET_DARK": {
+      "screens": 155,
+      "live": 37,
+      "realFinancial": 24,
+      "all24ChartModes": true,
+      "all15MetricCombinations": true,
+      "allFiveSources": true,
+      "allFourSafetyStates": true,
+      "allFourOriginalMainCaptures": true,
+      "actualLongestNameWithoutClipping": true
+    }
+  },
+  "originalPngCount": 634,
+  "signedChartIndependentVerification": {
+    "DAY": {
+      "actualSelectedLabel": "일봉",
+      "actualTradingDays": 1,
+      "receivedDailySha256": "5c8da91dd37e815ddf3ded349f8ee3dddc3741c0ffd375f5a3eae36698cf9a61",
+      "originalPngSha256": "2604179a1cabb47dc50a26fbc5b521a0e19652e1c4f8fc41631319270658c165",
+      "independentOhlcvMatches": true
+    },
+    "WEEK": {
+      "actualSelectedLabel": "주봉",
+      "actualTradingDays": 4,
+      "receivedDailySha256": "5c8da91dd37e815ddf3ded349f8ee3dddc3741c0ffd375f5a3eae36698cf9a61",
+      "originalPngSha256": "f2a2ffe5bf323e8ef998f33f3fc6a43a345d6efc850a7dc08fc01c58d935362f",
+      "independentOhlcvMatches": true
+    },
+    "MONTH": {
+      "actualSelectedLabel": "월봉",
+      "actualTradingDays": 4,
+      "receivedDailySha256": "5c8da91dd37e815ddf3ded349f8ee3dddc3741c0ffd375f5a3eae36698cf9a61",
+      "originalPngSha256": "e6d35929b6717596795a8249a0dc6e4f082e48b411fdc11bded3c6ebf47fc1bf",
+      "independentOhlcvMatches": true
+    }
+  },
+  "evidenceKinds": {
+    "CONTROLLED_FIXTURE": 79,
+    "REAL_MARKET_RECORDED": 404,
+    "REAL_MARKET_LIVE": 151
+  },
+  "navyComparison": {
+    "originals": {
+      "home": {
+        "approvedJpegSha256": "e0c407f25aca3d888e579aee5bf583606c65dc23e90fbe5b6705643ad5d4f906",
+        "actualPngSha256": "ad6fa28ecb2cfa26f0a7366738d0783e5579b10f902835fb1970c21b3908cffe",
+        "metadataSha256": "4c91502b26b3563b2fd6d1ef4895ee78b52eeda22c0d094122cf4e8f5b4e2125"
+      },
+      "ranking": {
+        "approvedJpegSha256": "c89d0e6b640bed0b7ce6305a355a9d364cc14cbdd4fd4f12bd8143aa40afd26f",
+        "actualPngSha256": "ff8df3ff628e66b85ceeaee236f7b13a7ccb118718951eeb2e1ef56f1865ae18",
+        "metadataSha256": "2cedd6de9018e14bbe9e35a332a541b77d87b205f92b7a61c2858464fda41504"
+      },
+      "detail": {
+        "approvedJpegSha256": "6ae973d5a809ecbb3255d2734643bb585d433485e317138d91e70b14ffab78c1",
+        "actualPngSha256": "e60a0cf9a94f258b2d902b7fea5f272ec9f78089a040bb6f8eb49249bd24e288",
+        "metadataSha256": "4e890ae4f484c95e1729f35ef0240c5416f0efbc2bd511fe80c8ab8e880b2be8"
+      },
+      "chart": {
+        "approvedJpegSha256": "4f6f09806da3146629d9474c941d77b9e04f01b4209a24260260472b44ba395d",
+        "actualPngSha256": "1c067fe1c0bb5a5a13ad33ff4c12999961bf5e08727a256c7b9cda01bf162c5a",
+        "metadataSha256": "01da6096f87ad97f92554ef8cdea051d39d7a9d3907786f07f5016ae9c8fff7c"
+      }
+    },
+    "visualReview": "PENDING_INDEPENDENT_REVIEW",
+    "manufacturedScore": false,
+    "browserComparison": {
+      "kind": "BROWSER_COMPARISON_NOT_ANDROID_CAPTURE",
+      "isAndroidCapture": false,
+      "sha256": "e6b00847ccd0333e0ee3026047b1ae8f98cfe0674b14fd4eea21ef08491225c2",
+      "width": 1800,
+      "height": 6500
+    }
+  },
+  "publicDelivery": {
+    "tag": "kr4-app-c20210",
+    "latestManifestVerified": true,
+    "versionedAssets": {
+      "KR4.apk": {
+        "sha256": "579d25b95a02e5795c31a05526c4ef4bbcdbddb1f0334b843828b7b40a1c0017",
+        "bytes": 8619719
+      },
+      "update.json": {
+        "sha256": "c71307adc63899d176a0ed211bf47efd3923dc61a82a8ace8fae25f88c81ee3b",
+        "bytes": 568
+      },
+      "APK_SIGNING_CERT.txt": {
+        "sha256": "6843911941bc4540f06cb26fe7487076fbec12f3696192003ad94003e4e06c01",
+        "bytes": 1075
+      },
+      "KR4-UI-gallery.html": {
+        "sha256": "132dfe2028b54471ffbe4c90fbc4e26ec86dfeda0f980241ce14112c9ed14adb",
+        "bytes": 221986907
+      },
+      "KR4-UI-gallery.zip": {
+        "sha256": "e9f1a43360dd0ed926cdfff5adacb536fbb36455922f30545bbf96dd729e9916",
+        "bytes": 312909581
+      },
+      "manifest.json": {
+        "sha256": "1d14133c700136b8d3a94b61abb0bd2daf038a1b6040d81f588f6a2ed4cd3ced",
+        "bytes": 3180204
+      },
+      "SHA256SUMS.txt": {
+        "sha256": "da99da8a55f3554ff032e8e5ea6b0f1eaa27a8cf629b7c937af382736b5989b2",
+        "bytes": 245855
+      },
+      "KR4-navy-comparison.html": {
+        "sha256": "881cda49d2eb0e389755c90b6053c73bf466842ff619976ebd8fc0887b9401cc",
+        "bytes": 2465720
+      },
+      "KR4-navy-browser-comparison.png": {
+        "sha256": "e6b00847ccd0333e0ee3026047b1ae8f98cfe0674b14fd4eea21ef08491225c2",
+        "bytes": 1429222
+      },
+      "KR4-navy-comparison-manifest.json": {
+        "sha256": "b4ab02edeb72a3e6860146f50651f1c76dca091223b6b6ed28951635931e48cf",
+        "bytes": 87328
+      },
+      "KR4-navy-comparison.zip": {
+        "sha256": "45107eb7d78e11221caf8a0286b3ccc79341304766a519f2da03a10f09ef076f",
+        "bytes": 3314886
+      }
+    },
+    "actualPublicBaselineApkSha256": "3051d0c999284b3718e7d6f2274590f580c8d7fc2ad7bd72856b25aba2fc731c"
+  },
+  "credentialScan": {
+    "status": "PASS",
+    "absenceClaimed": true,
+    "source": "BOUND_ENVIRONMENT_VALUE"
+  },
+  "physicalDeviceVerified": false,
+  "physicalDeviceEvidence": []
+}
