@@ -494,7 +494,7 @@ jobs:
           def installed():
               dump=adb('shell','dumpsys','package',package)
               return {'versionCode':int(re.search(r'\bversionCode=(\d+)',dump)[1]),
-                      'uid':int(re.search(r'\buserId=(\d+)',dump)[1]),
+                      'uid':int(re.search(r'\b(?:appId|userId)=(\d+)',dump)[1]),
                       'firstInstallTime':re.search(r'firstInstallTime=([^\r\n]+)',dump)[1].strip()}
 
           try:

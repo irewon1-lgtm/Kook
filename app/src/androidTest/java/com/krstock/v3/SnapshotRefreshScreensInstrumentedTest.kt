@@ -6,6 +6,7 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.test.performTextInput
@@ -88,7 +89,11 @@ class SnapshotRefreshScreensInstrumentedTest {
         assertEquals(2367, StockRepository.completeCount())
         assertNull(FinancialSafetyRepository.currentSnapshot())
         assertTrue(FinalCandidateRepository.getFinalCandidates().isEmpty())
-        SnapshotTestSupport.evidence(context, "background-home")
+        composeRule.onNodeWithText("일치하는 Stage4 재무자료 없음 · 최종후보 HOLD")
+            .performScrollTo().assertIsDisplayed()
+        composeRule.onNodeWithTag("stage4_status").performScrollTo()
+            .assertTextEquals("HOLD").assertIsDisplayed()
+        SnapshotTestSupport.evidence(context, "background-home", JSONObject().put("stage4_status", "HOLD"))
     }
 
     @Test

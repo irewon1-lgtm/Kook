@@ -44,7 +44,7 @@ fun FinancialSafetyBadge(safety: FinancialSafetyRecord?, modifier: Modifier = Mo
         FinancialSafetyStatus.FAIL -> "재무 FAIL" to (scheme.errorContainer to scheme.onErrorContainer)
         FinancialSafetyStatus.HOLD -> "재무 HOLD" to (scheme.tertiaryContainer to scheme.onTertiaryContainer)
         FinancialSafetyStatus.NOT_APPLICABLE -> "재무 N/A" to (scheme.surfaceVariant to scheme.onSurfaceVariant)
-        null -> "재무 —" to (scheme.surfaceVariant to scheme.onSurfaceVariant)
+        null -> "재무 HOLD" to (scheme.surfaceVariant to scheme.onSurfaceVariant)
     }
     Surface(
         modifier = modifier.testTag("financial_safety_badge"),
@@ -213,7 +213,7 @@ fun FinancialSafetyCard(
             Spacer(Modifier.height(10.dp))
             if (safety == null) {
                 Text(
-                    "활성 정량 스냅샷과 날짜가 일치하는 재무안정성 자료가 없어 fail-closed 처리했습니다.",
+                    "기준일이 일치하는 재무자료가 없어 HOLD(검증 보류) 상태입니다",
                     fontSize = 11.sp,
                     lineHeight = 17.sp,
                     color = scheme.onSurfaceVariant,

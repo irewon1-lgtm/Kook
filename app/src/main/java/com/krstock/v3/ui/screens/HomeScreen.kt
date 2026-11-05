@@ -28,6 +28,9 @@ import com.krstock.v3.data.stage.ValuationBandPolicy
 import com.krstock.v3.data.update.SnapshotAutoUpdater
 import com.krstock.v3.ui.components.Stage45CompactPanel
 import com.krstock.v3.ui.components.StatusBadge
+import java.time.OffsetDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -113,7 +116,8 @@ fun HomeScreen(
                         Text("최종 조사 후보", fontWeight = FontWeight.Bold, fontSize = 22.sp)
                         Spacer(Modifier.height(3.dp))
                         Text(
-                            "4지표 완성 · 양수 PER · 재무안정성 PASS · 기존 종합순위 재사용",
+                            if (safetyByCode.isEmpty()) "일치하는 Stage4 재무자료 없음 · 최종후보 HOLD"
+                            else "4지표 완성 · 양수 PER · 재무안정성 PASS · 기존 종합순위 재사용",
                             fontSize = 13.sp,
                             lineHeight = 18.sp,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -125,8 +129,9 @@ fun HomeScreen(
                         contentColor = MaterialTheme.colorScheme.onSurfaceVariant
                     ) {
                         Text(
-                            "FINAL ${finalCandidates.size}",
-                            modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
+                            if (safetyByCode.isEmpty()) "HOLD" else "FINAL ${finalCandidates.size}",
+                            modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp)
+                                .testTag("stage4_status"),
                             fontSize = 11.sp,
                             fontWeight = FontWeight.Bold
                         )
@@ -269,7 +274,7 @@ private fun SnapshotCompactCard(
                     color = scheme.onSurfaceVariant,
                 )
                 Text(
-                    if (statusMatchesSnapshot) "최근 갱신 ${status.refreshedAt.ifBlank { "기록 없음" }}"
+                    if (statusMatchesSnapshot) "최근 갱신 ${snapshotTimeText(status.refreshedAt)}"
                     else "최근 갱신 확인 중",
                     modifier = Modifier.testTag("snapshot_last_refresh"),
                     fontSize = 10.sp,
@@ -277,15 +282,15 @@ private fun SnapshotCompactCard(
                 )
                 if (status.lastAttemptAt.isNotBlank()) {
                     Text(
-                        "최근 확인 ${status.lastAttemptAt}",
+                        "최근 확인 ${snapshotTimeText(status.lastAttemptAt)}",
                         modifier = Modifier.testTag("snapshot_last_attempt"),
                         fontSize = 10.sp,
                         color = scheme.onSurfaceVariant,
                     )
                 }
-                status.failure?.takeIf { statusMatchesSnapshot }?.let { failure ->
+                if (status.failure != null && statusMatchesSnapshot) {
                     Text(
-                        "갱신 실패 · $failure",
+                        "갱신 실패 · 마지막 정상 자료를 표시합니다",
                         modifier = Modifier.testTag("snapshot_failure"),
                         fontSize = 10.sp,
                         color = scheme.error,
@@ -306,6 +311,15 @@ private fun SnapshotCompactCard(
             }
         }
     }
+}
+
+private fun snapshotTimeText(value: String): String {
+    if (value.isBlank()) return "기록 없음"
+    return runCatching {
+        OffsetDateTime.parse(value)
+            .atZoneSameInstant(ZoneId.of("Asia/Seoul"))
+            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm 'KST'"))
+    }.getOrDefault("확인 중")
 }
 
 @Composable
