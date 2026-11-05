@@ -36,6 +36,14 @@ class PriceChartTimeframeInstrumentedTest {
         } }
     }
     private fun click(tag: String) = composeRule.onNodeWithTag(tag).performScrollTo().performClick()
+    private fun assertCount(count: Int, interval: Interval) {
+        composeRule.onNodeWithTag("chart_bar_count").performScrollTo().assert(
+            SemanticsMatcher("Exact displayed count $count ${interval.label}") { node ->
+                node.config.getOrElse(androidx.compose.ui.semantics.SemanticsProperties.Text) { emptyList() }
+                    .any { it.text.substringAfterLast(" · ") == "${count}개 ${interval.label}" }
+            }
+        )
+    }
     private fun evidence(name: String, interval: Interval, count: Int, months: Int, candle: Boolean) {
         val details = JSONObject().put("chart_interval",interval.name).put("chart_bar_count",count)
             .put("chart_months",months).put("chart_style",if(candle) "CANDLE" else "LINE")
@@ -66,8 +74,7 @@ class PriceChartTimeframeInstrumentedTest {
                     composeRule.onNodeWithTag("chart_candle_toggle").let {
                         if (candle) it.assertIsOn() else it.assertIsOff()
                     }
-                    composeRule.onNodeWithTag("chart_bar_count").performScrollTo()
-                        .assertTextContains("${n}개 ${interval.label}")
+                    assertCount(n,interval)
                     composeRule.onNodeWithTag("chart_last_volume").performScrollTo().assertTextEquals(
                         if(interval==Interval.DAY) "거래량 22,248,738주 · 실제 1거래일"
                         else "거래량 50,178,389주 · 실제 3거래일")
@@ -91,14 +98,14 @@ class PriceChartTimeframeInstrumentedTest {
         composeRule.onNodeWithTag("chart_last_ohlc").performScrollTo()
             .assertTextEquals("시가 213,500 · 고가 249,000 · 저가 211,500 · 종가 220,500")
         composeRule.onNodeWithTag("chart_last_volume").performScrollTo().assertTextEquals("거래량 88,057,100주 · 실제 5거래일")
-        composeRule.onNodeWithTag("chart_bar_count").performScrollTo().assertTextContains("27개 주봉")
+        assertCount(27,Interval.WEEK)
         evidence("chart-completed-week",Interval.WEEK,27,6,true)
         click("chart_interval_MONTH")
         composeRule.onNodeWithTag("chart_candle_toggle").assertIsOn()
         composeRule.onNodeWithTag("chart_last_ohlc").performScrollTo()
             .assertTextEquals("시가 266,500 · 고가 279,500 · 저가 203,500 · 종가 220,500")
         composeRule.onNodeWithTag("chart_last_volume").performScrollTo().assertTextEquals("거래량 361,741,542주 · 실제 20거래일")
-        composeRule.onNodeWithTag("chart_bar_count").performScrollTo().assertTextContains("7개 월봉")
+        assertCount(7,Interval.MONTH)
         evidence("chart-completed-month",Interval.MONTH,7,6,true)
     }
 
@@ -107,7 +114,7 @@ class PriceChartTimeframeInstrumentedTest {
         render(PriceHistoryRepository.Result(one,PriceHistoryRepository.Source.CACHE,cutoff,"실제 수신 1거래일"))
         click("chart_interval_MONTH")
         composeRule.onNodeWithTag("historical_price_chart").performScrollTo().assertIsDisplayed()
-        composeRule.onNodeWithTag("chart_bar_count").performScrollTo().assertTextContains("1개 월봉")
+        assertCount(1,Interval.MONTH)
         click("chart_candle_toggle")
         composeRule.onNodeWithTag("historical_price_chart").performScrollTo().assertIsDisplayed()
     }
