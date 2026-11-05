@@ -45,7 +45,6 @@ fun HomeScreen(
     val snapshotDate = stocks.firstOrNull()?.asOfDate ?: snapshotState.snapshotDate
     val priceDate = stocks.firstOrNull()?.m04Price6m?.asOfDate ?: snapshotState.priceCutoffDate
     val rankedStocks = remember(stocks) { stocks.filter { it.rankOrder != null }.sortedBy { it.rankOrder } }
-    val finalCandidates = remember(stocks, snapshotState.revision) { FinalCandidateRepository.getFinalCandidates() }
     val finalCandidateMap = remember(stocks, snapshotState.revision) { FinalCandidateRepository.getFinalCandidateMap() }
     val safetyByCode = remember(stocks, snapshotState.revision) { FinancialSafetyRepository.getAll() }
     // The default home feed always uses the four-metric ranking, independent of Stage4 availability.
@@ -128,7 +127,7 @@ fun HomeScreen(
                         Text(
                             "${rankedStocks.size}종목",
                             modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp)
-                                .testTag("stage4_status"),
+                                .testTag("ranked_stock_count"),
                             fontSize = 11.sp,
                             fontWeight = FontWeight.Bold
                         )
