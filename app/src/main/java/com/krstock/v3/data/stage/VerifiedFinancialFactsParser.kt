@@ -4,6 +4,9 @@ import com.krstock.v3.data.model.FinancialSafetyFacts
 import org.json.JSONObject
 import java.time.LocalDate
 import java.net.URI
+import java.math.BigInteger
+import java.math.BigDecimal
+import java.math.MathContext
 import kotlin.math.abs
 
 /** Checks official-fact schema independently of the four-metric parser. */
@@ -116,16 +119,21 @@ internal object VerifiedFinancialFactsParser {
         val ca = requireNotNull(amounts["current_assets"]).toDouble()
         val cl = requireNotNull(amounts["current_liabilities"]).toDouble()
         require(a > 0 && l >= 0 && ca >= 0 && cl >= 0) { "invalid balance-sheet amount" }
-        val identity = abs(a - (l + e)) / a * 100
-        require(identity <= 5.0 + 1e-9) { "actual accounting identity violates policy" }
+        // Match the producer's exact integer subtraction before division. Do
+        // not grant an extra policy margin to compensate for Double rounding.
+        val exactGap = BigInteger.valueOf(requireNotNull(amounts["assets"]))
+            .subtract(BigInteger.valueOf(requireNotNull(amounts["liabilities"]))
+                .add(BigInteger.valueOf(requireNotNull(amounts["equity"])))).abs()
+        val identity = sourcePercent(exactGap, requireNotNull(amounts["assets"]))
+        require(identity <= 5.0) { "actual accounting identity violates policy" }
         close(row, "identity_gap_pct", identity)
         val reason = if (e <= 0) {
             require(row.isNull("debt_to_equity_pct") && row.isNull("current_ratio_pct"))
             "NONPOSITIVE_EQUITY"
         } else {
             require(cl > 0) { "current liabilities denominator is not valid" }
-            val debt = l / e * 100
-            val current = ca / cl * 100
+            val debt = sourcePercent(BigInteger.valueOf(requireNotNull(amounts["liabilities"])), requireNotNull(amounts["equity"]))
+            val current = sourcePercent(BigInteger.valueOf(requireNotNull(amounts["current_assets"])), requireNotNull(amounts["current_liabilities"]))
             close(row, "debt_to_equity_pct", debt)
             close(row, "current_ratio_pct", current)
             when {
@@ -144,4 +152,10 @@ internal object VerifiedFinancialFactsParser {
         require(!row.isNull(key) && row.getDouble(key).isFinite() &&
             abs(row.getDouble(key) - expected) <= 0.0000011) { "financial $key disagrees with actual amounts" }
     }
+
+    // Python divides the original integers before rounding to Double. Keep the
+    // rational quotient sufficiently precise so large Long values preserve the
+    // same boundary decision; do not round either input before division.
+    private fun sourcePercent(numerator: BigInteger, denominator: Long): Double =
+        numerator.toBigDecimal().divide(BigDecimal.valueOf(denominator), MathContext(50)).toDouble() * 100.0
 }

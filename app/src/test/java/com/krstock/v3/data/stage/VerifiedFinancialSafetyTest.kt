@@ -67,6 +67,24 @@ class VerifiedFinancialSafetyTest {
         root.getJSONObject("coverage").put("pass",0).put("fail",1)
         assertEquals(com.krstock.v3.data.model.FinancialSafetyStatus.FAIL,parse(root).records["000001"]!!.status)
     }
+    @Test(expected = IllegalArgumentException::class) fun roundedAccountingGapCannotRelaxTheOriginalFivePercentLimit() {
+        val root=valid();val row=record(root)
+        row.put("assets",1000000000000L).put("liabilities",500000000000L).put("equity",450000000000L)
+            .put("identity_gap_pct",5.0).put("debt_to_equity_pct",111.111111)
+        assertEquals(com.krstock.v3.data.model.FinancialSafetyStatus.PASS,parse(root).records["000001"]!!.status)
+        // Actual source gap is 5.0000000001%; six-decimal transport rounding
+        // must not turn the original strict HOLD boundary into verified PASS.
+        row.put("equity",449999999999L)
+        parse(root)
+    }
+    @Test fun originalIntegerDivisionIsPreservedAtLargeAccountingBoundary() {
+        val root=valid();val row=record(root)
+        row.put("assets",2681770801958898423L).put("liabilities",1273841130930476751L)
+            .put("equity",1273841130930476752L).put("identity_gap_pct",5.0).put("debt_to_equity_pct",100.0)
+        // Python int/int rounds this source ratio to exactly 5.0%. Rounding
+        // both Long inputs before division incorrectly produces 5% + 1 ULP.
+        assertEquals(com.krstock.v3.data.model.FinancialSafetyStatus.PASS,parse(root).records["000001"]!!.status)
+    }
     @Test fun correctedFilingRequiresExactIndependentAccountProof() {
         val root=valid();val row=record(root)
         row.put("correction_status","LATEST_CORRECTION").put("values_reconciled",true)
