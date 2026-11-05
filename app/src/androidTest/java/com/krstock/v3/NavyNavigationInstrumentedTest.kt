@@ -5,7 +5,13 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
+import android.os.Build
+import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.ResultReceiver
 import android.view.View
+import android.view.inspector.WindowInspector
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.BackEventCompat
 import androidx.compose.ui.semantics.SemanticsActions
@@ -17,7 +23,6 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.core.view.ViewCompat
-import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import com.krstock.v3.data.repository.StockRepository
 import com.krstock.v3.data.update.SnapshotAutoUpdater
@@ -109,6 +114,8 @@ class NavyNavigationInstrumentedTest {
         composeRule.onNodeWithTag("favorites_add").performClick()
         composeRule.onNodeWithTag("favorites_search").performTextReplacement("005930")
         hideKeyboard()
+        composeRule.onNodeWithTag("favorites_search").assertIsDisplayed()
+        composeRule.onNodeWithTag("favorites_save").assertIsDisplayed()
         composeRule.onNodeWithTag("favorite_choice_005930").performClick().assertIsOn()
         composeRule.onNodeWithTag("favorites_save").performClick()
         assertEquals("삼성전자", StockRepository.getAllStocks().first { it.issuerId == "005930" }.name)
@@ -121,7 +128,17 @@ class NavyNavigationInstrumentedTest {
         composeRule.onNodeWithTag("detail_title").assertIsDisplayed()
         composeRule.onNodeWithTag("main_bottom_navigation").assertDoesNotExist()
         openChartAndAwaitMenu()
-        composeRule.onNodeWithTag("main_favorites_tab").assertIsSelected()
+        try {
+            composeRule.onNodeWithTag("main_favorites_tab").assertIsSelected()
+        } catch (failure: Throwable) {
+            runCatching {
+                SnapshotTestSupport.evidence(context, "nav-restored-favorites-origin-failed", JSONObject()
+                    .put("evidence_kind", "REAL_MARKET_RUNTIME").put("controlled_state", false)
+                    .put("expected_origin", "FAVORITES")
+                    .put("compose_semantics", composeRule.onRoot(useUnmergedTree = true).printToString()))
+            }
+            throw failure
+        }
         pressBack("main_favorites_tab", "favorite_stock_005930")
         composeRule.onNodeWithTag("favorite_remove_005930").performClick()
         composeRule.onNodeWithTag("favorites_empty").assertIsDisplayed()
@@ -290,20 +307,54 @@ class NavyNavigationInstrumentedTest {
     }
 
     private fun hideKeyboard() {
-        scenario!!.onActivity { activity ->
-            (context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
-                .hideSoftInputFromWindow(activity.window.decorView.windowToken, 0)
-            activity.window.decorView.clearFocus()
-            WindowCompat.getInsetsController(activity.window, activity.window.decorView)
-                .hide(WindowInsetsCompat.Type.ime())
-        }
-        composeRule.waitUntil(timeoutMillis = 10_000L) {
-            var hidden = false
-            scenario!!.onActivity { activity ->
-                hidden = ViewCompat.getRootWindowInsets(activity.window.decorView)
-                    ?.isVisible(WindowInsetsCompat.Type.ime()) != true
+        lateinit var keyboardWindow: View
+        val inputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        var hideResult: Int? = null
+        var hideRequestAccepted = false
+        val hideReceiver = object : ResultReceiver(Handler(Looper.getMainLooper())) {
+            override fun onReceiveResult(resultCode: Int, resultData: Bundle?) {
+                hideResult = resultCode
             }
-            hidden
+        }
+        scenario!!.onActivity { activity ->
+            // AlertDialog owns another window. The Activity token is rejected
+            // once the dialog's ComposeView is the IME's served view.
+            keyboardWindow = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                WindowInspector.getGlobalWindowViews().firstOrNull { it.hasWindowFocus() }
+                    ?: activity.window.decorView
+            } else activity.window.decorView
+            val focusedView = keyboardWindow.findFocus() ?: keyboardWindow
+            hideRequestAccepted = inputMethodManager.hideSoftInputFromWindow(
+                focusedView.windowToken, 0, hideReceiver,
+            )
+            focusedView.clearFocus()
+            ViewCompat.getWindowInsetsController(keyboardWindow)?.hide(WindowInsetsCompat.Type.ime())
+        }
+        try {
+            composeRule.waitUntil(timeoutMillis = 10_000L) {
+                var hidden = false
+                scenario!!.onActivity {
+                    // Insets can still be false while a prior SHOW is queued.
+                    // The IME acknowledges only after hideWindow unregisters
+                    // its Back callback; require that before navigation Back.
+                    val hideAcknowledged = hideResult == InputMethodManager.RESULT_HIDDEN ||
+                        hideResult == InputMethodManager.RESULT_UNCHANGED_HIDDEN
+                    val noInputSession = !hideRequestAccepted && !inputMethodManager.isActive
+                    hidden = (hideAcknowledged || noInputSession) &&
+                        ViewCompat.getRootWindowInsets(keyboardWindow)
+                            ?.isVisible(WindowInsetsCompat.Type.ime()) == false
+                }
+                hidden
+            }
+        } catch (failure: Throwable) {
+            runCatching {
+                SnapshotTestSupport.evidence(context, "nav-hide-keyboard-failed", JSONObject()
+                    .put("evidence_kind", "REAL_MARKET_RUNTIME").put("controlled_state", false)
+                    .put("keyboard_window_class", keyboardWindow.javaClass.name)
+                    .put("hide_request_accepted", hideRequestAccepted)
+                    .put("hide_result", hideResult ?: JSONObject.NULL))
+            }
+            throw failure
         }
     }
 

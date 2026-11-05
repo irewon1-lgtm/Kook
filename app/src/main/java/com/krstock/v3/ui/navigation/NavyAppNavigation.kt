@@ -88,7 +88,16 @@ fun NavyAppNavigation() {
         scope.launch { pagerState.scrollToPage(page) }
     }
     fun showDetail(issuerId: String) {
-        detailOrigin = selectedMenu
+        // NavGraph destination callbacks can outlive the composition that
+        // created them, especially after Activity state restoration. Resolve
+        // the origin when clicked instead of retaining that composition's menu.
+        detailOrigin = when (navController.currentBackStackEntry?.destination?.route) {
+            "search" -> MainMenu.SEARCH
+            "favorites" -> MainMenu.FAVORITES
+            "more" -> MainMenu.MORE
+            "detail/{issuerId}" -> detailOrigin
+            else -> if (pagerState.currentPage == 0) MainMenu.HOME else MainMenu.RANKING
+        }
         currentDetailTab = 0
         navController.navigate("detail/$issuerId")
     }

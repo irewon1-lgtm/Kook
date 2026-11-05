@@ -79,9 +79,15 @@ class NavyApprovedUiInstrumentedTest {
         composeRule.waitUntil(timeoutMillis = 90_000L) {
             val result = SnapshotAutoUpdater.lastResult
             result.revision > launchRevision && result.networkSucceeded &&
-                result.source == SnapshotAutoUpdater.Source.LIVE &&
-                composeRule.onAllNodesWithTag("main_pager").fetchSemanticsNodes().isNotEmpty()
+                result.source == SnapshotAutoUpdater.Source.LIVE
         }
+        // LIVE is published before optional finance/candidate I/O completes.
+        // refreshBlocking owns this monitor for that entire existing pipeline.
+        // Wait without repeatedly forcing Compose/Espresso measurement during
+        // the intermediate HOLD -> verified financial-row layout transition.
+        synchronized(SnapshotAutoUpdater) { SnapshotAutoUpdater.lastResult }
+        composeRule.waitForIdle()
+        composeRule.onNodeWithTag("main_pager").assertIsDisplayed()
         dismissOptionalUpdate()
         readAndCheckLiveOracle()
         // Core LIVE intentionally appears before optional finance I/O finishes.
@@ -99,11 +105,8 @@ class NavyApprovedUiInstrumentedTest {
             FinancialSafetyStatus.HOLD -> "미확보"
             FinancialSafetyStatus.NOT_APPLICABLE -> "비교제외"
         }
-        composeRule.waitUntil(timeoutMillis = 90_000L) {
-            composeRule.onAllNodes(hasTestTag("stock_${first.issuerId}") and
-                hasAnyDescendant(hasText(expectedSafety))).fetchSemanticsNodes().isNotEmpty()
-        }
-        composeRule.waitForIdle()
+        composeRule.onNode(hasTestTag("stock_${first.issuerId}") and
+            hasAnyDescendant(hasText(expectedSafety))).assertIsDisplayed()
 
         composeRule.onNodeWithTag("home_list").performScrollToIndex(0)
         composeRule.onNodeWithTag("main_home_tab").assertIsDisplayed().assertIsSelected()
