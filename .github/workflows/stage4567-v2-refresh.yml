@@ -97,6 +97,19 @@ jobs:
           assert not errors, f'official_source_unavailable_for_{len(errors)}_issuers; no false complete claim'
           Path('evidence/ci/financial/collection-verification.json').write_text(json.dumps({'status':'PASS','event':os.environ['GITHUB_EVENT_NAME'],'quantUnchanged':True,'coverage':s['coverage'],'commit':os.environ['GITHUB_SHA']},ensure_ascii=False,indent=2))
           PY
+      - name: Set up JVM for the actual Android financial parser
+        uses: actions/setup-java@v5
+        with:
+          java-version: '17'
+          distribution: temurin
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+      - name: Validate every collected record with the actual Android parser before publication
+        run: |
+          set -euo pipefail
+          cp "$RUNNER_TEMP/financial_safety_snapshot.json" evidence/financial_safety_snapshot.json
+          gradle :app:testDebugUnitTest --tests '*CommittedFinancialSnapshotTest' --stacktrace
       - name: Publish independent facts without modifying quant or ranks
         if: github.ref_name == 'main'
         run: |
@@ -127,5 +140,91 @@ jobs:
             ${{ runner.temp }}/financial_safety_snapshot.json
             ${{ runner.temp }}/kr4-financial-raw/
             evidence/ci/financial/
+          if-no-files-found: warn
+          retention-days: 30
+
+  refresh-final-candidates:
+    # Financial facts are already validated and published by the upstream job.
+    # Candidate failure cannot roll them back or gate the independent quant job.
+    needs: collect-financial-facts
+    if: github.ref_name == 'main' && needs.collect-financial-facts.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install requests pandas lxml
+      - name: Preserve original candidate policy and make a read-only staging join
+        run: |
+          set -euo pipefail
+          python scripts/build_final_candidates_v2.py --self-test
+          python tests/test_stage4567.py
+          python - <<'PY'
+          import hashlib,json,os,sys
+          from pathlib import Path
+          sys.path.insert(0,'scripts')
+          import collect_financial_safety as fs
+          quant=Path('evidence/real_quant_snapshot.json')
+          safety=Path('evidence/financial_safety_snapshot.json')
+          root=Path(os.environ['RUNNER_TEMP'])
+          q=json.loads(quant.read_text());s=json.loads(safety.read_text())
+          joined=fs.augment_quant(q,s)
+          fs.validate_augmented(joined)
+          (root/'candidate-staging-quant.json').write_text(json.dumps(joined,ensure_ascii=False))
+          (root/'candidate-input-hashes.json').write_text(json.dumps({str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in (quant,safety)}))
+          PY
+      - name: Build and validate original Stage5-7 candidates independently
+        run: |
+          set -euo pipefail
+          python scripts/build_final_candidates_v2.py --quant "$RUNNER_TEMP/candidate-staging-quant.json" \
+            --out "$RUNNER_TEMP/final_candidates.json" --limit 10
+          python - <<'PY'
+          import json,os,sys
+          from pathlib import Path
+          sys.path.insert(0,'scripts')
+          import build_final_candidates_v2 as fc
+          p=Path(os.environ['RUNNER_TEMP'])
+          q=json.loads((p/'candidate-staging-quant.json').read_text())
+          d=json.loads((p/'final_candidates.json').read_text())
+          fc.validate_payload(d)
+          assert d['snapshot_date_kst']==q['snapshot_date_kst'] and d['price_cutoff_date_kst']==q['price_cutoff_date_kst']
+          assert d['candidate_count']==10 and d['eligible_count']>=10
+          assert all(x['financial_safety']['status']=='PASS' and x['valuation']['changes_rank'] is False for x in d['candidates'])
+          print('ORIGINAL_CANDIDATE_POLICY_PASS',d['eligible_count'],d['candidate_count'])
+          PY
+      - name: Publish candidates only when their financial and quant inputs still match
+        run: |
+          set -euo pipefail
+          git fetch origin main --quiet
+          python - <<'PY'
+          import hashlib,json,os,subprocess
+          from pathlib import Path
+          hashes=json.loads(Path(os.environ['RUNNER_TEMP'],'candidate-input-hashes.json').read_text())
+          for path,digest in hashes.items():
+              current=subprocess.check_output(['git','show','origin/main:'+path])
+              assert hashlib.sha256(current).hexdigest()==digest,'candidate_inputs_moved_during_build'
+          PY
+          cp "$RUNNER_TEMP/final_candidates.json" evidence/final_candidates.json
+          git add evidence/final_candidates.json
+          git diff --cached --check
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m '[skip ci] Refresh independently verified final candidates'
+          git pull --rebase origin main
+          git push origin HEAD:main
+      - name: Preserve candidate verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: KR4_Independent_Final_Candidates
+          path: |
+            ${{ runner.temp }}/final_candidates.json
+            ${{ runner.temp }}/candidate-input-hashes.json
           if-no-files-found: warn
           retention-days: 30

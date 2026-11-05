@@ -85,3 +85,12 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 }
+
+// The committed-source integration test reads evidence outside src/test.
+// Changes to actual published data must invalidate cached test results.
+tasks.withType<org.gradle.api.tasks.testing.Test>().configureEach {
+    inputs.files(
+        rootProject.file("evidence/real_quant_snapshot.json"),
+        rootProject.file("evidence/financial_safety_snapshot.json"),
+    ).withPathSensitivity(org.gradle.api.tasks.PathSensitivity.RELATIVE)
+}

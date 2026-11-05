@@ -52,6 +52,21 @@ class VerifiedFinancialSafetyTest {
         root.getJSONObject("coverage").put("pass",0).put("hold",1)
         assertEquals("DART_IDENTITY_UNCONFIRMED",parse(root).records["000001"]!!.reasonCode)
     }
+    @Test fun sixDecimalSerializationCannotHideARealDebtLimitViolation() {
+        val root=valid();val row=record(root)
+        row.put("assets",500000000001L).put("liabilities",400000000001L).put("equity",100000000000L)
+            .put("status","FAIL").put("reason","DEBT_TO_EQUITY_OVER_400").put("debt_to_equity_pct",400.0)
+        root.getJSONObject("coverage").put("pass",0).put("fail",1)
+        assertEquals(com.krstock.v3.data.model.FinancialSafetyStatus.FAIL,parse(root).records["000001"]!!.status)
+    }
+    @Test fun sixDecimalSerializationCannotHideARealCurrentRatioViolation() {
+        val root=valid();val row=record(root)
+        row.put("assets",1000000000000L).put("liabilities",500000000000L).put("equity",500000000000L)
+            .put("current_assets",349999999999L).put("current_liabilities",500000000000L)
+            .put("status","FAIL").put("reason","CURRENT_RATIO_UNDER_70").put("current_ratio_pct",70.0)
+        root.getJSONObject("coverage").put("pass",0).put("fail",1)
+        assertEquals(com.krstock.v3.data.model.FinancialSafetyStatus.FAIL,parse(root).records["000001"]!!.status)
+    }
     private fun parse(root:JSONObject)=FinancialSafetySnapshotParser.parse(root,day,codes)
     private fun record(root:JSONObject)=root.getJSONObject("records").getJSONObject("000001")
     private fun valid()=JSONObject("""{

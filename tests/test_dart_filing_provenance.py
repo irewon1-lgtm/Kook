@@ -126,7 +126,7 @@ def test_collector_saves_original_raw_bytes_hash_and_request_provenance(tmp_path
             return Response(SEARCH)
         assert method == 'GET' and url.endswith('selectKey=00126380')
         return Response(PROFILE)
-    with patch.object(module().requests, 'request', side_effect=request):
+    with patch.object(module(), '_request', side_effect=request):
         row = module().collect_filing_provenance({'005930': EXPECTED}, tmp_path, workers=1, as_of='2026-11-05')['005930']
     assert row['verified'] is True
     assert len(row['evidence']) == 2
@@ -137,7 +137,7 @@ def test_collector_saves_original_raw_bytes_hash_and_request_provenance(tmp_path
         assert meta['url'].startswith('https://dart.fss.or.kr/')
         assert meta['status_code'] == 200
     # This second call must use the cached raw responses, not a network answer.
-    with patch.object(module().requests, 'request', side_effect=AssertionError('unexpected network')):
+    with patch.object(module(), '_request', side_effect=AssertionError('unexpected network')):
         again = module().collect_filing_provenance({'005930': EXPECTED}, tmp_path, workers=1, as_of='2026-11-05')['005930']
     assert again['receipt_no'] == '20260814003699'
 
@@ -188,7 +188,7 @@ def test_host_outage_opens_circuit_preserves_error_bytes_and_partial_records(tmp
         response.url = url
         return response
     expected = {'005930': EXPECTED, '000660': {'name': 'SK하이닉스', 'period_end': '2026-06-30', 'report_kind': '반기보고서'}}
-    with patch.object(module().requests, 'request', side_effect=unavailable), patch.object(module().time, 'sleep'):
+    with patch.object(module(), '_request', side_effect=unavailable), patch.object(module().time, 'sleep'):
         rows = module().collect_filing_provenance(expected, tmp_path, workers=1, as_of='2026-11-05')
     assert len(calls) == 3, 'a host outage must stop new issuer network attempts'
     assert {r['error'] for r in rows.values()} == {'SOURCE_UNAVAILABLE'}
@@ -200,7 +200,7 @@ def test_host_outage_opens_circuit_preserves_error_bytes_and_partial_records(tmp
 
 
 def test_cache_only_mode_preserves_unknown_instead_of_attempting_live_network(tmp_path):
-    with patch.object(module().requests, 'request', side_effect=AssertionError('live network forbidden')):
+    with patch.object(module(), '_request', side_effect=AssertionError('live network forbidden')):
         row = module().collect_filing_provenance({'005930': EXPECTED}, tmp_path, workers=1,
                                                 as_of='2026-11-05', cache_only=True)['005930']
     assert row['verified'] is False
@@ -244,7 +244,7 @@ def test_public_mapping_collection_keeps_raw_official_evidence(tmp_path):
         assert kwargs['data']['corporationType'] in {'P', 'A'}
         assert kwargs['data']['searchIndex'] in {str(i) for i in list(range(14)) + [15, 16]}
         return Response()
-    with patch.object(module().requests, 'request', side_effect=request), patch.object(module().time, 'sleep'):
+    with patch.object(module(), '_request', side_effect=request), patch.object(module().time, 'sleep'):
         mapping = module().collect_public_corp_mapping(tmp_path)
     assert mapping['005930']['corp_code'] == '00126380'
     evidence = mapping['005930']['evidence'][0]
@@ -266,7 +266,7 @@ def test_stale_current_day_cache_does_not_claim_a_fresh_correction_check(tmp_pat
             pass
     def request(method, url, **kwargs):
         return Response(SEARCH if method == 'POST' else PROFILE)
-    with patch.object(module(), 'datetime', Clock), patch.object(module().requests, 'request', side_effect=request), patch.object(module().time, 'sleep'):
+    with patch.object(module(), 'datetime', Clock), patch.object(module(), '_request', side_effect=request), patch.object(module().time, 'sleep'):
         module().collect_filing_provenance({'005930': EXPECTED}, tmp_path, as_of='2026-11-05')
         for path in tmp_path.glob('*.json'):
             meta = json.loads(path.read_text())
@@ -300,7 +300,7 @@ def test_issuer_absent_from_initial_index_map_gets_exact_official_code_lookup(tm
         if data['textCrpNm'] == '000660':
             return Response(CORP_MAPPING_HTML.replace('005930', '000660').replace('00126380', '00164779').replace('삼성전자', 'SK하이닉스'))
         return Response(CORP_MAPPING_HTML)
-    with patch.object(module().requests, 'request', side_effect=request), patch.object(module().time, 'sleep'):
+    with patch.object(module(), '_request', side_effect=request), patch.object(module().time, 'sleep'):
         mapping = module().collect_public_corp_mapping(tmp_path, expected_codes=['005930', '000660'])
     assert mapping['000660']['stock_code'] == '000660'
     assert mapping['000660']['corp_code'] == '00164779'
@@ -322,7 +322,7 @@ def test_global_report_pages_are_all_collected_before_final_receipt_selection(tm
         if page == '2':
             text = text.replace('20260814003699', '20260814003700')
         return Response(text)
-    with patch.object(module().requests, 'request', side_effect=request), patch.object(module().time, 'sleep'):
+    with patch.object(module(), '_request', side_effect=request), patch.object(module().time, 'sleep'):
         rows, evidence = module().collect_public_filing_rows(tmp_path, 'A002', 2026, as_of='2026-11-05')
     assert [r['receipt_no'] for r in rows] == ['20260814003699', '20260814003700']
     assert len(evidence) == 2
@@ -342,7 +342,7 @@ def test_global_collector_uses_official_stock_map_without_per_company_profile_ca
         assert url == 'https://dart.fss.or.kr/dsab001/search.ax'
         assert kwargs['data']['textCrpNm'].split('/') == ['005930']
         return Response(SEARCH)
-    with patch.object(module().requests, 'request', side_effect=request), patch.object(module().time, 'sleep'):
+    with patch.object(module(), '_request', side_effect=request), patch.object(module().time, 'sleep'):
         row = module().collect_filing_provenance({'005930': EXPECTED}, tmp_path,
                                                 as_of='2026-11-05', global_search=True)['005930']
     assert row['verified'] is True
@@ -358,7 +358,7 @@ def test_official_identity_is_preserved_even_when_global_filing_host_is_down(tmp
         response.status_code = 200 if url.startswith('https://opendart.') else 503
         response._content = CORP_MAPPING_HTML.encode() if response.status_code == 200 else b'upstream connection termination'
         return response
-    with patch.object(module().requests, 'request', side_effect=request), patch.object(module().time, 'sleep'):
+    with patch.object(module(), '_request', side_effect=request), patch.object(module().time, 'sleep'):
         row = module().collect_filing_provenance({'005930': EXPECTED}, tmp_path,
                                                 as_of='2026-11-05', global_search=True)['005930']
     assert row['corp_code'] == '00126380'
@@ -376,7 +376,7 @@ def test_global_identity_source_outage_returns_explicit_unknown_records(tmp_path
         response.status_code = 503
         response._content = b'official identity source unavailable'
         return response
-    with patch.object(module().requests, 'request', side_effect=request), patch.object(module().time, 'sleep'):
+    with patch.object(module(), '_request', side_effect=request), patch.object(module().time, 'sleep'):
         rows = module().collect_filing_provenance({'005930': EXPECTED}, tmp_path,
                                                  as_of='2026-11-05', global_search=True)
     assert rows['005930']['verified'] is False
@@ -403,7 +403,7 @@ def test_opendart_reference_pagination_keeps_every_exact_period_row(tmp_path):
         content = OPENDART_REFERENCE_HTML.encode()
         def raise_for_status(self):
             pass
-    with patch.object(module().requests, 'request', return_value=Response()):
+    with patch.object(module(), '_request', return_value=Response()):
         rows, evidence = module().collect_opendart_reference_rows(tmp_path, '11012', 2026)
     assert rows[0]['receipt_no'] == '20260814004027'
     assert evidence[0]['url'] == 'https://opendart.fss.or.kr/disclosureinfo/biz/list.do'
@@ -423,7 +423,7 @@ def test_opendart_receipt_fallback_keeps_missing_date_and_correction_unverified(
             response._content = b'upstream connection termination'
         return response
     spec = {'095570': {'name': 'AJ네트웍스', 'period_end': '2026-06-30', 'report_kind': '반기보고서'}}
-    with patch.object(module().requests, 'request', side_effect=request), patch.object(module().time, 'sleep'):
+    with patch.object(module(), '_request', side_effect=request), patch.object(module().time, 'sleep'):
         row = module().collect_filing_provenance(spec, tmp_path, as_of='2026-11-05', global_search=True)['095570']
     assert row['receipt_no'] == '20260814004027'
     assert row['report_period'] == '2026-06-30'
@@ -449,7 +449,7 @@ def test_exact_reference_lookups_include_official_other_company_class_for_delist
         assert kwargs['data']['corpType'] == ['P', 'A', 'N', 'E']
         assert kwargs['data']['corpTypeAll'] == '1'
         return Response()
-    with patch.object(module().requests, 'request', side_effect=request):
+    with patch.object(module(), '_request', side_effect=request):
         rows, _ = module().collect_opendart_reference_rows(tmp_path, '11012', 2026, text_crp_cik='00365387')
     assert rows[0]['corp_code'] == '00365387'
 
@@ -473,7 +473,7 @@ def test_missing_optional_director_table_uses_actual_share_table_reference(tmp_p
             response._content = b'upstream connection termination'
         return response
     spec = {'095570': {'name': 'AJ네트웍스', 'period_end': '2026-06-30', 'report_kind': '반기보고서'}}
-    with patch.object(module().requests, 'request', side_effect=request), patch.object(module().time, 'sleep'):
+    with patch.object(module(), '_request', side_effect=request), patch.object(module().time, 'sleep'):
         row = module().collect_filing_provenance(spec, tmp_path, as_of='2026-11-05', global_search=True)['095570']
     assert row['receipt_no'] == '20260814004027'
     assert row['filing_date'] is None
@@ -522,7 +522,7 @@ def test_auto_collection_bounds_stock_filters_and_verifies_actual_artifact_rows(
         assert kwargs['data']['finalReport'] == 'recent'
         queries.append(tuple(codes))
         return bounded_search_response(codes, rows)
-    with patch.object(module().requests, 'request', side_effect=request), patch.object(module().time, 'sleep'):
+    with patch.object(module(), '_request', side_effect=request), patch.object(module().time, 'sleep'):
         actual = module().collect_filing_provenance(expected, tmp_path, as_of='2026-11-05', global_search=True)
     assert all(row['verified'] for row in actual.values())
     assert {code: row['receipt_no'] for code, row in actual.items()} == {
@@ -549,7 +549,7 @@ def test_completed_bounded_batch_survives_tls_failure_and_resumes_without_refetc
         if codes == [last_code]:
             raise module().requests.exceptions.SSLError('UNEXPECTED_EOF_WHILE_READING')
         return bounded_search_response(codes, rows)
-    with patch.object(module().requests, 'request', side_effect=interrupted), patch.object(module().time, 'sleep'):
+    with patch.object(module(), '_request', side_effect=interrupted), patch.object(module().time, 'sleep'):
         partial = module().collect_filing_provenance(expected, tmp_path, as_of='2026-11-05', global_search=True)
     assert all(partial[code]['verified'] for code in first_batch)
     assert partial[last_code]['error'] == 'SOURCE_UNAVAILABLE'
@@ -571,7 +571,7 @@ def test_completed_bounded_batch_survives_tls_failure_and_resumes_without_refetc
         assert codes == [last_code], 'completed batches must replay from their cached official responses'
         resumed_calls.append(tuple(codes))
         return bounded_search_response(codes, rows)
-    with patch.object(module().requests, 'request', side_effect=resumed), patch.object(module().time, 'sleep'):
+    with patch.object(module(), '_request', side_effect=resumed), patch.object(module().time, 'sleep'):
         complete = module().collect_filing_provenance(expected, tmp_path, as_of='2026-11-05', global_search=True)
     assert all(row['verified'] for row in complete.values())
     assert resumed_calls == [(last_code,)]
@@ -590,7 +590,7 @@ def test_bounded_batch_does_not_verify_rows_before_every_page_is_complete(tmp_pa
         if data['currentPage'] == '2':
             raise module().requests.exceptions.SSLError('page 2 TLS interruption')
         return bounded_search_response(codes, rows, pages='2', total=11)
-    with patch.object(module().requests, 'request', side_effect=request), patch.object(module().time, 'sleep'):
+    with patch.object(module(), '_request', side_effect=request), patch.object(module().time, 'sleep'):
         actual = module().collect_filing_provenance(expected, tmp_path, as_of='2026-11-05', global_search=True)
     assert all(row['verified'] is False for row in actual.values())
     assert {row['error'] for row in actual.values()} == {'SOURCE_UNAVAILABLE'}

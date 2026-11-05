@@ -82,8 +82,13 @@ object FinancialSafetySnapshotParser {
                     require(reason == "PASS") { "PASS reason mismatch for $code" }
                     require(scope in setOf("CFS", "OFS")) { "PASS scope missing for $code" }
                     require(debt != null && current != null && identity != null) { "PASS ratios missing for $code" }
-                    require(debt <= DEBT_TO_EQUITY_MAX + 1e-9) { "PASS debt ratio violates policy for $code" }
-                    require(current >= CURRENT_RATIO_MIN - 1e-9) { "PASS current ratio violates policy for $code" }
+                    // Schema2 already recomputes the original policy from exact
+                    // source amounts. Six-decimal display serialization must not
+                    // reclassify a value on the other side of400/70.
+                    if (schema == 1) {
+                        require(debt <= DEBT_TO_EQUITY_MAX + 1e-9) { "PASS debt ratio violates policy for $code" }
+                        require(current >= CURRENT_RATIO_MIN - 1e-9) { "PASS current ratio violates policy for $code" }
+                    }
                     require(identity <= IDENTITY_TOLERANCE + 1e-9) { "PASS identity gap violates policy for $code" }
                     require(basis.isNotBlank()) { "PASS basis missing for $code" }
                     pass++
@@ -101,12 +106,14 @@ object FinancialSafetySnapshotParser {
                         }
                         "DEBT_TO_EQUITY_OVER_400" -> {
                             require(debt != null && current != null) { "debt FAIL ratios missing for $code" }
-                            require(debt > DEBT_TO_EQUITY_MAX) { "debt FAIL does not exceed threshold for $code" }
+                            if (schema == 1) require(debt > DEBT_TO_EQUITY_MAX) { "debt FAIL does not exceed threshold for $code" }
                         }
                         "CURRENT_RATIO_UNDER_70" -> {
                             require(debt != null && current != null) { "current-ratio FAIL ratios missing for $code" }
-                            require(debt <= DEBT_TO_EQUITY_MAX + 1e-9) { "current-ratio FAIL should have failed debt first for $code" }
-                            require(current < CURRENT_RATIO_MIN) { "current-ratio FAIL does not violate threshold for $code" }
+                            if (schema == 1) {
+                                require(debt <= DEBT_TO_EQUITY_MAX + 1e-9) { "current-ratio FAIL should have failed debt first for $code" }
+                                require(current < CURRENT_RATIO_MIN) { "current-ratio FAIL does not violate threshold for $code" }
+                            }
                         }
                         else -> throw IllegalArgumentException("unexpected financial-safety FAIL reason for $code: $reason")
                     }

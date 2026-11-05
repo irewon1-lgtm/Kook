@@ -28,6 +28,13 @@ REPORT_TYPES = {'사업보고서': 'A001', '반기보고서': 'A002', '분기보
 REPORT_TYPES.update({'1분기보고서': 'A003', '3분기보고서': 'A003'})
 HEADERS = {'User-Agent': 'Mozilla/5.0 KR4 public filing provenance',
            'Referer': DART + '/dsab001/main.do'}
+_HTTP_SESSIONS = threading.local()
+
+
+def _request(method: str, url: str, **kwargs) -> requests.Response:
+    if not hasattr(_HTTP_SESSIONS, 'session'):
+        _HTTP_SESSIONS.session = requests.Session()
+    return _HTTP_SESSIONS.session.request(method, url, **kwargs)
 
 
 class _SourceUnavailable(Exception):
@@ -274,7 +281,7 @@ def _cached_request(method: str, url: str, cache_dir: Path,
                     gate.before_request()
                 request_started_at = datetime.now(timezone.utc).isoformat()
                 attempt_started = time.monotonic()
-                response = requests.request(method, url, data=data, headers=HEADERS, timeout=30)
+                response = _request(method, url, data=data, headers=HEADERS, timeout=30)
                 response.raise_for_status()
                 if gate:
                     gate.success()

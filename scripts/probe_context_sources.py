@@ -22,6 +22,8 @@ from urllib.parse import urljoin, urlparse
 
 import requests
 
+_HTTP_SESSION = requests.Session()
+
 BASE = "https://m.stock.naver.com/front-api"
 DART = "https://dart.fss.or.kr"
 CODES = ("005930", "000660", "000250")
@@ -48,7 +50,7 @@ def request(method: str, url: str, *, referer: str | None = None, data: dict[str
             headers = dict(HEADERS)
             if referer:
                 headers["Referer"] = referer
-            r = requests.request(method, url, headers=headers, data=data, timeout=20)
+            r = _HTTP_SESSION.request(method, url, headers=headers, data=data, timeout=20)
             r.raise_for_status()
             return r
         except Exception as exc:  # noqa: BLE001
