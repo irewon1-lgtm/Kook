@@ -1,0 +1,7 @@
+{
+  "ci_run": 42023412855,
+  "source_artifact": "KR4_STABLE_SIGNED_UPGRADE_PROOF",
+  "source_file": "adb-install-upgrade.log",
+  "extraction": "Last original uiautomator XML dump with the exact 삼성전자 name and separate 005930 code in the failed search trace; XML content unchanged.",
+  "sha256": "4bd71f782aa63e26a8bc16dab34128815d3d9f7fe31910b26cd61491f19ccafc"
+}

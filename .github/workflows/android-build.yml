@@ -624,6 +624,7 @@ jobs:
           expected_version=int(os.environ['KR4_VERSION_CODE'])
           expected_cert=os.environ['EXPECTED_STABLE_CERT_SHA256']
           snapshot=json.loads(Path('evidence/real_quant_snapshot.json').read_text())
+          checkout_snapshot=snapshot
 
           def adb(*args):
               result=subprocess.run(['adb',*args],stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True)
@@ -654,6 +655,84 @@ jobs:
                   if right > left and bottom > top:
                       return ((left + right) // 2, (top + bottom) // 2)
               raise ValueError('Visible enabled exact UI control absent: ' + label)
+          def ui_stock_bounds(xml, code, name):
+              import re
+              import xml.etree.ElementTree as ET
+              root_node=ET.fromstring(xml)
+              parents={child:parent for parent in root_node.iter() for child in parent}
+              matches=[]
+              for node in root_node.iter('node'):
+                  if node.get('text')!=name or node.get('package')!='com.krstock.v3' or node.get('enabled')=='false':
+                      continue
+                  lineage=node
+                  disabled=False
+                  while lineage is not None:
+                      if lineage.get('enabled')=='false':
+                          disabled=True
+                          break
+                      lineage=parents.get(lineage)
+                  if disabled:
+                      continue
+                  ancestor=parents.get(node)
+                  while ancestor is not None and ancestor.get('clickable')!='true':
+                      if ancestor.get('enabled')=='false':
+                          break
+                      ancestor=parents.get(ancestor)
+                  if ancestor is None or ancestor.get('enabled')=='false' or ancestor.get('clickable')!='true' or ancestor.get('package')!='com.krstock.v3':
+                      continue
+                  identities=set()
+                  for child in ancestor.iter('node'):
+                      if child.get('enabled')=='false' or child.get('package')!='com.krstock.v3':
+                          continue
+                      identity=re.match(r'^([0-9A-Z]{6})(?:\s*·|\s*$)',child.get('text',''))
+                      if identity:
+                          try:
+                              ui_bounds(ET.tostring(child,encoding='unicode'),child.get('text',''))
+                          except ValueError:
+                              continue
+                          identities.add(identity[1])
+                  if identities!={code}:
+                      continue
+                  try:
+                      point=ui_bounds(ET.tostring(node,encoding='unicode'),name)
+                      bounds=re.fullmatch(r'\[(\d+),(\d+)\]\[(\d+),(\d+)\]',ancestor.get('bounds',''))
+                      left,top,right,bottom=map(int,bounds.groups())
+                      if not (left<=point[0]<right and top<=point[1]<bottom):
+                          continue
+                  except (ValueError,AttributeError):
+                      continue
+                  matches.append(point)
+              if len(matches)!=1:
+                  raise ValueError('One visible enabled stock card must own exact name and code: '+code+' '+name)
+              return matches[0]
+
+          def ui_snapshot_source(xml):
+              import re
+              import xml.etree.ElementTree as ET
+              sources=set()
+              for node in ET.fromstring(xml).iter('node'):
+                  match=re.fullmatch(r'데이터 출처 (LIVE|CACHE|BACKUP|BUNDLED|FAILED)',node.get('text',''))
+                  if match:
+                      sources.add(match[1])
+              return next(iter(sources)) if len(sources)==1 else 'NOT_VISIBLE'
+
+          def validate_market_oracle(market, minimum):
+              from datetime import date
+              if market.get('universe_count')!=2649 or len(market.get('records',{}))!=2649:
+                  raise ValueError('Actual market oracle must retain all2649 identities')
+              day=date.fromisoformat(market['snapshot_date_kst'])
+              price=date.fromisoformat(market['price_cutoff_date_kst'])
+              if price>day or day<date.fromisoformat(minimum['snapshot_date_kst']) or price<date.fromisoformat(minimum['price_cutoff_date_kst']):
+                  raise ValueError('Actual market oracle is older than required snapshot/price dates')
+              if not 0<=market['coverage']['complete_count']<=2649:
+                  raise ValueError('Actual market oracle complete count is invalid')
+
+          def ui_live_market_matches(xml, market):
+              import xml.etree.ElementTree as ET
+              texts={node.get('text','') for node in ET.fromstring(xml).iter('node')}
+              dates=f"재무 {market['snapshot_date_kst']} · 주가 {market['price_cutoff_date_kst']}"
+              count=f"4지표 완성 {market['coverage']['complete_count']}/{market['universe_count']}"
+              return ui_snapshot_source(xml)=='LIVE' and dates in texts and count in texts
           # RELEASE_UI_HELPERS_END
 
           def read_ui():
@@ -682,16 +761,16 @@ jobs:
               raise AssertionError('Installed release control unavailable: '+label)
 
           def touch_stock(code, name):
-              import xml.etree.ElementTree as ET
               for attempt in range(12):
                   xml=read_ui()
-                  for node in ET.fromstring(xml).iter('node'):
-                      text=node.get('text','')
-                      if code in text and name in text:
-                          x,y=ui_bounds(xml,text)
-                          adb('shell','input','tap',str(x),str(y))
-                          time.sleep(1)
-                          return
+                  try:
+                      x,y=ui_stock_bounds(xml,code,name)
+                  except ValueError:
+                      pass
+                  else:
+                      adb('shell','input','tap',str(x),str(y))
+                      time.sleep(1)
+                      return
                   dimensions=re.search(r'(\d+)x(\d+)',adb('shell','wm','size'))
                   width,height=map(int,dimensions.groups())
                   adb('shell','input','swipe',str(width//2),str(height*4//5),str(width//2),str(height//3),'350')
@@ -720,7 +799,7 @@ jobs:
               # UI interaction probes use real downloaded market data, but this
               # release gate controls system settings and install state explicitly.
               metadata={'evidence_kind':'CONTROLLED_FIXTURE','controlled_state':True,
-                        'source':'LIVE' if '데이터 출처 LIVE' in xml else 'UNCONFIRMED',
+                        'source':ui_snapshot_source(xml),
                         'device_kind':'EMULATOR','api_level':34,'theme':'DARK','viewport':'PHONE',
                         'capture_method':'ADB_SCREENCAP_ORIGINAL_PNG','installed_release':True,
                         'package':package,'version_code':expected_version}
@@ -739,9 +818,8 @@ jobs:
                       adb('pull',cache_path,str(local_cache))
                       original=local_cache.read_bytes()
                       market=json.loads(original)
-                      assert market['universe_count']==len(market['records'])==2649
-                      count=f"{market['coverage']['complete_count']}/{market['universe_count']}"
-                      if market['snapshot_date_kst'] in xml and count in xml:
+                      validate_market_oracle(market,checkout_snapshot)
+                      if ui_live_market_matches(xml,market):
                           digest=hashlib.sha256(original).hexdigest()
                           capture('baseline-live-home',xml,{
                               'evidence_kind':'REAL_MARKET_LIVE','controlled_state':False,
@@ -755,6 +833,28 @@ jobs:
                   assert time.monotonic()<deadline, 'baseline_actual_live_market_cache_not_visible'
                   time.sleep(2)
 
+          def wait_for_release_live_cache(name, minimum_market):
+              deadline=time.monotonic()+90
+              local_cache=root/(name+'-live-market-cache.json')
+              while True:
+                  xml=read_ui()
+                  (root/(name+'-pending.xml')).write_text(xml)
+                  if ui_snapshot_source(xml)=='LIVE':
+                      adb('pull',cache_path,str(local_cache))
+                      original=local_cache.read_bytes()
+                      market=json.loads(original)
+                      validate_market_oracle(market,minimum_market)
+                      if ui_live_market_matches(xml,market):
+                          digest=hashlib.sha256(original).hexdigest()
+                          capture(name,xml,{'evidence_kind':'REAL_MARKET_LIVE','controlled_state':False,
+                              'network_succeeded':True,'snapshot_date_kst':market['snapshot_date_kst'],
+                              'price_cutoff_date_kst':market['price_cutoff_date_kst'],
+                              'complete_count':market['coverage']['complete_count'],'universe_count':2649,
+                              'cache_sha256':digest,'source_provenance':{'cache_file':local_cache.name,'sha256':digest}})
+                          return xml,market,digest
+                  assert time.monotonic()<deadline, 'updated_release_did_not_display_live_current_market_cache: '+name
+                  time.sleep(2)
+
           try:
               adb('root')
               adb('wait-for-device')
@@ -765,6 +865,9 @@ jobs:
               assert night_before=='2', 'real_system_dark_theme_setting_not_applied'
               assert 'Status: ok' in adb('shell','am','start','-W','-n',component)
               cache_path,baseline_cache,baseline_market,baseline_cache_sha=wait_for_baseline_live_cache()
+              # The actual signed baseline may have received a newer public body
+              # than checkout. Its validated original bytes define the minimum.
+              snapshot=baseline_market
               adb('shell','am','force-stop',package)
               stopped_cache=root/'baseline-market-cache-before-upgrade.json'
               adb('pull',cache_path,str(stopped_cache))
@@ -808,31 +911,16 @@ jobs:
               assert len(digests)==1 and digests[0].replace(':','').lower()==expected_cert
               adb('logcat','-c')
               assert 'Status: ok' in adb('shell','am','start','-W','-n',component)
-              deadline=time.monotonic()+90
-              while True:
-                  adb('shell','uiautomator','dump','/sdcard/kr4-upgrade-ui.xml')
-                  ui=adb('shell','cat','/sdcard/kr4-upgrade-ui.xml')
-                  (root/'updated-home.xml').write_text(ui)
-                  expected_count=f"{snapshot['coverage']['complete_count']}/{snapshot['universe_count']}"
-                  if snapshot['snapshot_date_kst'] in ui and expected_count in ui:
-                      break
-                  assert time.monotonic()<deadline, 'updated_release_did_not_display_current_quant_snapshot'
-                  time.sleep(2)
+              ui,snapshot,updated_live_sha=wait_for_release_live_cache('updated-home',baseline_market)
               assert adb('shell','pidof',package), 'updated_app_not_running'
-              capture('updated-home',ui,{'displayed_snapshot_date':snapshot['snapshot_date_kst']})
               # Force-stop/relaunch the actual upgraded release, retaining theme,
               # UID, first installation identity, and application-private data.
               adb('shell','am','force-stop',package)
               assert 'Status: ok' in adb('shell','am','start','-W','-n',component)
               assert adb('shell','settings','get','secure','ui_night_mode')==night_before
-              deadline=time.monotonic()+90
-              while True:
-                  ui=read_ui()
-                  if snapshot['snapshot_date_kst'] in ui and expected_count in ui:
-                      break
-                  assert time.monotonic()<deadline, 'relaunch_did_not_restore_current_data'
-                  time.sleep(2)
-              capture('updated-relaunched-home',ui,{'setting_ui_night_mode':night_before})
+              ui,snapshot,relaunched_live_sha=wait_for_release_live_cache('updated-relaunched-home',snapshot)
+              expected_count=f"{snapshot['coverage']['complete_count']}/{snapshot['universe_count']}"
+              assert adb('shell','cat',private_marker)==marker, 'app_private_data_not_preserved_after_relaunch'
               # All actions below are real accessibility-coordinate touches in the
               # installed signed release, without a debug-only navigation hook.
               touch('4지표 전체 종목보기',scroll=True,contains=True)
@@ -900,6 +988,10 @@ jobs:
                   capture('updated-chart-'+interval,ui,{'chart_interval':interval,'actual_ohlcv_visible':True})
               proof={'status':'PASS','baseline':baseline,'before':before,'after':after,
                      'dataMarkerPreserved':True,'installedApkSha256':installed_sha,
+                     'dataMarkerPreservedAfterRelaunch':True,
+                     'upgradedReleaseLiveReceive':{'source':'LIVE','firstLaunchCacheSha256':updated_live_sha,
+                         'relaunchCacheSha256':relaunched_live_sha,'universeCount':2649,
+                         'snapshotDate':snapshot['snapshot_date_kst'],'priceCutoffDate':snapshot['price_cutoff_date_kst']},
                      'existingMarketDataPreserved':{
                          'status':'PASS','source':'REAL_MARKET_LIVE','deviceCachePath':cache_path,
                          'beforeSha256':baseline_cache_sha,'afterUpgradeBeforeLaunchSha256':upgraded_cache_sha,
@@ -916,6 +1008,14 @@ jobs:
                      'releaseRelaunchVerified':True,'releaseStockSafetyAndChartTouches':['005930','SAFETY','DAY','WEEK','MONTH']}
               (root/'signed-upgrade-verification.json').write_text(json.dumps(proof,indent=2)+'\n')
               print('STABLE_SIGNED_IN_PLACE_UPGRADE_PASS',json.dumps(proof))
+          except Exception as error:
+              try:
+                  failure_ui=read_ui()
+                  capture('signed-upgrade-failed',failure_ui,{'assertion_failure':repr(error),
+                      'accessibility_semantics':failure_ui})
+              except Exception as evidence_error:
+                  (root/'failure-capture-error.txt').write_text(repr(evidence_error)+'\n')
+              raise
           finally:
               result=subprocess.run(['adb','logcat','-d','-v','time'],stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True)
               (root/'updated-app-logcat.txt').write_text(result.stdout)
