@@ -12,7 +12,9 @@ import com.krstock.v3.data.stage.FinancialSafetyRuntimeStore
 import com.krstock.v3.data.update.SnapshotAutoUpdater
 import org.json.JSONObject
 import org.junit.rules.TestWatcher
+import org.junit.rules.TestRule
 import org.junit.runner.Description
+import org.junit.runners.model.Statement
 import java.io.File
 import java.io.IOException
 import java.util.concurrent.TimeUnit
@@ -45,6 +47,21 @@ internal object SnapshotTestSupport {
     }
 
     fun offline(): Nothing = throw IOException("instrumented offline attempt")
+
+    /**
+     * Historical fixture screens must own the updater monitor from Activity setup
+     * through restoration. A completed cancellation or a momentary lock barrier
+     * cannot exclude an already queued real HTTP receive. Direct refreshBlocking
+     * calls in controlled tests remain reentrant on the instrumentation thread.
+     * Never apply this rule to LIVE tests that receive on Dispatchers.IO.
+     */
+    fun isolatedSnapshotRuntime(): TestRule = TestRule { base, _ ->
+        object : Statement() {
+            override fun evaluate() {
+                synchronized(SnapshotAutoUpdater) { base.evaluate() }
+            }
+        }
+    }
 
     fun failureEvidence(): TestWatcher = object : TestWatcher() {
         override fun failed(error: Throwable, description: Description) {
@@ -88,6 +105,8 @@ internal object SnapshotTestSupport {
             .put("complete_count", GeneratedRealQuantSnapshot.completeCount)
             .put("universe_count", GeneratedRealQuantSnapshot.universeCount)
             .put("revision", result.revision)
+            .put("runtime_snapshot_date_kst", GeneratedRealQuantSnapshot.snapshotDate)
+            .put("runtime_price_cutoff_date_kst", GeneratedRealQuantSnapshot.priceCutoffDate)
             .put("failure", result.failure ?: JSONObject.NULL)
         if (!json.has("evidence_kind")) json.put("evidence_kind", "CONTROLLED_FIXTURE")
         if (!json.has("controlled_state")) json.put("controlled_state", true)

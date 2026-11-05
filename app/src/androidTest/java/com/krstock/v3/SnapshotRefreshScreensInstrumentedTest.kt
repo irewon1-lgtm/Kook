@@ -38,10 +38,13 @@ import java.io.File
 /** Real screens and repository: the refresh must repaint an already mounted screen. */
 @RunWith(AndroidJUnit4::class)
 class SnapshotRefreshScreensInstrumentedTest {
-    @get:Rule
+    @get:Rule(order = 0)
+    val snapshotIsolation = SnapshotTestSupport.isolatedSnapshotRuntime()
+
+    @get:Rule(order = 1)
     val composeRule = createAndroidComposeRule<ComponentActivity>()
 
-    @get:Rule
+    @get:Rule(order = 2)
     val failureEvidence = SnapshotTestSupport.failureEvidence()
 
     private lateinit var context: Context
