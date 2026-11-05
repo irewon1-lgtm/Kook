@@ -1,0 +1,7 @@
+{
+  "ci_run": 42031830546,
+  "source_artifact": "KR4_STABLE_SIGNED_UPGRADE_PROOF",
+  "source_file": "updated-chart-DAY-controls.xml",
+  "extraction": "Original unmodified uiautomator XML of the failed chart-control assertion; actual selected state belongs to the clickable checkable parent of the 일봉 label.",
+  "sha256": "5ee4fd9cabbb3d3f702f57434a9074a68e19412081ea8f6588cf70e1d971ff20"
+}

@@ -733,6 +733,44 @@ jobs:
               dates=f"재무 {market['snapshot_date_kst']} · 주가 {market['price_cutoff_date_kst']}"
               count=f"4지표 완성 {market['coverage']['complete_count']}/{market['universe_count']}"
               return ui_snapshot_source(xml)=='LIVE' and dates in texts and count in texts
+
+          def ui_selected_chart_interval(xml):
+              import re
+              import xml.etree.ElementTree as ET
+              root_node=ET.fromstring(xml)
+              parents={child:parent for parent in root_node.iter() for child in parent}
+              labels=('일봉','주봉','월봉')
+              selected=[]
+              for label in labels:
+                  nodes=[n for n in root_node.iter('node') if n.get('text')==label]
+                  if len(nodes)!=1:
+                      raise ValueError('One exact visible chart label required: '+label)
+                  node=nodes[0]
+                  lineage=node
+                  while lineage is not None:
+                      if lineage.get('enabled')=='false':
+                          raise ValueError('Disabled chart control: '+label)
+                      lineage=parents.get(lineage)
+                  if node.get('package')!='com.krstock.v3':
+                      raise ValueError('Chart label belongs to another package: '+label)
+                  point=ui_bounds(ET.tostring(node,encoding='unicode'),label)
+                  control=node
+                  while control is not None and control.get('clickable')!='true':
+                      control=parents.get(control)
+                  if control is None or control.get('package')!='com.krstock.v3':
+                      raise ValueError('Clickable chart control absent: '+label)
+                  owned=[n.get('text') for n in control.iter('node') if n.get('text') in labels]
+                  bounds=re.fullmatch(r'\[(\d+),(\d+)\]\[(\d+),(\d+)\]',control.get('bounds',''))
+                  if owned!=[label] or bounds is None:
+                      raise ValueError('Ambiguous chart control: '+label)
+                  left,top,right,bottom=map(int,bounds.groups())
+                  if not (left<=point[0]<right and top<=point[1]<bottom):
+                      raise ValueError('Chart label outside its visible control: '+label)
+                  if control.get('selected')=='true' or (control.get('checkable')=='true' and control.get('checked')=='true'):
+                      selected.append(label)
+              if len(selected)!=1:
+                  raise ValueError('Exactly one chart interval must be selected')
+              return selected[0]
           # RELEASE_UI_HELPERS_END
 
           def read_ui():
@@ -974,9 +1012,9 @@ jobs:
                   ui=read_ui()
                   # Save the selected controls and visible original chart evidence.
                   assert '수정주가 미확인' in ui, 'adjustment_verification_warning_missing'
-                  capture('updated-chart-'+interval+'-controls',ui,{'chart_interval':interval})
-                  assert any(n.get('text')==label and (n.get('selected')=='true' or n.get('checked')=='true')
-                             for n in ET.fromstring(ui).iter('node')), 'release_chart_interval_did_not_select'
+                  selected_label=ui_selected_chart_interval(ui)
+                  capture('updated-chart-'+interval+'-controls',ui,{'chart_interval':interval,'actual_selected_label':selected_label})
+                  assert ui_selected_chart_interval(ui)==label, 'release_chart_interval_did_not_select'
                   deadline=time.monotonic()+90
                   while True:
                       ui=read_ui()
