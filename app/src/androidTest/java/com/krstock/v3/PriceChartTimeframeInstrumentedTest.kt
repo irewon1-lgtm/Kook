@@ -81,6 +81,9 @@ class PriceChartTimeframeInstrumentedTest {
                     composeRule.onNodeWithTag("historical_price_chart").performScrollTo().assertIsDisplayed()
                     combinations++
                     if (months==12) evidence("chart-${interval.name}-${if(candle) "candle" else "line"}",interval,n,months,candle)
+                    if (months==1 && interval==Interval.MONTH) {
+                        evidence("chart-month-one-${if(candle) "candle" else "line"}",interval,n,months,candle)
+                    }
                     if (candle) click("chart_candle_toggle")
                 }
                 composeRule.onNodeWithTag("chart_interval_${interval.name}").assertIsSelected()

@@ -156,7 +156,7 @@ fun PriceChartPanel(
                         )
                     }
                     if (candleMode) {
-                        val barWidth = (usableWidth / count * 0.66f).coerceAtLeast(1.dp.toPx())
+                        val barWidth = chartCandleWidth(usableWidth, count, paddingX, 1.dp.toPx())
                         bars.forEachIndexed { i, bar ->
                             val x = pointX(i)
                             val color = if (bar.close >= bar.open) riseColor else fallColor
@@ -224,3 +224,10 @@ fun PriceChartPanel(
 }
 
 private fun priceText(value: Double): String = String.format("%,.0f", value)
+
+internal fun chartCandleWidth(usableWidth: Float, count: Int, padding: Float, minimum: Float): Float {
+    require(count > 0 && usableWidth > 0 && padding * 2 >= minimum)
+    // Endpoints sit one padding-width inside the canvas. A sparse monthly
+    // series must not make their candle bodies wider than that available inset.
+    return (usableWidth / count * 0.66f).coerceIn(minimum, padding * 2)
+}
