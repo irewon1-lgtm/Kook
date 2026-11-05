@@ -111,7 +111,7 @@ fun StockListScreen(onStockClick: (String) -> Unit, onBack: () -> Unit, initialS
                         }
                         IconButton(onClick = { showInfo = true }, modifier = Modifier.size(29.dp).testTag("ranking_info")) { Text("ⓘ", fontSize = 20.sp, color = scheme.onSurfaceVariant) }
                     }
-                    Spacer(Modifier.height(6.dp))
+                    Spacer(Modifier.height(4.dp))
                     RankingSnapshotPanel(stocks.size, stocks.count { it.isCompositeComplete }, snapshotDate, priceDate, snapshotState)
                     if (showSearch) {
                         Spacer(Modifier.height(7.dp))
@@ -127,7 +127,7 @@ fun StockListScreen(onStockClick: (String) -> Unit, onBack: () -> Unit, initialS
                             colors = OutlinedTextFieldDefaults.colors(focusedContainerColor = scheme.surface, unfocusedContainerColor = scheme.surface, unfocusedBorderColor = scheme.outline),
                         )
                     }
-                    Spacer(Modifier.height(6.dp))
+                    Spacer(Modifier.height(4.dp))
                     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(5.dp)) {
                         listOf("전체", "KOSPI", "KOSDAQ").forEach { market ->
                             CompactFilter(market, selectedMarket == market, { selectedMarket = market }, Modifier.testTag("market_$market"))
@@ -159,7 +159,7 @@ fun StockListScreen(onStockClick: (String) -> Unit, onBack: () -> Unit, initialS
                         }
                     }
                     Spacer(Modifier.height(5.dp))
-                    FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(4.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalArrangement = Arrangement.spacedBy(4.dp)) {
                         Box {
                             CompactFilter("↕ ${sortMode.label}  ⌄", false, { showSort = true }, Modifier.testTag("sort_picker"))
                             DropdownMenu(expanded = showSort, onDismissRequest = { showSort = false }) {
@@ -172,16 +172,18 @@ fun StockListScreen(onStockClick: (String) -> Unit, onBack: () -> Unit, initialS
                                 }
                             }
                         }
-                        SafetyFilter.entries.forEach { filter ->
-                            CompactFilter(filter.label, safetyFilter == filter, { safetyFilter = filter }, Modifier.testTag("safety_filter_${filter.name}"), small = true)
+                        Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                            SafetyFilter.entries.forEach { filter ->
+                                CompactFilter(filter.label, safetyFilter == filter, { safetyFilter = filter }, Modifier.testTag("safety_filter_${filter.name}"), small = true)
+                            }
                         }
                     }
-                    Spacer(Modifier.height(6.dp))
+                    Spacer(Modifier.height(4.dp))
                     NavyUniverseCounts(stocks.size, rankedCount, inline = true)
                     if (searchQuery.isNotBlank() || selectedMarket != "전체" || completeOnly || safetyFilter != SafetyFilter.ALL) {
                         Text("검색 결과 ${filteredStocks.size}개 종목 · 순위 가능 ${eligibleShown}개", Modifier.padding(horizontal = 3.dp, vertical = 5.dp).testTag("ranking_result_count"), fontSize = 10.sp, color = scheme.onSurfaceVariant)
                     }
-                    Spacer(Modifier.height(6.dp))
+                    Spacer(Modifier.height(4.dp))
                     StockTableHeading(showMetrics = false)
                 }
             }
@@ -251,9 +253,19 @@ private fun CompactFilter(label: String, selected: Boolean, onClick: () -> Unit,
 private fun RankingSnapshotPanel(total: Int, complete: Int, snapshotDate: String, priceDate: String, status: SnapshotAutoUpdater.Result) {
     val scheme = MaterialTheme.colorScheme
     val matches = status.snapshotDate == snapshotDate && status.priceCutoffDate == priceDate
+    val configuration = androidx.compose.ui.platform.LocalConfiguration.current
+    val inlineDates = configuration.screenWidthDp >= 600 ||
+        (configuration.screenWidthDp >= 360 && configuration.fontScale <= 1.15f)
+    val dateText = "재무 $snapshotDate · 주가 $priceDate"
     Surface(Modifier.fillMaxWidth(), color = scheme.primaryContainer.copy(alpha = .4f), shape = RoundedCornerShape(8.dp), border = BorderStroke(1.dp, scheme.outline)) {
         Column(Modifier.padding(horizontal = 11.dp, vertical = 5.dp)) {
-            SnapshotSourceHeading(status, matches, "ranking_snapshot_source")
+            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                SnapshotSourceHeading(status, matches, "ranking_snapshot_source")
+                if (inlineDates) {
+                    Spacer(Modifier.weight(1f))
+                    Text(dateText, Modifier.testTag("ranking_snapshot_dates"), fontSize = 8.sp, lineHeight = 11.sp, color = scheme.onSurfaceVariant)
+                }
+            }
             Spacer(Modifier.height(3.dp))
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1.3f)) {
@@ -266,7 +278,7 @@ private fun RankingSnapshotPanel(total: Int, complete: Int, snapshotDate: String
                     Text("전체 종목 ${String.format("%,d", total)}종목", fontSize = 10.sp, lineHeight = 13.sp, fontWeight = FontWeight.SemiBold)
                 }
             }
-            Text("재무 $snapshotDate · 주가 $priceDate", Modifier.padding(top = 2.dp).testTag("ranking_snapshot_dates"), fontSize = 8.sp, lineHeight = 11.sp, color = scheme.onSurfaceVariant)
+            if (!inlineDates) Text(dateText, Modifier.padding(top = 2.dp).testTag("ranking_snapshot_dates"), fontSize = 8.sp, lineHeight = 11.sp, color = scheme.onSurfaceVariant)
             if (matches && status.failure != null) Text("갱신 실패 · 마지막 정상 자료를 표시합니다", Modifier.testTag("ranking_snapshot_failure"), fontSize = 9.sp, lineHeight = 12.sp, color = scheme.error)
         }
     }

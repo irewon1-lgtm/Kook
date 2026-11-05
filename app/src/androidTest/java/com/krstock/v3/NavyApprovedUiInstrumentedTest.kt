@@ -111,6 +111,8 @@ class NavyApprovedUiInstrumentedTest {
         composeRule.onNodeWithTag("home_list").performScrollToIndex(0)
         composeRule.onNodeWithTag("main_home_tab").assertIsDisplayed().assertIsSelected()
         capture("home")
+        assertSingleLineFits(composeRule.onNode(hasText("수익성") and
+            hasAnyAncestor(hasTestTag("stock_${first.issuerId}")), useUnmergedTree = true), "Home profitability label")
         if (isApprovedPhoneViewport()) {
             assertFullyVisible("home_full_ranking_action", "home_list")
         }
@@ -125,6 +127,11 @@ class NavyApprovedUiInstrumentedTest {
         if (isApprovedPhoneViewport()) {
             assertFullyVisible("ranking_full_list_action", "stock_rank_list")
         }
+        val tenth = StockRepository.getAllStocks().filter { it.rankOrder != null }.sortedBy { it.rankOrder }[9]
+        composeRule.onNodeWithTag("stock_rank_list").performScrollToIndex(10)
+        val tenthRank = composeRule.onNodeWithTag("stock_rank_${tenth.issuerId}", useUnmergedTree = true)
+            .assertTextEquals("10위")
+        assertSingleLineFits(tenthRank, "Two-digit ranking badge")
 
         openActualStock("005930")
         // A loading placeholder is truthful, but cannot prove the approved quote view.
@@ -140,6 +147,9 @@ class NavyApprovedUiInstrumentedTest {
         composeRule.onNodeWithTag("detail_quote_close")
             .assertTextEquals(String.format(java.util.Locale.KOREA, "%,.0f원", lastQuote.getDouble("closePrice")))
             .assertIsDisplayed()
+        val volumeFact = composeRule.onNodeWithTag("detail_quote_fact_value_거래량", useUnmergedTree = true)
+            .assertTextEquals(String.format(java.util.Locale.KOREA, "%,d주", lastQuote.getLong("accumulatedTradingVolume")))
+        assertSingleLineFits(volumeFact, "Actual quote volume including its unit")
         composeRule.onNodeWithText("4지표").performClick()
         composeRule.onNodeWithTag("detail_metrics_page").assertIsDisplayed()
         val samsung = downloaded.getJSONObject("records").getJSONObject("005930")
@@ -201,6 +211,21 @@ class NavyApprovedUiInstrumentedTest {
             bounds.bottom.value <= viewport.bottom.value + 0.5f)
         assertTrue("$tag must fit fully below the viewport top: $bounds vs $viewport",
             bounds.top.value >= viewport.top.value - 0.5f)
+    }
+
+    private fun assertSingleLineFits(node: SemanticsNodeInteraction, label: String) {
+        node.assertIsDisplayed()
+        val layouts = mutableListOf<TextLayoutResult>()
+        node.performSemanticsAction(SemanticsActions.GetTextLayoutResult) { it(layouts) }
+        assertTrue("$label must expose its rendered text layout", layouts.isNotEmpty())
+        layouts.forEach { layout ->
+            assertEquals("$label must remain on one readable line", 1, layout.lineCount)
+            assertFalse("$label must not ellipsize actual data", layout.isLineEllipsized(0))
+            // Compare actual glyph width, avoiding Compose1.7's unrelated
+            // shrink-wrap vs parent-width mismatch in hasVisualOverflow.
+            assertTrue("$label clips glyphs: ${layout.multiParagraph.maxIntrinsicWidth} > ${layout.size.width}",
+                layout.multiParagraph.maxIntrinsicWidth <= layout.size.width + 1f)
+        }
     }
 
     private fun readAndCheckLiveOracle() {

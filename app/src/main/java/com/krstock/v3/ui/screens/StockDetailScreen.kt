@@ -27,6 +27,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.krstock.v3.data.analysis.IntegratedInterpretationEngine
@@ -251,11 +252,19 @@ private fun DetailQuotePanel(result: PriceHistoryRepository.Result?, loading: Bo
     val scheme = MaterialTheme.colorScheme
     val fontScale = LocalDensity.current.fontScale
     val showSparkline = LocalConfiguration.current.screenWidthDp >= 360 && fontScale <= 1.15f
+    val stackQuote = LocalConfiguration.current.screenWidthDp < 360 && fontScale > 1.15f
     val bars = result?.bars.orEmpty().sortedBy { it.date }
     val latest = bars.lastOrNull()
     val previous = bars.getOrNull(bars.lastIndex - 1)
     val change = if (latest != null && previous != null) latest.close - previous.close else null
     val changeColor = if (change != null && change > 0) scheme.error else scheme.primary
+    val closeText = latest?.let { String.format(Locale.KOREA, "%,.0f원", it.close) }
+        ?: if (loading) "종가 확인 중" else "종가 미확보"
+    val changeText = if (change != null && previous != null) {
+        String.format(Locale.KOREA, "%s %+,.0f원 (%+.2f%%)",
+            if (change > 0) "▲" else if (change < 0) "▼" else "—",
+            change, change / previous.close * 100.0)
+    } else null
     val sourceLabel = when (result?.source) {
         PriceHistoryRepository.Source.CACHE -> "네이버증권 · 저장자료"
         PriceHistoryRepository.Source.LIVE -> "네이버증권 · 완료 일봉"
@@ -293,22 +302,33 @@ private fun DetailQuotePanel(result: PriceHistoryRepository.Result?, loading: Bo
                 horizontalArrangement = Arrangement.spacedBy(9.dp),
             ) {
                 Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(5.dp)) {
-                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(7.dp)) {
+                    if (stackQuote) {
                         Text(
-                            latest?.let { String.format(Locale.KOREA, "%,.0f원", it.close) }
-                                ?: if (loading) "종가 확인 중" else "종가 미확보",
+                            closeText,
                             modifier = Modifier.testTag("detail_quote_close"),
                             fontSize = if (latest == null) 16.sp else 20.sp, lineHeight = 24.sp,
                             fontWeight = FontWeight.Bold, color = scheme.onSurface,
                         )
-                        if (change != null && previous != null) {
+                        if (changeText != null) {
                             Text(
-                                String.format(Locale.KOREA, "%s %+,.0f원 (%+.2f%%)",
-                                    if (change > 0) "▲" else if (change < 0) "▼" else "—",
-                                    change, change / previous.close * 100.0),
-                                modifier = Modifier.weight(1f),
+                                changeText,
                                 fontSize = 9.sp, lineHeight = 11.sp, fontWeight = FontWeight.SemiBold, color = changeColor,
                             )
+                        }
+                    } else {
+                        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(7.dp)) {
+                            Text(
+                                closeText,
+                                modifier = Modifier.testTag("detail_quote_close"),
+                                fontSize = if (latest == null) 16.sp else 20.sp, lineHeight = 24.sp,
+                                fontWeight = FontWeight.Bold, color = scheme.onSurface,
+                            )
+                            if (changeText != null) {
+                                Text(
+                                    changeText, modifier = Modifier.weight(1f),
+                                    fontSize = 9.sp, lineHeight = 11.sp, fontWeight = FontWeight.SemiBold, color = changeColor,
+                                )
+                            }
                         }
                     }
                     Text(
@@ -317,7 +337,10 @@ private fun DetailQuotePanel(result: PriceHistoryRepository.Result?, loading: Bo
                     )
                 }
                 VerticalDivider(Modifier.height(45.dp), color = scheme.onSurfaceVariant.copy(alpha = .32f))
-                Column(Modifier.width(if (fontScale > 1.15f) 82.dp else 76.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                Column(
+                    Modifier.widthIn(min = 76.dp * fontScale.coerceAtLeast(1f)).width(IntrinsicSize.Max),
+                    verticalArrangement = Arrangement.spacedBy(2.dp),
+                ) {
                     QuoteFact("시가", latest?.open?.let { String.format(Locale.KOREA, "%,.0f", it) })
                     QuoteFact("고가", latest?.high?.let { String.format(Locale.KOREA, "%,.0f", it) })
                     QuoteFact("저가", latest?.low?.let { String.format(Locale.KOREA, "%,.0f", it) })
@@ -330,9 +353,13 @@ private fun DetailQuotePanel(result: PriceHistoryRepository.Result?, loading: Bo
 
 @Composable
 private fun QuoteFact(label: String, value: String?) {
-    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
         Text(label, fontSize = 8.sp, lineHeight = 10.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        Text(value ?: "—", fontSize = 8.sp, lineHeight = 10.sp, color = MaterialTheme.colorScheme.onSurface, maxLines = 1)
+        Text(
+            value ?: "—", modifier = Modifier.weight(1f).testTag("detail_quote_fact_value_$label"),
+            fontSize = 8.sp, lineHeight = 10.sp, color = MaterialTheme.colorScheme.onSurface,
+            textAlign = TextAlign.End, maxLines = 1, softWrap = false,
+        )
     }
 }
 

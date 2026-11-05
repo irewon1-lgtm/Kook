@@ -370,8 +370,8 @@ fun StockSummaryCard(
     var expanded by remember(stock.issuerId) { mutableStateOf(false) }
     Column(Modifier.fillMaxWidth().background(scheme.surface.copy(alpha = .48f)).testTag("stock_${stock.issuerId}").clickable(onClick = onClick)) {
         Row(Modifier.fillMaxWidth().padding(horizontal = 6.dp, vertical = if (showMetrics) 2.dp else 1.dp).heightIn(min = if (showMetrics) 37.dp else 27.dp), verticalAlignment = Alignment.CenterVertically) {
-            Surface(Modifier.width(29.dp), shape = RoundedCornerShape(5.dp), color = if (displayRank != null) Color(0xFF12467C) else scheme.surfaceVariant, border = BorderStroke(.7.dp, if (displayRank != null) Color(0xFF2868A6) else scheme.outlineVariant)) {
-                Text(displayRank?.let { "${it}위" } ?: "—", Modifier.padding(horizontal = 2.dp, vertical = 3.dp).testTag("stock_rank_${stock.issuerId}"), fontSize = 11.sp, lineHeight = 14.sp, fontWeight = FontWeight.Bold, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+            Surface(Modifier.widthIn(min = 29.dp), shape = RoundedCornerShape(5.dp), color = if (displayRank != null) Color(0xFF12467C) else scheme.surfaceVariant, border = BorderStroke(.7.dp, if (displayRank != null) Color(0xFF2868A6) else scheme.outlineVariant)) {
+                Text(displayRank?.let { "${it}위" } ?: "—", Modifier.padding(horizontal = 2.dp, vertical = 3.dp).testTag("stock_rank_${stock.issuerId}"), fontSize = 11.sp, lineHeight = 14.sp, fontWeight = FontWeight.Bold, textAlign = androidx.compose.ui.text.style.TextAlign.Center, maxLines = 1, softWrap = false)
             }
             Spacer(Modifier.width(8.dp))
             Column(Modifier.weight(if (showMetrics) 1.18f else 1f)) {
@@ -453,8 +453,9 @@ private fun DenseSafetyBadge(safety: FinancialSafetyRecord?) {
 @Composable
 private fun MiniMetricRow(label: String, metric: MetricValue) {
     val scheme = MaterialTheme.colorScheme
+    val labelWidth = 24.dp * LocalDensity.current.fontScale.coerceAtLeast(1f)
     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-        Text(label, Modifier.width(24.dp), fontSize = 7.sp, lineHeight = 9.sp, color = scheme.onSurfaceVariant)
+        Text(label, Modifier.width(labelWidth), fontSize = 7.sp, lineHeight = 9.sp, color = scheme.onSurfaceVariant, maxLines = 1, softWrap = false)
         Box(Modifier.weight(1f).height(4.dp).clip(RoundedCornerShape(99.dp)).background(scheme.outlineVariant)) {
             val fraction = metric.percentileScore?.takeIf { metric.isAvailable }?.let { (it / 100).coerceIn(0.0, 1.0).toFloat() } ?: 0f
             if (fraction > 0f) Box(Modifier.fillMaxWidth(fraction).fillMaxHeight().background(Brush.horizontalGradient(listOf(scheme.primary, Color(0xFF67B9FF)))))

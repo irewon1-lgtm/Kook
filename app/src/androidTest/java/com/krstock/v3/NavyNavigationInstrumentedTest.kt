@@ -25,6 +25,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.krstock.v3.data.repository.StockRepository
+import com.krstock.v3.data.generated.GeneratedRealQuantSnapshot
 import com.krstock.v3.data.update.SnapshotAutoUpdater
 import org.json.JSONObject
 import org.junit.After
@@ -33,6 +34,8 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.io.File
+import java.security.MessageDigest
 
 /** Tests actual launcher navigation and user choices without injecting market values. */
 @RunWith(AndroidJUnit4::class)
@@ -132,8 +135,7 @@ class NavyNavigationInstrumentedTest {
             composeRule.onNodeWithTag("main_favorites_tab").assertIsSelected()
         } catch (failure: Throwable) {
             runCatching {
-                SnapshotTestSupport.evidence(context, "nav-restored-favorites-origin-failed", JSONObject()
-                    .put("evidence_kind", "REAL_MARKET_RUNTIME").put("controlled_state", false)
+                SnapshotTestSupport.evidence(context, "nav-restored-favorites-origin-failed", actualRuntimeEvidence()
                     .put("expected_origin", "FAVORITES")
                     .put("compose_semantics", composeRule.onRoot(useUnmergedTree = true).printToString()))
             }
@@ -158,8 +160,7 @@ class NavyNavigationInstrumentedTest {
                 }
         }
         composeRule.onNodeWithTag("more_source").assertTextContains(SnapshotAutoUpdater.lastResult.source.name, substring = true)
-        SnapshotTestSupport.evidence(context, "nav-five-menus-favorites-persistence", JSONObject()
-            .put("evidence_kind", "REAL_MARKET_RUNTIME").put("controlled_state", false)
+        SnapshotTestSupport.evidence(context, "nav-five-menus-favorites-persistence", actualRuntimeEvidence()
             .put("favorite_issuer", "005930").put("favorite_name", "삼성전자")
             .put("favorite_add_and_remove_persisted", true).put("manual_refresh_invoked", true))
     }
@@ -295,8 +296,7 @@ class NavyNavigationInstrumentedTest {
             // Capture before @After closes the Activity; the outer failure rule
             // otherwise records the teardown launcher rather than this state.
             runCatching {
-                SnapshotTestSupport.evidence(context, "nav-back-$expectedMenuTag-failed", JSONObject()
-                    .put("evidence_kind", "REAL_MARKET_RUNTIME").put("controlled_state", false)
+                SnapshotTestSupport.evidence(context, "nav-back-$expectedMenuTag-failed", actualRuntimeEvidence()
                     .put("expected_menu_tag", expectedMenuTag).put("expected_content_tag", expectedContentTag)
                     .put("compose_semantics", composeRule.onRoot(useUnmergedTree = true).printToString()))
             }
@@ -348,14 +348,41 @@ class NavyNavigationInstrumentedTest {
             }
         } catch (failure: Throwable) {
             runCatching {
-                SnapshotTestSupport.evidence(context, "nav-hide-keyboard-failed", JSONObject()
-                    .put("evidence_kind", "REAL_MARKET_RUNTIME").put("controlled_state", false)
+                SnapshotTestSupport.evidence(context, "nav-hide-keyboard-failed", actualRuntimeEvidence()
                     .put("keyboard_window_class", keyboardWindow.javaClass.name)
                     .put("hide_request_accepted", hideRequestAccepted)
                     .put("hide_result", hideResult ?: JSONObject.NULL))
             }
             throw failure
         }
+    }
+
+    private fun actualRuntimeEvidence(): JSONObject {
+        val binding = runCatching {
+            val cache = File(context.filesDir, SnapshotTestSupport.CACHE)
+            require(cache.isFile) { "Actual quant cache is unavailable" }
+            val bytes = cache.readBytes()
+            val parsed = SnapshotAutoUpdater.parseAndValidate(bytes.toString(Charsets.UTF_8))
+            synchronized(GeneratedRealQuantSnapshot) {
+                require(parsed.snapshotDate == GeneratedRealQuantSnapshot.snapshotDate &&
+                    parsed.priceCutoffDate == GeneratedRealQuantSnapshot.priceCutoffDate &&
+                    parsed.rows == GeneratedRealQuantSnapshot.rows) {
+                    "Actual quant cache does not match the visible runtime snapshot"
+                }
+            }
+            JSONObject().put("cache_file", SnapshotTestSupport.CACHE)
+                .put("sha256", MessageDigest.getInstance("SHA-256").digest(bytes)
+                    .joinToString("") { "%02x".format(it.toInt() and 0xff) })
+                .put("snapshot_date_kst", parsed.snapshotDate)
+                .put("price_cutoff_date_kst", parsed.priceCutoffDate)
+        }
+        return binding.getOrNull()?.let { provenance ->
+            JSONObject().put("evidence_kind", "REAL_MARKET_RECORDED")
+                .put("controlled_state", false).put("source_provenance", provenance)
+        } ?: JSONObject().put("evidence_kind", "CONTROLLED_FIXTURE")
+            .put("controlled_state", true)
+            .put("provenance_reason", binding.exceptionOrNull()?.message
+                ?: "No actual quant cache binding is available for this diagnostic")
     }
 
     private fun dismissOptionalUpdate() {
