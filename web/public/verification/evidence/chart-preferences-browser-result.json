@@ -1,0 +1,15 @@
+{
+  "tabRestored": true,
+  "reloadRestored": true,
+  "stockIsolation": true,
+  "freshBrowserIsolation": true,
+  "malformedDefaults": true,
+  "deniedStorageOperable": true,
+  "saved": {
+    "samsung": "{\"schemaVersion\":1,\"interval\":\"MONTH\",\"months\":12,\"candleMode\":false}",
+    "hynix": "{\"schemaVersion\":1,\"interval\":\"WEEK\",\"months\":3,\"candleMode\":true}"
+  },
+  "actualQuote": "201,500원",
+  "actualSource": "CACHE · 네이버증권 · 공개된 수집 가격화면 요청 기준일2026-11-05가격 파일 기준일2026-11-05실제 최근 거래일2026-11-05원천 수집 시각2026-11-05T23:47:47.409232Z최근 수집 시도2026-11-05T23:47:47.409232Z네이버증권 원문 출처 ↗공식 기업행사별 적용일·조정계수와 제공 OHLC의 기수정 여부를 확인하지 못했습니다. 제공 원본 OHLC 유지 · 추가 조정 없음.분할·병합 전후의 가격 변동에는 기업행사 영향이 포함될 수 있습니다. 결측 거래일은 임의로 채우지 않습니다. 4지표 순위와 별도 참고자료입니다.다시 불러오기",
+  "errors": []
+}

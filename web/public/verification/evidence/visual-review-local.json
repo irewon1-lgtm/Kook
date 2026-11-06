@@ -1,0 +1,255 @@
+{
+  "kind": "INDEPENDENT_LOCAL_VISUAL_REVIEW",
+  "taskId": "KR4_PC_FULL_PARITY_SENIOR_UI_20261106",
+  "reviewedAt": "2026-11-06T01:34:29.459091+00:00",
+  "scoreMeaning": "Reviewer judgment under transparent rubric, not automated pixel similarity or final public acceptance",
+  "criteriaMaximum": {
+    "palette_status_contrast": 5,
+    "information_hierarchy": 6,
+    "geometry_spacing": 5,
+    "typography_readability": 5,
+    "controls_discoverability": 4
+  },
+  "screens": {
+    "home": {
+      "scores": {
+        "palette_status_contrast": 5,
+        "information_hierarchy": 5.5,
+        "geometry_spacing": 4.25,
+        "typography_readability": 5,
+        "controls_discoverability": 4
+      },
+      "total": 23.75,
+      "maximum": 25,
+      "deductions": [
+        {
+          "criterion": "information_hierarchy",
+          "points": 0.5,
+          "reason": "At1365x853 the top-five table starts at the fold, so reading actual ranks requires ordinary scrolling; approved mobile reference gives ranks more immediate prominence.",
+          "evidence": "canonical-home-1365x853.png"
+        },
+        {
+          "criterion": "geometry_spacing",
+          "points": 0.75,
+          "reason": "Hero preserves navy/blue language but has more unused vertical space around the title/counts and uses simple bars instead of the approved subtle candle motif.",
+          "evidence": "canonical-home-1365x853.png"
+        }
+      ]
+    },
+    "ranking": {
+      "scores": {
+        "palette_status_contrast": 5,
+        "information_hierarchy": 5.5,
+        "geometry_spacing": 5,
+        "typography_readability": 5,
+        "controls_discoverability": 4
+      },
+      "total": 24.5,
+      "maximum": 25,
+      "deductions": [
+        {
+          "criterion": "information_hierarchy",
+          "points": 0.5,
+          "reason": "Default expanded metrics and visible source/search controls push actual rank rows below the first fold. This is readable and nonfixed, but a minor difference from approved table-first density.",
+          "evidence": "canonical-ranking-1365x853.png"
+        }
+      ]
+    },
+    "detail": {
+      "scores": {
+        "palette_status_contrast": 5,
+        "information_hierarchy": 6,
+        "geometry_spacing": 4.5,
+        "typography_readability": 5,
+        "controls_discoverability": 4
+      },
+      "total": 24.5,
+      "maximum": 25,
+      "deductions": [
+        {
+          "criterion": "geometry_spacing",
+          "points": 0.5,
+          "reason": "The score-card middle fact label wraps to two lines (기존4지표순위), so rank22 has a lower baseline than adjacent total/count numbers; all text remains readable and uncut.",
+          "evidence": "canonical-detail-1365x853.png"
+        }
+      ]
+    },
+    "chart": {
+      "scores": {
+        "palette_status_contrast": 4.75,
+        "information_hierarchy": 6,
+        "geometry_spacing": 5,
+        "typography_readability": 4.75,
+        "controls_discoverability": 3.5
+      },
+      "total": 24.0,
+      "maximum": 25,
+      "deductions": [
+        {
+          "criterion": "palette_status_contrast",
+          "points": 0.25,
+          "reason": "Rising candles use a softer pink-red than the vivid red in the approved reference, while up/down semantics remain correct.",
+          "evidence": "focus-chart-1365x853-chart-controls-and-plot.png"
+        },
+        {
+          "criterion": "typography_readability",
+          "points": 0.25,
+          "reason": "Automatically calculated price ticks include half-won decimals (.5), adding minor reading noise compared with the approved integer labels; these are axis ticks, not fabricated transaction prices.",
+          "evidence": "focus-chart-1365x853-chart-controls-and-plot.png"
+        },
+        {
+          "criterion": "controls_discoverability",
+          "points": 0.5,
+          "reason": "Daily/weekly/monthly and date-range buttons share one row with limited group separation; both selected states are visible but the approved separate-row grouping is more immediately distinct.",
+          "evidence": "focus-chart-1365x853-chart-controls-and-plot.png"
+        }
+      ]
+    }
+  },
+  "total": 96.75,
+  "maximum": 100,
+  "criticalDefectsObservedInInspectedCaptures": 0,
+  "scope": "Fresh actual local Linux Chromium captures only; PUBLIC, native Windows and physical LG Gram acceptance are separate",
+  "publicAcceptance": "NOT_RUN",
+  "physicalLgGramVerified": false,
+  "intentionalDifferencesNotPenalized": [
+    "22px default and persistent large text",
+    "Top PC navigation",
+    "Expanded static nonfixed four-metric controls",
+    "Desktop two-column score/metric layout",
+    "Actual current data rather than example values",
+    "Full original content and honest CACHE provenance"
+  ],
+  "contrastRatios": {
+    "body": 15.781,
+    "secondary": 8.791,
+    "risk": 6.773,
+    "missing": 8.213,
+    "neutral": 11.3,
+    "newPrimary": 4.911
+  },
+  "originals": [
+    {
+      "file": "/workspace/kr4-pc-work/layout-matrix-post-density/canonical-analysis-1365x853-fullpage.png",
+      "sha256": "fd0d6a44799c29d76b35115e95acfdac7b9075e95918a1deabbadda566205396",
+      "bytes": 5450613
+    },
+    {
+      "file": "/workspace/kr4-pc-work/layout-matrix-post-density/canonical-analysis-1365x853.png",
+      "sha256": "cf5a34758ef6ca770cd698616d213feafe873ec18de765b27d40019a7ec5e346",
+      "bytes": 493059
+    },
+    {
+      "file": "/workspace/kr4-pc-work/layout-matrix-post-density/canonical-analysis-1920x1200-fullpage.png",
+      "sha256": "6493525241db292c0af1d19dce5fcaa5d9769908ef1181c98ea3e08e70f26590",
+      "bytes": 5900582
+    },
+    {
+      "file": "/workspace/kr4-pc-work/layout-matrix-post-density/canonical-analysis-1920x1200.png",
+      "sha256": "fc069cfb50056bed6c87021e21d4bd6e1f5b7736f91078f993a1e0547e72d608",
+      "bytes": 772484
+    },
+    {
+      "file": "/workspace/kr4-pc-work/layout-matrix-post-density/canonical-chart-1365x853.png",
+      "sha256": "9ab0dee6a419b73c48e57360375a6a15994b3ad19179a7aa609987e0ee82b4a3",
+      "bytes": 410946
+    },
+    {
+      "file": "/workspace/kr4-pc-work/layout-matrix-post-density/canonical-chart-1920x1200.png",
+      "sha256": "f03dfcc65050be75533f5dd8c53b33e22508c5f096447960f04017b814d017b9",
+      "bytes": 632852
+    },
+    {
+      "file": "/workspace/kr4-pc-work/layout-matrix-post-density/canonical-detail-1365x853.png",
+      "sha256": "203ce52b9eccf3c4e5f2600029013fbbcfe1462cc612ddb85128dc90b1dc718f",
+      "bytes": 503158
+    },
+    {
+      "file": "/workspace/kr4-pc-work/layout-matrix-post-density/canonical-detail-1920x1200.png",
+      "sha256": "6584b6e815ac9910c536d89cf5d69adac7a23082a02f89b8ec72cb77b921bc71",
+      "bytes": 795826
+    },
+    {
+      "file": "/workspace/kr4-pc-work/layout-matrix-post-density/canonical-home-1365x853.png",
+      "sha256": "570ff6ee3c76910dffa42a54d9b5aaf3a0ad6326870dd591330379b98230d3e2",
+      "bytes": 445564
+    },
+    {
+      "file": "/workspace/kr4-pc-work/layout-matrix-post-density/canonical-home-1920x1200.png",
+      "sha256": "77097f8a888ee143c1768d8557f6fb41c47aa0fda76a08d2a015553ecf6033f9",
+      "bytes": 592777
+    },
+    {
+      "file": "/workspace/kr4-pc-work/layout-matrix-post-density/canonical-quarter-1365x853.png",
+      "sha256": "d4d6257344bfb719e66d41274bfe4ac2b4e2cc98dc099249bc011bbfdff882e5",
+      "bytes": 333403
+    },
+    {
+      "file": "/workspace/kr4-pc-work/layout-matrix-post-density/canonical-quarter-1920x1200.png",
+      "sha256": "f269fa0c7898d2cb1d04daa28d0dc34c119cb43a2da6568049a09c7c5156cf81",
+      "bytes": 623394
+    },
+    {
+      "file": "/workspace/kr4-pc-work/layout-matrix-post-density/canonical-ranking-1365x853.png",
+      "sha256": "ac73a49af0060c22d8e98771f60889d864d63ff66f0511e0772351d777804ce0",
+      "bytes": 348927
+    },
+    {
+      "file": "/workspace/kr4-pc-work/layout-matrix-post-density/canonical-ranking-1920x1200.png",
+      "sha256": "209ab8a324f670bd8799ef0d218fae8635c66cb2668119343c187428128976fb",
+      "bytes": 581642
+    },
+    {
+      "file": "/workspace/kr4-pc-work/layout-matrix-post-density/canonical-sources-1365x853-fullpage.png",
+      "sha256": "ea6328230ab231b61ec54fe7f4bfcd28d415b8c40218e36395592c55067f87e5",
+      "bytes": 10891773
+    },
+    {
+      "file": "/workspace/kr4-pc-work/layout-matrix-post-density/canonical-sources-1365x853.png",
+      "sha256": "4da7ade93e0b26c4f2ed7e90bc5da9acc0bdf1873ef64999c73fa7c9adb68768",
+      "bytes": 450865
+    },
+    {
+      "file": "/workspace/kr4-pc-work/layout-matrix-post-density/canonical-sources-1920x1200-fullpage.png",
+      "sha256": "cac2ed44d86075148d11ab52746218707bd9ab8061444fdb9ad69ff18376507a",
+      "bytes": 11223386
+    },
+    {
+      "file": "/workspace/kr4-pc-work/layout-matrix-post-density/canonical-sources-1920x1200.png",
+      "sha256": "396c4e8246c691a5f89f0c192974a0e026130d494beb18d46ba6c67e45872d1c",
+      "bytes": 756395
+    },
+    {
+      "file": "/workspace/kr4-pc-work/layout-matrix-post-density/focus-chart-1365x853-chart-controls-and-plot.png",
+      "sha256": "c7211ece3f86cb6626b0bccbb8cb94d1e173e64ab10a1e552df1a58c979fb554",
+      "bytes": 263608
+    },
+    {
+      "file": "/workspace/kr4-pc-work/layout-matrix-post-density/focus-chart-1365x853-chart-plot.png",
+      "sha256": "6cd377c95fb8abce24f77c33ee868c6229dffe2bf24c939500de220ae2c80dae",
+      "bytes": 225484
+    },
+    {
+      "file": "/workspace/kr4-pc-work/layout-matrix-post-density/focus-detail-1365x853-detail-financial.png",
+      "sha256": "07ce6464d9a36c61276965d5e181bef794b218f794391b096ab75c6ea7f4df8e",
+      "bytes": 302218
+    },
+    {
+      "file": "/workspace/kr4-pc-work/layout-matrix-post-density/focus-detail-1365x853-detail-metric-bars.png",
+      "sha256": "5d918c59381a8eff104317247bd377f1cb120b5cc7294a42eab71b5462c1350e",
+      "bytes": 412690
+    },
+    {
+      "file": "/workspace/kr4-pc-work/layout-matrix-post-density/focus-home-1365x853-home-top-five.png",
+      "sha256": "e82bdf7a223204ef3c417664166d50667661d479b6786d19798e1d83d8a629b0",
+      "bytes": 160672
+    },
+    {
+      "file": "/workspace/kr4-pc-work/layout-matrix-post-density/focus-ranking-1365x853-ranking-table.png",
+      "sha256": "208553d0f2193eae80cfd0d850c26f82d7f757b75bf3852f974e294c407af944",
+      "bytes": 139176
+    }
+  ],
+  "comparisonDirectory": "/workspace/kr4-pc-work/visual-comparison-local",
+  "originalProductImagesModified": false
+}

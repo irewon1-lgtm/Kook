@@ -1,0 +1,834 @@
+{
+  "kind": "ACTUAL_PUBLIC_ANONYMOUS_BROWSER_AFTER_EXPLICIT_SERVICE_OPEN",
+  "observedAt": "2026-11-06T01:45:39.019Z",
+  "controlled": false,
+  "network": [
+    {
+      "viewport": {
+        "width": 1365,
+        "height": 853
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/index.html",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "document",
+      "contentType": "text/html",
+      "cors": null
+    },
+    {
+      "viewport": {
+        "width": 1365,
+        "height": 853
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/index.html",
+      "status": 303,
+      "method": "POST",
+      "resourceType": "document",
+      "contentType": "text/html",
+      "cors": null
+    },
+    {
+      "viewport": {
+        "width": 1365,
+        "height": 853
+      },
+      "url": "https://media.ethicalads.io/media/client/ethicalads.min.js",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "script",
+      "contentType": "application/javascript",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1365,
+        "height": 853
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/index.html",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "document",
+      "contentType": "text/html; charset=utf-8",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1365,
+        "height": 853
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/assets/index-4eeSaoqG.css",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "stylesheet",
+      "contentType": "text/css; charset=utf-8",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1365,
+        "height": 853
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/assets/index-CFx-6mqU.js",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "script",
+      "contentType": "application/javascript; charset=utf-8",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1365,
+        "height": 853
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/assets/noto-sans-kr-latin-wght-normal-CniUieP-.woff2",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "font",
+      "contentType": "application/font-woff2",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1365,
+        "height": 853
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/assets/noto-sans-kr-114-wght-normal-BY06UsNu.woff2",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "font",
+      "contentType": "application/font-woff2",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1365,
+        "height": 853
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/assets/noto-sans-kr-117-wght-normal-CcgSePNz.woff2",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "font",
+      "contentType": "application/font-woff2",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1365,
+        "height": 853
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/assets/noto-sans-kr-116-wght-normal-EurSqPfX.woff2",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "font",
+      "contentType": "application/font-woff2",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1365,
+        "height": 853
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/assets/noto-sans-kr-112-wght-normal-RTI2uVq-.woff2",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "font",
+      "contentType": "application/font-woff2",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1365,
+        "height": 853
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/assets/noto-sans-kr-118-wght-normal-Brd0-IeA.woff2",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "font",
+      "contentType": "application/font-woff2",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1365,
+        "height": 853
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/assets/noto-sans-kr-119-wght-normal-SS-AArfl.woff2",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "font",
+      "contentType": "application/font-woff2",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1365,
+        "height": 853
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/assets/noto-sans-kr-111-wght-normal-CG1HTgcy.woff2",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "font",
+      "contentType": "application/font-woff2",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1365,
+        "height": 853
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/assets/noto-sans-kr-113-wght-normal-DhCHf0Kh.woff2",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "font",
+      "contentType": "application/font-woff2",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1365,
+        "height": 853
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/assets/noto-sans-kr-108-wght-normal-BVjpkeA2.woff2",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "font",
+      "contentType": "application/font-woff2",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1365,
+        "height": 853
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/assets/noto-sans-kr-106-wght-normal-BmR0DBYv.woff2",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "font",
+      "contentType": "application/font-woff2",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1365,
+        "height": 853
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/assets/noto-sans-kr-115-wght-normal-H0Z-Rvr3.woff2",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "font",
+      "contentType": "application/font-woff2",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1365,
+        "height": 853
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/assets/noto-sans-kr-109-wght-normal-D6YMW89j.woff2",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "font",
+      "contentType": "application/font-woff2",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1365,
+        "height": 853
+      },
+      "url": "https://raw.githubusercontent.com/irewon1-lgtm/Kook/kr4-pc-site/data/manifest.json",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "fetch",
+      "contentType": "text/plain; charset=utf-8",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1365,
+        "height": 853
+      },
+      "url": "https://raw.githubusercontent.com/irewon1-lgtm/Kook/kr4-pc-site/data/generations/6b20d0d086adab3ef375483e2ca98573496c2a19f6978f1ef620dad710c5d909/stocks.json",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "fetch",
+      "contentType": "text/plain; charset=utf-8",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1365,
+        "height": 853
+      },
+      "url": "https://raw.githubusercontent.com/irewon1-lgtm/Kook/kr4-pc-site/data/generations/6b20d0d086adab3ef375483e2ca98573496c2a19f6978f1ef620dad710c5d909/financial.json",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "fetch",
+      "contentType": "text/plain; charset=utf-8",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1365,
+        "height": 853
+      },
+      "url": "https://raw.githubusercontent.com/irewon1-lgtm/Kook/kr4-pc-site/data/generations/6b20d0d086adab3ef375483e2ca98573496c2a19f6978f1ef620dad710c5d909/valuations.json",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "fetch",
+      "contentType": "text/plain; charset=utf-8",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1365,
+        "height": 853
+      },
+      "url": "https://raw.githubusercontent.com/irewon1-lgtm/Kook/kr4-pc-site/data/generations/6b20d0d086adab3ef375483e2ca98573496c2a19f6978f1ef620dad710c5d909/candidates.json",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "fetch",
+      "contentType": "text/plain; charset=utf-8",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1365,
+        "height": 853
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/assets/noto-sans-kr-110-wght-normal-BatyA0y1.woff2",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "font",
+      "contentType": "application/font-woff2",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1365,
+        "height": 853
+      },
+      "url": "https://raw.githubusercontent.com/irewon1-lgtm/Kook/kr4-pc-site/data/generations/6b20d0d086adab3ef375483e2ca98573496c2a19f6978f1ef620dad710c5d909/details/005930.json",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "fetch",
+      "contentType": "text/plain; charset=utf-8",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1365,
+        "height": 853
+      },
+      "url": "https://raw.githubusercontent.com/irewon1-lgtm/Kook/kr4-pc-site/data/generations/6b20d0d086adab3ef375483e2ca98573496c2a19f6978f1ef620dad710c5d909/prices/005930.json",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "fetch",
+      "contentType": "text/plain; charset=utf-8",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1365,
+        "height": 853
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/assets/noto-sans-kr-98-wght-normal-DMGuWyzz.woff2",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "font",
+      "contentType": "application/font-woff2",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1365,
+        "height": 853
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/assets/noto-sans-kr-103-wght-normal-Qv2qVnZD.woff2",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "font",
+      "contentType": "application/font-woff2",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1365,
+        "height": 853
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/assets/noto-sans-kr-107-wght-normal-VE3OiHzf.woff2",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "font",
+      "contentType": "application/font-woff2",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1365,
+        "height": 853
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/assets/noto-sans-kr-56-wght-normal-zEUZiIy5.woff2",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "font",
+      "contentType": "application/font-woff2",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1365,
+        "height": 853
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/assets/noto-sans-kr-96-wght-normal-DwqLWOxK.woff2",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "font",
+      "contentType": "application/font-woff2",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1365,
+        "height": 853
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/assets/noto-sans-kr-70-wght-normal-Dyhbe45t.woff2",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "font",
+      "contentType": "application/font-woff2",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1200
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/index.html",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "document",
+      "contentType": "text/html",
+      "cors": null
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1200
+      },
+      "url": "https://cdn.carbonads.com/carbon.js?serve=CEADPK3U&placement=rawgithackcom&format=responsive",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "script",
+      "contentType": "text/javascript",
+      "cors": null
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1200
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/index.html",
+      "status": 303,
+      "method": "POST",
+      "resourceType": "document",
+      "contentType": "text/html",
+      "cors": null
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1200
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/index.html",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "document",
+      "contentType": "text/html; charset=utf-8",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1200
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/assets/index-4eeSaoqG.css",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "stylesheet",
+      "contentType": "text/css; charset=utf-8",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1200
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/assets/index-CFx-6mqU.js",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "script",
+      "contentType": "application/javascript; charset=utf-8",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1200
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/assets/noto-sans-kr-118-wght-normal-Brd0-IeA.woff2",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "font",
+      "contentType": "application/font-woff2",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1200
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/assets/noto-sans-kr-latin-wght-normal-CniUieP-.woff2",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "font",
+      "contentType": "application/font-woff2",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1200
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/assets/noto-sans-kr-117-wght-normal-CcgSePNz.woff2",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "font",
+      "contentType": "application/font-woff2",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1200
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/assets/noto-sans-kr-114-wght-normal-BY06UsNu.woff2",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "font",
+      "contentType": "application/font-woff2",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1200
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/assets/noto-sans-kr-116-wght-normal-EurSqPfX.woff2",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "font",
+      "contentType": "application/font-woff2",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1200
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/assets/noto-sans-kr-115-wght-normal-H0Z-Rvr3.woff2",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "font",
+      "contentType": "application/font-woff2",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1200
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/assets/noto-sans-kr-108-wght-normal-BVjpkeA2.woff2",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "font",
+      "contentType": "application/font-woff2",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1200
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/assets/noto-sans-kr-109-wght-normal-D6YMW89j.woff2",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "font",
+      "contentType": "application/font-woff2",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1200
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/assets/noto-sans-kr-112-wght-normal-RTI2uVq-.woff2",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "font",
+      "contentType": "application/font-woff2",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1200
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/assets/noto-sans-kr-119-wght-normal-SS-AArfl.woff2",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "font",
+      "contentType": "application/font-woff2",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1200
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/assets/noto-sans-kr-111-wght-normal-CG1HTgcy.woff2",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "font",
+      "contentType": "application/font-woff2",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1200
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/assets/noto-sans-kr-106-wght-normal-BmR0DBYv.woff2",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "font",
+      "contentType": "application/font-woff2",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1200
+      },
+      "url": "https://raw.githubusercontent.com/irewon1-lgtm/Kook/kr4-pc-site/data/manifest.json",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "fetch",
+      "contentType": "text/plain; charset=utf-8",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1200
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/assets/noto-sans-kr-113-wght-normal-DhCHf0Kh.woff2",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "font",
+      "contentType": "application/font-woff2",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1200
+      },
+      "url": "https://raw.githubusercontent.com/irewon1-lgtm/Kook/kr4-pc-site/data/generations/6b20d0d086adab3ef375483e2ca98573496c2a19f6978f1ef620dad710c5d909/stocks.json",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "fetch",
+      "contentType": "text/plain; charset=utf-8",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1200
+      },
+      "url": "https://raw.githubusercontent.com/irewon1-lgtm/Kook/kr4-pc-site/data/generations/6b20d0d086adab3ef375483e2ca98573496c2a19f6978f1ef620dad710c5d909/financial.json",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "fetch",
+      "contentType": "text/plain; charset=utf-8",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1200
+      },
+      "url": "https://raw.githubusercontent.com/irewon1-lgtm/Kook/kr4-pc-site/data/generations/6b20d0d086adab3ef375483e2ca98573496c2a19f6978f1ef620dad710c5d909/valuations.json",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "fetch",
+      "contentType": "text/plain; charset=utf-8",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1200
+      },
+      "url": "https://raw.githubusercontent.com/irewon1-lgtm/Kook/kr4-pc-site/data/generations/6b20d0d086adab3ef375483e2ca98573496c2a19f6978f1ef620dad710c5d909/candidates.json",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "fetch",
+      "contentType": "text/plain; charset=utf-8",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1200
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/assets/noto-sans-kr-110-wght-normal-BatyA0y1.woff2",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "font",
+      "contentType": "application/font-woff2",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1200
+      },
+      "url": "https://raw.githubusercontent.com/irewon1-lgtm/Kook/kr4-pc-site/data/generations/6b20d0d086adab3ef375483e2ca98573496c2a19f6978f1ef620dad710c5d909/details/005930.json",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "fetch",
+      "contentType": "text/plain; charset=utf-8",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1200
+      },
+      "url": "https://raw.githubusercontent.com/irewon1-lgtm/Kook/kr4-pc-site/data/generations/6b20d0d086adab3ef375483e2ca98573496c2a19f6978f1ef620dad710c5d909/prices/005930.json",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "fetch",
+      "contentType": "text/plain; charset=utf-8",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1200
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/assets/noto-sans-kr-56-wght-normal-zEUZiIy5.woff2",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "font",
+      "contentType": "application/font-woff2",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1200
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/assets/noto-sans-kr-96-wght-normal-DwqLWOxK.woff2",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "font",
+      "contentType": "application/font-woff2",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1200
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/assets/noto-sans-kr-103-wght-normal-Qv2qVnZD.woff2",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "font",
+      "contentType": "application/font-woff2",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1200
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/assets/noto-sans-kr-98-wght-normal-DMGuWyzz.woff2",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "font",
+      "contentType": "application/font-woff2",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1200
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/assets/noto-sans-kr-107-wght-normal-VE3OiHzf.woff2",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "font",
+      "contentType": "application/font-woff2",
+      "cors": "*"
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1200
+      },
+      "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/assets/noto-sans-kr-70-wght-normal-Dyhbe45t.woff2",
+      "status": 200,
+      "method": "GET",
+      "resourceType": "font",
+      "contentType": "application/font-woff2",
+      "cors": "*"
+    }
+  ],
+  "pageErrors": [],
+  "failures": [
+    {
+      "viewport": {
+        "width": 1365,
+        "height": 853
+      },
+      "url": "https://server.ethicalads.io/api/v1/decision/?publisher=githackcom&ad_types=image-v1&div_ids=githack-other-ad&callback=ad_1793929511150_340948&keywords=&campaign_types=paid%7Cpublisher-house%7Ccommunity%7Chouse&format=jsonp&client_version=2.5.0&placement_index=0&url=https%3A%2F%2Frawcdn.githack.com%2Firewon1-lgtm%2FKook%2F943156dbe4dbdddd16a684ac573d2da1c828e487%2Findex.html",
+      "error": "net::ERR_BLOCKED_BY_RESPONSE.NotSameOrigin"
+    },
+    {
+      "viewport": {
+        "width": 1365,
+        "height": 853
+      },
+      "url": "https://media.ethicalads.io/abp/px.gif?ch=1&rn=9.870623235861533",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "viewport": {
+        "width": 1365,
+        "height": 853
+      },
+      "url": "https://media.ethicalads.io/abp/px.gif?ch=2&rn=9.870623235861533",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1200
+      },
+      "url": "https://srv.carbonads.net/ads/CEADPK3U.json?segment=placement:rawgithackcom&v=true",
+      "error": "net::ERR_ABORTED"
+    }
+  ]
+}

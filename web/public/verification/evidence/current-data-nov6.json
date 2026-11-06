@@ -1,0 +1,46 @@
+{
+  "kind": "ACTUAL_COMMITTED_NOV6_INPUT_METADATA",
+  "observedAt": "2026-11-06T03:54:02.843850+00:00",
+  "mainDataCommit": "d377f493fc4cc92fc748d6193e12980e27e21745",
+  "oracleSourceCommit": "e388ea2b7aa52843af5c0d32861cc0493bfe5f5a",
+  "snapshotDate": "2026-11-06",
+  "priceCutoffDate": "2026-11-05",
+  "universe": 2649,
+  "currentCoverage": {
+    "m01_available": 2561,
+    "m02_available": 2410,
+    "m03_available": 2620,
+    "m04_available": 2619,
+    "complete_count": 2370,
+    "ranked_count": 2370
+  },
+  "oldNov5Coverage": {
+    "m01_available": 2561,
+    "m02_available": 2410,
+    "m03_available": 2626,
+    "m04_available": 2619,
+    "complete_count": 2376,
+    "ranked_count": 2376
+  },
+  "additionalMissingPerCodes": [
+    "000500",
+    "025560",
+    "043340",
+    "109070",
+    "115530",
+    "356860"
+  ],
+  "currentAllCodesWithReason": [
+    "000500",
+    "001470",
+    "025560",
+    "043340",
+    "109070",
+    "115530",
+    "356860"
+  ],
+  "reason": "CORPORATE_ACTION_PER_XCHECK_PER_MISMATCH",
+  "rawQuantSha256": "910e3a69c58f7c3980f978213f4b6530e8c7383e5ac87cefd0ee49eb11148cbb",
+  "oracleManifestSha256": "39d6024f06000375154654bb2187b840f4838d5ccab0369a662ee31838188cf7",
+  "rankingComparisonScope": "All2649×15=39735 exact comparisons with identical current inputs; not an assertion that Nov5 and Nov6 ranks are unchanged."
+}

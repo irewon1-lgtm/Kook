@@ -1,0 +1,41 @@
+{
+  "kind": "ACTUAL_GHA_THREE_ISSUER_LIVE_CONTEXT_SOURCE_PROBE",
+  "runId": 42150459363,
+  "observedAt": "2026-11-06T02:39:33.0895418Z",
+  "sourceLog": "upstream-ci-pr42-extreme.log:461",
+  "rawLogSha256": "d40b5cbb13f51b2504107f159aa2458ed00a35bbd7f6c3c693e065e05ebf052b",
+  "result": {
+    "sources": [
+      {
+        "code": "005930",
+        "news_candidates": 10,
+        "naver_disclosure_candidates": 20,
+        "direct_dart_receipts": 30,
+        "dart_corp_code_found": true,
+        "dart_official_roots": 2
+      },
+      {
+        "code": "000660",
+        "news_candidates": 10,
+        "naver_disclosure_candidates": 20,
+        "direct_dart_receipts": 30,
+        "dart_corp_code_found": true,
+        "dart_official_roots": 2
+      },
+      {
+        "code": "000250",
+        "news_candidates": 10,
+        "naver_disclosure_candidates": 20,
+        "direct_dart_receipts": 30,
+        "dart_corp_code_found": true,
+        "dart_official_roots": 2
+      }
+    ],
+    "dart_receipt_sample": "20261106000022",
+    "dart_main_bytes": 31330,
+    "viewer_reference": true,
+    "corp_code_success": 3,
+    "official_root_success": 3
+  },
+  "scope": "005930/000660/000250 actual remote runner access; not fresh2649 evidence population, not allIR/source body success. Historical cloud executor503 is separate."
+}

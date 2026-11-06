@@ -1,0 +1,679 @@
+name: KR4 PC Web
+
+on:
+  pull_request:
+    paths:
+      - 'web/**'
+      - 'scripts/build_pc_publication.py'
+      - 'scripts/collect_pc_prices.py'
+      - 'scripts/compare_pc_price_oracle.py'
+      - 'scripts/export_pc_oracle.py'
+      - 'tests/test_pc_*.py'
+      - '.github/workflows/pc-web.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'web/**'
+      - 'evidence/real_quant_snapshot.json'
+      - 'evidence/financial_safety_snapshot.json'
+      - 'evidence/final_candidates.json'
+      - 'evidence/quarterly_history.json'
+      - 'app/src/main/java/com/krstock/v3/data/**'
+      - 'scripts/build_pc_publication.py'
+      - 'scripts/collect_pc_prices.py'
+      - 'scripts/compare_pc_price_oracle.py'
+      - 'scripts/export_pc_oracle.py'
+      - 'tests/test_pc_*.py'
+      - '.github/workflows/pc-web.yml'
+  workflow_dispatch:
+    inputs:
+      refresh_context:
+        description: 'Refresh all 2,649 original-source context observations (otherwise reuse verified cache)'
+        type: boolean
+        default: false
+  schedule:
+    - cron: '40 19 * * *'
+  # GITHUB_TOKEN / [skip ci] collector commits do not produce push builds.
+  # Always check out current main; never execute/download triggering-run artifacts.
+  workflow_run:
+    workflows:
+      - Collect Real KR4 Quant Snapshot
+      - KR4 Lite App Data Refresh
+      - KR4 Independent Financial Facts
+      - Apply Recent DART Fallback
+      - Refresh Real KOSPI Master
+      - Refresh Real KOSDAQ Master
+    types: [completed]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: kr4-pc-${{ github.event_name == 'pull_request' && github.event.pull_request.number || 'publication' }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    if: github.event_name != 'workflow_run' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_repository.full_name == github.repository)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+    timeout-minutes: 120
+    outputs:
+      source_commit: ${{ steps.source.outputs.commit }}
+    env:
+      KR4_ORACLE_DIR: ${{ github.workspace }}/.pc-work/oracle
+      KR4_PRICE_ORACLE_DIR: ${{ github.workspace }}/.pc-work/price-oracle
+      KR4_BASE_PATH: /${{ github.event.repository.name }}/
+    steps:
+      - name: Check out reviewed event source or latest main after collection
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_run' && 'main' || github.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Record the exact tested source commit
+        id: source
+        run: |
+          python - <<'PY'
+          import os, subprocess
+          from pathlib import Path
+          commit = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
+          with Path(os.environ['GITHUB_OUTPUT']).open('a') as output:
+              output.write('commit=' + commit + '\n')
+          PY
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Install Python and browser dependencies
+        run: |
+          python -m pip install requests pandas lxml pytest pytest-subtests
+          npm ci --prefix web
+          cd web
+          npx playwright install --with-deps chromium
+      - name: Restore actual price and context checkpoints
+        id: observations
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            .pc-cache/prices/index.json
+            .pc-cache/prices/prices
+            .pc-cache/prices/checkpoints
+            .pc-cache/context
+          key: kr4-pc-observations-v1-${{ github.ref_name }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            kr4-pc-observations-v1-${{ github.ref_name }}-
+            kr4-pc-observations-v1-main-
+      - name: Restore previous two immutable generations for open browser tabs
+        id: publications
+        uses: actions/cache/restore@v4
+        with:
+          path: web/public/data
+          key: kr4-pc-publication-v1-${{ github.ref_name }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            kr4-pc-publication-v1-${{ github.ref_name }}-
+            kr4-pc-publication-v1-main-
+      - name: Restore live dedicated-branch generations independently of cache eviction
+        run: |
+          python - <<'PY'
+          import subprocess, tarfile
+          from pathlib import Path
+          ref = 'refs/heads/kr4-pc-site'
+          found = subprocess.run(['git', 'ls-remote', '--exit-code', '--heads', 'origin', ref], capture_output=True, text=True)
+          if found.returncode == 2:
+              print('No kr4-pc-site branch yet; initial publication uses authenticated seeds/cache')
+          else:
+              if found.returncode:
+                  raise RuntimeError('Cannot inspect existing public site branch: ' + found.stderr)
+              subprocess.run(['git', 'fetch', '--no-tags', '--depth=1', 'origin', ref + ':refs/remotes/origin/kr4-pc-site'], check=True)
+              archive = Path('.pc-work/previous-public-data.tar')
+              archive.parent.mkdir(exist_ok=True)
+              with archive.open('wb') as output:
+                  subprocess.run(['git', 'archive', '--format=tar', 'refs/remotes/origin/kr4-pc-site', 'data'], stdout=output, check=True)
+              with tarfile.open(archive) as tar:
+                  for member in tar.getmembers():
+                      if member.isdir():
+                          continue
+                      name = member.name
+                      if not member.isfile() or not name.startswith('data/') or any(part in ('', '.', '..') for part in name.split('/')) or '\\' in name:
+                          raise ValueError('Unsafe previous public data member: ' + name)
+                      target = Path('web/public')/name
+                      target.parent.mkdir(parents=True, exist_ok=True)
+                      target.write_bytes(tar.extractfile(member).read())
+              archive.unlink()
+              print('Restored live branch data; builder authenticates every retained generation before publication')
+          PY
+      - name: Seed missing caches from authenticated, actual observations
+        run: |
+          python - <<'PY'
+          import hashlib, json, re, tarfile
+          from pathlib import Path
+          from scripts.build_pc_publication import validate_prices
+          quant = json.loads(Path('evidence/real_quant_snapshot.json').read_bytes())
+          cutoff = quant['price_cutoff_date_kst']
+          Path('.pc-work').mkdir(exist_ok=True)
+          with Path('.pc-work/dates.env').open('w') as output:
+              output.write('PC_CUTOFF=' + cutoff + '\n')
+          seed_manifest = json.loads(Path('web/data/seed-manifest.json').read_bytes())
+          for name, destination, pattern in [
+              ('pc-price-seed.tar.gz', Path('.pc-cache/prices'), r'index\.json|prices/[0-9A-Z]{6}\.json'),
+              ('context-seed.tar.gz', Path('.pc-cache/context'), r'[0-9A-Z]{6}\.json')]:
+              seed = Path('web/data') / name
+              if not seed.is_file():
+                  print(f'No seed {name}; collection/cache validation will determine availability')
+                  continue
+              expected = seed_manifest[name]
+              actual = dict(sha256=hashlib.sha256(seed.read_bytes()).hexdigest(), bytes=seed.stat().st_size)
+              if actual != expected:
+                  raise ValueError('Committed seed hash/size mismatch: ' + name)
+              destination.mkdir(parents=True, exist_ok=True)
+              with tarfile.open(seed, 'r:gz') as archive:
+                  for member in archive.getmembers():
+                      if not member.isfile() or not re.fullmatch(pattern, member.name):
+                          raise ValueError('Unsafe seed member: ' + member.name)
+                      target = destination / member.name
+                      if not target.exists():
+                          target.parent.mkdir(parents=True, exist_ok=True)
+                          target.write_bytes(archive.extractfile(member).read())
+              print(f'Seed {name} sha256={hashlib.sha256(seed.read_bytes()).hexdigest()}')
+          # Public seeds deliberately omit private checkpoints. Authenticate their
+          # complete index and contents before deriving local resume checkpoints.
+          root = Path('.pc-cache/prices')
+          if (root/'index.json').exists():
+              index = json.loads((root/'index.json').read_bytes())
+              from datetime import date
+              validate_prices(root, set(index['universe']), date.fromisoformat(index['requestedCutoffDate']))
+              for code, info in index['prices'].items():
+                  checkpoint = root/'checkpoints'/f'{code}.json'
+                  if not checkpoint.exists():
+                      checkpoint.parent.mkdir(parents=True, exist_ok=True)
+                      checkpoint.write_text(json.dumps(dict(sha256=info['sha256'], requestedCutoffDate=index['requestedCutoffDate'],
+                          lastAttemptAt=info['lastAttemptAt'], error=info['error'])))
+          PY
+          cat .pc-work/dates.env >> "$GITHUB_ENV"
+      - name: Publication and price corruption/regression tests
+        run: python -m pytest -q tests/test_pc_publication.py tests/test_pc_prices.py --junitxml=.pc-work/python-results.xml
+      - name: Export original Kotlin source engine
+        run: python scripts/export_pc_oracle.py --output .pc-work/oracle --context-cache .pc-cache/context
+      - name: Refresh all original-source context observations on schedule or request
+        if: github.event_name != 'pull_request' && (github.event_name == 'schedule' || inputs.refresh_context == true)
+        continue-on-error: true
+        timeout-minutes: 90
+        run: |
+          python scripts/export_pc_oracle.py --skip-build --output .pc-work/context-refresh \
+            --context-cache .pc-cache/context --collect-context --context-refresh \
+            --context-limit 2649 --context-concurrency 8
+      - name: Export final context and independent financial states
+        run: python scripts/export_pc_oracle.py --skip-build --output .pc-work/oracle-final --context-cache .pc-cache/context
+      - name: Collect actual completed daily prices incrementally
+        if: github.event_name != 'pull_request'
+        run: |
+          python scripts/collect_pc_prices.py --universe .pc-work/oracle-final/stocks.json \
+            --cutoff "$PC_CUTOFF" --workers 8 --output .pc-cache/prices > .pc-work/price-collection.jsonl
+      - name: Build authenticated generation and compressed offline bundle
+        run: |
+          python scripts/build_pc_publication.py --oracle .pc-work/oracle-final --prices .pc-cache/prices \
+            --output web/public/data --bundle web/src/generated/bundled.json | tee .pc-work/publication.json
+          echo "KR4_ORACLE_DIR=$GITHUB_WORKSPACE/.pc-work/oracle-final" >> "$GITHUB_ENV"
+      - name: Original JVM exporter contract and HOLD isolation
+        run: python -m pytest -q web/oracle/tests/test_export.py --junitxml=.pc-work/oracle-results.xml
+      - name: Authenticate and unpack recorded actual price-oracle observations
+        run: |
+          python - <<'PY'
+          import hashlib, json, re, tarfile
+          from pathlib import Path
+          source = Path('web/oracle/testdata')
+          provenance = json.loads((source/'price_observations_20261105.provenance.json').read_bytes())
+          if provenance['classification'] != 'REAL_MARKET_RECORDED' or provenance['storageSource'] != 'CACHE':
+              raise ValueError('Price oracle must retain its recorded actual-source classification')
+          archive = source/'price_observations_20261105.tar.gz'
+          expected_archive = provenance['archive']
+          if expected_archive['path'] != archive.name or archive.stat().st_size != expected_archive['bytes'] or hashlib.sha256(archive.read_bytes()).hexdigest() != expected_archive['sha256']:
+              raise ValueError('Recorded price-oracle archive SHA256/size mismatch')
+          expected_files = provenance['files']
+          verified = {}
+          with tarfile.open(archive, 'r:gz') as tar:
+              for member in tar.getmembers():
+                  name = member.name
+                  if not member.isfile() or not re.fullmatch(r'prices/[0-9A-Z]{6}\.json|raw/[0-9A-Z]{6}/[0-9a-f]{64}\.json', name) or name not in expected_files or name in verified:
+                      raise ValueError('Unsafe or undeclared recorded price member: ' + name)
+                  content = tar.extractfile(member).read()
+                  if dict(sha256=hashlib.sha256(content).hexdigest(), bytes=len(content)) != expected_files[name]:
+                      raise ValueError('Recorded price member hash mismatch: ' + name)
+                  verified[name] = content
+          if set(verified) != set(expected_files) or len(verified) != provenance['counts']['memberCount']:
+              raise ValueError('Recorded price member coverage mismatch')
+          output = Path('.pc-work/recorded-price-source')
+          for name, content in verified.items():
+              target = output/name
+              target.parent.mkdir(parents=True, exist_ok=True)
+              target.write_bytes(content)
+          print('Authenticated recorded price observations:', provenance['counts'])
+          PY
+      - name: Original Kotlin OHLCV projections against recorded actual observations
+        run: |
+          python scripts/compare_pc_price_oracle.py --skip-build \
+            --cache "$GITHUB_WORKSPACE/.pc-work/recorded-price-source" \
+            --output "$KR4_PRICE_ORACLE_DIR"
+      - name: Full original and PC Python regression suite
+        run: python -m pytest -q --junitxml=.pc-work/all-python-results.xml
+      - name: All original ranking masks and frontend unit tests
+        working-directory: web
+        run: npm test -- --reporter=default --reporter=junit --outputFile.junit=../.pc-work/web-results.xml
+      - name: Build portable senior PC site against stable published data
+        working-directory: web
+        env:
+          KR4_BASE_PATH: ./
+          VITE_KR4_DATA_BASE_URL: https://raw.githubusercontent.com/${{ github.repository }}/kr4-pc-site/data/
+        run: npm run build
+      - name: Chromium browser interactions and failure/recovery checks
+        working-directory: web
+        run: npm run test:e2e
+      - name: Enforce public site size and GitHub file limits
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          files = [p for p in Path('web/dist').rglob('*') if p.is_file()]
+          assert all(not p.is_symlink() and p.stat().st_size < 100_000_000 for p in files), 'GitHub publication file must be below 100 MB'
+          size = sum(p.stat().st_size for p in files)
+          assert size < 1_000_000_000, f'Pages site exceeds 1 GB: {size}'
+          print(f'Entire static site: {size:,} bytes (limit 1,000,000,000)')
+          PY
+      - name: Save resumable public observation cache
+        continue-on-error: true
+        if: success() && github.event_name != 'pull_request'
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            .pc-cache/prices/index.json
+            .pc-cache/prices/prices
+            .pc-cache/prices/checkpoints
+            .pc-cache/context
+          key: ${{ steps.observations.outputs.cache-primary-key }}
+      - name: Preserve actual reports and browser captures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kr4-pc-verification-${{ github.run_id }}
+          include-hidden-files: true
+          retention-days: 14
+          path: |
+            .pc-work/*-results.xml
+            .pc-work/publication.json
+            .pc-work/price-collection.jsonl
+            .pc-work/price-oracle/*.json
+            web/playwright-report
+            web/test-results
+          if-no-files-found: warn
+      - name: Upload verified static site for branch and Pages
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: web/dist
+          retention-days: 1
+
+  publish:
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+      pages: read
+      actions: read
+    outputs:
+      site_commit: ${{ steps.site.outputs.site_commit }}
+      site_url: ${{ steps.pages.outputs.preferred_site_url }}
+      branch_url: ${{ steps.site.outputs.branch_url }}
+      pages_enabled: ${{ steps.pages.outputs.enabled }}
+    steps:
+      - name: Check out exact tested source for authentication and verification helpers
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.build.outputs.source_commit }}
+          fetch-depth: 1
+      - name: Download verified compiled static site
+        uses: actions/download-artifact@v4
+        with:
+          name: github-pages
+          path: .pc-pages
+      - name: Extract verified compiled artifact without workflows or links
+        run: |
+          python - <<'PY'
+          import tarfile
+          from pathlib import Path
+          output = Path('.pc-site-dist')
+          with tarfile.open('.pc-pages/artifact.tar') as tar:
+              for member in tar.getmembers():
+                  name = member.name.removeprefix('./')
+                  if member.isdir():
+                      continue
+                  if not member.isfile() or not name or any(part in ('', '.', '..', '.git', '.github') for part in name.split('/')) or '\\' in name:
+                      raise ValueError('Unsafe compiled site path: ' + name)
+                  if member.size >= 100_000_000:
+                      raise ValueError('GitHub publication file exceeds 100 MB: ' + name)
+                  target = output/name
+                  target.parent.mkdir(parents=True, exist_ok=True)
+                  target.write_bytes(tar.extractfile(member).read())
+          if not (output/'index.html').is_file():
+              raise ValueError('Compiled site has no index.html')
+          PY
+      - name: Publish compiled site only to the dedicated public branch
+        id: site
+        env:
+          PC_SITE_DIR: ${{ github.workspace }}/.pc-site-dist
+        run: |
+          python - <<'PY'
+          import json, os, shutil, subprocess
+          from pathlib import Path
+          from scripts.build_pc_publication import validate_retained_generation
+          root = Path.cwd()
+          source = Path(os.environ['PC_SITE_DIR']).resolve()
+          data = source/'data'
+          manifest = json.loads((data/'manifest.json').read_bytes())
+          history = json.loads((data/'publication-history.json').read_bytes())
+          if not 1 <= len(history) <= 3 or len(set(history)) != len(history) or history[0] != manifest['generationId']:
+              raise ValueError('Invalid compiled generation retention history')
+          for generation in history:
+              validate_retained_generation(data, generation)
+          if (data/'manifest.json').read_bytes() != (data/manifest['basePath']/'manifest.json').read_bytes():
+              raise ValueError('Compiled current manifest differs from immutable generation')
+          for path in source.rglob('*'):
+              if path.is_symlink() or any(part in ('.git', '.github') for part in path.relative_to(source).parts):
+                  raise ValueError('Compiled artifact contains repository internals or links')
+              if path.is_file() and path.stat().st_size >= 100_000_000:
+                  raise ValueError('Compiled artifact file exceeds GitHub limit')
+          def git(*args, cwd=root, check=True):
+              return subprocess.run(['git', *args], cwd=cwd, text=True, capture_output=True, check=check)
+          ref = 'refs/heads/kr4-pc-site'
+          found = git('ls-remote', '--exit-code', '--heads', 'origin', ref, check=False)
+          if found.returncode not in (0, 2):
+              raise RuntimeError('Cannot inspect dedicated publication branch: ' + found.stderr)
+          worktree = root/'.pc-site-publish'
+          if found.returncode == 0:
+              git('fetch', '--no-tags', '--depth=1', 'origin', ref + ':refs/remotes/origin/kr4-pc-site')
+              git('worktree', 'add', '--detach', str(worktree), 'refs/remotes/origin/kr4-pc-site')
+          else:
+              git('worktree', 'add', '--detach', str(worktree), 'HEAD')
+              git('checkout', '--orphan', 'kr4-pc-site', cwd=worktree)
+          for path in worktree.iterdir():
+              if path.name == '.git':
+                  continue
+              if path.is_dir() and not path.is_symlink():
+                  shutil.rmtree(path)
+              else:
+                  path.unlink()
+          shutil.copytree(source, worktree, dirs_exist_ok=True)
+          (worktree/'.nojekyll').touch()
+          git('config', 'user.name', 'github-actions[bot]', cwd=worktree)
+          git('config', 'user.email', '41898282+github-actions[bot]@users.noreply.github.com', cwd=worktree)
+          git('add', '--all', '--', '.', cwd=worktree)
+          changed = git('diff', '--cached', '--quiet', cwd=worktree, check=False)
+          if changed.returncode not in (0, 1):
+              raise RuntimeError('Cannot compare compiled publication tree')
+          if changed.returncode == 1:
+              git('commit', '-m', 'Publish verified KR4 PC static site', cwd=worktree)
+              git('push', 'origin', 'HEAD:' + ref, cwd=worktree)
+          commit = git('rev-parse', 'HEAD', cwd=worktree).stdout.strip()
+          repository = os.environ['GITHUB_REPOSITORY']
+          url = f'https://github.com/{repository}/tree/{commit}'
+          report = dict(siteCommit=commit, branchUrl=url, changed=changed.returncode == 1,
+              dataBaseUrl=f'https://raw.githubusercontent.com/{repository}/kr4-pc-site/data/',
+              status='BRANCH_PUBLISHED', publicBrowserVerification='NOT_RUN_BY_PUBLISHER')
+          reports = root/'.pc-publish'
+          reports.mkdir(exist_ok=True)
+          (reports/'branch-publication.json').write_text(json.dumps(report, indent=2) + '\n')
+          with Path(os.environ['GITHUB_OUTPUT']).open('a') as output:
+              output.write(f'site_commit={commit}\nbranch_url={url}\n')
+          with Path(os.environ['GITHUB_STEP_SUMMARY']).open('a') as summary:
+              summary.write(f'Compiled site branch published: [{commit}]({url}). Public browser verification remains separate.\n')
+          print(json.dumps(report))
+          PY
+      - name: Prepare optional generation cache after successful branch publication
+        continue-on-error: true
+        run: |
+          python - <<'PY'
+          import shutil
+          from pathlib import Path
+          target = Path('web/public/data')
+          if target.exists():
+              shutil.rmtree(target)
+          shutil.copytree('.pc-site-dist/data', target)
+          PY
+      - name: Save generation cache after successful public branch publication
+        continue-on-error: true
+        uses: actions/cache/save@v4
+        with:
+          path: web/public/data
+          key: kr4-pc-publication-v1-${{ github.ref_name }}-${{ github.run_id }}-${{ github.run_attempt }}
+      - name: Inspect existing Pages configuration without requesting enablement
+        id: pages
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let evidence = {endpoint: `https://api.github.com/repos/${context.repo.owner}/${context.repo.repo}/pages`, enabled: false};
+            try {
+              const response = await github.request('GET /repos/{owner}/{repo}/pages', context.repo);
+              evidence = {...evidence, httpStatus: response.status, buildType: response.data.build_type,
+                htmlUrl: response.data.html_url, enabled: response.status === 200 && response.data.build_type === 'workflow'};
+              if (!evidence.enabled) evidence.skipReason = 'Existing Pages site is not configured for Actions deployment';
+            } catch (error) {
+              evidence.httpStatus = error.status || null;
+              evidence.skipReason = `Pages unavailable to this token: ${error.message}`;
+            }
+            fs.mkdirSync('.pc-publish', {recursive: true});
+            fs.writeFileSync('.pc-publish/pages-status.json', JSON.stringify(evidence, null, 2) + '\n');
+            core.setOutput('enabled', String(evidence.enabled));
+            core.setOutput('preferred_site_url', evidence.enabled ? evidence.htmlUrl : '');
+            if (!evidence.enabled) core.warning('Official Pages deployment is unavailable; publication will fail after preserving the compiled-branch receipt and HTTP evidence.');
+            core.info(JSON.stringify(evidence));
+            await core.summary.addRaw(`Pages configuration HTTP ${evidence.httpStatus}; ${evidence.enabled ? 'Actions deployment configured; current UI is not yet deployed by this run' : evidence.skipReason}.`).write();
+      - name: Observe configured Pages before deployment and stable raw-data HTTP responses
+        continue-on-error: true
+        env:
+          PC_PAGES_URL: ${{ steps.pages.outputs.preferred_site_url }}
+        run: |
+          python - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          from urllib.error import HTTPError
+          from urllib.request import Request, urlopen
+          repository = os.environ['GITHUB_REPOSITORY']
+          observations = []
+          endpoints = [('stable-data', f'https://raw.githubusercontent.com/{repository}/kr4-pc-site/data/manifest.json')]
+          if os.environ.get('PC_PAGES_URL'):
+              endpoints.insert(0, ('configured-pages-before-deployment', os.environ['PC_PAGES_URL']))
+          for label, url in endpoints:
+              result = dict(label=label, url=url, purpose='HTTP observation only; this run has not deployed its Pages UI yet')
+              try:
+                  try:
+                      response = urlopen(Request(url, headers={'User-Agent': 'KR4-PC-Publication'}), timeout=30)
+                  except HTTPError as error:
+                      response = error
+                  with response:
+                      content = response.read(5_000_001)
+                      result.update(httpStatus=response.status, contentType=response.headers.get('content-type'),
+                          cacheControl=response.headers.get('cache-control'), allowOrigin=response.headers.get('access-control-allow-origin'),
+                          bytes=len(content), sha256=hashlib.sha256(content).hexdigest())
+              except Exception as error:
+                  result['error'] = f'{type(error).__name__}: {error}'
+              observations.append(result)
+          Path('.pc-publish/http-observations.json').write_text(json.dumps(observations, indent=2) + '\n')
+          print(json.dumps(observations))
+          PY
+      - name: Record Windows suite skip for data-only refreshes
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_run'
+        run: |
+          echo 'Native Windows Chrome/Edge full browser suites are skipped for this data-only refresh. Publisher HTTP observations still run; a main push or manual dispatch runs the full native Windows suites.' >> "$GITHUB_STEP_SUMMARY"
+      - name: Preserve actual branch, Pages and public HTTP evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kr4-pc-publication-${{ github.run_id }}
+          include-hidden-files: true
+          retention-days: 14
+          path: .pc-publish
+          if-no-files-found: warn
+
+      - name: Require configured official Pages after preserving publication evidence
+        if: steps.pages.outputs.enabled != 'true'
+        run: |
+          echo 'Official GitHub Pages is not configured for Actions deployment. Compiled-branch receipt and available HTTP evidence were preserved; public-site publication has failed.' >&2
+          exit 1
+
+  deploy_pages:
+    if: ${{ always() && !cancelled() && github.event_name != 'pull_request' && needs.build.result == 'success' && needs.publish.result == 'success' && needs.publish.outputs.pages_enabled == 'true' }}
+    needs: [build, publish]
+    concurrency:
+      group: kr4-pc-pages-deployment
+      cancel-in-progress: false
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      page_url: ${{ steps.deployment.outputs.page_url }}
+      source_commit: ${{ needs.build.outputs.source_commit }}
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy verified site to configured official Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  windows_browsers:
+    name: Native Windows ${{ matrix.channel }} public-site verification
+    if: ${{ always() && !cancelled() && needs.deploy_pages.result == 'success' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch') }}
+    needs: [deploy_pages]
+    runs-on: windows-latest
+    timeout-minutes: 45
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        channel: [chrome, msedge]
+    env:
+      KR4_PUBLIC_URL: ${{ needs.deploy_pages.outputs.page_url }}
+      KR4_BROWSER_CHANNEL: ${{ matrix.channel }}
+      KR4_E2E_OUTPUT_DIR: test-results/runner-${{ matrix.channel }}
+      KR4_WINDOWS_EVIDENCE_DIR: test-results/windows-${{ matrix.channel }}
+    steps:
+      - name: Check out exact reviewed and built source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.deploy_pages.outputs.source_commit }}
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Install browser-test dependencies without local JVM fixtures
+        working-directory: web
+        run: npm ci
+      - name: Record native Windows and installed branded browser versions
+        working-directory: web
+        shell: pwsh
+        run: |
+          function Get-InstalledBrowser([string]$BrowserChannel) {
+            $relative = if ($BrowserChannel -eq 'chrome') { 'Google\Chrome\Application\chrome.exe' } else { 'Microsoft\Edge\Application\msedge.exe' }
+            $candidates = @($env:ProgramFiles, ${env:ProgramFiles(x86)}, $env:LOCALAPPDATA) | Where-Object { $_ } | ForEach-Object { Join-Path $_ $relative }
+            $binary = $candidates | Where-Object { Test-Path -LiteralPath $_ -PathType Leaf } | Select-Object -First 1
+            if (-not $binary) {
+              return [ordered]@{ channel = $BrowserChannel; installed = $false; searchedPaths = @($candidates) }
+            }
+            $version = (Get-Item -LiteralPath $binary).VersionInfo
+            return [ordered]@{
+              channel = $BrowserChannel; installed = $true; executablePath = $binary
+              productName = $version.ProductName; productVersion = $version.ProductVersion; fileVersion = $version.FileVersion
+              executableSha256 = (Get-FileHash -LiteralPath $binary -Algorithm SHA256).Hash.ToLowerInvariant()
+            }
+          }
+          New-Item -ItemType Directory -Force -Path $env:KR4_WINDOWS_EVIDENCE_DIR | Out-Null
+          $operatingSystem = Get-CimInstance Win32_OperatingSystem
+          $metadata = [ordered]@{
+            recordedAt = [DateTime]::UtcNow.ToString('o'); runnerOS = $env:RUNNER_OS
+            runnerImage = $env:ImageOS; runnerImageVersion = $env:ImageVersion
+            operatingSystem = [ordered]@{ caption = $operatingSystem.Caption; version = $operatingSystem.Version; buildNumber = $operatingSystem.BuildNumber; architecture = $operatingSystem.OSArchitecture }
+            selectedChannel = $env:KR4_BROWSER_CHANNEL; publicUrl = $env:KR4_PUBLIC_URL
+            physicalLaptopTested = $false; physicalLGGramTested = $false; windows11DesktopTested = $false
+            displayScaleMeasurement = 'CSS viewport/text profiles; no physical panel, desktop DPI or physical desktop zoom measurement'
+            browsers = @((Get-InstalledBrowser 'chrome'), (Get-InstalledBrowser 'msedge'))
+          }
+          $evidencePath = Join-Path $env:KR4_WINDOWS_EVIDENCE_DIR 'environment.json'
+          $metadata | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $evidencePath -Encoding utf8
+          $selected = $metadata.browsers | Where-Object { $_.channel -eq $env:KR4_BROWSER_CHANNEL }
+          if (-not $selected.installed) {
+            npx playwright install $env:KR4_BROWSER_CHANNEL
+            if ($LASTEXITCODE -ne 0) { throw 'Branded stable browser installation failed' }
+            $metadata.browsers = @((Get-InstalledBrowser 'chrome'), (Get-InstalledBrowser 'msedge'))
+            $metadata | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $evidencePath -Encoding utf8
+            $selected = $metadata.browsers | Where-Object { $_.channel -eq $env:KR4_BROWSER_CHANNEL }
+          }
+          if (-not $selected.installed) { throw 'Selected genuine Chrome/Edge executable is unavailable' }
+          Get-Content -LiteralPath $evidencePath
+      - name: Launch selected genuine browser on native Windows and preserve protocol evidence
+        working-directory: web
+        shell: pwsh
+        run: |
+          @'
+          import { chromium } from '@playwright/test';
+          import { mkdirSync, writeFileSync } from 'node:fs';
+          import { join } from 'node:path';
+          if (process.platform !== 'win32') throw Error('Native Windows evidence requires win32 execution');
+          const channel = process.env.KR4_BROWSER_CHANNEL;
+          if (!['chrome', 'msedge'].includes(channel)) throw Error('Expected an explicit genuine browser channel');
+          const browser = await chromium.launch({ channel, headless: true });
+          try {
+            const session = await browser.newBrowserCDPSession();
+            const protocol = await session.send('Browser.getVersion');
+            const page = await browser.newPage();
+            const navigatorInfo = await page.evaluate(() => ({
+              userAgent: navigator.userAgent, platform: navigator.platform,
+              brands: navigator.userAgentData?.brands ?? null,
+            }));
+            const evidence = {
+              recordedAt: new Date().toISOString(), platform: process.platform, node: process.version,
+              channel, browserVersion: browser.version(), headless: true, nativeWindowsExecution: true,
+              protocol, navigator: navigatorInfo, publicUrl: process.env.KR4_PUBLIC_URL,
+              physicalLaptopTested: false, physicalLGGramTested: false, windows11DesktopTested: false,
+              scope: 'Actual Windows runner and branded browser; CSS viewport profiles do not measure a physical laptop or desktop display scaling',
+            };
+            mkdirSync(process.env.KR4_WINDOWS_EVIDENCE_DIR, { recursive: true });
+            writeFileSync(join(process.env.KR4_WINDOWS_EVIDENCE_DIR, 'browser-launch.json'), JSON.stringify(evidence, null, 2) + '\n');
+            console.log(JSON.stringify(evidence, null, 2));
+          } finally {
+            await browser.close();
+          }
+          '@ | node --input-type=module -
+      - name: Operate actual public UI, viewport profiles and controlled recovery in Windows browser
+        working-directory: web
+        shell: pwsh
+        run: npm run test:e2e
+      - name: Preserve unmodified Windows browser PNGs, metadata and test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kr4-pc-native-${{ runner.os }}-${{ matrix.channel }}-${{ github.run_id }}
+          retention-days: 14
+          path: |
+            web/playwright-report
+            web/test-results
+          if-no-files-found: warn

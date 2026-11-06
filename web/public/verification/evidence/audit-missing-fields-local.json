@@ -1,0 +1,1992 @@
+{
+  "status": "PASS",
+  "classification": "LOCAL_BROWSER_READ_ONLY_AUDIT_SUPPLEMENT",
+  "source": "genuine authenticated six-issuer generation",
+  "runnerPlatform": "linux",
+  "publicVerified": false,
+  "nativeWindowsVerified": false,
+  "physicalLgGramVerified": false,
+  "results": [
+    {
+      "code": "005930",
+      "generation": "d67f91af44c21fa9cb1911fe5625190f4711b07d875c602ff9e86ff32687fc21",
+      "detailSha256": "fea8028da2371094fdc46c905f4fabaad8706fde388ffd981e8256057ecd0e2e",
+      "checks": 70,
+      "checked": [
+        {
+          "pointer": "summary.issuerId",
+          "actual": "005930",
+          "assertion": "original joined identity equals visible company context"
+        },
+        {
+          "pointer": "history.issuerId",
+          "actual": "005930",
+          "assertion": "original joined identity equals visible company context"
+        },
+        {
+          "pointer": "evidence.issuerId",
+          "actual": "005930",
+          "assertion": "original joined identity equals visible company context"
+        },
+        {
+          "pointer": "financial.issuerId",
+          "actual": "005930",
+          "assertion": "original joined identity equals visible company context"
+        },
+        {
+          "pointer": "summary.status",
+          "actual": "실데이터"
+        },
+        {
+          "pointer": "summary.isCompositeComplete",
+          "actual": "4지표 완성 · 순위 산출 가능"
+        },
+        {
+          "pointer": "summary.m01RevGrowth.id",
+          "actual": "M01 · 성장"
+        },
+        {
+          "pointer": "summary.m02OpMargin.id",
+          "actual": "M02 · 수익성"
+        },
+        {
+          "pointer": "summary.m03Per.id",
+          "actual": "M03 · 가치"
+        },
+        {
+          "pointer": "summary.m04Price6m.id",
+          "actual": "M04 · 흐름"
+        },
+        {
+          "pointer": "financial.facts.reconciliationError",
+          "label": "정정 대조 오류",
+          "expected": "기록된 오류 없음",
+          "actual": "기록된 오류 없음"
+        },
+        {
+          "pointer": "history.comparisonScope",
+          "label": "분기 비교 회계범위",
+          "expected": "CFS",
+          "actual": "CFS"
+        },
+        {
+          "pointer": "history.hasFourQuarters",
+          "label": "4분기 비교 가능",
+          "expected": "예 (true)",
+          "actual": "예 (true)"
+        },
+        {
+          "pointer": "history.hasEightQuarters",
+          "label": "8분기 비교 가능",
+          "expected": "예 (true)",
+          "actual": "예 (true)"
+        },
+        {
+          "pointer": "history.latestTargetPoint.period",
+          "label": "분기",
+          "expected": "2026Q2",
+          "actual": "2026Q2"
+        },
+        {
+          "pointer": "history.latestTargetPoint.fiscalYear",
+          "label": "회계연도",
+          "expected": "2026",
+          "actual": "2026"
+        },
+        {
+          "pointer": "history.latestTargetPoint.quarter",
+          "label": "분기 번호",
+          "expected": "2",
+          "actual": "2"
+        },
+        {
+          "pointer": "history.latestTargetPoint.revenue",
+          "label": "매출 원본 (원)",
+          "expected": "171499470000000",
+          "actual": "171499470000000"
+        },
+        {
+          "pointer": "history.latestTargetPoint.operatingIncome",
+          "label": "영업이익 원본 (원)",
+          "expected": "89492412000000",
+          "actual": "89492412000000"
+        },
+        {
+          "pointer": "history.latestTargetPoint.operatingMargin",
+          "label": "영업이익률 (%)",
+          "expected": "52.182326",
+          "actual": "52.182326"
+        },
+        {
+          "pointer": "history.latestTargetPoint.revenueYoY",
+          "label": "매출 전년비 (%)",
+          "expected": "129.995897",
+          "actual": "129.995897"
+        },
+        {
+          "pointer": "history.latestTargetPoint.revenueQoQ",
+          "label": "매출 전분기비 (%)",
+          "expected": "28.105668",
+          "actual": "28.105668"
+        },
+        {
+          "pointer": "history.latestTargetPoint.scope",
+          "label": "비교 범위",
+          "expected": "CFS",
+          "actual": "CFS"
+        },
+        {
+          "pointer": "history.latestTargetPoint.basis",
+          "label": "계산·판정 근거",
+          "expected": "DIRECT_3M",
+          "actual": "DIRECT_3M"
+        },
+        {
+          "pointer": "history.latestTargetPoint.sourceFile",
+          "label": "원본 파일",
+          "expected": "2026_2Q_PL_20261105030738.zip",
+          "actual": "2026_2Q_PL_20261105030738.zip"
+        },
+        {
+          "pointer": "history.latestTargetPoint.reason",
+          "label": "확인 사유",
+          "expected": "미확보",
+          "actual": "미확보"
+        },
+        {
+          "pointer": "history.loaded",
+          "label": "자료 상태",
+          "expected": "수신 완료",
+          "actual": "수신 완료"
+        },
+        {
+          "pointer": "history.availableQuarterCount",
+          "label": "비교 가능 분기",
+          "expected": "8개",
+          "actual": "8개"
+        },
+        {
+          "pointer": "history.hasTrailingGap",
+          "label": "최신 분기 결측",
+          "expected": "없음",
+          "actual": "없음"
+        },
+        {
+          "pointer": "history.error",
+          "label": "연결 상태",
+          "expected": "기록된 오류 없음",
+          "actual": "기록된 오류 없음"
+        },
+        {
+          "pointer": "evidence.primarySourceCount",
+          "label": "수록된 1차 출처",
+          "expected": "24건",
+          "actual": "24건"
+        },
+        {
+          "pointer": "evidence.error",
+          "label": "최근 근거 연결 상태",
+          "expected": "official=official=IllegalStateException",
+          "actual": "official=official=IllegalStateException"
+        },
+        {
+          "pointer": "evidence.disclosures.0.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.1.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.2.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.3.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.4.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.5.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.6.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.7.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.8.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.9.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.10.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.11.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.12.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.13.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.14.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.15.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.16.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.17.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.18.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.19.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.20.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.21.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.22.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.23.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.news.0.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.1.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.2.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.3.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.4.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.5.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.6.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.7.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.8.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.9.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "sourceStates.context.categories.news.loaded",
+          "label": "자료 수신 완료",
+          "expected": "예 (true)",
+          "actual": "예 (true)"
+        },
+        {
+          "pointer": "sourceStates.context.categories.disclosures.loaded",
+          "label": "자료 수신 완료",
+          "expected": "예 (true)",
+          "actual": "예 (true)"
+        },
+        {
+          "pointer": "sourceStates.context.categories.ir.loaded",
+          "label": "자료 수신 완료",
+          "expected": "예 (true)",
+          "actual": "예 (true)"
+        },
+        {
+          "pointer": "sourceStates.context.categories.official.loaded",
+          "label": "자료 수신 완료",
+          "expected": "예 (true)",
+          "actual": "예 (true)"
+        }
+      ]
+    },
+    {
+      "code": "000020",
+      "generation": "d67f91af44c21fa9cb1911fe5625190f4711b07d875c602ff9e86ff32687fc21",
+      "detailSha256": "0e8455606803a29c999e1ad406d40565fd909a43421d7fc95f14882af393fc06",
+      "checks": 70,
+      "checked": [
+        {
+          "pointer": "summary.issuerId",
+          "actual": "000020",
+          "assertion": "original joined identity equals visible company context"
+        },
+        {
+          "pointer": "history.issuerId",
+          "actual": "000020",
+          "assertion": "original joined identity equals visible company context"
+        },
+        {
+          "pointer": "evidence.issuerId",
+          "actual": "000020",
+          "assertion": "original joined identity equals visible company context"
+        },
+        {
+          "pointer": "financial.issuerId",
+          "actual": "000020",
+          "assertion": "original joined identity equals visible company context"
+        },
+        {
+          "pointer": "summary.status",
+          "actual": "실데이터"
+        },
+        {
+          "pointer": "summary.isCompositeComplete",
+          "actual": "4지표 완성 · 순위 산출 가능"
+        },
+        {
+          "pointer": "summary.m01RevGrowth.id",
+          "actual": "M01 · 성장"
+        },
+        {
+          "pointer": "summary.m02OpMargin.id",
+          "actual": "M02 · 수익성"
+        },
+        {
+          "pointer": "summary.m03Per.id",
+          "actual": "M03 · 가치"
+        },
+        {
+          "pointer": "summary.m04Price6m.id",
+          "actual": "M04 · 흐름"
+        },
+        {
+          "pointer": "financial.facts.reconciliationError",
+          "label": "정정 대조 오류",
+          "expected": "기록된 오류 없음",
+          "actual": "기록된 오류 없음"
+        },
+        {
+          "pointer": "history.comparisonScope",
+          "label": "분기 비교 회계범위",
+          "expected": "CFS",
+          "actual": "CFS"
+        },
+        {
+          "pointer": "history.hasFourQuarters",
+          "label": "4분기 비교 가능",
+          "expected": "예 (true)",
+          "actual": "예 (true)"
+        },
+        {
+          "pointer": "history.hasEightQuarters",
+          "label": "8분기 비교 가능",
+          "expected": "예 (true)",
+          "actual": "예 (true)"
+        },
+        {
+          "pointer": "history.latestTargetPoint.period",
+          "label": "분기",
+          "expected": "2026Q2",
+          "actual": "2026Q2"
+        },
+        {
+          "pointer": "history.latestTargetPoint.fiscalYear",
+          "label": "회계연도",
+          "expected": "2026",
+          "actual": "2026"
+        },
+        {
+          "pointer": "history.latestTargetPoint.quarter",
+          "label": "분기 번호",
+          "expected": "2",
+          "actual": "2"
+        },
+        {
+          "pointer": "history.latestTargetPoint.revenue",
+          "label": "매출 원본 (원)",
+          "expected": "136932529614",
+          "actual": "136932529614"
+        },
+        {
+          "pointer": "history.latestTargetPoint.operatingIncome",
+          "label": "영업이익 원본 (원)",
+          "expected": "10289858450",
+          "actual": "10289858450"
+        },
+        {
+          "pointer": "history.latestTargetPoint.operatingMargin",
+          "label": "영업이익률 (%)",
+          "expected": "7.514546",
+          "actual": "7.514546"
+        },
+        {
+          "pointer": "history.latestTargetPoint.revenueYoY",
+          "label": "매출 전년비 (%)",
+          "expected": "9.524449",
+          "actual": "9.524449"
+        },
+        {
+          "pointer": "history.latestTargetPoint.revenueQoQ",
+          "label": "매출 전분기비 (%)",
+          "expected": "4.837536",
+          "actual": "4.837536"
+        },
+        {
+          "pointer": "history.latestTargetPoint.scope",
+          "label": "비교 범위",
+          "expected": "CFS",
+          "actual": "CFS"
+        },
+        {
+          "pointer": "history.latestTargetPoint.basis",
+          "label": "계산·판정 근거",
+          "expected": "DIRECT_3M",
+          "actual": "DIRECT_3M"
+        },
+        {
+          "pointer": "history.latestTargetPoint.sourceFile",
+          "label": "원본 파일",
+          "expected": "2026_2Q_PL_20261105030738.zip",
+          "actual": "2026_2Q_PL_20261105030738.zip"
+        },
+        {
+          "pointer": "history.latestTargetPoint.reason",
+          "label": "확인 사유",
+          "expected": "미확보",
+          "actual": "미확보"
+        },
+        {
+          "pointer": "history.loaded",
+          "label": "자료 상태",
+          "expected": "수신 완료",
+          "actual": "수신 완료"
+        },
+        {
+          "pointer": "history.availableQuarterCount",
+          "label": "비교 가능 분기",
+          "expected": "8개",
+          "actual": "8개"
+        },
+        {
+          "pointer": "history.hasTrailingGap",
+          "label": "최신 분기 결측",
+          "expected": "없음",
+          "actual": "없음"
+        },
+        {
+          "pointer": "history.error",
+          "label": "연결 상태",
+          "expected": "기록된 오류 없음",
+          "actual": "기록된 오류 없음"
+        },
+        {
+          "pointer": "evidence.primarySourceCount",
+          "label": "수록된 1차 출처",
+          "expected": "23건",
+          "actual": "23건"
+        },
+        {
+          "pointer": "evidence.error",
+          "label": "최근 근거 연결 상태",
+          "expected": "기록된 연결 오류 없음 · 분류별 상태는 아래에서 확인",
+          "actual": "기록된 연결 오류 없음 · 분류별 상태는 아래에서 확인"
+        },
+        {
+          "pointer": "evidence.disclosures.0.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.1.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.2.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.3.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.4.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.5.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.6.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.7.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.8.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.9.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.10.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.11.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.12.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.13.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.14.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.15.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.16.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.17.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.18.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.19.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.20.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.21.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.22.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.23.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.news.0.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.1.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.2.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.3.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.4.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.5.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.6.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.7.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.8.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.9.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "sourceStates.context.categories.news.loaded",
+          "label": "자료 수신 완료",
+          "expected": "예 (true)",
+          "actual": "예 (true)"
+        },
+        {
+          "pointer": "sourceStates.context.categories.disclosures.loaded",
+          "label": "자료 수신 완료",
+          "expected": "예 (true)",
+          "actual": "예 (true)"
+        },
+        {
+          "pointer": "sourceStates.context.categories.ir.loaded",
+          "label": "자료 수신 완료",
+          "expected": "예 (true)",
+          "actual": "예 (true)"
+        },
+        {
+          "pointer": "sourceStates.context.categories.official.loaded",
+          "label": "자료 수신 완료",
+          "expected": "예 (true)",
+          "actual": "예 (true)"
+        }
+      ]
+    },
+    {
+      "code": "003060",
+      "generation": "d67f91af44c21fa9cb1911fe5625190f4711b07d875c602ff9e86ff32687fc21",
+      "detailSha256": "a5179752a600df4915c116845d61b1e35770f284370031eb1d8961878e25efc8",
+      "checks": 70,
+      "checked": [
+        {
+          "pointer": "summary.issuerId",
+          "actual": "003060",
+          "assertion": "original joined identity equals visible company context"
+        },
+        {
+          "pointer": "history.issuerId",
+          "actual": "003060",
+          "assertion": "original joined identity equals visible company context"
+        },
+        {
+          "pointer": "evidence.issuerId",
+          "actual": "003060",
+          "assertion": "original joined identity equals visible company context"
+        },
+        {
+          "pointer": "financial.issuerId",
+          "actual": "003060",
+          "assertion": "original joined identity equals visible company context"
+        },
+        {
+          "pointer": "summary.status",
+          "actual": "실데이터"
+        },
+        {
+          "pointer": "summary.isCompositeComplete",
+          "actual": "4지표 완성 · 순위 산출 가능"
+        },
+        {
+          "pointer": "summary.m01RevGrowth.id",
+          "actual": "M01 · 성장"
+        },
+        {
+          "pointer": "summary.m02OpMargin.id",
+          "actual": "M02 · 수익성"
+        },
+        {
+          "pointer": "summary.m03Per.id",
+          "actual": "M03 · 가치"
+        },
+        {
+          "pointer": "summary.m04Price6m.id",
+          "actual": "M04 · 흐름"
+        },
+        {
+          "pointer": "financial.facts.reconciliationError",
+          "label": "정정 대조 오류",
+          "expected": "기록된 오류 없음",
+          "actual": "기록된 오류 없음"
+        },
+        {
+          "pointer": "history.comparisonScope",
+          "label": "분기 비교 회계범위",
+          "expected": "CFS",
+          "actual": "CFS"
+        },
+        {
+          "pointer": "history.hasFourQuarters",
+          "label": "4분기 비교 가능",
+          "expected": "예 (true)",
+          "actual": "예 (true)"
+        },
+        {
+          "pointer": "history.hasEightQuarters",
+          "label": "8분기 비교 가능",
+          "expected": "예 (true)",
+          "actual": "예 (true)"
+        },
+        {
+          "pointer": "history.latestTargetPoint.period",
+          "label": "분기",
+          "expected": "2026Q2",
+          "actual": "2026Q2"
+        },
+        {
+          "pointer": "history.latestTargetPoint.fiscalYear",
+          "label": "회계연도",
+          "expected": "2026",
+          "actual": "2026"
+        },
+        {
+          "pointer": "history.latestTargetPoint.quarter",
+          "label": "분기 번호",
+          "expected": "2",
+          "actual": "2"
+        },
+        {
+          "pointer": "history.latestTargetPoint.revenue",
+          "label": "매출 원본 (원)",
+          "expected": "23078438870",
+          "actual": "23078438870"
+        },
+        {
+          "pointer": "history.latestTargetPoint.operatingIncome",
+          "label": "영업이익 원본 (원)",
+          "expected": "-17459164920",
+          "actual": "-17459164920"
+        },
+        {
+          "pointer": "history.latestTargetPoint.operatingMargin",
+          "label": "영업이익률 (%)",
+          "expected": "-75.651412",
+          "actual": "-75.651412"
+        },
+        {
+          "pointer": "history.latestTargetPoint.revenueYoY",
+          "label": "매출 전년비 (%)",
+          "expected": "54.928001",
+          "actual": "54.928001"
+        },
+        {
+          "pointer": "history.latestTargetPoint.revenueQoQ",
+          "label": "매출 전분기비 (%)",
+          "expected": "6.745202",
+          "actual": "6.745202"
+        },
+        {
+          "pointer": "history.latestTargetPoint.scope",
+          "label": "비교 범위",
+          "expected": "CFS",
+          "actual": "CFS"
+        },
+        {
+          "pointer": "history.latestTargetPoint.basis",
+          "label": "계산·판정 근거",
+          "expected": "DIRECT_3M",
+          "actual": "DIRECT_3M"
+        },
+        {
+          "pointer": "history.latestTargetPoint.sourceFile",
+          "label": "원본 파일",
+          "expected": "2026_2Q_PL_20261105030738.zip",
+          "actual": "2026_2Q_PL_20261105030738.zip"
+        },
+        {
+          "pointer": "history.latestTargetPoint.reason",
+          "label": "확인 사유",
+          "expected": "미확보",
+          "actual": "미확보"
+        },
+        {
+          "pointer": "history.loaded",
+          "label": "자료 상태",
+          "expected": "수신 완료",
+          "actual": "수신 완료"
+        },
+        {
+          "pointer": "history.availableQuarterCount",
+          "label": "비교 가능 분기",
+          "expected": "8개",
+          "actual": "8개"
+        },
+        {
+          "pointer": "history.hasTrailingGap",
+          "label": "최신 분기 결측",
+          "expected": "없음",
+          "actual": "없음"
+        },
+        {
+          "pointer": "history.error",
+          "label": "연결 상태",
+          "expected": "기록된 오류 없음",
+          "actual": "기록된 오류 없음"
+        },
+        {
+          "pointer": "evidence.primarySourceCount",
+          "label": "수록된 1차 출처",
+          "expected": "24건",
+          "actual": "24건"
+        },
+        {
+          "pointer": "evidence.error",
+          "label": "최근 근거 연결 상태",
+          "expected": "official=official=IllegalStateException",
+          "actual": "official=official=IllegalStateException"
+        },
+        {
+          "pointer": "evidence.disclosures.0.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.1.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.2.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.3.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.4.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.5.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.6.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.7.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.8.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.9.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.10.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.11.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.12.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.13.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.14.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.15.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.16.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.17.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.18.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.19.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.20.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.21.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.22.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.23.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.news.0.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.1.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.2.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.3.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.4.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.5.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.6.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.7.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.8.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.9.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "sourceStates.context.categories.news.loaded",
+          "label": "자료 수신 완료",
+          "expected": "예 (true)",
+          "actual": "예 (true)"
+        },
+        {
+          "pointer": "sourceStates.context.categories.disclosures.loaded",
+          "label": "자료 수신 완료",
+          "expected": "예 (true)",
+          "actual": "예 (true)"
+        },
+        {
+          "pointer": "sourceStates.context.categories.ir.loaded",
+          "label": "자료 수신 완료",
+          "expected": "예 (true)",
+          "actual": "예 (true)"
+        },
+        {
+          "pointer": "sourceStates.context.categories.official.loaded",
+          "label": "자료 수신 완료",
+          "expected": "예 (true)",
+          "actual": "예 (true)"
+        }
+      ]
+    },
+    {
+      "code": "395400",
+      "generation": "d67f91af44c21fa9cb1911fe5625190f4711b07d875c602ff9e86ff32687fc21",
+      "detailSha256": "97332baa0de635d7d729a0736ccf1c2509fe7f820d77b97785838f4574be23ca",
+      "checks": 70,
+      "checked": [
+        {
+          "pointer": "summary.issuerId",
+          "actual": "395400",
+          "assertion": "original joined identity equals visible company context"
+        },
+        {
+          "pointer": "history.issuerId",
+          "actual": "395400",
+          "assertion": "original joined identity equals visible company context"
+        },
+        {
+          "pointer": "evidence.issuerId",
+          "actual": "395400",
+          "assertion": "original joined identity equals visible company context"
+        },
+        {
+          "pointer": "financial.issuerId",
+          "actual": "395400",
+          "assertion": "original joined identity equals visible company context"
+        },
+        {
+          "pointer": "summary.status",
+          "actual": "실데이터"
+        },
+        {
+          "pointer": "summary.isCompositeComplete",
+          "actual": "4지표 완성 · 순위 산출 가능"
+        },
+        {
+          "pointer": "summary.m01RevGrowth.id",
+          "actual": "M01 · 성장"
+        },
+        {
+          "pointer": "summary.m02OpMargin.id",
+          "actual": "M02 · 수익성"
+        },
+        {
+          "pointer": "summary.m03Per.id",
+          "actual": "M03 · 가치"
+        },
+        {
+          "pointer": "summary.m04Price6m.id",
+          "actual": "M04 · 흐름"
+        },
+        {
+          "pointer": "financial.facts.reconciliationError",
+          "label": "정정 대조 오류",
+          "expected": "기록된 오류 없음",
+          "actual": "기록된 오류 없음"
+        },
+        {
+          "pointer": "history.comparisonScope",
+          "label": "분기 비교 회계범위",
+          "expected": "미확보",
+          "actual": "미확보"
+        },
+        {
+          "pointer": "history.hasFourQuarters",
+          "label": "4분기 비교 가능",
+          "expected": "아니요 (false)",
+          "actual": "아니요 (false)"
+        },
+        {
+          "pointer": "history.hasEightQuarters",
+          "label": "8분기 비교 가능",
+          "expected": "아니요 (false)",
+          "actual": "아니요 (false)"
+        },
+        {
+          "pointer": "history.latestTargetPoint.period",
+          "label": "분기",
+          "expected": "2026Q2",
+          "actual": "2026Q2"
+        },
+        {
+          "pointer": "history.latestTargetPoint.fiscalYear",
+          "label": "회계연도",
+          "expected": "2026",
+          "actual": "2026"
+        },
+        {
+          "pointer": "history.latestTargetPoint.quarter",
+          "label": "분기 번호",
+          "expected": "2",
+          "actual": "2"
+        },
+        {
+          "pointer": "history.latestTargetPoint.revenue",
+          "label": "매출 원본 (원)",
+          "expected": "미확보",
+          "actual": "미확보"
+        },
+        {
+          "pointer": "history.latestTargetPoint.operatingIncome",
+          "label": "영업이익 원본 (원)",
+          "expected": "미확보",
+          "actual": "미확보"
+        },
+        {
+          "pointer": "history.latestTargetPoint.operatingMargin",
+          "label": "영업이익률 (%)",
+          "expected": "미확보",
+          "actual": "미확보"
+        },
+        {
+          "pointer": "history.latestTargetPoint.revenueYoY",
+          "label": "매출 전년비 (%)",
+          "expected": "미확보",
+          "actual": "미확보"
+        },
+        {
+          "pointer": "history.latestTargetPoint.revenueQoQ",
+          "label": "매출 전분기비 (%)",
+          "expected": "미확보",
+          "actual": "미확보"
+        },
+        {
+          "pointer": "history.latestTargetPoint.scope",
+          "label": "비교 범위",
+          "expected": "미확보",
+          "actual": "미확보"
+        },
+        {
+          "pointer": "history.latestTargetPoint.basis",
+          "label": "계산·판정 근거",
+          "expected": "미확보",
+          "actual": "미확보"
+        },
+        {
+          "pointer": "history.latestTargetPoint.sourceFile",
+          "label": "원본 파일",
+          "expected": "2026_2Q_PL_20261105030738.zip",
+          "actual": "2026_2Q_PL_20261105030738.zip"
+        },
+        {
+          "pointer": "history.latestTargetPoint.reason",
+          "label": "확인 사유",
+          "expected": "DART_NO_REVENUE",
+          "actual": "DART_NO_REVENUE"
+        },
+        {
+          "pointer": "history.loaded",
+          "label": "자료 상태",
+          "expected": "수신 완료",
+          "actual": "수신 완료"
+        },
+        {
+          "pointer": "history.availableQuarterCount",
+          "label": "비교 가능 분기",
+          "expected": "0개",
+          "actual": "0개"
+        },
+        {
+          "pointer": "history.hasTrailingGap",
+          "label": "최신 분기 결측",
+          "expected": "있음 · 이전 분기로 옮겨 해석하지 않음",
+          "actual": "있음 · 이전 분기로 옮겨 해석하지 않음"
+        },
+        {
+          "pointer": "history.error",
+          "label": "연결 상태",
+          "expected": "기록된 오류 없음",
+          "actual": "기록된 오류 없음"
+        },
+        {
+          "pointer": "evidence.primarySourceCount",
+          "label": "수록된 1차 출처",
+          "expected": "24건",
+          "actual": "24건"
+        },
+        {
+          "pointer": "evidence.error",
+          "label": "최근 근거 연결 상태",
+          "expected": "official=official=IllegalStateException",
+          "actual": "official=official=IllegalStateException"
+        },
+        {
+          "pointer": "evidence.disclosures.0.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.1.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.2.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.3.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.4.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.5.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.6.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.7.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.8.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.9.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.10.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.11.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.12.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.13.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.14.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.15.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.16.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.17.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.18.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.19.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.20.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.21.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.22.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.23.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.news.0.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.1.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.2.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.3.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.4.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.5.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.6.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.7.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.8.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.9.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "sourceStates.context.categories.news.loaded",
+          "label": "자료 수신 완료",
+          "expected": "예 (true)",
+          "actual": "예 (true)"
+        },
+        {
+          "pointer": "sourceStates.context.categories.disclosures.loaded",
+          "label": "자료 수신 완료",
+          "expected": "예 (true)",
+          "actual": "예 (true)"
+        },
+        {
+          "pointer": "sourceStates.context.categories.ir.loaded",
+          "label": "자료 수신 완료",
+          "expected": "예 (true)",
+          "actual": "예 (true)"
+        },
+        {
+          "pointer": "sourceStates.context.categories.official.loaded",
+          "label": "자료 수신 완료",
+          "expected": "예 (true)",
+          "actual": "예 (true)"
+        }
+      ]
+    },
+    {
+      "code": "474930",
+      "generation": "d67f91af44c21fa9cb1911fe5625190f4711b07d875c602ff9e86ff32687fc21",
+      "detailSha256": "11f80faa3a803fce188956b1f5429ebed5270a0f153cd04aa2ca766a07afc1b2",
+      "checks": 49,
+      "checked": [
+        {
+          "pointer": "summary.issuerId",
+          "actual": "474930",
+          "assertion": "original joined identity equals visible company context"
+        },
+        {
+          "pointer": "history.issuerId",
+          "actual": "474930",
+          "assertion": "original joined identity equals visible company context"
+        },
+        {
+          "pointer": "evidence.issuerId",
+          "actual": "474930",
+          "assertion": "original joined identity equals visible company context"
+        },
+        {
+          "pointer": "financial.issuerId",
+          "actual": "474930",
+          "assertion": "original joined identity equals visible company context"
+        },
+        {
+          "pointer": "summary.status",
+          "actual": "실데이터"
+        },
+        {
+          "pointer": "summary.isCompositeComplete",
+          "actual": "결측값은 추정하지 않고 보류"
+        },
+        {
+          "pointer": "summary.m01RevGrowth.id",
+          "actual": "M01 · 성장"
+        },
+        {
+          "pointer": "summary.m02OpMargin.id",
+          "actual": "M02 · 수익성"
+        },
+        {
+          "pointer": "summary.m03Per.id",
+          "actual": "M03 · 가치"
+        },
+        {
+          "pointer": "summary.m04Price6m.id",
+          "actual": "M04 · 흐름"
+        },
+        {
+          "pointer": "financial.facts.reconciliationError",
+          "label": "정정 대조 오류",
+          "expected": "기록된 오류 없음",
+          "actual": "기록된 오류 없음"
+        },
+        {
+          "pointer": "history.comparisonScope",
+          "label": "분기 비교 회계범위",
+          "expected": "OFS",
+          "actual": "OFS"
+        },
+        {
+          "pointer": "history.hasFourQuarters",
+          "label": "4분기 비교 가능",
+          "expected": "아니요 (false)",
+          "actual": "아니요 (false)"
+        },
+        {
+          "pointer": "history.hasEightQuarters",
+          "label": "8분기 비교 가능",
+          "expected": "아니요 (false)",
+          "actual": "아니요 (false)"
+        },
+        {
+          "pointer": "history.latestTargetPoint.period",
+          "label": "분기",
+          "expected": "2026Q2",
+          "actual": "2026Q2"
+        },
+        {
+          "pointer": "history.latestTargetPoint.fiscalYear",
+          "label": "회계연도",
+          "expected": "2026",
+          "actual": "2026"
+        },
+        {
+          "pointer": "history.latestTargetPoint.quarter",
+          "label": "분기 번호",
+          "expected": "2",
+          "actual": "2"
+        },
+        {
+          "pointer": "history.latestTargetPoint.revenue",
+          "label": "매출 원본 (원)",
+          "expected": "0",
+          "actual": "0"
+        },
+        {
+          "pointer": "history.latestTargetPoint.operatingIncome",
+          "label": "영업이익 원본 (원)",
+          "expected": "미확보",
+          "actual": "미확보"
+        },
+        {
+          "pointer": "history.latestTargetPoint.operatingMargin",
+          "label": "영업이익률 (%)",
+          "expected": "미확보",
+          "actual": "미확보"
+        },
+        {
+          "pointer": "history.latestTargetPoint.revenueYoY",
+          "label": "매출 전년비 (%)",
+          "expected": "미확보",
+          "actual": "미확보"
+        },
+        {
+          "pointer": "history.latestTargetPoint.revenueQoQ",
+          "label": "매출 전분기비 (%)",
+          "expected": "미확보",
+          "actual": "미확보"
+        },
+        {
+          "pointer": "history.latestTargetPoint.scope",
+          "label": "비교 범위",
+          "expected": "OFS",
+          "actual": "OFS"
+        },
+        {
+          "pointer": "history.latestTargetPoint.basis",
+          "label": "계산·판정 근거",
+          "expected": "DIRECT_3M",
+          "actual": "DIRECT_3M"
+        },
+        {
+          "pointer": "history.latestTargetPoint.sourceFile",
+          "label": "원본 파일",
+          "expected": "2026_2Q_PL_20261105030738.zip",
+          "actual": "2026_2Q_PL_20261105030738.zip"
+        },
+        {
+          "pointer": "history.latestTargetPoint.reason",
+          "label": "확인 사유",
+          "expected": "FINANCIAL_SECTOR_DEDICATED_KPI_REQUIRED",
+          "actual": "FINANCIAL_SECTOR_DEDICATED_KPI_REQUIRED"
+        },
+        {
+          "pointer": "history.loaded",
+          "label": "자료 상태",
+          "expected": "수신 완료",
+          "actual": "수신 완료"
+        },
+        {
+          "pointer": "history.availableQuarterCount",
+          "label": "비교 가능 분기",
+          "expected": "2개",
+          "actual": "2개"
+        },
+        {
+          "pointer": "history.hasTrailingGap",
+          "label": "최신 분기 결측",
+          "expected": "없음",
+          "actual": "없음"
+        },
+        {
+          "pointer": "history.error",
+          "label": "연결 상태",
+          "expected": "기록된 오류 없음",
+          "actual": "기록된 오류 없음"
+        },
+        {
+          "pointer": "evidence.primarySourceCount",
+          "label": "수록된 1차 출처",
+          "expected": "0건",
+          "actual": "0건"
+        },
+        {
+          "pointer": "evidence.error",
+          "label": "최근 근거 연결 상태",
+          "expected": "dart=IllegalStateException, official=DART_SEARCH_IllegalStateException",
+          "actual": "dart=IllegalStateException, official=DART_SEARCH_IllegalStateException"
+        },
+        {
+          "pointer": "evidence.disclosures.0.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.1.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.2.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.3.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.4.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.5.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.6.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.7.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.news.0.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.1.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.2.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.3.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.4.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "sourceStates.context.categories.news.loaded",
+          "label": "자료 수신 완료",
+          "expected": "예 (true)",
+          "actual": "예 (true)"
+        },
+        {
+          "pointer": "sourceStates.context.categories.disclosures.loaded",
+          "label": "자료 수신 완료",
+          "expected": "예 (true)",
+          "actual": "예 (true)"
+        },
+        {
+          "pointer": "sourceStates.context.categories.ir.loaded",
+          "label": "자료 수신 완료",
+          "expected": "예 (true)",
+          "actual": "예 (true)"
+        },
+        {
+          "pointer": "sourceStates.context.categories.official.loaded",
+          "label": "자료 수신 완료",
+          "expected": "예 (true)",
+          "actual": "예 (true)"
+        }
+      ]
+    },
+    {
+      "code": "142210",
+      "generation": "d67f91af44c21fa9cb1911fe5625190f4711b07d875c602ff9e86ff32687fc21",
+      "detailSha256": "e5a068c19868352409ce0b182e4df26477550f489ea1c9526e76fdbd3ac8c711",
+      "checks": 70,
+      "checked": [
+        {
+          "pointer": "summary.issuerId",
+          "actual": "142210",
+          "assertion": "original joined identity equals visible company context"
+        },
+        {
+          "pointer": "history.issuerId",
+          "actual": "142210",
+          "assertion": "original joined identity equals visible company context"
+        },
+        {
+          "pointer": "evidence.issuerId",
+          "actual": "142210",
+          "assertion": "original joined identity equals visible company context"
+        },
+        {
+          "pointer": "financial.issuerId",
+          "actual": "142210",
+          "assertion": "original joined identity equals visible company context"
+        },
+        {
+          "pointer": "summary.status",
+          "actual": "실데이터"
+        },
+        {
+          "pointer": "summary.isCompositeComplete",
+          "actual": "4지표 완성 · 순위 산출 가능"
+        },
+        {
+          "pointer": "summary.m01RevGrowth.id",
+          "actual": "M01 · 성장"
+        },
+        {
+          "pointer": "summary.m02OpMargin.id",
+          "actual": "M02 · 수익성"
+        },
+        {
+          "pointer": "summary.m03Per.id",
+          "actual": "M03 · 가치"
+        },
+        {
+          "pointer": "summary.m04Price6m.id",
+          "actual": "M04 · 흐름"
+        },
+        {
+          "pointer": "financial.facts.reconciliationError",
+          "label": "정정 대조 오류",
+          "expected": "기록된 오류 없음",
+          "actual": "기록된 오류 없음"
+        },
+        {
+          "pointer": "history.comparisonScope",
+          "label": "분기 비교 회계범위",
+          "expected": "CFS",
+          "actual": "CFS"
+        },
+        {
+          "pointer": "history.hasFourQuarters",
+          "label": "4분기 비교 가능",
+          "expected": "예 (true)",
+          "actual": "예 (true)"
+        },
+        {
+          "pointer": "history.hasEightQuarters",
+          "label": "8분기 비교 가능",
+          "expected": "예 (true)",
+          "actual": "예 (true)"
+        },
+        {
+          "pointer": "history.latestTargetPoint.period",
+          "label": "분기",
+          "expected": "2026Q2",
+          "actual": "2026Q2"
+        },
+        {
+          "pointer": "history.latestTargetPoint.fiscalYear",
+          "label": "회계연도",
+          "expected": "2026",
+          "actual": "2026"
+        },
+        {
+          "pointer": "history.latestTargetPoint.quarter",
+          "label": "분기 번호",
+          "expected": "2",
+          "actual": "2"
+        },
+        {
+          "pointer": "history.latestTargetPoint.revenue",
+          "label": "매출 원본 (원)",
+          "expected": "340100315048",
+          "actual": "340100315048"
+        },
+        {
+          "pointer": "history.latestTargetPoint.operatingIncome",
+          "label": "영업이익 원본 (원)",
+          "expected": "38540229358",
+          "actual": "38540229358"
+        },
+        {
+          "pointer": "history.latestTargetPoint.operatingMargin",
+          "label": "영업이익률 (%)",
+          "expected": "11.332018",
+          "actual": "11.332018"
+        },
+        {
+          "pointer": "history.latestTargetPoint.revenueYoY",
+          "label": "매출 전년비 (%)",
+          "expected": "65.638735",
+          "actual": "65.638735"
+        },
+        {
+          "pointer": "history.latestTargetPoint.revenueQoQ",
+          "label": "매출 전분기비 (%)",
+          "expected": "54.376089",
+          "actual": "54.376089"
+        },
+        {
+          "pointer": "history.latestTargetPoint.scope",
+          "label": "비교 범위",
+          "expected": "CFS",
+          "actual": "CFS"
+        },
+        {
+          "pointer": "history.latestTargetPoint.basis",
+          "label": "계산·판정 근거",
+          "expected": "DIRECT_3M",
+          "actual": "DIRECT_3M"
+        },
+        {
+          "pointer": "history.latestTargetPoint.sourceFile",
+          "label": "원본 파일",
+          "expected": "2026_2Q_PL_20261105030738.zip",
+          "actual": "2026_2Q_PL_20261105030738.zip"
+        },
+        {
+          "pointer": "history.latestTargetPoint.reason",
+          "label": "확인 사유",
+          "expected": "미확보",
+          "actual": "미확보"
+        },
+        {
+          "pointer": "history.loaded",
+          "label": "자료 상태",
+          "expected": "수신 완료",
+          "actual": "수신 완료"
+        },
+        {
+          "pointer": "history.availableQuarterCount",
+          "label": "비교 가능 분기",
+          "expected": "8개",
+          "actual": "8개"
+        },
+        {
+          "pointer": "history.hasTrailingGap",
+          "label": "최신 분기 결측",
+          "expected": "없음",
+          "actual": "없음"
+        },
+        {
+          "pointer": "history.error",
+          "label": "연결 상태",
+          "expected": "기록된 오류 없음",
+          "actual": "기록된 오류 없음"
+        },
+        {
+          "pointer": "evidence.primarySourceCount",
+          "label": "수록된 1차 출처",
+          "expected": "24건",
+          "actual": "24건"
+        },
+        {
+          "pointer": "evidence.error",
+          "label": "최근 근거 연결 상태",
+          "expected": "official=ir=IllegalStateException,official=IllegalStateException",
+          "actual": "official=ir=IllegalStateException,official=IllegalStateException"
+        },
+        {
+          "pointer": "evidence.disclosures.0.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.1.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.2.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.3.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.4.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.5.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.6.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.7.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.8.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.9.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.10.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.11.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.12.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.13.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.14.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.15.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.16.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.17.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.18.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.19.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.20.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.21.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.22.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.disclosures.23.kind",
+          "actual": "공시"
+        },
+        {
+          "pointer": "evidence.news.0.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.1.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.2.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.3.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.4.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.5.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.6.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.7.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.8.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "evidence.news.9.kind",
+          "actual": "뉴스"
+        },
+        {
+          "pointer": "sourceStates.context.categories.news.loaded",
+          "label": "자료 수신 완료",
+          "expected": "예 (true)",
+          "actual": "예 (true)"
+        },
+        {
+          "pointer": "sourceStates.context.categories.disclosures.loaded",
+          "label": "자료 수신 완료",
+          "expected": "예 (true)",
+          "actual": "예 (true)"
+        },
+        {
+          "pointer": "sourceStates.context.categories.ir.loaded",
+          "label": "자료 수신 완료",
+          "expected": "예 (true)",
+          "actual": "예 (true)"
+        },
+        {
+          "pointer": "sourceStates.context.categories.official.loaded",
+          "label": "자료 수신 완료",
+          "expected": "예 (true)",
+          "actual": "예 (true)"
+        }
+      ]
+    }
+  ],
+  "totalChecks": 399
+}

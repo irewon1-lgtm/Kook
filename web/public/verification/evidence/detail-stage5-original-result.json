@@ -1,0 +1,33 @@
+{
+  "browser": "155.0.8059.79",
+  "source": "oracle-stage5-candidates/details",
+  "results": [
+    {
+      "code": "005930",
+      "originalValuation": {
+        "code": "MID_PER",
+        "labelKo": "시장 중간 PER 구간",
+        "shortLabelKo": "중간 PER",
+        "percentile": 52.219162,
+        "changesRank": false
+      },
+      "sourceRank": 22,
+      "sourceComposite": 81.343478,
+      "summaryAndMetricsTabs": true,
+      "rankDisplayUnchanged": true,
+      "sourceSummaryUnchanged": true
+    },
+    {
+      "code": "003060",
+      "originalValuation": null,
+      "sourceRank": 1058,
+      "sourceComposite": 48.521606,
+      "summaryAndMetricsTabs": true,
+      "rankDisplayUnchanged": true,
+      "sourceSummaryUnchanged": true
+    }
+  ],
+  "all5OriginalFieldsVisible": true,
+  "noBrowserBandThresholds": true,
+  "errors": []
+}

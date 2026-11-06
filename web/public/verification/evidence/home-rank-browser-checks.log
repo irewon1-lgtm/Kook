@@ -1,0 +1,146 @@
+{
+  "result": "PASS",
+  "masks": 15,
+  "layouts": [
+    {
+      "width": 1536,
+      "font": 20,
+      "page": "ranking",
+      "scroll": 1536,
+      "selectors": "static",
+      "minAux": 18
+    },
+    {
+      "width": 1536,
+      "font": 25,
+      "page": "ranking",
+      "scroll": 1536,
+      "selectors": "static",
+      "minAux": 22.5
+    },
+    {
+      "width": 1366,
+      "font": 20,
+      "page": "ranking",
+      "scroll": 1366,
+      "selectors": "static",
+      "minAux": 18
+    },
+    {
+      "width": 1366,
+      "font": 25,
+      "page": "ranking",
+      "scroll": 1366,
+      "selectors": "static",
+      "minAux": 22.5
+    },
+    {
+      "width": 1365,
+      "font": 20,
+      "page": "ranking",
+      "scroll": 1365,
+      "selectors": "static",
+      "minAux": 18
+    },
+    {
+      "width": 1365,
+      "font": 25,
+      "page": "ranking",
+      "scroll": 1365,
+      "selectors": "static",
+      "minAux": 22.5
+    },
+    {
+      "width": 1280,
+      "font": 20,
+      "page": "ranking",
+      "scroll": 1280,
+      "selectors": "static",
+      "minAux": 18
+    },
+    {
+      "width": 1280,
+      "font": 25,
+      "page": "ranking",
+      "scroll": 1280,
+      "selectors": "static",
+      "minAux": 22.5
+    },
+    {
+      "width": 1024,
+      "font": 20,
+      "page": "ranking",
+      "scroll": 1024,
+      "selectors": "static",
+      "minAux": 18
+    },
+    {
+      "width": 1024,
+      "font": 25,
+      "page": "ranking",
+      "scroll": 1024,
+      "selectors": "static",
+      "minAux": 22.5
+    },
+    {
+      "width": 850,
+      "font": 20,
+      "page": "ranking",
+      "scroll": 850,
+      "selectors": "static",
+      "minAux": 18
+    },
+    {
+      "width": 850,
+      "font": 25,
+      "page": "ranking",
+      "scroll": 850,
+      "selectors": "static",
+      "minAux": 22.5
+    },
+    {
+      "width": 550,
+      "font": 20,
+      "page": "ranking",
+      "scroll": 550,
+      "selectors": "static",
+      "minAux": 18
+    },
+    {
+      "width": 550,
+      "font": 25,
+      "page": "ranking",
+      "scroll": 550,
+      "selectors": "static",
+      "minAux": 22.5
+    },
+    {
+      "width": 390,
+      "font": 20,
+      "page": "ranking",
+      "scroll": 390,
+      "selectors": "static",
+      "minAux": 18
+    },
+    {
+      "width": 390,
+      "font": 25,
+      "page": "ranking",
+      "scroll": 390,
+      "selectors": "static",
+      "minAux": 22.5
+    }
+  ],
+  "checks": [
+    "minimum1",
+    "globalKOSPIRank3",
+    "riskRank17",
+    "missingReasonsLastPage",
+    "pagination50and100",
+    "searchRetainsRank22",
+    "rowAction",
+    "resetEmptyResults",
+    "cacheFailureHonestSource"
+  ],
+  "errors": []
+}

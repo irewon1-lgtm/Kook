@@ -1,0 +1,42 @@
+{
+  "fixture": "oracle-context-provenance/details/000020.json",
+  "browser": "155.0.8059.79",
+  "source": "CACHE",
+  "checkedAt": "2026-11-05T23:49:15.152482134Z",
+  "actualNews": 10,
+  "actualDisclosures": 24,
+  "all34ItemObservationDatesMatched": true,
+  "actualBodies": [
+    {
+      "receipt": "20261002000407",
+      "characters": 728,
+      "exact": true
+    },
+    {
+      "receipt": "20260617000496",
+      "characters": 728,
+      "exact": true
+    }
+  ],
+  "emptyCategoriesMissing": true,
+  "noUniversalComplete": true,
+  "outerSection": true,
+  "viewports": [
+    {
+      "width": 1024,
+      "font": 22,
+      "scroll": 1024
+    },
+    {
+      "width": 1024,
+      "font": 26,
+      "scroll": 1024
+    },
+    {
+      "width": 1024,
+      "font": 30,
+      "scroll": 1024
+    }
+  ],
+  "errors": []
+}

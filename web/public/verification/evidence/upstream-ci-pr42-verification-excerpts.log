@@ -1,0 +1,5 @@
+2026-11-06T02:39:27.1772574Z 306 passed, 68 subtests passed in 11.49s
+2026-11-06T02:39:33.0895418Z CONTEXT_SOURCE_LIVE_PASS {"sources": [{"code": "005930", "news_candidates": 10, "naver_disclosure_candidates": 20, "direct_dart_receipts": 30, "dart_corp_code_found": true, "dart_official_roots": 2}, {"code": "000660", "news_candidates": 10, "naver_disclosure_candidates": 20, "direct_dart_receipts": 30, "dart_corp_code_found": true, "dart_official_roots": 2}, {"code": "000250", "news_candidates": 10, "naver_disclosure_candidates": 20, "direct_dart_receipts": 30, "dart_corp_code_found": true, "dart_official_roots": 2}], "dart_receipt_sample": "20261106000022", "dart_main_bytes": 31330, "viewer_reference": true, "corp_code_success": 3, "official_root_success": 3}
+2026-11-06T02:40:57.0895501Z BUILD SUCCESSFUL in 1m 8s
+2026-11-06T02:41:17.6951471Z BUILD SUCCESSFUL in 20s
+2026-11-06T02:48:52.4953768Z BUILD SUCCESSFUL in 6m 11s

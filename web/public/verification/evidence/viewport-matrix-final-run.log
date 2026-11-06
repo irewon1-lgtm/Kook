@@ -1,0 +1,41 @@
+
+Running 29 tests using 1 worker
+
+[1A[2K(node:159014) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:159014) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K[1/29] e2e/viewport-matrix.spec.ts:249:3 › real layout 2048x1280 DPR1.25 font22
+[1A[2K[2/29] e2e/viewport-matrix.spec.ts:249:3 › real layout 2048x1280 DPR1.25 font26
+[1A[2K[3/29] e2e/viewport-matrix.spec.ts:249:3 › real layout 2048x1280 DPR1.25 font30
+[1A[2K[4/29] e2e/viewport-matrix.spec.ts:249:3 › real layout 1638x1024 DPR1.25 font22
+[1A[2K[5/29] e2e/viewport-matrix.spec.ts:249:3 › real layout 1638x1024 DPR1.25 font26
+[1A[2K[6/29] e2e/viewport-matrix.spec.ts:249:3 › real layout 1638x1024 DPR1.25 font30
+[1A[2K[7/29] e2e/viewport-matrix.spec.ts:249:3 › real layout 1707x1067 DPR1.5 font22
+[1A[2K[8/29] e2e/viewport-matrix.spec.ts:249:3 › real layout 1707x1067 DPR1.5 font26
+[1A[2K[9/29] e2e/viewport-matrix.spec.ts:249:3 › real layout 1707x1067 DPR1.5 font30
+[1A[2K[10/29] e2e/viewport-matrix.spec.ts:249:3 › real layout 1365x853 DPR1.5 font22
+[1A[2K[11/29] e2e/viewport-matrix.spec.ts:249:3 › real layout 1365x853 DPR1.5 font26
+[1A[2K[12/29] e2e/viewport-matrix.spec.ts:249:3 › real layout 1365x853 DPR1.5 font30
+[1A[2K[13/29] e2e/viewport-matrix.spec.ts:249:3 › real layout 1536x960 DPR1.25 font22
+[1A[2K[14/29] e2e/viewport-matrix.spec.ts:249:3 › real layout 1536x960 DPR1.25 font26
+[1A[2K[15/29] e2e/viewport-matrix.spec.ts:249:3 › real layout 1536x960 DPR1.25 font30
+[1A[2K[16/29] e2e/viewport-matrix.spec.ts:249:3 › real layout 1229x768 DPR1.25 font22
+[1A[2K[17/29] e2e/viewport-matrix.spec.ts:249:3 › real layout 1229x768 DPR1.25 font26
+[1A[2K[18/29] e2e/viewport-matrix.spec.ts:249:3 › real layout 1229x768 DPR1.25 font30
+[1A[2K[19/29] e2e/viewport-matrix.spec.ts:249:3 › real layout 1280x800 DPR1.5 font22
+[1A[2K[20/29] e2e/viewport-matrix.spec.ts:249:3 › real layout 1280x800 DPR1.5 font26
+[1A[2K[21/29] e2e/viewport-matrix.spec.ts:249:3 › real layout 1280x800 DPR1.5 font30
+[1A[2K[22/29] e2e/viewport-matrix.spec.ts:249:3 › real layout 1024x640 DPR1.5 font22
+[1A[2K[23/29] e2e/viewport-matrix.spec.ts:249:3 › real layout 1024x640 DPR1.5 font26
+[1A[2K[24/29] e2e/viewport-matrix.spec.ts:249:3 › real layout 1024x640 DPR1.5 font30
+[1A[2K[25/29] e2e/viewport-matrix.spec.ts:249:3 › real layout 1366x768 DPR1 font22
+[1A[2K[26/29] e2e/viewport-matrix.spec.ts:249:3 › real layout 1366x768 DPR1 font26
+[1A[2K[27/29] e2e/viewport-matrix.spec.ts:249:3 › real layout 1366x768 DPR1 font30
+[1A[2K[28/29] e2e/viewport-matrix.spec.ts:359:3 › original canonical captures 1365x853
+[1A[2K[29/29] e2e/viewport-matrix.spec.ts:359:3 › original canonical captures 1920x1200
+[1A[2K  29 passed (4.4m)

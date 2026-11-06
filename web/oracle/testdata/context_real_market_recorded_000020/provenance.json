@@ -1,0 +1,11 @@
+{
+  "classification": "REAL_MARKET_RECORDED",
+  "issuerId": "000020",
+  "collector": "original ContextEvidenceRepository",
+  "collectedAt": "2026-11-05T23:49:15.152482134Z",
+  "sourcePath": "/workspace/kr4-pc-work/context-cache/000020.json",
+  "sha256": "da7463aefe8dcd25edd7392af6fc4662ccafcac9761484c158c1ed535da860b0",
+  "gzipSha256": "d9a16f656aa54f50a3ef8e9fcac02226523ac7704fd47d7ab9918af454d8e1ae",
+  "bytes": 26589,
+  "description": "Unchanged actual ContextEvidenceRepository observation: two genuine DART bodies and23 receipts; not LIVE or simulated provider data."
+}

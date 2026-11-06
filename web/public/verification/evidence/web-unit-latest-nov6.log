@@ -1,0 +1,28 @@
+
+> kr4-pc-web@1.0.0 test
+> vitest run
+
+
+ RUN  v3.2.4 /workspace/kr4-pc-web/web
+
+ ✓ tests/review-regressions.test.ts (2 tests) 1019ms
+   ✓ R1 candidate reception HOLD applies to detail and recovers only after a verified candidate transaction  537ms
+   ✓ R2 blocked storage plus offline refresh retains the newer genuinely received in-memory core  481ms
+ ✓ tests/oracle-parity.test.ts (16 tests) 1354ms
+   ✓ All 2,649 actual stocks × 15 original Kotlin ranking masks > is unchanged when every financial risk status changes independently  863ms
+ ✓ tests/price-oracle-parity.test.ts (229 tests) 143ms
+ ✓ tests/optional-stages.test.ts (2 tests) 614ms
+   ✓ receives the exact original Stage5 and candidate maps without client-side thresholds  345ms
+ ✓ tests/receiver.test.ts (14 tests) 1986ms
+   ✓ Independent optional financial failure and verified cache recovery > uses actual previous verified cache on network failure  503ms
+   ✓ Independent optional financial failure and verified cache recovery > does not call cached stock bytes LIVE merely because the manifest request succeeded  397ms
+ ✓ tests/format.test.ts (3 tests) 18ms
+ ✓ tests/chart.test.ts (27 tests) 78ms
+ ✓ tests/ranking.test.ts (8 tests) 5ms
+ ✓ tests/optional-ui-state.test.tsx (18 tests) 145ms
+
+ Test Files  9 passed (9)
+      Tests  319 passed (319)
+   Start at  03:40:16
+   Duration  2.98s (transform 468ms, setup 0ms, collect 1.42s, tests 5.36s, environment 1ms, prepare 530ms)
+

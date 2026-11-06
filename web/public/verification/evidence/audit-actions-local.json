@@ -1,0 +1,26 @@
+{
+  "status": "PASS",
+  "scope": "LOCAL_BROWSER_READ_ONLY_AUDIT_ACTION_SUPPLEMENT",
+  "runnerPlatform": "linux",
+  "controlled": "Only local preference writes are denied in a separate browser context; original stock publication unchanged",
+  "checks": [
+    "detail header search actually focuses mounted search input",
+    "actual browser back/forward preserves search, KOSPI filter and issuer",
+    "actual header bell opens More data status",
+    "actual coverage ring equals original manifest fraction; real success/attempt timestamps visible",
+    "CONTROLLED_LOCAL_PREF_STORAGE_DENIAL shows warning while actual data, favorite open/remove/origin and large text remain operable"
+  ],
+  "coverageRing": {
+    "expected": "89.7%",
+    "actual": "89.7%"
+  },
+  "observedStatusRows": [
+    "4지표 완성\n2,376 / 2,649종목",
+    "자료 기준\n재무 2026-11-05 · 주가 2026-11-05",
+    "최근 갱신\n2026-11-06 10:55 KST",
+    "최근 확인\n2026-11-06 10:55 KST"
+  ],
+  "publicVerified": false,
+  "nativeWindowsVerified": false,
+  "physicalLgGramVerified": false
+}

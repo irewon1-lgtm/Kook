@@ -1,0 +1,83 @@
+
+> kr4-pc-web@1.0.0 test
+> vitest run tests/chart.test.ts -t retains genuine recorded MISSING
+
+
+ RUN  v3.2.4 /workspace/kr4-pc-web/web
+
+ ❯ tests/chart.test.ts (27 tests | 1 failed | 26 skipped) 21ms
+   ↓ original calendar price semantics > uses Monday buckets across New Year and holidays, with actual first open and last close
+   ↓ original calendar price semantics > separates calendar months and leap February
+   ↓ original calendar price semantics > does not fill gaps, weekends or empty periods
+   ↓ original calendar price semantics > keeps complete weekly and monthly periods at viewport boundary
+   ↓ original calendar price semantics > clamps month subtraction to February rather than overflowing into March
+   ↓ original calendar price semantics > deduplicates equal rows and rejects conflicting same-day prices
+   ↓ original calendar price semantics > preserves unavailable total volume and separately labels observed partial sums
+   ↓ original calendar price semantics > filters invalid OHLC, impossible dates and future data without inventing prices or volume
+   ↓ original calendar price semantics > calculates latest daily change from actual previous observed trading day
+   × shared actual-price reception > retains genuine recorded MISSING metadata and reason without promoting an empty history to CACHE 20ms
+     → expected { data: null, loading: false, …(1) } to deeply equal { data: { …(12) }, …(2) }
+   ↓ shared actual-price reception > shares one request across quote and chart, then retains verified CACHE on failed retry
+   ↓ shared actual-price reception > rejects a different issuer and never shows future rows from a published file
+   ↓ chart states and chart selection > accepts only original range options
+   ↓ chart states and chart selection > never wraps an unsafe volume sum into a displayed complete value
+   ↓ chart states and chart selection > does not discard a previous verified history when a later publication is MISSING
+   ↓ accessible actual-price chart presentation > starts at six months, daily candles, with an accessible real SVG and actual OHLCV
+   ↓ accessible actual-price chart presentation > labels CACHE, collection date, actual trading date and unverified adjustment
+   ↓ accessible actual-price chart presentation > keeps errors and cutoff mismatches visible with a retry control
+   ↓ preserves original range change and corporate-action caveats without implying rank inputs
+   ↓ renders a separate latest daily quote with change from the actual previous trading day
+   ↓ published price revision changes on the same cutoff > loads a new revision for the same issuer and cutoff without changing source dates
+   ↓ published price revision changes on the same cutoff > coalesces quote and chart loads on a new revision and keeps reopened unchanged revisions cached
+   ↓ published price revision changes on the same cutoff > isolates an older revision request that finishes after the current revision
+   ↓ per-stock chart preferences > restores each stock independently without sharing another stock choices
+   ↓ per-stock chart preferences > rejects malformed, unsupported and partially invalid stored values
+   ↓ per-stock chart preferences > uses defaults and remains operable when browser storage is denied
+   ↓ per-stock chart preferences > restores from the known issuer before asynchronous price data arrives
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/chart.test.ts > shared actual-price reception > retains genuine recorded MISSING metadata and reason without promoting an empty history to CACHE
+AssertionError: expected { data: null, loading: false, …(1) } to deeply equal { data: { …(12) }, …(2) }
+
+- Expected
++ Received
+
+  {
+-   "data": {
+-     "adjustment": "UNVERIFIED",
+-     "bars": [],
+-     "collectedAt": null,
+-     "error": "ValueError: No completed daily prices",
+-     "issuerId": "005030",
+-     "lastAttemptAt": "2026-11-05T23:57:33.471642Z",
+-     "lastTradingDate": null,
+-     "pages": [
+-       {
+-         "bytes": 2,
+-         "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+-         "status": 200,
+-         "url": "https://m.stock.naver.com/api/stock/005030/price?pageSize=60&page=1",
+-       },
+-     ],
+-     "requestedCutoffDate": "2026-11-05",
+-     "schemaVersion": 1,
+-     "source": "MISSING",
+-     "sourceUrl": "https://m.stock.naver.com/api/stock/005030/price",
+-   },
++   "data": null,
+    "error": "ValueError: No completed daily prices",
+    "loading": false,
+  }
+
+ ❯ tests/chart.test.ts:76:69
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 26 skipped (27)
+   Start at  02:48:47
+   Duration  463ms (transform 147ms, setup 0ms, collect 195ms, tests 21ms, environment 0ms, prepare 73ms)
+

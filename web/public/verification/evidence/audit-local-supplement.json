@@ -1,0 +1,77 @@
+{
+  "status": "PASS",
+  "scope": "LOCAL_BROWSER_SUPPLEMENT_AND_AUTHENTICATED_RAW_PUBLICATION",
+  "url": "http://127.0.0.1:4173/Kook/#ranking",
+  "browser": "155.0.8059.79",
+  "platform": "linux",
+  "generation": "d67f91af44c21fa9cb1911fe5625190f4711b07d875c602ff9e86ff32687fc21",
+  "identity": {
+    "version": "1.0.0",
+    "uiCommit": "4c9378afbe1c3feba398c751ef2ba7c4addb54b7",
+    "engineSourceCommit": "a1676eab7bfe6b0d3765e4340504f8ff2a2d2a3f",
+    "footer": "KR4 국내주식 PC 1.0.0 · PC 빌드 4c9378afbe1c · 전체 공개 · 로그인 없이 이용 · 마지막 자료 게시 2026-11-06 09:34 KST"
+  },
+  "weights": [
+    {
+      "selected": [
+        "M01",
+        "M02",
+        "M03",
+        "M04"
+      ],
+      "expected": "4개 선택 · 각 25%",
+      "actual": "4개 선택 · 각 25%"
+    },
+    {
+      "selected": [
+        "M01",
+        "M02",
+        "M03"
+      ],
+      "expected": "3개 선택 · 각 33.3%",
+      "actual": "3개 선택 · 각 33.3%"
+    },
+    {
+      "selected": [
+        "M01",
+        "M02"
+      ],
+      "expected": "2개 선택 · 각 50%",
+      "actual": "2개 선택 · 각 50%"
+    },
+    {
+      "selected": [
+        "M01"
+      ],
+      "expected": "1개 선택 · 100%",
+      "actual": "1개 선택 · 100%"
+    }
+  ],
+  "financialSource": {
+    "path": "sources/financial.json",
+    "sha256": "15ed6fa759d0da700408e74d411ec5250186342f122731fadc37f1d470224ad7",
+    "bytes": 9866010,
+    "sourceFields": {
+      "policyVersion": "STAGE4_BS_SAFETY_V1",
+      "snapshotDate": "2026-11-05",
+      "source": "FSS OpenDART bulk balance sheets + OPENDART_AUTHENTICATED_API",
+      "sourceFile": "2025_4Q_BS_20261103030336.zip|2026_1Q_BS_20261031035203.zip|2026_2Q_BS_20261106035126.zip|2026_3Q_BS_20261106041259.zip",
+      "passCount": 2109,
+      "failCount": 275,
+      "holdCount": 39,
+      "notApplicableCount": 226,
+      "records": 2649
+    },
+    "actualRecordStatusCounts": {
+      "PASS": 2109,
+      "NOT_APPLICABLE": 226,
+      "FAIL": 275,
+      "HOLD": 39
+    },
+    "claim": "Original publication metadata, not independent DOM rows"
+  },
+  "publicVerified": false,
+  "nativeWindowsVerified": false,
+  "physicalLgGramVerified": false,
+  "errors": []
+}

@@ -1,0 +1,30 @@
+{
+  "kind": "FRESH_ANONYMOUS_OFFICIAL_PAGES_DIRECT_ACCESS",
+  "controlled": false,
+  "authOrCookiePreload": false,
+  "hostingNoticeClicks": 0,
+  "actualWindowsBrowser": false,
+  "result": {
+    "url": "https://irewon1-lgtm.github.io/Kook/",
+    "title": "KR4 국내주식 PC",
+    "source": "LIVE",
+    "uiCommit": "e3b0d190d6c95dde304110aa78b51db435280915",
+    "sourceCommit": "e3b0d190d6c95dde304110aa78b51db435280915",
+    "universeCounts": [
+      "전체 종목2,649종목순위 산출2,376종목△선택 4지표 결측273종목",
+      "전체 종목2,649종목순위 산출2,376종목△선택 4지표 결측273종목"
+    ],
+    "bodyText": "본문 바로가기\nKR4 국내주식\n성장 · 수익성 · 가치 · 흐름\n홈\n종목순위\n종목검색\n관심종목\n더보기\n큰 글씨 22px\n줄이기\n더 크게\n기본 큰 글씨\n4축 스크리닝\n4지표 전체 종목보기\n성장 · 수익성 · 가치 · 흐름\n2,649종목 공개 · 순위 산출 2,376종목\n결측 종목도 빠짐없이 확인하세요.\n데이터 출처\nLIVE\n\nGitHub에 게시된 스냅샷 · 원천자료 기준일 별도 표시\n\n4지표 완성\n2,376 / 2,649종목\n자료 기준\n재무 2026-11-05 · 주가 2026-11-05\n최근 갱신\n2026-11-06 11:36 KST\n최근 확인\n2026-11-06 11:36 KST\n새 자료 확인\n89.7%\n4지표 완성률\n전체 종목\n2,649종목\n순위 산출\n2,376종목\n△\n선택 4지표 결측\n273종목\n4지표 상위 순위\n2,376종목\n\n상위 5종목 미리보기 · 재무자료 상태는 점수와 순위에 영향을 주지 않습니다.\n\n순위\n종목정보\n4지표 요약\n종합점수\n1위\n피델릭스\n자료 확인\n032580 · KOSDAQ\n반도체 제조업\n성장\n179.8%\n수익성\n28.7%\n가치\n4.67배\n흐름\n375.2%\n92.9점\n2위\n액토즈소프트\n자료 확인\n052790 · KOSDAQ\n소프트웨어 개발 및 공급업\n성장\n80.4%\n수익성\n31.7%\n가치\n1.04배\n흐름\n-11.9%\n91.9점\n3위\n미래산업\n자료 확인\n025560 · KOSPI\n측정, 시험, 항해, 제어 및 기타 정밀기기 제조업; 광학기기 제외\n성장\n352.5%\n수익성\n33.6%\n가치\n6.19배\n흐름\n112.2%\n91.1점\n4위\n아이컴포넌트\n자료 확인\n059100 · KOSDAQ\n전자부품 제조업\n성장\n35.8%\n수익성\n30.3%\n가치\n4.31배\n흐름\n14.7%\n88.5점",
+    "cookie": ""
+  },
+  "cdpLogEntries": [
+    {
+      "source": "network",
+      "level": "error",
+      "text": "Failed to load resource: the server responded with a status of 404 ()",
+      "timestamp": 1793932616695.667,
+      "url": "https://irewon1-lgtm.github.io/favicon.ico",
+      "networkRequestId": "207262.130"
+    }
+  ]
+}

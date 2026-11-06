@@ -1,0 +1,1992 @@
+{
+  "config": {
+    "configFile": "D:\\a\\Kook\\Kook\\web\\playwright.config.ts",
+    "rootDir": "D:/a/Kook/Kook/web/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "ci": {
+        "commitHref": "https://github.com/irewon1-lgtm/Kook/commit/e388ea2b7aa52843af5c0d32861cc0493bfe5f5a",
+        "commitHash": "e388ea2b7aa52843af5c0d32861cc0493bfe5f5a",
+        "buildHref": "https://github.com/irewon1-lgtm/Kook/actions/runs/42157888715"
+      },
+      "gitCommit": {
+        "shortHash": "e388ea2",
+        "hash": "e388ea2b7aa52843af5c0d32861cc0493bfe5f5a",
+        "subject": "Merge remote-tracking branch 'origin/main' into feature/kr4-pc-full-parity-senior-ui",
+        "body": "Merge remote-tracking branch 'origin/main' into feature/kr4-pc-full-parity-senior-ui\n",
+        "author": {
+          "name": "WON LEE",
+          "email": "ire.won1@gmail.com",
+          "time": 1793936379000
+        },
+        "committer": {
+          "name": "WON LEE",
+          "email": "ire.won1@gmail.com",
+          "time": 1793936379000
+        },
+        "branch": "HEAD"
+      },
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "html",
+        {
+          "open": "never"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "D:/a/Kook/Kook/web/test-results/runner-msedge",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/irewon1-lgtm/Kook/commit/e388ea2b7aa52843af5c0d32861cc0493bfe5f5a",
+            "commitHash": "e388ea2b7aa52843af5c0d32861cc0493bfe5f5a",
+            "buildHref": "https://github.com/irewon1-lgtm/Kook/actions/runs/42157888715"
+          },
+          "gitCommit": {
+            "shortHash": "e388ea2",
+            "hash": "e388ea2b7aa52843af5c0d32861cc0493bfe5f5a",
+            "subject": "Merge remote-tracking branch 'origin/main' into feature/kr4-pc-full-parity-senior-ui",
+            "body": "Merge remote-tracking branch 'origin/main' into feature/kr4-pc-full-parity-senior-ui\n",
+            "author": {
+              "name": "WON LEE",
+              "email": "ire.won1@gmail.com",
+              "time": 1793936379000
+            },
+            "committer": {
+              "name": "WON LEE",
+              "email": "ire.won1@gmail.com",
+              "time": 1793936379000
+            },
+            "branch": "HEAD"
+          },
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "D:/a/Kook/Kook/web/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 120000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.56.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "chart-recovery.spec.ts",
+      "file": "chart-recovery.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "actual Samsung six-month observed bars expose bounds, changes and partial-period dates",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6420,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:06:09.764Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "chart-recovery-provenance",
+                      "contentType": "application/json",
+                      "body": "ewogICJraW5kIjogIlBVQkxJQ19TSVRFX1JFQUxfREFUQV9CUk9XU0VSX0NIRUNLIiwKICAiY29udHJvbGxlZCI6IGZhbHNlLAogICJwcmljZVVybCI6ICJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vaXJld29uMS1sZ3RtL0tvb2sva3I0LXBjLXNpdGUvZGF0YS9nZW5lcmF0aW9ucy9jNzY3NDMyMzdiYmNkYzA1ZTVlNmNhNzRkZjM1MDgyMjM1YWM5YTEwMzIzOGU4ZTc3NjVjOGVhY2NmMGEzZTcxL3ByaWNlcy8wMDU5MzAuanNvbiIsCiAgInByaWNlU2hhMjU2IjogImNjMWJjMzI4OGU4ZmIwODNkODMxZGE0ZDhjNGJiMWM2ZGIzODliZmU2ZmMwODZhMjg0ZTkxMGMxYmQzN2VmOTIiLAogICJzb3VyY2UiOiAiQ0FDSEUiLAogICJjdXRvZmYiOiAiMjAyNi0xMS0wNSIsCiAgIm9ic2VydmF0aW9ucyI6IFsKICAgIHsKICAgICAgImludGVydmFsIjogIkRBWSIsCiAgICAgICJjb3VudCI6IDEyNCwKICAgICAgImZpcnN0IjogIjIwMjYtMDUtMDYiLAogICAgICAibGFzdCI6ICIyMDI2LTExLTA1IiwKICAgICAgImxvdyI6IDE4OTIwMCwKICAgICAgImhpZ2giOiAzNzQ1MDAsCiAgICAgICJjaGFuZ2UiOiAtMjQuMjQ4MTIwMzAwNzUxODc1CiAgICB9LAogICAgewogICAgICAiaW50ZXJ2YWwiOiAiV0VFSyIsCiAgICAgICJjb3VudCI6IDI3LAogICAgICAiZmlyc3QiOiAiMjAyNi0wNS0wNCIsCiAgICAgICJsYXN0IjogIjIwMjYtMTEtMDUiLAogICAgICAibG93IjogMTg5MjAwLAogICAgICAiaGlnaCI6IDM3NDUwMCwKICAgICAgImNoYW5nZSI6IC0yNC45NTM0NDUwNjUxNzY5MDQsCiAgICAgICJwYXJ0aWFsIjogdHJ1ZQogICAgfSwKICAgIHsKICAgICAgImludGVydmFsIjogIk1PTlRIIiwKICAgICAgImNvdW50IjogNywKICAgICAgImZpcnN0IjogIjIwMjYtMDUtMDQiLAogICAgICAibGFzdCI6ICIyMDI2LTExLTA1IiwKICAgICAgImxvdyI6IDE4OTIwMCwKICAgICAgImhpZ2giOiAzNzQ1MDAsCiAgICAgICJjaGFuZ2UiOiAtMzYuNDM1MzMxMjMwMjgzOTEsCiAgICAgICJwYXJ0aWFsIjogdHJ1ZQogICAgfQogIF0KfQ=="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "28f184e49f1d16685025-36e8786d4ab5d9f2893f",
+          "file": "chart-recovery.spec.ts",
+          "line": 71,
+          "column": 1
+        },
+        {
+          "title": "real CACHE survives a controlled price 503 and recovers; genuine MISSING stays empty with retry",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4040,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:06:16.465Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "chart-recovery-provenance",
+                      "contentType": "application/json",
+                      "body": "ewogICJraW5kIjogIkNPTlRST0xMRURfTkVUV09SS19TRVFVRU5DRSIsCiAgImNvbnRyb2xsZWQiOiB0cnVlLAogICJhY3R1YWxQcmljZVVybCI6ICJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vaXJld29uMS1sZ3RtL0tvb2sva3I0LXBjLXNpdGUvZGF0YS9nZW5lcmF0aW9ucy9jNzY3NDMyMzdiYmNkYzA1ZTVlNmNhNzRkZjM1MDgyMjM1YWM5YTEwMzIzOGU4ZTc3NjVjOGVhY2NmMGEzZTcxL3ByaWNlcy8wMDU5MzAuanNvbiIsCiAgImFjdHVhbFByaWNlU2hhMjU2IjogImNjMWJjMzI4OGU4ZmIwODNkODMxZGE0ZDhjNGJiMWM2ZGIzODliZmU2ZmMwODZhMjg0ZTkxMGMxYmQzN2VmOTIiLAogICJpbmplY3RlZFN0YXR1cyI6IDUwMywKICAiaW5qZWN0ZWRGYWlsdXJlcyI6IDEsCiAgInJlc3RvcmVkQWN0dWFsUmVxdWVzdHMiOiAxLAogICJwcmVzZXJ2ZWRDYW5kbGVDb3VudCI6IDEyNCwKICAibWlzc2luZ0NvZGUiOiAiMDA1MDMwIiwKICAibWlzc2luZ1VybCI6ICJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vaXJld29uMS1sZ3RtL0tvb2sva3I0LXBjLXNpdGUvZGF0YS9nZW5lcmF0aW9ucy9jNzY3NDMyMzdiYmNkYzA1ZTVlNmNhNzRkZjM1MDgyMjM1YWM5YTEwMzIzOGU4ZTc3NjVjOGVhY2NmMGEzZTcxL3ByaWNlcy8wMDUwMzAuanNvbiIsCiAgIm1pc3NpbmdTaGEyNTYiOiAiNzExOTU0ZTIwYjIyNDgxZGFlMzFiN2YwZjI0OTNmMjc4MWY3ZDM2OTcxYTRlMzI1ZjE1ZjZiM2VkZDlmNjdjNSIsCiAgIm1pc3NpbmdTb3VyY2VVcmwiOiAiaHR0cHM6Ly9tLnN0b2NrLm5hdmVyLmNvbS9hcGkvc3RvY2svMDA1MDMwL3ByaWNlIiwKICAibWlzc2luZ1JlcXVlc3RlZEN1dG9mZkRhdGUiOiAiMjAyNi0xMS0wNSIsCiAgIm1pc3NpbmdMYXN0QXR0ZW1wdEF0IjogIjIwMjYtMTEtMDZUMDM6NTE6NTEuNDA0NDQyWiIsCiAgImdlbnVpbmVNaXNzaW5nUmVhc29uIjogIlZhbHVlRXJyb3I6IE5vIGNvbXBsZXRlZCBkYWlseSBwcmljZXMiLAogICJtaXNzaW5nUmVxdWVzdHMiOiAyCn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "28f184e49f1d16685025-19b3d71b55d7d7bb3e45",
+          "file": "chart-recovery.spec.ts",
+          "line": 144,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "controlled-recovery.spec.ts",
+      "file": "controlled-recovery.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "real last good data survives network failure and returns to LIVE after recovery",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4157,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:06:20.536Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "864453bf6b98050874b4-877285a410cfc6f908de",
+          "file": "controlled-recovery.spec.ts",
+          "line": 53,
+          "column": 1
+        },
+        {
+          "title": "fresh anonymous profile uses validated bundled data on network failure",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1998,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:06:24.707Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "864453bf6b98050874b4-58226bd9ca8b1c41ed3c",
+          "file": "controlled-recovery.spec.ts",
+          "line": 75,
+          "column": 1
+        },
+        {
+          "title": "corrupt current cache falls back to the byte-identical verified backup",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3761,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:06:26.718Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "864453bf6b98050874b4-5c109ac6fd62f4c4cee3",
+          "file": "controlled-recovery.spec.ts",
+          "line": 85,
+          "column": 1
+        },
+        {
+          "title": "invalid independent financial response never blocks genuine core reception",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2562,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:06:30.494Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "864453bf6b98050874b4-00d8353498e3c51276cb",
+          "file": "controlled-recovery.spec.ts",
+          "line": 120,
+          "column": 1
+        },
+        {
+          "title": "a corrupted bundle and unavailable network show failure rather than invented stocks",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1211,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:06:33.071Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "864453bf6b98050874b4-4c6950d174d0110f1af6",
+          "file": "controlled-recovery.spec.ts",
+          "line": 134,
+          "column": 1
+        },
+        {
+          "title": "actual recorded earlier snapshot updates date, count and rank in memory through background reception",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6532,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:06:34.296Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "864453bf6b98050874b4-ff8f958665a71a06b6d0",
+          "file": "controlled-recovery.spec.ts",
+          "line": 184,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "detail-parity.spec.ts",
+      "file": "detail-parity.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "original-source information remains readable across all detail tabs: 005930",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 19947,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:06:40.876Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b8b31048385beaea9293-f327889cf6977016f2f4",
+          "file": "detail-parity.spec.ts",
+          "line": 104,
+          "column": 37
+        },
+        {
+          "title": "original-source information remains readable across all detail tabs: 000020",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 19851,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:07:00.842Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b8b31048385beaea9293-51db366aed3761328583",
+          "file": "detail-parity.spec.ts",
+          "line": 104,
+          "column": 37
+        },
+        {
+          "title": "original-source information remains readable across all detail tabs: 003060",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 19146,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:07:20.706Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b8b31048385beaea9293-6e1f3989e72f15d9ce5b",
+          "file": "detail-parity.spec.ts",
+          "line": 104,
+          "column": 37
+        },
+        {
+          "title": "original-source information remains readable across all detail tabs: 395400",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 19598,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:07:39.868Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b8b31048385beaea9293-de2a6b3a11189b2fd09a",
+          "file": "detail-parity.spec.ts",
+          "line": 104,
+          "column": 37
+        },
+        {
+          "title": "original-source information remains readable across all detail tabs: 474930",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 11763,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:07:59.489Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b8b31048385beaea9293-305ac3715857b8682202",
+          "file": "detail-parity.spec.ts",
+          "line": 104,
+          "column": 37
+        },
+        {
+          "title": "original-source information remains readable across all detail tabs: 142210",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 21382,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:08:11.284Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b8b31048385beaea9293-543e09ea71d1c5000ffb",
+          "file": "detail-parity.spec.ts",
+          "line": 104,
+          "column": 37
+        }
+      ]
+    },
+    {
+      "title": "interaction-parity.spec.ts",
+      "file": "interaction-parity.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "CONTROLLED_LOCAL_PREF: favorite picker sorts, cancels, saves and independently removes stale and known favorites",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [
+                {
+                  "type": "CONTROLLED_LOCAL_PREF",
+                  "description": "Only this browser favorite preference is seeded with unknown ZZZZZZ; all stocks remain actual published data."
+                }
+              ],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4164,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:08:32.693Z",
+                  "annotations": [
+                    {
+                      "type": "CONTROLLED_LOCAL_PREF",
+                      "description": "Only this browser favorite preference is seeded with unknown ZZZZZZ; all stocks remain actual published data."
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "db85cc61c48dc0237e1a-2397b8d7ee54844cfb99",
+          "file": "interaction-parity.spec.ts",
+          "line": 46,
+          "column": 1
+        },
+        {
+          "title": "actual alphanumeric deep link, accessible detail refresh, exact unknown code and focused search recovery",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4044,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:08:36.868Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "db85cc61c48dc0237e1a-d8e25ee53df0673f46de",
+          "file": "interaction-parity.spec.ts",
+          "line": 118,
+          "column": 1
+        },
+        {
+          "title": "Home retains its original top five while selected ranking changes, and inline raw financial valuation candidate evidence expands independently",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4414,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:08:40.926Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "db85cc61c48dc0237e1a-9aa384c67ddea2dfd893",
+          "file": "interaction-parity.spec.ts",
+          "line": 174,
+          "column": 1
+        },
+        {
+          "title": "ranking guidance preserves equal weighting and complete-only filter while company-name sort retains original ranks",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3465,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:08:45.354Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "db85cc61c48dc0237e1a-b7626601ec352fbe9037",
+          "file": "interaction-parity.spec.ts",
+          "line": 235,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "public-real.spec.ts",
+      "file": "public-real.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "anonymous real-data home, full universe and five navigation destinations",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3796,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:08:48.850Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f97cf9e808dae270cadf-5e2c8c46f4dfa64d530d",
+          "file": "public-real.spec.ts",
+          "line": 69,
+          "column": 1
+        },
+        {
+          "title": "expanded nonfixed selectors and every mask use original global ranks",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 11390,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:08:52.659Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f97cf9e808dae270cadf-f8a10bccf4d0c02a0561",
+          "file": "public-real.spec.ts",
+          "line": 103,
+          "column": 1
+        },
+        {
+          "title": "search, market, risk, sort, missing rows and return navigation remain usable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4036,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:09:04.062Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f97cf9e808dae270cadf-a5cf4b193f3fec1b6071",
+          "file": "public-real.spec.ts",
+          "line": 136,
+          "column": 1
+        },
+        {
+          "title": "five detailed tabs, original analysis, real quarters, source failure and financial facts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 13010,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:09:08.111Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f97cf9e808dae270cadf-c4a3c789f0fc48922d0b",
+          "file": "public-real.spec.ts",
+          "line": 204,
+          "column": 1
+        },
+        {
+          "title": "all 24 actual chart selections preserve actual latest daily quote and CACHE provenance",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8491,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:09:21.136Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f97cf9e808dae270cadf-c6a3faefd3c8bacc7f75",
+          "file": "public-real.spec.ts",
+          "line": 248,
+          "column": 1
+        },
+        {
+          "title": "font preference and per-browser favorites survive reload without sharing accounts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5726,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:09:29.642Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f97cf9e808dae270cadf-1492bee975781f235594",
+          "file": "public-real.spec.ts",
+          "line": 274,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "viewport-matrix.spec.ts",
+      "file": "viewport-matrix.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "real layout 2048x1280 DPR1.25 font22",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9415,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:09:35.405Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c94647041814a26f3d6a-7e32c6824d98505f5126",
+          "file": "viewport-matrix.spec.ts",
+          "line": 270,
+          "column": 3
+        },
+        {
+          "title": "real layout 2048x1280 DPR1.25 font26",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9691,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:09:44.835Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c94647041814a26f3d6a-4ef5fec83881a7686439",
+          "file": "viewport-matrix.spec.ts",
+          "line": 270,
+          "column": 3
+        },
+        {
+          "title": "real layout 2048x1280 DPR1.25 font30",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 10698,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:09:54.548Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c94647041814a26f3d6a-eb9fbf7aa66915b5dc93",
+          "file": "viewport-matrix.spec.ts",
+          "line": 270,
+          "column": 3
+        },
+        {
+          "title": "real layout 1638x1024 DPR1.5625 font22",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 10997,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:10:05.275Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c94647041814a26f3d6a-b44bd230b0e3c2eee933",
+          "file": "viewport-matrix.spec.ts",
+          "line": 270,
+          "column": 3
+        },
+        {
+          "title": "real layout 1638x1024 DPR1.5625 font26",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9765,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:10:16.285Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c94647041814a26f3d6a-2f6f2ff9ecca20ba4e21",
+          "file": "viewport-matrix.spec.ts",
+          "line": 270,
+          "column": 3
+        },
+        {
+          "title": "real layout 1638x1024 DPR1.5625 font30",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9689,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:10:26.065Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c94647041814a26f3d6a-68c40ed43c225e12b421",
+          "file": "viewport-matrix.spec.ts",
+          "line": 270,
+          "column": 3
+        },
+        {
+          "title": "real layout 1707x1067 DPR1.5 font22",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9391,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:10:35.770Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c94647041814a26f3d6a-dc505da87d0105b0e44b",
+          "file": "viewport-matrix.spec.ts",
+          "line": 270,
+          "column": 3
+        },
+        {
+          "title": "real layout 1707x1067 DPR1.5 font26",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9983,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:10:45.232Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c94647041814a26f3d6a-309b5736e9807cf15bfd",
+          "file": "viewport-matrix.spec.ts",
+          "line": 270,
+          "column": 3
+        },
+        {
+          "title": "real layout 1707x1067 DPR1.5 font30",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9668,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:10:55.229Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c94647041814a26f3d6a-7899a9f9cf2f1031cee9",
+          "file": "viewport-matrix.spec.ts",
+          "line": 270,
+          "column": 3
+        },
+        {
+          "title": "real layout 1365x853 DPR1.875 font22",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9783,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:11:04.912Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c94647041814a26f3d6a-53c1b56872d59b0a1d81",
+          "file": "viewport-matrix.spec.ts",
+          "line": 270,
+          "column": 3
+        },
+        {
+          "title": "real layout 1365x853 DPR1.875 font26",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9653,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:11:14.710Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c94647041814a26f3d6a-1c9be48f5bc96184a30b",
+          "file": "viewport-matrix.spec.ts",
+          "line": 270,
+          "column": 3
+        },
+        {
+          "title": "real layout 1365x853 DPR1.875 font30",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9695,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:11:24.377Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c94647041814a26f3d6a-12100bd262793500437f",
+          "file": "viewport-matrix.spec.ts",
+          "line": 270,
+          "column": 3
+        },
+        {
+          "title": "real layout 1536x960 DPR1.25 font22",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9167,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:11:34.087Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c94647041814a26f3d6a-9b87af97753455c0e660",
+          "file": "viewport-matrix.spec.ts",
+          "line": 270,
+          "column": 3
+        },
+        {
+          "title": "real layout 1536x960 DPR1.25 font26",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9430,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:11:43.268Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c94647041814a26f3d6a-50454e609026e6d586ef",
+          "file": "viewport-matrix.spec.ts",
+          "line": 270,
+          "column": 3
+        },
+        {
+          "title": "real layout 1536x960 DPR1.25 font30",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9681,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:11:52.738Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c94647041814a26f3d6a-a66522d144042778c9b5",
+          "file": "viewport-matrix.spec.ts",
+          "line": 270,
+          "column": 3
+        },
+        {
+          "title": "real layout 1229x768 DPR1.5625 font22",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9627,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:12:02.433Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c94647041814a26f3d6a-907015e422f97e2510eb",
+          "file": "viewport-matrix.spec.ts",
+          "line": 270,
+          "column": 3
+        },
+        {
+          "title": "real layout 1229x768 DPR1.5625 font26",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8823,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:12:12.095Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c94647041814a26f3d6a-935a474d7471a92b5a89",
+          "file": "viewport-matrix.spec.ts",
+          "line": 270,
+          "column": 3
+        },
+        {
+          "title": "real layout 1229x768 DPR1.5625 font30",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9045,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:12:20.931Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c94647041814a26f3d6a-cb36763be315af0b3aae",
+          "file": "viewport-matrix.spec.ts",
+          "line": 270,
+          "column": 3
+        },
+        {
+          "title": "real layout 1280x800 DPR1.5 font22",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9563,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:12:29.990Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c94647041814a26f3d6a-3b1212f92f1c44274e9f",
+          "file": "viewport-matrix.spec.ts",
+          "line": 270,
+          "column": 3
+        },
+        {
+          "title": "real layout 1280x800 DPR1.5 font26",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9213,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:12:39.567Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c94647041814a26f3d6a-3fb8c5667eec48567ee9",
+          "file": "viewport-matrix.spec.ts",
+          "line": 270,
+          "column": 3
+        },
+        {
+          "title": "real layout 1280x800 DPR1.5 font30",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9151,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:12:48.794Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c94647041814a26f3d6a-8f849fc19ba8f1518476",
+          "file": "viewport-matrix.spec.ts",
+          "line": 270,
+          "column": 3
+        },
+        {
+          "title": "real layout 1024x640 DPR1.875 font22",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8722,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:12:57.980Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c94647041814a26f3d6a-9916f8a4aee59413949f",
+          "file": "viewport-matrix.spec.ts",
+          "line": 270,
+          "column": 3
+        },
+        {
+          "title": "real layout 1024x640 DPR1.875 font26",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9511,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:13:06.716Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c94647041814a26f3d6a-22b001c2702689b70aec",
+          "file": "viewport-matrix.spec.ts",
+          "line": 270,
+          "column": 3
+        },
+        {
+          "title": "real layout 1024x640 DPR1.875 font30",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9221,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:13:16.239Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c94647041814a26f3d6a-e9106f535bcb99384b13",
+          "file": "viewport-matrix.spec.ts",
+          "line": 270,
+          "column": 3
+        },
+        {
+          "title": "real layout 1366x768 DPR1 font22",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9285,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:13:25.473Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c94647041814a26f3d6a-1ffd78358f5147e2327a",
+          "file": "viewport-matrix.spec.ts",
+          "line": 270,
+          "column": 3
+        },
+        {
+          "title": "real layout 1366x768 DPR1 font26",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9003,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:13:34.773Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c94647041814a26f3d6a-08043b6ad68bf43b6cc9",
+          "file": "viewport-matrix.spec.ts",
+          "line": 270,
+          "column": 3
+        },
+        {
+          "title": "real layout 1366x768 DPR1 font30",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9341,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:13:43.790Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c94647041814a26f3d6a-a5b6a4fd0de269135bc7",
+          "file": "viewport-matrix.spec.ts",
+          "line": 270,
+          "column": 3
+        },
+        {
+          "title": "original canonical captures 1365x853",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 14109,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:13:53.145Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c94647041814a26f3d6a-cca8760dc2a13e1ee95c",
+          "file": "viewport-matrix.spec.ts",
+          "line": 382,
+          "column": 3
+        },
+        {
+          "title": "original canonical captures 1920x1200",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 15805,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-06T04:14:07.268Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c94647041814a26f3d6a-d69545ca14f5d76b8670",
+          "file": "viewport-matrix.spec.ts",
+          "line": 382,
+          "column": 3
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-06T04:06:08.523Z",
+    "duration": 495274.455,
+    "expected": 53,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

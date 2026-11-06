@@ -1,0 +1,10 @@
+node_modules/
+dist/
+playwright-report/
+test-results/
+public/data/
+src/generated/
+*.tsbuildinfo
+.env
+.env.*
+!.env.example

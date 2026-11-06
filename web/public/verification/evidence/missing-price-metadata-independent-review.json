@@ -1,0 +1,41 @@
+{
+  "verdict": "APPROVED",
+  "reviewer": "pc_detail_parity_checks",
+  "reviewedSourceSha256": {
+    "web/src/chart/store.ts": "9bd7b719fddd422a7d7ae2284e66e4e52b0355205c2fff557e4868465c9a4665",
+    "web/src/chart/ChartView.tsx": "6dd962fed49bb296d825c3443a33f712f6edd0c3043cab86c02ecc9aba9745d1",
+    "web/tests/chart.test.ts": "07502af9f5d9b9fc1f165815fa733568887018061de8b9c31c387d5069392b22",
+    "web/e2e/chart-recovery.spec.ts": "4e3f839eb8c957ece842175336eab825bc4c17cdd5203d238ba98904c4b74c34"
+  },
+  "independentUnit": {
+    "passed": 27,
+    "failed": 0,
+    "log": "missing-price-metadata-independent-unit.log"
+  },
+  "independentActualBrowser": {
+    "passed": 2,
+    "failed": 0,
+    "durationSeconds": 8.6,
+    "log": "missing-price-metadata-independent-browser.log",
+    "scope": "local actual publication; real cached Samsung history + controlled HTTP503; genuine published empty MISSING issuer"
+  },
+  "recordedFixture": {
+    "archiveSha256": "de5cc3f9b8edf5fc41dbfd0299f258a60afbadb47bd58fa95d47e552ec39d032",
+    "member": "prices/005030.json",
+    "memberSha256": "3f0ac80ad8215925e23ed3630c4862759c121cebe4be0004e567d6ee64fb1270",
+    "source": "MISSING",
+    "bars": 0,
+    "collectedAt": null,
+    "lastTradingDate": null,
+    "reason": "ValueError: No completed daily prices"
+  },
+  "findings": [],
+  "scopeConclusions": [
+    "Original MISSING provider URL/cutoff/attempt/reason object preserved without synthetic prices.",
+    "Empty history is never relabeled CACHE by the catch.",
+    "Earlier genuine CACHE history stays unchanged across controlled HTTP503 and recovery.",
+    "Existing normalizeDaily/window/aggregation code unchanged.",
+    "Source/cache explanation is shown only for actual nonempty CACHE data."
+  ],
+  "publicOrWindowsApproval": false
+}

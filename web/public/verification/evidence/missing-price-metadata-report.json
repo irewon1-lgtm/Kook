@@ -1,0 +1,37 @@
+{
+  "kind": "REAL_MARKET_RECORDED_MISSING_METADATA_REPAIR",
+  "files": {
+    "web/src/chart/store.ts": "9bd7b719fddd422a7d7ae2284e66e4e52b0355205c2fff557e4868465c9a4665",
+    "web/src/chart/ChartView.tsx": "6dd962fed49bb296d825c3443a33f712f6edd0c3043cab86c02ecc9aba9745d1",
+    "web/tests/chart.test.ts": "07502af9f5d9b9fc1f165815fa733568887018061de8b9c31c387d5069392b22",
+    "web/e2e/chart-recovery.spec.ts": "4e3f839eb8c957ece842175336eab825bc4c17cdd5203d238ba98904c4b74c34"
+  },
+  "rootCause": "The chart store threw on a validated genuine empty MISSING payload and discarded its provider URL, requested cutoff and observed attempt metadata. Its catch also relabeled all retained data CACHE.",
+  "behavior": "Retain the original validated MISSING object only when no prior actual price history exists; preserve existing history for failed/missing refreshes, never relabel empty MISSING as CACHE, and show completed missing state with its actual source metadata.",
+  "fixture": "web/oracle/testdata/price_observations_20261105.tar.gz:prices/005030.json",
+  "fixturePolicy": "Archive and original member SHA256 authenticated against committed provenance before using bytes; no observations or dates altered.",
+  "verification": {
+    "unitRed": "/workspace/kr4-pc-work/missing-price-metadata-unit-red.log",
+    "browserRed": "/workspace/kr4-pc-work/missing-price-metadata-browser-red.log",
+    "chartUnitGreen": {
+      "passed": 27,
+      "log": "/workspace/kr4-pc-work/missing-price-metadata-chart-green.log"
+    },
+    "fullUnitGreen": {
+      "passed": 319,
+      "files": 9,
+      "log": "/workspace/kr4-pc-work/missing-price-metadata-full-unit-green.log"
+    },
+    "browserGreen": {
+      "passed": 2,
+      "seconds": 7.5,
+      "log": "/workspace/kr4-pc-work/missing-price-metadata-browser-green.log"
+    },
+    "productionBuild": {
+      "status": "PASS",
+      "log": "/workspace/kr4-pc-work/missing-price-metadata-build-green.log",
+      "warning": "Existing Vite chunk-size warning remains; build exited0."
+    }
+  },
+  "scope": "No price/numeric/aggregation/engine/CSS change; no commit or push. App/engine/evidence protected paths unchanged."
+}

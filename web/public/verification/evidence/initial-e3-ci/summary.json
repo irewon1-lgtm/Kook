@@ -1,0 +1,829 @@
+{
+  "schemaVersion": 1,
+  "kind": "ACTUAL_E3_PC_BUILD_CI_RESULTS",
+  "sourceCommit": "e3b0d190d6c95dde304110aa78b51db435280915",
+  "runId": 42145573441,
+  "runUrl": "https://github.com/irewon1-lgtm/Kook/actions/runs/42145573441",
+  "buildJob": {
+    "id": 127656563012,
+    "conclusion": "success",
+    "url": "https://github.com/irewon1-lgtm/Kook/actions/runs/42145573441/job/127656563012",
+    "actualRunnerOs": [
+      "Ubuntu",
+      "24.04.5",
+      "LTS"
+    ],
+    "rawLog": "/workspace/kr4-pc-work/pc-e3-ci-proof/build.log",
+    "rawLogSha256": "135831b6f6478b85ed7234e24a03c3cc354448d4506930677d940af8e52e0b0e"
+  },
+  "publishJob": {
+    "id": 127660890714,
+    "conclusion": "success",
+    "note": "Publishing success is recorded separately from public-site Windows browser reception."
+  },
+  "pythonSelectedStage": {
+    "passed": 44,
+    "subtestsPassed": 35,
+    "seconds": 45.64,
+    "provenBy": "Actual successful build job log"
+  },
+  "oracleExportPythonStage": {
+    "passed": 12,
+    "seconds": 28.49,
+    "provenBy": "Actual successful build job log",
+    "note": "Actual observed count is 12, not an assumed 16."
+  },
+  "focusedOriginalKotlinPriceParityStage": {
+    "passed": 229,
+    "files": 1,
+    "note": "Focused parity stage is also included in the later full unit suite; do not sum it with 300 as unique tests."
+  },
+  "fullWebUnitStage": {
+    "passed": 300,
+    "files": 8,
+    "failures": 0,
+    "provenBy": "Actual successful build job log"
+  },
+  "linuxBrowserStage": {
+    "passed": 53,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0,
+    "errors": [],
+    "durationMs": 509335.41699999996,
+    "resultJson": "/workspace/kr4-pc-work/pc-e3-ci-proof/artifact-members/web/test-results/results.json",
+    "resultJsonSha256": "716c00ae8faf3ba994d33317c62202118525e9e89d86ca3aa37140d9411394b3",
+    "actualTestEntries": 53,
+    "allEntriesPassed": true,
+    "byFile": {
+      "chart-recovery.spec.ts": 2,
+      "controlled-recovery.spec.ts": 6,
+      "detail-parity.spec.ts": 6,
+      "interaction-parity.spec.ts": 4,
+      "public-real.spec.ts": 6,
+      "viewport-matrix.spec.ts": 29
+    },
+    "tests": [
+      {
+        "file": "chart-recovery.spec.ts",
+        "title": "actual Samsung six-month observed bars expose bounds, changes and partial-period dates",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 9429,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "chart-recovery.spec.ts",
+        "title": "real CACHE survives a controlled price 503 and recovers; genuine MISSING stays empty with retry",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 3903,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "controlled-recovery.spec.ts",
+        "title": "real last good data survives network failure and returns to LIVE after recovery",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 4053,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "controlled-recovery.spec.ts",
+        "title": "fresh anonymous profile uses validated bundled data on network failure",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 1912,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "controlled-recovery.spec.ts",
+        "title": "corrupt current cache falls back to the byte-identical verified backup",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 3761,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "controlled-recovery.spec.ts",
+        "title": "invalid independent financial response never blocks genuine core reception",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 2440,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "controlled-recovery.spec.ts",
+        "title": "a corrupted bundle and unavailable network show failure rather than invented stocks",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 1259,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "controlled-recovery.spec.ts",
+        "title": "actual recorded earlier snapshot updates date, count and rank in memory through background reception",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 6100,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "detail-parity.spec.ts",
+        "title": "original-source information remains readable across all detail tabs: 005930",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 19286,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "detail-parity.spec.ts",
+        "title": "original-source information remains readable across all detail tabs: 000020",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 19615,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "detail-parity.spec.ts",
+        "title": "original-source information remains readable across all detail tabs: 003060",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 19490,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "detail-parity.spec.ts",
+        "title": "original-source information remains readable across all detail tabs: 395400",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 19296,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "detail-parity.spec.ts",
+        "title": "original-source information remains readable across all detail tabs: 474930",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 11885,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "detail-parity.spec.ts",
+        "title": "original-source information remains readable across all detail tabs: 142210",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 19932,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "interaction-parity.spec.ts",
+        "title": "CONTROLLED_LOCAL_PREF: favorite picker sorts, cancels, saves and independently removes stale and known favorites",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 3659,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "interaction-parity.spec.ts",
+        "title": "actual alphanumeric deep link, accessible detail refresh, exact unknown code and focused search recovery",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 4326,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "interaction-parity.spec.ts",
+        "title": "Home retains its original top five while selected ranking changes, and inline raw financial valuation candidate evidence expands independently",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 4168,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "interaction-parity.spec.ts",
+        "title": "ranking guidance preserves equal weighting and complete-only filter while company-name sort retains original ranks",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 3302,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "public-real.spec.ts",
+        "title": "anonymous real-data home, full universe and five navigation destinations",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 3681,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "public-real.spec.ts",
+        "title": "expanded nonfixed selectors and every mask use original global ranks",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 11531,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "public-real.spec.ts",
+        "title": "search, market, risk, sort, missing rows and return navigation remain usable",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 7044,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "public-real.spec.ts",
+        "title": "five detailed tabs, original analysis, real quarters, source failure and financial facts",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 11566,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "public-real.spec.ts",
+        "title": "all 24 actual chart selections preserve actual latest daily quote and CACHE provenance",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 8907,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "public-real.spec.ts",
+        "title": "font preference and per-browser favorites survive reload without sharing accounts",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 6905,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "viewport-matrix.spec.ts",
+        "title": "real layout 2048x1280 DPR1.25 font22",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 9460,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "viewport-matrix.spec.ts",
+        "title": "real layout 2048x1280 DPR1.25 font26",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 10013,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "viewport-matrix.spec.ts",
+        "title": "real layout 2048x1280 DPR1.25 font30",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 10257,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "viewport-matrix.spec.ts",
+        "title": "real layout 1638x1024 DPR1.5625 font22",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 9572,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "viewport-matrix.spec.ts",
+        "title": "real layout 1638x1024 DPR1.5625 font26",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 9949,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "viewport-matrix.spec.ts",
+        "title": "real layout 1638x1024 DPR1.5625 font30",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 10201,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "viewport-matrix.spec.ts",
+        "title": "real layout 1707x1067 DPR1.5 font22",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 9444,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "viewport-matrix.spec.ts",
+        "title": "real layout 1707x1067 DPR1.5 font26",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 9643,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "viewport-matrix.spec.ts",
+        "title": "real layout 1707x1067 DPR1.5 font30",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 10146,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "viewport-matrix.spec.ts",
+        "title": "real layout 1365x853 DPR1.875 font22",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 9490,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "viewport-matrix.spec.ts",
+        "title": "real layout 1365x853 DPR1.875 font26",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 9690,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "viewport-matrix.spec.ts",
+        "title": "real layout 1365x853 DPR1.875 font30",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 10009,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "viewport-matrix.spec.ts",
+        "title": "real layout 1536x960 DPR1.25 font22",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 9417,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "viewport-matrix.spec.ts",
+        "title": "real layout 1536x960 DPR1.25 font26",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 9603,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "viewport-matrix.spec.ts",
+        "title": "real layout 1536x960 DPR1.25 font30",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 9846,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "viewport-matrix.spec.ts",
+        "title": "real layout 1229x768 DPR1.5625 font22",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 9193,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "viewport-matrix.spec.ts",
+        "title": "real layout 1229x768 DPR1.5625 font26",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 9562,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "viewport-matrix.spec.ts",
+        "title": "real layout 1229x768 DPR1.5625 font30",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 9736,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "viewport-matrix.spec.ts",
+        "title": "real layout 1280x800 DPR1.5 font22",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 9080,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "viewport-matrix.spec.ts",
+        "title": "real layout 1280x800 DPR1.5 font26",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 9457,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "viewport-matrix.spec.ts",
+        "title": "real layout 1280x800 DPR1.5 font30",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 9545,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "viewport-matrix.spec.ts",
+        "title": "real layout 1024x640 DPR1.875 font22",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 8846,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "viewport-matrix.spec.ts",
+        "title": "real layout 1024x640 DPR1.875 font26",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 9245,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "viewport-matrix.spec.ts",
+        "title": "real layout 1024x640 DPR1.875 font30",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 9433,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "viewport-matrix.spec.ts",
+        "title": "real layout 1366x768 DPR1 font22",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 8945,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "viewport-matrix.spec.ts",
+        "title": "real layout 1366x768 DPR1 font26",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 9257,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "viewport-matrix.spec.ts",
+        "title": "real layout 1366x768 DPR1 font30",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 9600,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "viewport-matrix.spec.ts",
+        "title": "original canonical captures 1365x853",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 12967,
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "viewport-matrix.spec.ts",
+        "title": "original canonical captures 1920x1200",
+        "ok": true,
+        "expectedStatus": "passed",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 14529,
+            "retry": 0
+          }
+        ]
+      }
+    ],
+    "scope": "Actual Linux Chromium browser run against built local site, with explicitly controlled fault/recorded-response tests included. This is not Windows browser or physical-device evidence."
+  },
+  "artifact": {
+    "artifactId": 13470507409,
+    "artifactName": "kr4-pc-verification-42145573441",
+    "archiveBytes": 67270272,
+    "transferredBytes": 17462,
+    "rangeRequests": 6,
+    "members": [
+      {
+        "name": "web/test-results/results.json",
+        "bytes": 63631,
+        "sha256": "716c00ae8faf3ba994d33317c62202118525e9e89d86ca3aa37140d9411394b3"
+      }
+    ]
+  },
+  "ciXmlAvailability": "No XML members exist in the actual uploaded verification ZIP; hidden .pc-work upload paths were excluded. Stage counts are proven by build log; browser counts independently verified through actual results.json.",
+  "pagesUrl": "https://irewon1-lgtm.github.io/Kook/",
+  "pagesScope": "Official deployment and new Windows checks are handled separately by root; this pack does not assert their results."
+}

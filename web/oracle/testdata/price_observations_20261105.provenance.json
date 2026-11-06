@@ -1,0 +1,230 @@
+{
+  "schemaVersion": 1,
+  "classification": "REAL_MARKET_RECORDED",
+  "storageSource": "CACHE",
+  "purpose": "Pinned original Kotlin price parity regression source; never current LIVE production data.",
+  "sourceRecordPolicy": "Original collector bytes unchanged; CACHE and MISSING statuses preserved; no estimates, adjustments or generated bars.",
+  "requestedCutoffDate": "2026-11-05",
+  "observedAt": {
+    "first": "2026-11-05T23:46:37.966687Z",
+    "last": "2026-11-05T23:49:08.695306Z",
+    "missingCasePolicy": "MISSING retains observedAt null; lastAttemptAt records its failed observation attempt."
+  },
+  "archive": {
+    "path": "price_observations_20261105.tar.gz",
+    "sha256": "de5cc3f9b8edf5fc41dbfd0299f258a60afbadb47bd58fa95d47e552ec39d032",
+    "bytes": 54608,
+    "format": "gzip (mtime 0, filename empty, compression 9) over sorted USTAR (mtime/uid/gid 0, mode 0644, owner/group empty)"
+  },
+  "counts": {
+    "issuerCount": 6,
+    "priceRecordCount": 6,
+    "rawPageCount": 27,
+    "memberCount": 33,
+    "normalizedBarCount": 1088,
+    "cacheRecords": 5,
+    "missingRecords": 1
+  },
+  "cases": [
+    {
+      "issuerId": "005930",
+      "classification": "REAL_MARKET_RECORDED",
+      "source": "CACHE",
+      "observedAt": "2026-11-05T23:47:47.409232Z",
+      "lastAttemptAt": "2026-11-05T23:47:47.409232Z",
+      "requestedCutoffDate": "2026-11-05",
+      "lastTradingDate": "2026-11-05",
+      "normalizedBarCount": 299,
+      "rawPageCount": 5
+    },
+    {
+      "issuerId": "000660",
+      "classification": "REAL_MARKET_RECORDED",
+      "source": "CACHE",
+      "observedAt": "2026-11-05T23:46:43.106089Z",
+      "lastAttemptAt": "2026-11-05T23:46:43.106089Z",
+      "requestedCutoffDate": "2026-11-05",
+      "lastTradingDate": "2026-11-05",
+      "normalizedBarCount": 299,
+      "rawPageCount": 5
+    },
+    {
+      "issuerId": "000020",
+      "classification": "REAL_MARKET_RECORDED",
+      "source": "CACHE",
+      "observedAt": "2026-11-05T23:49:08.695306Z",
+      "lastAttemptAt": "2026-11-05T23:49:08.695306Z",
+      "requestedCutoffDate": "2026-11-05",
+      "lastTradingDate": "2026-11-05",
+      "normalizedBarCount": 299,
+      "rawPageCount": 5
+    },
+    {
+      "issuerId": "0001A0",
+      "classification": "REAL_MARKET_RECORDED",
+      "source": "CACHE",
+      "observedAt": "2026-11-05T23:46:37.966687Z",
+      "lastAttemptAt": "2026-11-05T23:46:37.966687Z",
+      "requestedCutoffDate": "2026-11-05",
+      "lastTradingDate": "2026-11-05",
+      "normalizedBarCount": 186,
+      "rawPageCount": 4
+    },
+    {
+      "issuerId": "000300",
+      "classification": "REAL_MARKET_RECORDED",
+      "source": "CACHE",
+      "observedAt": "2026-11-05T23:46:39.963801Z",
+      "lastAttemptAt": "2026-11-05T23:46:39.963801Z",
+      "requestedCutoffDate": "2026-11-05",
+      "lastTradingDate": "2025-03-06",
+      "normalizedBarCount": 5,
+      "rawPageCount": 7
+    },
+    {
+      "issuerId": "005030",
+      "classification": "REAL_MARKET_RECORDED",
+      "source": "MISSING",
+      "observedAt": null,
+      "lastAttemptAt": "2026-11-05T23:57:33.471642Z",
+      "requestedCutoffDate": "2026-11-05",
+      "lastTradingDate": null,
+      "normalizedBarCount": 0,
+      "rawPageCount": 1
+    }
+  ],
+  "files": {
+    "prices/000020.json": {
+      "sha256": "b22a76777ab69abaae01b57a4f45bcde5910c30223eb8d57182544811cd50455",
+      "bytes": 29143
+    },
+    "prices/0001A0.json": {
+      "sha256": "34d7899ec36b2e322da797aaec0f431dff054782a521f09c12ddb97273ca2541",
+      "bytes": 18851
+    },
+    "prices/000300.json": {
+      "sha256": "e663cc03f9e7fd1f8723365366865111ce369cd65464ee42cc139ed51f372439",
+      "bytes": 2045
+    },
+    "prices/000660.json": {
+      "sha256": "c03b3090c8150e0cd7a6ddcdba5031272eb86c72fc240e03cdbd1f4511168420",
+      "bytes": 32632
+    },
+    "prices/005030.json": {
+      "sha256": "3f0ac80ad8215925e23ed3630c4862759c121cebe4be0004e567d6ee64fb1270",
+      "bytes": 515
+    },
+    "prices/005930.json": {
+      "sha256": "cc1bc3288e8fb083d831da4d8c4bb1c6db389bfe6fc086a284e910c1bd37ef92",
+      "bytes": 32107
+    },
+    "raw/000020/083696ed809267f756ac476c03703e00b91de5690bd65f26deb43e6b199723a1.json": {
+      "sha256": "083696ed809267f756ac476c03703e00b91de5690bd65f26deb43e6b199723a1",
+      "bytes": 16681
+    },
+    "raw/000020/11a3ff54a905752d1642f2109638af9886e9c6dd7154b7964b2ab5e95248d41d.json": {
+      "sha256": "11a3ff54a905752d1642f2109638af9886e9c6dd7154b7964b2ab5e95248d41d",
+      "bytes": 16688
+    },
+    "raw/000020/5b82a99de0af0f0ab0ea3813e7e67a5c4007a662883ee535f26aa55f1ac549f8.json": {
+      "sha256": "5b82a99de0af0f0ab0ea3813e7e67a5c4007a662883ee535f26aa55f1ac549f8",
+      "bytes": 16725
+    },
+    "raw/000020/60ac4786fd3482d39146639fb5ebf6ebd323a7aa481e95cfc7cf1dc36b8289db.json": {
+      "sha256": "60ac4786fd3482d39146639fb5ebf6ebd323a7aa481e95cfc7cf1dc36b8289db",
+      "bytes": 16673
+    },
+    "raw/000020/d7d9440d9d0aafec4cd0e556a8937020c742cccd596e3af7bcb7a20ff9a09fff.json": {
+      "sha256": "d7d9440d9d0aafec4cd0e556a8937020c742cccd596e3af7bcb7a20ff9a09fff",
+      "bytes": 16680
+    },
+    "raw/0001A0/3f45893382cb3d370ce1fc2719ae63aab57967d4d1d4e8f8922959efb36e36dd.json": {
+      "sha256": "3f45893382cb3d370ce1fc2719ae63aab57967d4d1d4e8f8922959efb36e36dd",
+      "bytes": 2015
+    },
+    "raw/0001A0/96a9a7f5f5ebc14ad617c906050109ddf801923eea6e42503921d9f0d7b1f5d4.json": {
+      "sha256": "96a9a7f5f5ebc14ad617c906050109ddf801923eea6e42503921d9f0d7b1f5d4",
+      "bytes": 16865
+    },
+    "raw/0001A0/b9e7ff7fb096d7ed4354bdb218f571b442f933165ac0754c8815ce44392f31b1.json": {
+      "sha256": "b9e7ff7fb096d7ed4354bdb218f571b442f933165ac0754c8815ce44392f31b1",
+      "bytes": 17064
+    },
+    "raw/0001A0/fc3a8235eeec635b6cac964220fc0c9507d947e749695bfe66e6eff5fc5885de.json": {
+      "sha256": "fc3a8235eeec635b6cac964220fc0c9507d947e749695bfe66e6eff5fc5885de",
+      "bytes": 16695
+    },
+    "raw/000300/02ea664cce95219e97edf2070736ac9784492d82f1e06e2f97f0d8dd0c5d81d8.json": {
+      "sha256": "02ea664cce95219e97edf2070736ac9784492d82f1e06e2f97f0d8dd0c5d81d8",
+      "bytes": 15721
+    },
+    "raw/000300/2124e69c14917c469ddb4ad51ad9895bf2896b5c17a3f80000781b315230735b.json": {
+      "sha256": "2124e69c14917c469ddb4ad51ad9895bf2896b5c17a3f80000781b315230735b",
+      "bytes": 15721
+    },
+    "raw/000300/8b5bb0ac6082511fc48b5123b85385ee873a990137aa88e9b31729555615677c.json": {
+      "sha256": "8b5bb0ac6082511fc48b5123b85385ee873a990137aa88e9b31729555615677c",
+      "bytes": 15781
+    },
+    "raw/000300/c9d7e9c3e04d3cee9119c974cdf71ea8f23508ec305c6ee34943241d4ff2693b.json": {
+      "sha256": "c9d7e9c3e04d3cee9119c974cdf71ea8f23508ec305c6ee34943241d4ff2693b",
+      "bytes": 15721
+    },
+    "raw/000300/df7c8d3185b7517377c2439d5b22cf71cf888beb0d4ee5a15bccb935c4298f92.json": {
+      "sha256": "df7c8d3185b7517377c2439d5b22cf71cf888beb0d4ee5a15bccb935c4298f92",
+      "bytes": 15721
+    },
+    "raw/000300/e50ddbb297731be5dedf2f6afa4581e508765eaeee80bf23d1bb9a5664d096e1.json": {
+      "sha256": "e50ddbb297731be5dedf2f6afa4581e508765eaeee80bf23d1bb9a5664d096e1",
+      "bytes": 15721
+    },
+    "raw/000300/e73a5dcaf1c6334174572316d9072abcfa004b362b86c7748a291fa536fc7d41.json": {
+      "sha256": "e73a5dcaf1c6334174572316d9072abcfa004b362b86c7748a291fa536fc7d41",
+      "bytes": 15721
+    },
+    "raw/000660/43082faaf4eb65810e65c0ca5cabdc6985023b154b7941f532162b28e38e1c1a.json": {
+      "sha256": "43082faaf4eb65810e65c0ca5cabdc6985023b154b7941f532162b28e38e1c1a",
+      "bytes": 18007
+    },
+    "raw/000660/95e24126927339e9c6d915b91fd25f3e4ca705fd8b5e2dfd6edcbbc07d80bfa5.json": {
+      "sha256": "95e24126927339e9c6d915b91fd25f3e4ca705fd8b5e2dfd6edcbbc07d80bfa5",
+      "bytes": 17451
+    },
+    "raw/000660/a3e04ca774faac4ed3f16330da8a12b2f04f2aee95948cf1ef98bdc05cebd7ed.json": {
+      "sha256": "a3e04ca774faac4ed3f16330da8a12b2f04f2aee95948cf1ef98bdc05cebd7ed",
+      "bytes": 17438
+    },
+    "raw/000660/a8e70b22f94111ae25f248087e6aed6937824f18157b41df82ca44ab4e71f655.json": {
+      "sha256": "a8e70b22f94111ae25f248087e6aed6937824f18157b41df82ca44ab4e71f655",
+      "bytes": 17955
+    },
+    "raw/000660/c20110712bcecb4c8eb3ad15464cb4bc6e38d5dab3f612cc3175eb7a36db01db.json": {
+      "sha256": "c20110712bcecb4c8eb3ad15464cb4bc6e38d5dab3f612cc3175eb7a36db01db",
+      "bytes": 17718
+    },
+    "raw/005030/4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    "raw/005930/3ee3a914236c7d7026bf614ef5950136f86ea554b5ff299a10941b10167b6723.json": {
+      "sha256": "3ee3a914236c7d7026bf614ef5950136f86ea554b5ff299a10941b10167b6723",
+      "bytes": 17417
+    },
+    "raw/005930/433b9b86e55dffa8582d557b347bb51b19ce7ea4e3d136bd235b12ad87059c1c.json": {
+      "sha256": "433b9b86e55dffa8582d557b347bb51b19ce7ea4e3d136bd235b12ad87059c1c",
+      "bytes": 17494
+    },
+    "raw/005930/57fc2e80b54f461793b3a1a7885269277e838323a0564bbc119cededcebf8e05.json": {
+      "sha256": "57fc2e80b54f461793b3a1a7885269277e838323a0564bbc119cededcebf8e05",
+      "bytes": 17493
+    },
+    "raw/005930/5f72a4ac93080d8d00504d3da3f8399fcdf4be01313ff1f56ababdd7ab0ef283.json": {
+      "sha256": "5f72a4ac93080d8d00504d3da3f8399fcdf4be01313ff1f56ababdd7ab0ef283",
+      "bytes": 17514
+    },
+    "raw/005930/7185ec8d6036b9cd095947c96adbf78787490761deab3486005f7b9149797029.json": {
+      "sha256": "7185ec8d6036b9cd095947c96adbf78787490761deab3486005f7b9149797029",
+      "bytes": 17215
+    }
+  }
+}
