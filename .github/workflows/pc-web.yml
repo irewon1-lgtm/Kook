@@ -303,7 +303,7 @@ jobs:
           cache-dependency-path: web/package-lock.json
       - name: Install Python and browser dependencies
         run: |
-          python -m pip install requests pytest
+          python -m pip install requests pandas lxml pytest pytest-subtests
           npm ci --prefix web
           cd web
           npx playwright install --with-deps chromium
@@ -471,6 +471,8 @@ jobs:
           python scripts/compare_pc_price_oracle.py --skip-build \
             --cache "$GITHUB_WORKSPACE/.pc-work/recorded-price-source" \
             --output "$KR4_PRICE_ORACLE_DIR"
+      - name: Full original and PC Python regression suite
+        run: python -m pytest -q --junitxml=.pc-work/all-python-results.xml
       - name: All original ranking masks and frontend unit tests
         working-directory: web
         run: npm test -- --reporter=default --reporter=junit --outputFile.junit=../.pc-work/web-results.xml
@@ -753,7 +755,7 @@ jobs:
 
   windows_browsers:
     name: Native Windows ${{ matrix.channel }} public-site verification
-    if: needs.deploy_pages.result == 'success' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    if: ${{ always() && !cancelled() && needs.deploy_pages.result == 'success' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch') }}
     needs: [deploy_pages]
     runs-on: windows-latest
     timeout-minutes: 45
