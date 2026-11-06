@@ -87,7 +87,7 @@ export default function App({ receiver }: { receiver: MarketReceiver }) {
   };
   const toggleFavorite = (code: string) => setFavorites(previous => previous.includes(code) ? previous.filter(value => value !== code) : [...previous, code]);
   const refresh = () => { void receiver.refresh(); };
-  return <div className="shell" data-testid="kr4-app" data-source={state.source} data-refreshing={state.refreshing} data-source-commit={state.manifest?.sourceCommit || ''} data-data-base={receiver.getDataBase()}
+  return <div className="shell" data-testid="kr4-app" data-source={state.source} data-refreshing={state.refreshing} data-source-commit={state.manifest?.sourceCommit || ''} data-data-base={receiver.getDataBase()} data-ui-version={import.meta.env.VITE_KR4_UI_VERSION} data-ui-commit={import.meta.env.VITE_KR4_UI_COMMIT}
     data-generation-id={state.manifest?.generationId || ''} data-stocks-sha={state.manifest?.files['stocks.json']?.sha256 || ''} data-data-kind={state.manifest?.dataKind || 'VERIFIED_PUBLISHED_SNAPSHOT'}
     data-input-hashes={JSON.stringify(Object.fromEntries(Object.entries(state.manifest?.inputHashes || {}).filter(([key]) => !key.startsWith('context/'))))}>
     <a className="skip-link" href="#main-content">본문 바로가기</a>
@@ -105,7 +105,7 @@ export default function App({ receiver }: { receiver: MarketReceiver }) {
       {route.page === 'more' && <div className="stack"><h1>더보기 · 데이터와 이용 안내</h1><DataStatus state={state} onRefresh={refresh}/>
         <section className="panel stack"><SectionTitle>내 브라우저 설정</SectionTitle><p>기본 주식 조회는 로그인 없이 무료입니다. 관심종목과 글씨 크기는 이 브라우저에만 저장되며 다른 컴퓨터·ChatGPT 계정과 공유하지 않습니다.</p><p>현재 글씨 {textSize}px · 관심종목 {favorites.length}개</p><button className="button" onClick={() => setTextSize(22)}>기본 큰 글씨로 되돌리기</button></section>
         <section className="panel stack"><SectionTitle>데이터 기준과 갱신</SectionTitle><p>4지표는 기존 KR4 원본 엔진의 매출 증가율·영업이익률·실적 PER·6개월 상승률입니다. 선택한 상대점수의 동일 비중 평균으로 순위를 계산하며, 재무위험은 점수와 순위를 바꾸지 않습니다.</p><p>LIVE는 GitHub에 게시된 검증 스냅샷을 새로 받은 상태입니다. 실시간 호가를 뜻하지 않습니다. 차트는 원천에서 수집·검증한 저장 일봉이므로 CACHE와 실제 마지막 거래일을 표시합니다.</p><p>재무 기준일 {state.manifest?.snapshotDate || '미확보'} · 주가 기준일 {state.manifest?.priceCutoffDate || '미확보'}</p>{state.financialError && <p className="notice-warning">재무자료 검증 보류: {state.financialError}. 4지표 순위는 계속 공개합니다.</p>}<p>사이트는 5분 간격과 창 복귀 시 새 게시본을 확인합니다. 서버 수집은 GitHub Actions 예약·자료 게시 후 실행되며 제공자 장애나 무료 서비스 제약으로 지연될 수 있습니다. 새 자료 확인 버튼은 게시본을 다시 확인합니다.</p><p>수정주가 보정 여부는 미확인입니다. 검증되지 않은 분할·병합 보정이나 결측 가격·분기를 만들지 않습니다.</p></section>
-        <section className="panel stack"><SectionTitle>출처와 원본</SectionTitle><p>KRX KIND 종목 정보 · 금융감독원 OpenDART 재무자료 · 네이버증권 실제 일별 가격 · DART 공시와 회사 공식자료</p><p>웹 원본 커밋 <a href={`https://github.com/irewon1-lgtm/Kook/commit/${state.manifest?.sourceCommit || ''}`} target="_blank" rel="noopener noreferrer">{state.manifest?.sourceCommit || '미확인'}</a></p><a href="https://github.com/irewon1-lgtm/Kook" target="_blank" rel="noopener noreferrer">공개 저장소·계산 근거 보기</a><a href={`${import.meta.env.BASE_URL}verification/index.html`} target="_blank" rel="noopener noreferrer">PC 기능·정보 대조표와 검증 기록</a><p className="muted">판독과 최종 후보는 조사 우선순위를 위한 참고 정보입니다. 원본의 결측·부분 확인·불확실성을 함께 확인하세요.</p></section>
+        <section className="panel stack"><SectionTitle>출처와 원본</SectionTitle><p>KRX KIND 종목 정보 · 금융감독원 OpenDART 재무자료 · 네이버증권 실제 일별 가격 · DART 공시와 회사 공식자료</p><p>원본 엔진·자료 커밋 <a href={`https://github.com/irewon1-lgtm/Kook/commit/${state.manifest?.sourceCommit || ''}`} target="_blank" rel="noopener noreferrer">{state.manifest?.sourceCommit || '미확인'}</a></p><a href="https://github.com/irewon1-lgtm/Kook" target="_blank" rel="noopener noreferrer">공개 저장소·계산 근거 보기</a><a href={`${import.meta.env.BASE_URL}verification/index.html`} target="_blank" rel="noopener noreferrer">PC 기능·정보 대조표와 검증 기록</a><p className="muted">판독과 최종 후보는 조사 우선순위를 위한 참고 정보입니다. 원본의 결측·부분 확인·불확실성을 함께 확인하세요.</p></section>
       </div>}
       {route.page === 'stock' && <>
         {detailLoading && (!detail || detail.summary.issuerId !== route.code) && <section className="panel" role="status">검증된 종목 상세자료를 불러오고 있습니다…</section>}
@@ -113,7 +113,7 @@ export default function App({ receiver }: { receiver: MarketReceiver }) {
         {detail && detail.summary.issuerId === route.code && <DetailScreen key={detail.summary.issuerId} detail={detail} state={state} initialTab={route.tab || 0} onBack={() => navigate(route.origin || 'ranking')} onStock={openStock} onToggleFavorite={toggleFavorite} isFavorite={favorites.includes(detail.summary.issuerId)} onRefresh={refresh}/>}
       </>}
     </main>
-    <footer className="app-footer">KR4 국내주식 PC · 전체 공개 · 로그인 없이 이용 · 마지막 게시 {state.manifest ? formatDate(state.manifest.generatedAt) : '미확인'}</footer>
+    <footer className="app-footer">KR4 국내주식 PC {import.meta.env.VITE_KR4_UI_VERSION} · PC 빌드 {import.meta.env.VITE_KR4_UI_COMMIT.slice(0, 12)} · 전체 공개 · 로그인 없이 이용 · 마지막 자료 게시 {state.manifest ? formatDate(state.manifest.generatedAt) : '미확인'}</footer>
     {pickerOpen && <FavoritePicker stocks={state.stocks} current={favorites} onClose={() => setPickerOpen(false)} onSave={codes => { setFavorites(codes); setPickerOpen(false); }}/>}
   </div>;
 }

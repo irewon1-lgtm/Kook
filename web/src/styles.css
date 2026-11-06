@@ -260,9 +260,9 @@ body { word-break: keep-all; overflow-wrap: anywhere; }
 }
 .stock-row-container { border-bottom: 1px solid #304358; }
 .stock-row-container:last-child { border-bottom: 0; }
-.stock-row-header { position: relative; }
+.stock-row-header { display: grid; grid-template-columns: minmax(0, 1fr) 64px; align-items: center; }
 .stock-row-container .stock-row { border-bottom: 0; }
-.row-expand { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); display: flex; align-items: center; justify-content: center; width: 44px; height: 48px; min-height: 44px; padding: 8px; border: 1px solid #54728f; border-radius: 10px; background: #142d46; color: #dcecff; }
+.row-expand { position: static; justify-self: center; align-self: center; display: flex; align-items: center; justify-content: center; width: 44px; height: 48px; min-height: 44px; padding: 8px; border: 1px solid #54728f; border-radius: 10px; background: #142d46; color: #dcecff; }
 .row-expand:hover { background: #245385; border-color: #89c7ff; }
 .stock-inline-evidence { padding: 24px 30px; display: grid; gap: 16px; background: #0c2135; border-top: 1px solid #45627d; }
 .inline-heading { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 18px; }
@@ -291,9 +291,11 @@ body { word-break: keep-all; overflow-wrap: anywhere; }
   .stock-inline-evidence { padding: 20px 16px; }
 }
 @media (max-width: 550px) {
-  .row-expand { right: 8px; top: 20px; transform: none; }
-  .stock-row-container .stock-company { padding-right: 26px; }
   .inline-metric { grid-template-columns: 1fr; }
 }
 .ranking-guide { display: grid; gap: 16px; }
 .ranking-guide .section-title { margin-bottom: 0; }
+
+/* Header cells share the detail button's content width; the final64px belongs to the sibling control. */
+.stock-table-heading { padding-right: 84px; }
+@media (max-width: 1050px) { .stock-table-heading { padding-right: 80px; } }

@@ -14,3 +14,32 @@
 .detail-screen .dtl-section-heading .section-title h2::before{display:none}
 .dtl-missing-reason{color:#ffc7a3}
 .detail-screen a,.dtl-dialog a{display:inline-block;min-height:44px;padding-block:3px;line-height:1.8}
+/* Desktop overview shares a row; rem bases wrap it naturally as text grows. */
+.dtl-overview-grid{display:flex;flex-wrap:wrap;gap:18px;align-items:flex-start;min-width:0}
+.dtl-overview-grid>.dtl-panel{flex:1.25 1 26rem;min-width:0;padding:18px 20px}
+.dtl-overview-grid>.dtl-composite{flex:.85 1 18rem}
+.dtl-overview-grid .dtl-section-heading{margin-bottom:8px}
+.dtl-overview-grid .dtl-section-heading h2{margin-bottom:0}
+.dtl-overview-grid .dtl-score-heading{margin-top:0;gap:12px;flex-wrap:wrap}
+.dtl-overview-grid .dtl-score-heading p{margin-bottom:6px}
+.dtl-overview-grid .dtl-facts-grid{margin:12px 0;padding-top:12px}
+.dtl-overview-grid .dtl-facts-grid>div{padding-inline:10px}
+.dtl-overview-grid .dtl-facts-grid>div:first-child{padding-left:0}
+.dtl-overview-grid .dtl-facts-grid>div:last-child{padding-right:0}
+.dtl-overview-grid .dtl-compact-metric{grid-template-columns:minmax(100px,.95fr) minmax(100px,1.15fr) minmax(90px,.65fr);gap:14px;padding:9px 0;line-height:1.35}
+.dtl-overview-grid .dtl-compact-metric>div:first-child strong{line-height:1.3}
+.dtl-overview-grid .dtl-compact-metric>div:first-child span{display:block;line-height:1.4}
+.dtl-overview-grid .dtl-relative>strong{line-height:1.3}
+.dtl-overview-grid .dtl-relative>span{display:block;white-space:normal;line-height:1.4}
+.dtl-overview-grid .dtl-footnote{margin:8px 0 0}
+@media(min-width:801px){.detail-screen{padding-top:12px}.dtl-company-header{margin-bottom:14px;gap:16px}.dtl-quote{padding-block:15px;margin-bottom:14px;gap:20px}.dtl-tabs{padding-bottom:8px;margin-bottom:16px}.dtl-tabs button{min-height:48px;padding-block:7px}.dtl-stack{gap:18px}}
+@media(max-width:540px){.dtl-overview-grid>.dtl-panel{padding:18px 16px}.dtl-overview-grid .dtl-compact-metric{grid-template-columns:1fr 1fr;gap:7px 15px}.dtl-overview-grid .dtl-facts-grid>div{padding:0}}
+@media(min-width:801px){
+ .detail-screen{padding-top:8px}
+ .dtl-company-header{margin-bottom:10px}
+ .dtl-company-identity h1{line-height:1.3;margin-bottom:0}
+ .dtl-company-identity p{line-height:1.45}
+ .dtl-quote{margin-bottom:10px}
+ .dtl-tabs{margin-bottom:12px}
+ .dtl-overview-grid .dtl-compact-metric{padding-block:6px}
+}

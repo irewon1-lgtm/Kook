@@ -4,6 +4,10 @@
 .brand strong,.brand small { display:block; }
 .text-controls { width:100%;justify-content:flex-end; }
 .text-controls button { display:inline-flex;align-items:center;gap:7px; }
+/* Keep large, visible controls without spending the first laptop fold on chrome. */
+.shell { padding-top:20px; }
+.app-header { row-gap:8px;padding-bottom:12px;margin-bottom:16px; }
+.button.primary,.button.active { background:#0670d4; }
 .skip-link { position:absolute;left:16px;top:-100px;padding:14px;background:#178cff;color:white;z-index:20; }
 .skip-link:focus { top:12px; }
 .app-footer { margin-top:48px;border-top:1px solid var(--border);padding-top:24px;font-size:.9rem;color:var(--muted);overflow-wrap:anywhere; }

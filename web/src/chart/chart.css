@@ -10,3 +10,20 @@
 @media(max-width:700px){.pc-chart{padding:18px}.pc-chart__heading{margin-bottom:18px}.pc-chart__controls{gap:14px}.pc-chart__choices{gap:8px}.pc-chart button{padding:10px 14px}.pc-chart__source dl{grid-template-columns:1fr}.pc-chart__ohlc{grid-template-columns:repeat(2,minmax(0,1fr))}.pc-chart__selection{padding:16px}.pc-chart__navigation{gap:14px}.pc-chart__source dl>div{gap:4px 12px}}
 .pc-chart-stack{min-width:0;display:flex;flex-direction:column;gap:24px}.pc-chart-quote{display:grid;grid-template-columns:minmax(220px,1fr) minmax(300px,1fr);gap:16px 30px;padding:22px 26px;border:1px solid #386494;border-radius:16px;color:#ecf5ff;background:linear-gradient(110deg,#12375d,#0c203c);font-size:1rem;line-height:1.5;min-width:0}.pc-chart-quote p{margin:0}.pc-chart-quote strong{display:block;font-size:2rem;line-height:1.3;font-variant-numeric:tabular-nums}.pc-chart-quote__main>p:first-child{font-size:0.9rem;color:#b9d1ed}.pc-chart-quote__main>p:last-child{font-size:1.1rem;font-weight:650;margin-top:4px}.pc-chart-quote__rise{color:#ff6674}.pc-chart-quote__fall{color:#49acff}.pc-chart-quote__ohlc{margin:0;padding:4px 0 4px 30px;border-left:1px solid #436585;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 24px;align-self:center}.pc-chart-quote__ohlc>div{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 16px;min-width:0}.pc-chart-quote__ohlc dt{font-size:0.9rem;color:#c8d9ec}.pc-chart-quote__ohlc dd{font-size:1.1rem;margin:0;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}.pc-chart-quote__source{grid-column:1/-1;font-size:0.9rem;color:#bed2e9;overflow-wrap:anywhere}
 @media(max-width:700px){.pc-chart-quote{grid-template-columns:1fr;padding:20px;gap:20px}.pc-chart-quote__ohlc{border-left:0;border-top:1px solid #436585;padding:16px 0 0}.pc-chart-quote strong{font-size:1.8rem}}
+/* Keep actual quote and all chart controls near the plot at desktop sizes. */
+.detail-screen .pc-chart-quote p{margin:0}
+.detail-screen .pc-chart-stack{gap:16px}
+@media(min-width:801px){
+ .detail-screen .pc-chart-quote{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:8px 24px;padding:14px 20px}
+ .detail-screen .pc-chart-quote__main{display:flex;align-items:baseline;align-content:start;flex-wrap:wrap;gap:2px 16px;min-width:0}
+ .detail-screen .pc-chart-quote__main>p:first-child{flex-basis:100%;line-height:1.5}
+ .detail-screen .pc-chart-quote__main>strong{line-height:1.2}
+ .detail-screen .pc-chart-quote__main>p:last-child{margin:0;line-height:1.5}
+ .detail-screen .pc-chart-quote__ohlc{padding:2px 0 2px 20px;gap:6px 18px}
+ .detail-screen .pc-chart-quote__ohlc>div{gap:4px 12px}
+ .detail-screen .pc-chart{padding:18px 20px}
+ .detail-screen .pc-chart__heading{margin-bottom:12px}
+ .detail-screen .pc-chart__controls{gap:12px;margin-bottom:10px}
+ .detail-screen .pc-chart__choices{gap:8px}
+ .detail-screen .pc-chart button{min-height:44px;padding:8px 15px}
+}
