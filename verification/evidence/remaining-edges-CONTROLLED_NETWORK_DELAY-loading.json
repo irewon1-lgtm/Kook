@@ -1,0 +1,28 @@
+{
+  "kind": "CONTROLLED_NETWORK_DELAY",
+  "scope": "LOCAL_VITE_GENUINE_PRICE_HTTP_RESPONSE_DELAY_ONLY",
+  "screenshot": "remaining-edges-CONTROLLED_NETWORK_DELAY-loading.png",
+  "originalBodySha256": "cc1bc3288e8fb083d831da4d8c4bb1c6db389bfe6fc086a284e910c1bd37ef92",
+  "pendingEvidence": {
+    "visibleLoading": "실제 일별 주가 불러오는 중…",
+    "candleCount": 0,
+    "lineCount": 0,
+    "latestCloseCount": 0,
+    "quote": "최근 실제 거래 가격\n\n가격 자료 대기\n\n화면 기준 2026-11-05 · 수집된 실제 가격을 기다립니다.",
+    "capturedAt": "2026-11-06T02:38:19.614Z"
+  },
+  "url": "http://127.0.0.1:4173/Kook/#stock/005930/4",
+  "viewport": {
+    "width": 1365,
+    "height": 853
+  },
+  "sourceHashes": {
+    "web/src/screens/Detail.tsx": "dcb4b589244e8ab562759b8d9b9bbfc0e0f38f259de3a7e30df22c2276842c70",
+    "web/src/chart/ChartView.tsx": "bfe16caacdf99f17a96d344e175b8c34508c9333d0ebe695b2e5341faadf7052",
+    "web/src/chart/PriceChart.tsx": "9e55f105a58bd01bde708e4b1edf16da06a44e3d34fa0361153c0203f0f09cdb",
+    "web/src/data/receiver.ts": "99795e6439f1e6bf5920b6d11260bde218f1df093b81a08fc475c51fe3cfb792"
+  },
+  "actualWindowsBrowser": false,
+  "physicalLgGramVerified": false,
+  "noDOMOrPriceByteChanges": true
+}

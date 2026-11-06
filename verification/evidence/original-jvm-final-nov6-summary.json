@@ -1,0 +1,172 @@
+{
+  "observedAt": "2026-11-06T04:15:29.396106+00:00",
+  "head": "e388ea2b7aa52843af5c0d32861cc0493bfe5f5a",
+  "sourceInputDate": "2026-11-06",
+  "command": "/workspace/kook-venv/bin/python /workspace/kr4-pc-work/run-upstream-gradle.py testDebugUnitTest --rerun-tasks --console=plain",
+  "environment": "Linux cloud JDK17 AndroidSDK34 Gradle8.7, actual source/worktree; forced rerun all24tasks",
+  "counts": {
+    "tests": 153,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "suiteCount": 26,
+  "suites": [
+    {
+      "file": "TEST-com.krstock.v3.data.analysis.DeepResearchEngineV2Test.xml",
+      "timestamp": "2026-11-06T04:14:43",
+      "sha256": "45232444b22cd81125432d4c67bd8e45de308afbf750516b7678b3de6b89e56f",
+      "tests": 7
+    },
+    {
+      "file": "TEST-com.krstock.v3.data.analysis.IntegratedInterpretationEngineTest.xml",
+      "timestamp": "2026-11-06T04:14:43",
+      "sha256": "186a83679f7a875db9ab3bc21b48147be4d867e743e8d86fdd2a50abfe16f817",
+      "tests": 10
+    },
+    {
+      "file": "TEST-com.krstock.v3.data.analysis.QuarterlyTrendAnalyzerTest.xml",
+      "timestamp": "2026-11-06T04:14:44",
+      "sha256": "45f6a47e8bab7342b1e249e09da84e2da4609333c7ee7c203ba8c4f0a4ceb863",
+      "tests": 6
+    },
+    {
+      "file": "TEST-com.krstock.v3.data.candidate.FinalCandidateEngineTest.xml",
+      "timestamp": "2026-11-06T04:14:44",
+      "sha256": "b7256dcf57a0b28f25bc39d6de03a214655473d92b0887c2f38b78e8da1e8df6",
+      "tests": 3
+    },
+    {
+      "file": "TEST-com.krstock.v3.data.candidate.FinalCandidateRuntimeStoreTest.xml",
+      "timestamp": "2026-11-06T04:14:44",
+      "sha256": "6f913a8cc0c33f3cda86080b64b59dfa81e2f337a43725a63715636e6f07593a",
+      "tests": 8
+    },
+    {
+      "file": "TEST-com.krstock.v3.data.candidate.FinalCandidateSnapshotUpdaterTest.xml",
+      "timestamp": "2026-11-06T04:14:44",
+      "sha256": "aeb361047ad8144c4dfafd310d156fbcced128aa62d00de820f8c07ac32a8c1d",
+      "tests": 6
+    },
+    {
+      "file": "TEST-com.krstock.v3.data.evidence.OfficialSourceCollectorTest.xml",
+      "timestamp": "2026-11-06T04:14:44",
+      "sha256": "5c811ac98b4d8e246eeedd7ed42f77dcd274294d409271e37d0ec1e442bc8888",
+      "tests": 6
+    },
+    {
+      "file": "TEST-com.krstock.v3.data.peer.PeerBenchmarkEngineTest.xml",
+      "timestamp": "2026-11-06T04:14:44",
+      "sha256": "581aacd6fe89b64227e154dec59b5a2b3d91aeaecb8398a0c96b7dabb84f445c",
+      "tests": 8
+    },
+    {
+      "file": "TEST-com.krstock.v3.data.price.PriceAdjustmentProvenanceTest.xml",
+      "timestamp": "2026-11-06T04:14:44",
+      "sha256": "4a57eea4923915594ba3069885fef94e325cb0a4c736f38ac4739df6c17eeb88",
+      "tests": 2
+    },
+    {
+      "file": "TEST-com.krstock.v3.data.price.PriceChartGeometryTest.xml",
+      "timestamp": "2026-11-06T04:14:44",
+      "sha256": "a3a1b5f98d15a32ba17dff91c07c02b8ad3a6333294585ba8e753384ead994cc",
+      "tests": 1
+    },
+    {
+      "file": "TEST-com.krstock.v3.data.price.PriceHistoryAggregationTest.xml",
+      "timestamp": "2026-11-06T04:14:44",
+      "sha256": "ee86802b1907b7ffdbb5431fbdb1165dd8c6140806c6ac2eedacfa311af54e20",
+      "tests": 10
+    },
+    {
+      "file": "TEST-com.krstock.v3.data.price.PriceHistoryFetchTest.xml",
+      "timestamp": "2026-11-06T04:14:44",
+      "sha256": "6418011e1a3a164de0d13e4bd9bb1ba47ad09e3bb1c16a47fc9a2e429baccced",
+      "tests": 4
+    },
+    {
+      "file": "TEST-com.krstock.v3.data.price.PriceHistoryParsingTest.xml",
+      "timestamp": "2026-11-06T04:14:45",
+      "sha256": "1dfb132bfab2c5a3d070519e49d88dcad9a0fde38478768cefab789ab38e6a3b",
+      "tests": 5
+    },
+    {
+      "file": "TEST-com.krstock.v3.data.ranking.DynamicRankingEngineTest.xml",
+      "timestamp": "2026-11-06T04:14:45",
+      "sha256": "55fbe9f6d43947105d4eb6817ea6aec2df2c12c29e1bd962259cdbb2d8bc43bc",
+      "tests": 9
+    },
+    {
+      "file": "TEST-com.krstock.v3.data.repository.PeerBenchmarkRepositoryExtremeTest.xml",
+      "timestamp": "2026-11-06T04:14:45",
+      "sha256": "303b81b5f07277908c97308ef5a8d07226491020396111334498c90b3ad2a7ec",
+      "tests": 5
+    },
+    {
+      "file": "TEST-com.krstock.v3.data.repository.StockRepositoryExtremeTest.xml",
+      "timestamp": "2026-11-06T04:14:46",
+      "sha256": "016fdcc6f42fe14e31f70a7a8b4aea02cae2bd5c9a1f59313f73cf11f6c4b65a",
+      "tests": 16
+    },
+    {
+      "file": "TEST-com.krstock.v3.data.repository.StockRepositoryRuntimeRefreshTest.xml",
+      "timestamp": "2026-11-06T04:14:46",
+      "sha256": "90e16f577ec75e2f99b359f4529df18621ddf00887d6a93887a1022901f2744d",
+      "tests": 2
+    },
+    {
+      "file": "TEST-com.krstock.v3.data.stage.CommittedFinancialSnapshotTest.xml",
+      "timestamp": "2026-11-06T04:14:46",
+      "sha256": "46a13353c190a35a797540b07281aef92bda63b2841c05fdedecf2a6154ca0fd",
+      "tests": 2
+    },
+    {
+      "file": "TEST-com.krstock.v3.data.stage.FinancialRiskRankingInvariantTest.xml",
+      "timestamp": "2026-11-06T04:14:47",
+      "sha256": "5ac46d6cf67c9df4294f79f780b993df1f275e1ad098eb61c6c2ccf1c616017f",
+      "tests": 1
+    },
+    {
+      "file": "TEST-com.krstock.v3.data.stage.FinancialSafetySnapshotUpdaterTest.xml",
+      "timestamp": "2026-11-06T04:14:47",
+      "sha256": "9bbefd1cb9a22933ebdff5c068542dae59cef6a0bd74013c9640269a916a49ba",
+      "tests": 13
+    },
+    {
+      "file": "TEST-com.krstock.v3.data.stage.Stage45PolicyTest.xml",
+      "timestamp": "2026-11-06T04:14:47",
+      "sha256": "64a336516fb6b6eaa66cf0eb67d5f8bbd0615109f43845b7642a4f8e50a12bf9",
+      "tests": 4
+    },
+    {
+      "file": "TEST-com.krstock.v3.data.stage.VerifiedFinancialSafetyTest.xml",
+      "timestamp": "2026-11-06T04:14:47",
+      "sha256": "b02c3b5e74f3df49eb21a801b11fd2a2546c51aec8d8d5b8019088f7a241aba5",
+      "tests": 15
+    },
+    {
+      "file": "TEST-com.krstock.v3.data.update.SnapshotAutoUpdaterPolicyTest.xml",
+      "timestamp": "2026-11-06T04:14:47",
+      "sha256": "72574528c37fa7020b992d191da2d2705d0808b718719155ad626ed6d8a2a11d",
+      "tests": 3
+    },
+    {
+      "file": "TEST-com.krstock.v3.data.update.SnapshotReceiveTest.xml",
+      "timestamp": "2026-11-06T04:14:47",
+      "sha256": "343523e39323bdb571c6156ae0e65ab89c56864e3b4261dcae719a171c0cea19",
+      "tests": 3
+    },
+    {
+      "file": "TEST-com.krstock.v3.ui.components.FinancialSafetyPresentationTest.xml",
+      "timestamp": "2026-11-06T04:14:48",
+      "sha256": "192581b9a0d0d444ed0fceb2c0e27bb444e1bb097587037bab9821f526f64706",
+      "tests": 2
+    },
+    {
+      "file": "TEST-com.krstock.v3.ui.theme.DarkNavyPaletteTest.xml",
+      "timestamp": "2026-11-06T04:14:48",
+      "sha256": "8e5868bf25001b656f49680ebf36a1eb5e89647975f61fd7a3403a9cd7253514",
+      "tests": 2
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "quant": {
+    "runId": 42152978807,
+    "event": "workflow_dispatch",
+    "headSha": "f341fbd3a06da124ba2372ec7a2f13a427aaf2ec",
+    "status": "completed",
+    "qualityOverrides": false,
+    "conclusion": "success",
+    "commit": "edb07dbe4dde6b0ac35bfff92f6abfa1993fa00f",
+    "snapshot_date_kst": "2026-11-06",
+    "price_cutoff_date_kst": "2026-11-05",
+    "source_errors": 0,
+    "complete_count": 2370,
+    "history8q": 2214,
+    "history8q_floor": 1192
+  },
+  "hotfixMainCI": {
+    "runId": 42152787593,
+    "event": "push",
+    "conclusion": "success",
+    "successfulJobs": 6,
+    "signedApkRelease": "intentionally_skipped_actual_log"
+  },
+  "priorScheduledQuant": {
+    "runId": 42100942826,
+    "event": "schedule",
+    "conclusion": "failure",
+    "reason": "financial-date integration test coupled to newly staged quant date"
+  },
+  "financialFollowup": {
+    "workflow": "stage4567-v2-refresh.yml",
+    "expectedEvent": "workflow_run",
+    "status": "completed",
+    "runId": 42155937716,
+    "event": "workflow_run",
+    "headSha": "edb07dbe4dde6b0ac35bfff92f6abfa1993fa00f",
+    "manualDispatchIssued": false,
+    "conclusion": "success",
+    "financialCommit": "7917d752103ec59d4255f4817d8e259e790c5f83",
+    "candidateCommit": "d377f493fc4cc92fc748d6193e12980e27e21745"
+  },
+  "recoveryFollowup": {
+    "runId": 42155937715,
+    "event": "workflow_run",
+    "conclusion": "success",
+    "commit": "220a2e3f8c09465176fb34f372006bc04c4fd2d8",
+    "allQuantRecordsUnchanged": true
+  },
+  "finalMain": "d377f493fc4cc92fc748d6193e12980e27e21745",
+  "officialReleaseUnchanged": "kr4-app-c20210",
+  "allFourDatesAligned": "2026-11-06",
+  "financialQuantRecordsHashMatches": true
+}

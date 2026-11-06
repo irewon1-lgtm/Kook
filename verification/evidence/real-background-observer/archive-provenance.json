@@ -1,0 +1,9 @@
+{
+  "file": "original-observer-evidence.tar.gz",
+  "sha256": "4082a4ebe9d5ae01bbb54fe2b2ecb5f681af3c5503f959e1d3e9ab6ff3d41d6b",
+  "bytes": 5125828,
+  "classification": "ORIGINAL_REAL_NETWORK_AND_SAME_DOCUMENT_DOM_CAPTURE_WITH_DERIVED_AUDIT",
+  "observerOriginalExit": 1,
+  "afterPngAvailable": false,
+  "sourceFilesRetainedByteIdenticalInsideArchive": true
+}

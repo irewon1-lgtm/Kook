@@ -1,0 +1,39 @@
+{
+  "runId": 42151160918,
+  "scope": "INITIAL_OFFICIAL_PUBLIC_E3_ONLY_NOT_FINAL_NOV6",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "name": "Native Windows chrome public-site verification",
+      "id": 127674944377,
+      "conclusion": "success",
+      "runnerName": "GitHub Actions 1000011616",
+      "labels": [
+        "windows-latest"
+      ],
+      "log": "job-127674944377.log",
+      "logSha256": "893c260343143d99b02419743fc2aa347cfcf6c614ecf55b496c3854511c5b4d",
+      "observedPassedCounts": [
+        53
+      ]
+    },
+    {
+      "name": "Native Windows msedge public-site verification",
+      "id": 127674944421,
+      "conclusion": "success",
+      "runnerName": "GitHub Actions 1000011617",
+      "labels": [
+        "windows-latest"
+      ],
+      "log": "job-127674944421.log",
+      "logSha256": "1b57c9cd38c820a4821474979e556842c211b3c40f4e06f81f693e589040ccb7",
+      "observedPassedCounts": [
+        53
+      ]
+    }
+  ],
+  "physicalLgGramVerified": false,
+  "finalNov6NativeStatus": "PENDING",
+  "workflowSourceCommit": "ad24590446e7f60337855b46729b3edd8c40932e",
+  "testedCheckoutAndInitialUiCommit": "e3b0d190d6c95dde304110aa78b51db435280915"
+}

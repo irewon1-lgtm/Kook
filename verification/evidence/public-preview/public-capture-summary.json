@@ -1,0 +1,346 @@
+{
+  "kind": "ACTUAL_PUBLIC_UI_CAPTURES_AFTER_EXPLICIT_HOST_NOTICE",
+  "url": "https://rawcdn.githack.com/irewon1-lgtm/Kook/943156dbe4dbdddd16a684ac573d2da1c828e487/index.html",
+  "capturedAt": "2026-11-06T01:46:04.076949+00:00",
+  "directFreshAnonymousAccess": "FAIL_HOST_INTERSTITIAL_REQUIRES_EXPLICIT_OPEN",
+  "normalAnonymousAccessAfterServiceOpen": "PASS",
+  "originalPngCount": 24,
+  "sourceCommit": "d09d7e0f6baf443f92fb25a36c5f4cacdaa216fc",
+  "allImagesUncontrolled": true,
+  "selfHostedNotoFontsHttp200": 40,
+  "dataResponsesHttp200": 14,
+  "dataCors": [
+    "*"
+  ],
+  "httpErrors": [],
+  "pageErrors": [],
+  "requestFailures": [
+    {
+      "viewport": {
+        "width": 1365,
+        "height": 853
+      },
+      "url": "https://server.ethicalads.io/api/v1/decision/?publisher=githackcom&ad_types=image-v1&div_ids=githack-other-ad&callback=ad_1793929511150_340948&keywords=&campaign_types=paid%7Cpublisher-house%7Ccommunity%7Chouse&format=jsonp&client_version=2.5.0&placement_index=0&url=https%3A%2F%2Frawcdn.githack.com%2Firewon1-lgtm%2FKook%2F943156dbe4dbdddd16a684ac573d2da1c828e487%2Findex.html",
+      "error": "net::ERR_BLOCKED_BY_RESPONSE.NotSameOrigin"
+    },
+    {
+      "viewport": {
+        "width": 1365,
+        "height": 853
+      },
+      "url": "https://media.ethicalads.io/abp/px.gif?ch=1&rn=9.870623235861533",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "viewport": {
+        "width": 1365,
+        "height": 853
+      },
+      "url": "https://media.ethicalads.io/abp/px.gif?ch=2&rn=9.870623235861533",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1200
+      },
+      "url": "https://srv.carbonads.net/ads/CEADPK3U.json?segment=placement:rawgithackcom&v=true",
+      "error": "net::ERR_ABORTED"
+    }
+  ],
+  "limitations": [
+    "Initial host notice includes external advertising requests; their blocked/aborted failures are listed.",
+    "Initial source d09d7e0 precedes nonlayout fixes; final version needs recapture.",
+    "Actual Linux Chromium only; physical LGGram/Windows not claimed."
+  ],
+  "originalPngs": [
+    {
+      "file": "canonical-analysis-1365x853-fullpage.png",
+      "metadata": "canonical-analysis-1365x853-fullpage.json",
+      "sha256": "00a78999facbb9c9a1412ef19ec5a66ff1dbe7947c5ccf69a736baa23d148a7e",
+      "bytes": 5450220,
+      "uiCommit": "d09d7e0f6baf443f92fb25a36c5f4cacdaa216fc",
+      "generationId": "6b20d0d086adab3ef375483e2ca98573496c2a19f6978f1ef620dad710c5d909",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "controlled": false,
+      "directFreshAnonymousAccessPassed": false
+    },
+    {
+      "file": "canonical-analysis-1365x853.png",
+      "metadata": "canonical-analysis-1365x853.json",
+      "sha256": "cf5a34758ef6ca770cd698616d213feafe873ec18de765b27d40019a7ec5e346",
+      "bytes": 493059,
+      "uiCommit": "d09d7e0f6baf443f92fb25a36c5f4cacdaa216fc",
+      "generationId": "6b20d0d086adab3ef375483e2ca98573496c2a19f6978f1ef620dad710c5d909",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "controlled": false,
+      "directFreshAnonymousAccessPassed": false
+    },
+    {
+      "file": "canonical-analysis-1920x1200-fullpage.png",
+      "metadata": "canonical-analysis-1920x1200-fullpage.json",
+      "sha256": "0b8674c77d5eaedfd14e757fd383f3e26ac9d194af0af0fc7402ef41bb0094ba",
+      "bytes": 5900177,
+      "uiCommit": "d09d7e0f6baf443f92fb25a36c5f4cacdaa216fc",
+      "generationId": "6b20d0d086adab3ef375483e2ca98573496c2a19f6978f1ef620dad710c5d909",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "controlled": false,
+      "directFreshAnonymousAccessPassed": false
+    },
+    {
+      "file": "canonical-analysis-1920x1200.png",
+      "metadata": "canonical-analysis-1920x1200.json",
+      "sha256": "fc069cfb50056bed6c87021e21d4bd6e1f5b7736f91078f993a1e0547e72d608",
+      "bytes": 772484,
+      "uiCommit": "d09d7e0f6baf443f92fb25a36c5f4cacdaa216fc",
+      "generationId": "6b20d0d086adab3ef375483e2ca98573496c2a19f6978f1ef620dad710c5d909",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "controlled": false,
+      "directFreshAnonymousAccessPassed": false
+    },
+    {
+      "file": "canonical-chart-1365x853.png",
+      "metadata": "canonical-chart-1365x853.json",
+      "sha256": "9ab0dee6a419b73c48e57360375a6a15994b3ad19179a7aa609987e0ee82b4a3",
+      "bytes": 410946,
+      "uiCommit": "d09d7e0f6baf443f92fb25a36c5f4cacdaa216fc",
+      "generationId": "6b20d0d086adab3ef375483e2ca98573496c2a19f6978f1ef620dad710c5d909",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "controlled": false,
+      "directFreshAnonymousAccessPassed": false
+    },
+    {
+      "file": "canonical-chart-1920x1200.png",
+      "metadata": "canonical-chart-1920x1200.json",
+      "sha256": "f03dfcc65050be75533f5dd8c53b33e22508c5f096447960f04017b814d017b9",
+      "bytes": 632852,
+      "uiCommit": "d09d7e0f6baf443f92fb25a36c5f4cacdaa216fc",
+      "generationId": "6b20d0d086adab3ef375483e2ca98573496c2a19f6978f1ef620dad710c5d909",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "controlled": false,
+      "directFreshAnonymousAccessPassed": false
+    },
+    {
+      "file": "canonical-detail-1365x853.png",
+      "metadata": "canonical-detail-1365x853.json",
+      "sha256": "203ce52b9eccf3c4e5f2600029013fbbcfe1462cc612ddb85128dc90b1dc718f",
+      "bytes": 503158,
+      "uiCommit": "d09d7e0f6baf443f92fb25a36c5f4cacdaa216fc",
+      "generationId": "6b20d0d086adab3ef375483e2ca98573496c2a19f6978f1ef620dad710c5d909",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "controlled": false,
+      "directFreshAnonymousAccessPassed": false
+    },
+    {
+      "file": "canonical-detail-1920x1200.png",
+      "metadata": "canonical-detail-1920x1200.json",
+      "sha256": "6584b6e815ac9910c536d89cf5d69adac7a23082a02f89b8ec72cb77b921bc71",
+      "bytes": 795826,
+      "uiCommit": "d09d7e0f6baf443f92fb25a36c5f4cacdaa216fc",
+      "generationId": "6b20d0d086adab3ef375483e2ca98573496c2a19f6978f1ef620dad710c5d909",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "controlled": false,
+      "directFreshAnonymousAccessPassed": false
+    },
+    {
+      "file": "canonical-home-1365x853.png",
+      "metadata": "canonical-home-1365x853.json",
+      "sha256": "347ae49b7ed2acf519c8de2c8e646878a75f3795cca2bda69c03855584db0bf0",
+      "bytes": 445867,
+      "uiCommit": "d09d7e0f6baf443f92fb25a36c5f4cacdaa216fc",
+      "generationId": "6b20d0d086adab3ef375483e2ca98573496c2a19f6978f1ef620dad710c5d909",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "controlled": false,
+      "directFreshAnonymousAccessPassed": false
+    },
+    {
+      "file": "canonical-home-1920x1200.png",
+      "metadata": "canonical-home-1920x1200.json",
+      "sha256": "c074dd90d63bea3750a140f98b19ef2bbac2302d851420141122367a1ec50691",
+      "bytes": 594006,
+      "uiCommit": "d09d7e0f6baf443f92fb25a36c5f4cacdaa216fc",
+      "generationId": "6b20d0d086adab3ef375483e2ca98573496c2a19f6978f1ef620dad710c5d909",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "controlled": false,
+      "directFreshAnonymousAccessPassed": false
+    },
+    {
+      "file": "canonical-quarter-1365x853.png",
+      "metadata": "canonical-quarter-1365x853.json",
+      "sha256": "d4d6257344bfb719e66d41274bfe4ac2b4e2cc98dc099249bc011bbfdff882e5",
+      "bytes": 333403,
+      "uiCommit": "d09d7e0f6baf443f92fb25a36c5f4cacdaa216fc",
+      "generationId": "6b20d0d086adab3ef375483e2ca98573496c2a19f6978f1ef620dad710c5d909",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "controlled": false,
+      "directFreshAnonymousAccessPassed": false
+    },
+    {
+      "file": "canonical-quarter-1920x1200.png",
+      "metadata": "canonical-quarter-1920x1200.json",
+      "sha256": "f269fa0c7898d2cb1d04daa28d0dc34c119cb43a2da6568049a09c7c5156cf81",
+      "bytes": 623394,
+      "uiCommit": "d09d7e0f6baf443f92fb25a36c5f4cacdaa216fc",
+      "generationId": "6b20d0d086adab3ef375483e2ca98573496c2a19f6978f1ef620dad710c5d909",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "controlled": false,
+      "directFreshAnonymousAccessPassed": false
+    },
+    {
+      "file": "canonical-ranking-1365x853.png",
+      "metadata": "canonical-ranking-1365x853.json",
+      "sha256": "4373468ca48d443a5f57e30cc1b2477ce9a8492f271f88cbfe91b34561612345",
+      "bytes": 349012,
+      "uiCommit": "d09d7e0f6baf443f92fb25a36c5f4cacdaa216fc",
+      "generationId": "6b20d0d086adab3ef375483e2ca98573496c2a19f6978f1ef620dad710c5d909",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "controlled": false,
+      "directFreshAnonymousAccessPassed": false
+    },
+    {
+      "file": "canonical-ranking-1920x1200.png",
+      "metadata": "canonical-ranking-1920x1200.json",
+      "sha256": "3e7cb3e800dd2e28b929ca8468f68c17ec32cb29fc74fa7e09c9f5e8302bf815",
+      "bytes": 581428,
+      "uiCommit": "d09d7e0f6baf443f92fb25a36c5f4cacdaa216fc",
+      "generationId": "6b20d0d086adab3ef375483e2ca98573496c2a19f6978f1ef620dad710c5d909",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "controlled": false,
+      "directFreshAnonymousAccessPassed": false
+    },
+    {
+      "file": "canonical-sources-1365x853-fullpage.png",
+      "metadata": "canonical-sources-1365x853-fullpage.json",
+      "sha256": "f0b4278301f890f43404773f85b20fb6b91ac2af45494b37abdb738af097a2e6",
+      "bytes": 10891299,
+      "uiCommit": "d09d7e0f6baf443f92fb25a36c5f4cacdaa216fc",
+      "generationId": "6b20d0d086adab3ef375483e2ca98573496c2a19f6978f1ef620dad710c5d909",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "controlled": false,
+      "directFreshAnonymousAccessPassed": false
+    },
+    {
+      "file": "canonical-sources-1365x853.png",
+      "metadata": "canonical-sources-1365x853.json",
+      "sha256": "4da7ade93e0b26c4f2ed7e90bc5da9acc0bdf1873ef64999c73fa7c9adb68768",
+      "bytes": 450865,
+      "uiCommit": "d09d7e0f6baf443f92fb25a36c5f4cacdaa216fc",
+      "generationId": "6b20d0d086adab3ef375483e2ca98573496c2a19f6978f1ef620dad710c5d909",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "controlled": false,
+      "directFreshAnonymousAccessPassed": false
+    },
+    {
+      "file": "canonical-sources-1920x1200-fullpage.png",
+      "metadata": "canonical-sources-1920x1200-fullpage.json",
+      "sha256": "43f7c385bbdd0c8aab3dc43ed8b3f344f7b8fbd3816c748a71771a23601ad2fc",
+      "bytes": 11222975,
+      "uiCommit": "d09d7e0f6baf443f92fb25a36c5f4cacdaa216fc",
+      "generationId": "6b20d0d086adab3ef375483e2ca98573496c2a19f6978f1ef620dad710c5d909",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "controlled": false,
+      "directFreshAnonymousAccessPassed": false
+    },
+    {
+      "file": "canonical-sources-1920x1200.png",
+      "metadata": "canonical-sources-1920x1200.json",
+      "sha256": "396c4e8246c691a5f89f0c192974a0e026130d494beb18d46ba6c67e45872d1c",
+      "bytes": 756395,
+      "uiCommit": "d09d7e0f6baf443f92fb25a36c5f4cacdaa216fc",
+      "generationId": "6b20d0d086adab3ef375483e2ca98573496c2a19f6978f1ef620dad710c5d909",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "controlled": false,
+      "directFreshAnonymousAccessPassed": false
+    },
+    {
+      "file": "focus-chart-1365x853-chart-controls-and-plot.png",
+      "metadata": "focus-chart-1365x853-chart-controls-and-plot.json",
+      "sha256": "c7211ece3f86cb6626b0bccbb8cb94d1e173e64ab10a1e552df1a58c979fb554",
+      "bytes": 263608,
+      "uiCommit": "d09d7e0f6baf443f92fb25a36c5f4cacdaa216fc",
+      "generationId": "6b20d0d086adab3ef375483e2ca98573496c2a19f6978f1ef620dad710c5d909",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "controlled": false,
+      "directFreshAnonymousAccessPassed": false
+    },
+    {
+      "file": "focus-chart-1365x853-chart-plot.png",
+      "metadata": "focus-chart-1365x853-chart-plot.json",
+      "sha256": "6cd377c95fb8abce24f77c33ee868c6229dffe2bf24c939500de220ae2c80dae",
+      "bytes": 225484,
+      "uiCommit": "d09d7e0f6baf443f92fb25a36c5f4cacdaa216fc",
+      "generationId": "6b20d0d086adab3ef375483e2ca98573496c2a19f6978f1ef620dad710c5d909",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "controlled": false,
+      "directFreshAnonymousAccessPassed": false
+    },
+    {
+      "file": "focus-detail-1365x853-detail-financial.png",
+      "metadata": "focus-detail-1365x853-detail-financial.json",
+      "sha256": "07ce6464d9a36c61276965d5e181bef794b218f794391b096ab75c6ea7f4df8e",
+      "bytes": 302218,
+      "uiCommit": "d09d7e0f6baf443f92fb25a36c5f4cacdaa216fc",
+      "generationId": "6b20d0d086adab3ef375483e2ca98573496c2a19f6978f1ef620dad710c5d909",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "controlled": false,
+      "directFreshAnonymousAccessPassed": false
+    },
+    {
+      "file": "focus-detail-1365x853-detail-metric-bars.png",
+      "metadata": "focus-detail-1365x853-detail-metric-bars.json",
+      "sha256": "5d918c59381a8eff104317247bd377f1cb120b5cc7294a42eab71b5462c1350e",
+      "bytes": 412690,
+      "uiCommit": "d09d7e0f6baf443f92fb25a36c5f4cacdaa216fc",
+      "generationId": "6b20d0d086adab3ef375483e2ca98573496c2a19f6978f1ef620dad710c5d909",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "controlled": false,
+      "directFreshAnonymousAccessPassed": false
+    },
+    {
+      "file": "focus-home-1365x853-home-top-five.png",
+      "metadata": "focus-home-1365x853-home-top-five.json",
+      "sha256": "8c20a4cdfec0b4bfcc36c346ee92a6573f1575f47068ced7e059b1877665e629",
+      "bytes": 160633,
+      "uiCommit": "d09d7e0f6baf443f92fb25a36c5f4cacdaa216fc",
+      "generationId": "6b20d0d086adab3ef375483e2ca98573496c2a19f6978f1ef620dad710c5d909",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "controlled": false,
+      "directFreshAnonymousAccessPassed": false
+    },
+    {
+      "file": "focus-ranking-1365x853-ranking-table.png",
+      "metadata": "focus-ranking-1365x853-ranking-table.json",
+      "sha256": "b6e2c49981ac1ff4fa318e835d48c8e6b51358ec499745d55ddb3c9348418843",
+      "bytes": 139045,
+      "uiCommit": "d09d7e0f6baf443f92fb25a36c5f4cacdaa216fc",
+      "generationId": "6b20d0d086adab3ef375483e2ca98573496c2a19f6978f1ef620dad710c5d909",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "controlled": false,
+      "directFreshAnonymousAccessPassed": false
+    }
+  ]
+}

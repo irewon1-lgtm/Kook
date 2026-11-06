@@ -1,0 +1,13 @@
+
+Running 4 tests using 1 worker
+
+(node:186832) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:186832) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 e2e/interaction-parity.spec.ts:46:1 › CONTROLLED_LOCAL_PREF: favorite picker sorts, cancels, saves and independently removes stale and known favorites (4.6s)
+  ✓  2 e2e/interaction-parity.spec.ts:118:1 › actual alphanumeric deep link, accessible detail refresh, exact unknown code and focused search recovery (4.6s)
+  ✓  3 e2e/interaction-parity.spec.ts:174:1 › Home retains its original top five while selected ranking changes, and inline raw financial valuation candidate evidence expands independently (3.7s)
+  ✓  4 e2e/interaction-parity.spec.ts:235:1 › ranking guidance preserves equal weighting and complete-only filter while company-name sort retains original ranks (2.9s)
+
+  4 passed (17.0s)

@@ -1,0 +1,91 @@
+{
+  "sourceHeadSha": "e388ea2b7aa52843af5c0d32861cc0493bfe5f5a",
+  "pcPullRequest": {
+    "runId": 42157893694,
+    "event": "pull_request",
+    "conclusion": "success"
+  },
+  "pcDeployment": {
+    "runId": 42157888715,
+    "event": "workflow_dispatch",
+    "conclusion": "success",
+    "build": "success",
+    "publish": "success",
+    "pages": "success",
+    "nativeWindowsChrome": "success",
+    "nativeWindowsEdge": "success"
+  },
+  "freshPerBuildCounts": {
+    "pythonTests": 366,
+    "pythonSubtests": 103,
+    "jvmExporterContracts": 12,
+    "recordedActualPriceOracleCases": 229,
+    "frontendUnitTests": 319,
+    "linuxBrowserTests": 53
+  },
+  "linuxBrowserReport": {
+    "passed": 53,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "deployment": {
+    "pagesUrl": "https://irewon1-lgtm.github.io/Kook/",
+    "siteCommit": "2d56fc60fe0373cac6ba2d7d3d43cd7d9f76962d",
+    "stableDataUrl": "https://raw.githubusercontent.com/irewon1-lgtm/Kook/kr4-pc-site/data/"
+  },
+  "android": {
+    "runId": 42157893754,
+    "event": "pull_request",
+    "conclusion": "success",
+    "jobsPassed": 6,
+    "instrumentedTests": 96,
+    "profiles": {
+      "phone-light": 24,
+      "phone-dark": 24,
+      "tablet-light": 24,
+      "tablet-dark": 24
+    },
+    "jvm153": "NOT_RUN_IN_THIS_RUN_APP_SOURCE_CHANGED_FALSE",
+    "proof": "android-logs/0_extreme-cleanpass.txt:191"
+  },
+  "scopeNotes": [
+    "Publication/corruption subset 44 tests +35 subtests overlaps the full Python suite; do not add its count.",
+    "PR publication and native Windows jobs were intentionally skipped; native verification belongs to the manual deployment run.",
+    "Android JVM153 evidence belongs to the earlier reviewed execution, not this PC-only e388 CI run."
+  ],
+  "nativeWindows": {
+    "chrome": {
+      "passed": 53,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0,
+      "platform": "win32",
+      "browserVersion": "156.0.8078.80",
+      "headless": true,
+      "nativeWindowsExecution": true,
+      "publicUrl": "https://irewon1-lgtm.github.io/Kook/",
+      "recordedAt": "2026-11-06T04:05:49.676Z",
+      "publicCapturesSourceCommit": "e388ea2b7aa52843af5c0d32861cc0493bfe5f5a",
+      "physicalLaptopTested": false,
+      "physicalLGGramTested": false,
+      "windows11DesktopTested": false
+    },
+    "msedge": {
+      "passed": 53,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0,
+      "platform": "win32",
+      "browserVersion": "156.0.4314.56",
+      "headless": true,
+      "nativeWindowsExecution": true,
+      "publicUrl": "https://irewon1-lgtm.github.io/Kook/",
+      "recordedAt": "2026-11-06T04:06:04.839Z",
+      "publicCapturesSourceCommit": "e388ea2b7aa52843af5c0d32861cc0493bfe5f5a",
+      "physicalLaptopTested": false,
+      "physicalLGGramTested": false,
+      "windows11DesktopTested": false
+    }
+  }
+}

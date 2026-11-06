@@ -1,0 +1,21 @@
+{
+  "kind": "INDEPENDENT_FINAL_VISUAL_PACKAGE_INTEGRITY",
+  "pass": true,
+  "sourceUiCommit": "e388ea2b7aa52843af5c0d32861cc0493bfe5f5a",
+  "generationId": "c76743237bbcdc05e5e6ca74df35082235ac9a103238e8e7765c8eaccf0a3e71",
+  "originalPngCount": 24,
+  "allOriginalPngAndMetadataBytesIdentical": true,
+  "allOriginalPngSha256Matched": true,
+  "allCaptureGenerationsUniform": true,
+  "controlledImages": 0,
+  "comparisonHtmlBrowserScreenshots": 4,
+  "galleryResponsiveProfiles": [
+    375,
+    768,
+    1366,
+    1920
+  ],
+  "galleryPass": true,
+  "productImagesEdited": false,
+  "physicalLgGramVerified": false
+}

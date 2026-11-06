@@ -37,3 +37,9 @@ A full `npm test` first passed289/289. The latest rerun while root added optiona
 These tests failed because in-progress receiver state did not yet include valuations maps; no UI errors were reported. Log `home-rank-restoration-unit.log`. Root informed; final whole-app matrix/receiver verification belongs to root after its integration finishes. Scoped TypeScript check for all three owned TSX files passed.
 
 Evidence is browser emulation/component-harness verification, not deployed-site/physical LG/Windows confirmation. Existing earlier-source screenshots are not presented as restored-source proof. Restored-source capture: `home-restored-1024.png`.
+
+## Final sibling target collision correction
+
+Independent final matrix correctly found that absolute-positioned sibling expand buttons geometrically overlaid the full-width detail button. Fixed `styles.css` only: `.stock-row-header` now uses a real remaining-width/64px two-column grid; the44×48px expand button is static in its dedicated column. Table-heading padding preserves alignment with the detail-button column; obsolete narrow-screen overlay offsets were removed.
+
+Actual full App browser check `node /workspace/kr4-pc-work/home-rank-sibling-collision.cjs` PASS:12 viewport/font profiles (2048/1536/1365/1024 CSS widths ×22/26/30px) across both Home/Ranking, all displayed sibling hit targets have exactly zero geometric intersection, expand controls>=44px, no document overflow, and expansion/collapse still works. Evidence: `home-rank-sibling-collision.json`. No thresholds or test conditions were weakened. Source frozen and final-matrix agent notified before its complete rerun.

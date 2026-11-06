@@ -1,0 +1,25 @@
+pr: 2026-11-06T03:42:12.2627721Z 44 passed, 35 subtests passed in 64.76s (0:01:04)
+pr: 2026-11-06T03:44:08.8144922Z 12 passed in 37.08s
+pr: 2026-11-06T03:44:10.6073892Z       Tests  229 passed (229)
+pr: 2026-11-06T03:46:33.0366039Z 366 passed, 103 subtests passed in 141.92s (0:02:21)
+pr: 2026-11-06T03:46:38.4246687Z       Tests  319 passed (319)
+pr: 2026-11-06T03:57:20.0322829Z   53 passed (10.5m)
+manual: 2026-11-06T03:50:49.0547321Z 44 passed, 35 subtests passed in 44.35s
+manual: 2026-11-06T03:52:33.8457310Z 12 passed in 29.85s
+manual: 2026-11-06T03:52:35.8791964Z       Tests  229 passed (229)
+manual: 2026-11-06T03:54:20.5793628Z 366 passed, 103 subtests passed in 104.36s (0:01:44)
+manual: 2026-11-06T03:54:24.9455330Z       Tests  319 passed (319)
+manual: 2026-11-06T04:03:32.9227749Z   53 passed (8.9m)
+0_extreme-cleanpass.txt: 2026-11-06T03:52:56.8254623Z APP_SOURCE_CHANGED=false
+2_Android14 UI phone dark.txt: 2026-11-06T03:51:10.3102761Z Finished 24 tests on emulator-5554 - 14
+2_Android14 UI phone dark.txt: 2026-11-06T03:51:11.8111577Z BUILD SUCCESSFUL in 4m 47s
+3_Android14 UI tablet light.txt: 2026-11-06T03:49:40.1825951Z Finished 24 tests on emulator-5554 - 14
+3_Android14 UI tablet light.txt: 2026-11-06T03:49:41.5877688Z BUILD SUCCESSFUL in 8m 9s
+4_Android14 UI tablet dark.txt: 2026-11-06T03:48:54.4777863Z Finished 24 tests on emulator-5554 - 14
+4_Android14 UI tablet dark.txt: 2026-11-06T03:48:56.5783752Z BUILD SUCCESSFUL in 7m 5s
+5_Android14 UI phone light.txt: 2026-11-06T03:46:50.5856152Z Finished 24 tests on emulator-5554 - 14
+5_Android14 UI phone light.txt: 2026-11-06T03:46:51.7869137Z BUILD SUCCESSFUL in 4m 58s
+0_Native Windows chrome public-site verification.txt: 2026-11-06T04:05:52.9905525Z Running 53 tests using 1 worker
+0_Native Windows chrome public-site verification.txt: 2026-11-06T04:14:21.3789437Z   53 passed (8.5m)
+1_Native Windows msedge public-site verification.txt: 2026-11-06T04:06:09.0227138Z Running 53 tests using 1 worker
+1_Native Windows msedge public-site verification.txt: 2026-11-06T04:14:23.7941884Z   53 passed (8.3m)

@@ -1,0 +1,62 @@
+[
+  {
+    "screen": "home",
+    "url": "http://127.0.0.1:5399/comparisons/home.html",
+    "kind": "LABELED_COMPARISON_HTML_BROWSER_SCREENSHOT",
+    "originalProductScreenshotsUnmodified": true,
+    "sha256": "34d6f9ab4001876d984f2acdaca1013949dc4bb24f2b4f4c7f81155a328a64eb",
+    "bytes": 1087114,
+    "pageErrors": [],
+    "viewport": {
+      "width": 1920,
+      "height": 1440
+    },
+    "generatedAt": "2026-11-06T04:11:05.853Z",
+    "runnerPlatform": "linux"
+  },
+  {
+    "screen": "ranking",
+    "url": "http://127.0.0.1:5399/comparisons/ranking.html",
+    "kind": "LABELED_COMPARISON_HTML_BROWSER_SCREENSHOT",
+    "originalProductScreenshotsUnmodified": true,
+    "sha256": "4f682d5ef92f11838036a9eb11f80190361a63a7fa41d6abb2431cdf72fd0ae1",
+    "bytes": 1021212,
+    "pageErrors": [],
+    "viewport": {
+      "width": 1920,
+      "height": 1440
+    },
+    "generatedAt": "2026-11-06T04:11:06.172Z",
+    "runnerPlatform": "linux"
+  },
+  {
+    "screen": "detail",
+    "url": "http://127.0.0.1:5399/comparisons/detail.html",
+    "kind": "LABELED_COMPARISON_HTML_BROWSER_SCREENSHOT",
+    "originalProductScreenshotsUnmodified": true,
+    "sha256": "5e60668d8e40bf8760854ba87cbb48a1a8cb31368c1d39fb46969a22a0379300",
+    "bytes": 1496210,
+    "pageErrors": [],
+    "viewport": {
+      "width": 1920,
+      "height": 1440
+    },
+    "generatedAt": "2026-11-06T04:11:06.616Z",
+    "runnerPlatform": "linux"
+  },
+  {
+    "screen": "chart",
+    "url": "http://127.0.0.1:5399/comparisons/chart.html",
+    "kind": "LABELED_COMPARISON_HTML_BROWSER_SCREENSHOT",
+    "originalProductScreenshotsUnmodified": true,
+    "sha256": "ff4a6387c4f783aac5ebc28ad133dd92659e65538b00e736ed47cd5ccd6755a3",
+    "bytes": 1258002,
+    "pageErrors": [],
+    "viewport": {
+      "width": 1920,
+      "height": 1440
+    },
+    "generatedAt": "2026-11-06T04:11:07.030Z",
+    "runnerPlatform": "linux"
+  }
+]

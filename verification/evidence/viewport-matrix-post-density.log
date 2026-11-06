@@ -1,0 +1,49 @@
+
+> kr4-pc-web@1.0.0 test:e2e
+> playwright test e2e/viewport-matrix.spec.ts
+
+
+Running 29 tests using 1 worker
+
+(node:180934) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:180934) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 e2e/viewport-matrix.spec.ts:270:3 › real layout 2048x1280 DPR1.25 font22 (10.1s)
+  ✓   2 e2e/viewport-matrix.spec.ts:270:3 › real layout 2048x1280 DPR1.25 font26 (11.0s)
+  ✓   3 e2e/viewport-matrix.spec.ts:270:3 › real layout 2048x1280 DPR1.25 font30 (10.6s)
+  ✓   4 e2e/viewport-matrix.spec.ts:270:3 › real layout 1638x1024 DPR1.5625 font22 (11.5s)
+  ✓   5 e2e/viewport-matrix.spec.ts:270:3 › real layout 1638x1024 DPR1.5625 font26 (13.3s)
+  ✓   6 e2e/viewport-matrix.spec.ts:270:3 › real layout 1638x1024 DPR1.5625 font30 (11.2s)
+  ✓   7 e2e/viewport-matrix.spec.ts:270:3 › real layout 1707x1067 DPR1.5 font22 (9.8s)
+  ✓   8 e2e/viewport-matrix.spec.ts:270:3 › real layout 1707x1067 DPR1.5 font26 (9.6s)
+  ✓   9 e2e/viewport-matrix.spec.ts:270:3 › real layout 1707x1067 DPR1.5 font30 (12.0s)
+  ✓  10 e2e/viewport-matrix.spec.ts:270:3 › real layout 1365x853 DPR1.875 font22 (9.5s)
+  ✓  11 e2e/viewport-matrix.spec.ts:270:3 › real layout 1365x853 DPR1.875 font26 (10.9s)
+  ✓  12 e2e/viewport-matrix.spec.ts:270:3 › real layout 1365x853 DPR1.875 font30 (10.7s)
+  ✓  13 e2e/viewport-matrix.spec.ts:270:3 › real layout 1536x960 DPR1.25 font22 (9.4s)
+  ✓  14 e2e/viewport-matrix.spec.ts:270:3 › real layout 1536x960 DPR1.25 font26 (10.3s)
+  ✓  15 e2e/viewport-matrix.spec.ts:270:3 › real layout 1536x960 DPR1.25 font30 (13.3s)
+  ✓  16 e2e/viewport-matrix.spec.ts:270:3 › real layout 1229x768 DPR1.5625 font22 (10.7s)
+  ✓  17 e2e/viewport-matrix.spec.ts:270:3 › real layout 1229x768 DPR1.5625 font26 (10.5s)
+  ✓  18 e2e/viewport-matrix.spec.ts:270:3 › real layout 1229x768 DPR1.5625 font30 (10.0s)
+  ✓  19 e2e/viewport-matrix.spec.ts:270:3 › real layout 1280x800 DPR1.5 font22 (10.1s)
+  ✓  20 e2e/viewport-matrix.spec.ts:270:3 › real layout 1280x800 DPR1.5 font26 (11.3s)
+  ✓  21 e2e/viewport-matrix.spec.ts:270:3 › real layout 1280x800 DPR1.5 font30 (10.8s)
+  ✓  22 e2e/viewport-matrix.spec.ts:270:3 › real layout 1024x640 DPR1.875 font22 (10.3s)
+  ✓  23 e2e/viewport-matrix.spec.ts:270:3 › real layout 1024x640 DPR1.875 font26 (10.4s)
+  ✓  24 e2e/viewport-matrix.spec.ts:270:3 › real layout 1024x640 DPR1.875 font30 (13.9s)
+  ✓  25 e2e/viewport-matrix.spec.ts:270:3 › real layout 1366x768 DPR1 font22 (12.8s)
+  ✓  26 e2e/viewport-matrix.spec.ts:270:3 › real layout 1366x768 DPR1 font26 (11.5s)
+  ✓  27 e2e/viewport-matrix.spec.ts:270:3 › real layout 1366x768 DPR1 font30 (10.8s)
+  ✓  28 e2e/viewport-matrix.spec.ts:382:3 › original canonical captures 1365x853 (16.0s)
+  ✓  29 e2e/viewport-matrix.spec.ts:382:3 › original canonical captures 1920x1200 (16.6s)
+
+  Slow test file: e2e/viewport-matrix.spec.ts (5.5m)
+  Consider running tests from slow files in parallel. See: https://playwright.dev/docs/test-parallel
+  29 passed (5.5m)
+
+To open last HTML report run:
+[36m[39m
+[36m  npx playwright show-report[39m
+[36m[39m

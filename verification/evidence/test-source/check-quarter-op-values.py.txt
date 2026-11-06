@@ -1,0 +1,21 @@
+import hashlib,json
+from decimal import Decimal,ROUND_HALF_UP
+from pathlib import Path
+root=Path('/workspace/kr4-pc-work/oracle-stage5-candidates')
+records=[]
+for code in ['005930','000020','003060','395400','474930','142210']:
+    raw=(root/'details'/f'{code}.json').read_bytes(); detail=json.loads(raw)
+    points=sorted(detail['history']['points'],key=lambda q:(q['fiscalYear'],q['quarter']),reverse=True)
+    rows=[]
+    for point in points:
+        seq=point['fiscalYear']*4+point['quarter']; columns=[]
+        for gap in (4,1):
+            older=next((q for q in points if q['fiscalYear']*4+q['quarter']==seq-gap),None)
+            valid=older is not None and point['scope'] in ['CFS','OFS'] and older['scope']==point['scope'] and point['operatingIncome'] is not None and older['operatingIncome'] is not None and older['operatingIncome']>0
+            value=(Decimal(str(point['operatingIncome']))/Decimal(str(older['operatingIncome']))-1)*100 if valid else None
+            expected='미확보' if value is None else format(value.quantize(Decimal('0.1'),rounding=ROUND_HALF_UP),',.1f')+'%'
+            columns.append({'gap':gap,'expected':expected,'exactDecimalPct':None if value is None else str(value),'current':point['operatingIncome'],'prior':None if older is None else older['operatingIncome'],'scope':point['scope'],'priorScope':None if older is None else older['scope']})
+        rows.append({'period':point['period'],'columns':columns})
+    records.append({'code':code,'sourceSha256':hashlib.sha256(raw).hexdigest(),'rows':rows})
+Path('/workspace/kr4-pc-work/quarter-op-independent-expected.json').write_text(json.dumps({'kind':'REAL_MARKET_SOURCE_DECIMAL_EXPECTATIONS','method':'Python Decimal over actual original-source quarter amounts; missing, scope changes and nonpositive comparison bases stay missing; one decimal HALF_UP display','records':records},ensure_ascii=False,indent=2))
+print('Prepared actual original-source OP YoY/QoQ values:',sum(len(r['rows'])*2 for r in records))

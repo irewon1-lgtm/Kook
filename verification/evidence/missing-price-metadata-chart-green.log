@@ -1,0 +1,14 @@
+
+> kr4-pc-web@1.0.0 test
+> vitest run tests/chart.test.ts
+
+
+ RUN  v3.2.4 /workspace/kr4-pc-web/web
+
+ ✓ tests/chart.test.ts (27 tests) 84ms
+
+ Test Files  1 passed (1)
+      Tests  27 passed (27)
+   Start at  02:49:53
+   Duration  442ms (transform 111ms, setup 0ms, collect 158ms, tests 84ms, environment 0ms, prepare 58ms)
+

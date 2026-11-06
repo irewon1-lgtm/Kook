@@ -1,0 +1,83 @@
+{
+  "reviewer": "pc_detail_parity_checks",
+  "result": "APPROVED",
+  "classificationTests": {
+    "tests": 8,
+    "result": "PASS"
+  },
+  "additionalRealGitClassifications": {
+    "buildSrc/build.gradle.kts": {
+      "release": {
+        "app_changed": "true",
+        "ready": "true"
+      },
+      "validation": {
+        "changed": "true"
+      }
+    },
+    "buildSrc/settings.gradle.kts": {
+      "release": {
+        "app_changed": "true",
+        "ready": "true"
+      },
+      "validation": {
+        "changed": "true"
+      }
+    },
+    "app/src/release/AndroidManifest.xml": {
+      "release": {
+        "app_changed": "true",
+        "ready": "true"
+      },
+      "validation": {
+        "changed": "true"
+      }
+    },
+    "app/libs/custom.aar": {
+      "release": {
+        "app_changed": "true",
+        "ready": "true"
+      },
+      "validation": {
+        "changed": "true"
+      }
+    },
+    "app/src/test/resources/test.json": {
+      "release": {
+        "app_changed": "false",
+        "ready": "false"
+      }
+    },
+    "app/src/androidTest/assets/test.json": {
+      "release": {
+        "app_changed": "false",
+        "ready": "false"
+      }
+    },
+    "docs/pc/feature-parity.md": {
+      "release": {
+        "app_changed": "false",
+        "ready": "false"
+      }
+    },
+    "web/e2e/detail-parity.spec.ts": {
+      "release": {
+        "app_changed": "false",
+        "ready": "false"
+      }
+    },
+    "tests/test_android_release_gate.py": {
+      "release": {
+        "app_changed": "false",
+        "ready": "false"
+      }
+    }
+  },
+  "fullJvmXmlReadback": {
+    "tests": 153,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "protectedProductionDiff": []
+}

@@ -1,0 +1,38 @@
+{
+  "recordedAt": "2026-11-06T04:05:44.4029769Z",
+  "runnerOS": "Windows",
+  "runnerImage": "win25-vs2026",
+  "runnerImageVersion": "20261103.298.1",
+  "operatingSystem": {
+    "caption": "Microsoft Windows Server 2025 Datacenter",
+    "version": "10.0.26100",
+    "buildNumber": "26100",
+    "architecture": "64-bit"
+  },
+  "selectedChannel": "chrome",
+  "publicUrl": "https://irewon1-lgtm.github.io/Kook/",
+  "physicalLaptopTested": false,
+  "physicalLGGramTested": false,
+  "windows11DesktopTested": false,
+  "displayScaleMeasurement": "CSS viewport/text profiles; no physical panel, desktop DPI or physical desktop zoom measurement",
+  "browsers": [
+    {
+      "channel": "chrome",
+      "installed": true,
+      "executablePath": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "productName": "Google Chrome",
+      "productVersion": "156.0.8078.80",
+      "fileVersion": "156.0.8078.80",
+      "executableSha256": "46461accbdc87dc88a5bdd6d611be095dd6147db009863d794f742ca90662efa"
+    },
+    {
+      "channel": "msedge",
+      "installed": true,
+      "executablePath": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
+      "productName": "Microsoft Edge",
+      "productVersion": "156.0.4314.58",
+      "fileVersion": "156.0.4314.58",
+      "executableSha256": "d35d48b11f0439eeeddbbff0bf54856e922f5e1506a2f3098b5a808fcec4068b"
+    }
+  ]
+}

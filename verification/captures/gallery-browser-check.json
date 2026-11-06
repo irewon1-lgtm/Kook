@@ -1,0 +1,313 @@
+{
+  "kind": "RESPONSIVE_PROOF_GALLERY_BROWSER_CHECK",
+  "artifactIsEvidenceNotProduct": true,
+  "reports": [
+    {
+      "viewport": {
+        "width": 375,
+        "height": 950
+      },
+      "horizontalOverflow": false,
+      "width": 375,
+      "scrollWidth": 375,
+      "originalCount": 24,
+      "brokenImages": [],
+      "smallLinks": [],
+      "officialAccessVisible": true,
+      "scopeVisible": true,
+      "pageErrors": []
+    },
+    {
+      "viewport": {
+        "width": 768,
+        "height": 950
+      },
+      "horizontalOverflow": false,
+      "width": 768,
+      "scrollWidth": 768,
+      "originalCount": 24,
+      "brokenImages": [],
+      "smallLinks": [],
+      "officialAccessVisible": true,
+      "scopeVisible": true,
+      "pageErrors": []
+    },
+    {
+      "viewport": {
+        "width": 1366,
+        "height": 950
+      },
+      "horizontalOverflow": false,
+      "width": 1366,
+      "scrollWidth": 1366,
+      "originalCount": 24,
+      "brokenImages": [],
+      "smallLinks": [],
+      "officialAccessVisible": true,
+      "scopeVisible": true,
+      "pageErrors": []
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 950
+      },
+      "horizontalOverflow": false,
+      "width": 1920,
+      "scrollWidth": 1920,
+      "originalCount": 24,
+      "brokenImages": [],
+      "smallLinks": [],
+      "officialAccessVisible": true,
+      "scopeVisible": true,
+      "pageErrors": []
+    }
+  ],
+  "linkChecks": [
+    {
+      "url": "https://irewon1-lgtm.github.io/Kook/",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/KR4_PC_PUBLIC_PROOF.zip",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/visual-review.md",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/visual-review.json",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/manifest.json",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/README.md",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/official-public-capture-summary.json",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/comparisons/home.html",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/comparisons/ranking.html",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/comparisons/detail.html",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/comparisons/chart.html",
+      "status": 200
+    },
+    {
+      "url": "https://github.com/irewon1-lgtm/Kook/actions/runs/42157888715",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/canonical-analysis-1365x853-fullpage.png",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/canonical-analysis-1365x853-fullpage.json",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/canonical-analysis-1365x853.png",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/canonical-analysis-1365x853.json",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/canonical-analysis-1920x1200-fullpage.png",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/canonical-analysis-1920x1200-fullpage.json",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/canonical-analysis-1920x1200.png",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/canonical-analysis-1920x1200.json",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/canonical-chart-1365x853.png",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/canonical-chart-1365x853.json",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/canonical-chart-1920x1200.png",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/canonical-chart-1920x1200.json",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/canonical-detail-1365x853.png",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/canonical-detail-1365x853.json",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/canonical-detail-1920x1200.png",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/canonical-detail-1920x1200.json",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/canonical-home-1365x853.png",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/canonical-home-1365x853.json",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/canonical-home-1920x1200.png",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/canonical-home-1920x1200.json",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/canonical-quarter-1365x853.png",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/canonical-quarter-1365x853.json",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/canonical-quarter-1920x1200.png",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/canonical-quarter-1920x1200.json",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/canonical-ranking-1365x853.png",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/canonical-ranking-1365x853.json",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/canonical-ranking-1920x1200.png",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/canonical-ranking-1920x1200.json",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/canonical-sources-1365x853-fullpage.png",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/canonical-sources-1365x853-fullpage.json",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/canonical-sources-1365x853.png",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/canonical-sources-1365x853.json",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/canonical-sources-1920x1200-fullpage.png",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/canonical-sources-1920x1200-fullpage.json",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/canonical-sources-1920x1200.png",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/canonical-sources-1920x1200.json",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/focus-chart-1365x853-chart-controls-and-plot.png",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/focus-chart-1365x853-chart-controls-and-plot.json",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/focus-chart-1365x853-chart-plot.png",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/focus-chart-1365x853-chart-plot.json",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/focus-detail-1365x853-detail-financial.png",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/focus-detail-1365x853-detail-financial.json",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/focus-detail-1365x853-detail-metric-bars.png",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/focus-detail-1365x853-detail-metric-bars.json",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/focus-home-1365x853-home-top-five.png",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/focus-home-1365x853-home-top-five.json",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/focus-ranking-1365x853-ranking-table.png",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5399/originals/focus-ranking-1365x853-ranking-table.json",
+      "status": 200
+    }
+  ],
+  "keyboard": {
+    "tag": "A",
+    "text": "KR4 PC 국내주식 열기"
+  },
+  "pass": true
+}

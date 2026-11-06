@@ -1,0 +1,15 @@
+# Original-source detailed information → actual browser DOM verification
+
+Owned source: `web/e2e/detail-parity.spec.ts` only. Product code, original Android engines, data files, old tests and thresholds are unchanged by this work.
+
+The six actual issuers are 005930, 000020, 003060, 395400, 474930 and 142210. They exercise actual PASS, FAIL, HOLD, NOT_APPLICABLE, latest-correction, negative-PER, missing-quarter, OFS/CFS, insufficient/exact/sector-family peer, real disclosure-body and candidate branches where those branches occur in the currently published original-source result. Expected values follow the immutable generation actually rendered in the browser. Every detail response is checked for declared byte length and SHA-256 before comparison.
+
+Checks use real clicks on finance/update dialogs, keyboard movement between tabs, actual disclosure controls and source-navigation buttons. They compare source values in their own metric cards, financial rows, report rows, analysis panels, quarter rows and evidence articles. They do not read only whole-page hidden text. All collected evidence-body disclosure controls are opened, and each original body is compared without truncation.
+
+Coverage: summary identity/rank/score; original metric raw/percentile/basis/source/date/caution/missing-reason fields and peer medians/deltas/direction/basis; original Stage5 fields; exact five financial amount strings and units, scope, ratios, original criteria, corporation/receipt/source/ZIP/correction verification; actual quarter sequence/table/raw values/direct-reconstructed labels; all 20 integrated-analysis properties; all 14 original report properties; all source category counts, attempt/confirmed/per-item timestamps, actual evidence IDs/titles/source/date/URL/tier/receipts/full bodies; all nine disclosure-diff fields; full candidate source leaf values when present; modal update dates and source wording.
+
+The initial six-case run passed five and found one test-selector assumption: two genuine 003060 disclosures have identical titles. The selector was corrected to preserve original order and verify each original ID and title, rather than asserting that source titles are unique. Source records and product code were not changed. The expanded next run passed all six in 2.6 minutes. A final exact-source rerun is being recorded in `detail-parity-frozen-run.log`.
+
+This local browser proof is not a public deployment, a native Windows run or a physical LG Gram measurement. Its evidence explicitly records Linux/Chromium, the real source generation and `physicalLgGramVerified:false`. Public and Windows runs should reuse this same suite via the final CI source; no local result is relabeled as either of those environments.
+
+Final exact-source execution: **6 passed, 0 failed, 2.1 minutes**. The six cases tracked 2208 labeled source-value comparisons in addition to direct count, visibility, order, SHA, URL, source, modal and keyboard assertions. Durable unmodified per-case JSONs, log and SHA manifest are in `detail-parity-evidence/`. Test source SHA-256: `3d0c1a104eb9d8fbb4658307c0f7acbf7b58e355a6092d1d43f2fc8eac85727d`.

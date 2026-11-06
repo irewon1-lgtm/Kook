@@ -1,0 +1,27 @@
+
+ RUN  v3.2.4 /workspace/kr4-pc-web/web
+
+ ✓ tests/optional-ui-state.test.tsx > mounted old detail obeys current validated optional reception state > retains the genuine active PASS and complete original candidate fields when current maps and dates validate 32ms
+ ✓ tests/optional-ui-state.test.tsx > mounted old detail obeys current validated optional reception state > immediately holds old PASS and FINAL after same-date financial validation fails and current maps clear 6ms
+ ✓ tests/optional-ui-state.test.tsx > mounted old detail obeys current validated optional reception state > does not fall back to the old detail while current same-date optional maps are pending 5ms
+ ✓ tests/optional-ui-state.test.tsx > mounted old detail obeys current validated optional reception state > does not trust a leftover PASS map when current financial validation reports an error 5ms
+ ✓ tests/optional-ui-state.test.tsx > mounted old detail obeys current validated optional reception state > holds old optional records and identifies unknown provenance when the active manifest date advances 4ms
+ ✓ tests/optional-ui-state.test.tsx > mounted old detail obeys current validated optional reception state > requires the financial publication date to match the current quant date 4ms
+ ✓ tests/optional-ui-state.test.tsx > mounted old detail obeys current validated optional reception state > holds old FINAL while candidate reception is pending or failed (undefined) 4ms
+ ✓ tests/optional-ui-state.test.tsx > mounted old detail obeys current validated optional reception state > holds old FINAL while candidate reception is pending or failed (CONTROLLED_CANDIDATE_INVALID) 4ms
+ ✓ tests/optional-ui-state.test.tsx > mounted old detail obeys current validated optional reception state > does not revive an old detail candidate when the validated current candidate map has no record 5ms
+ ✓ tests/optional-ui-state.test.tsx > mounted old detail obeys current validated optional reception state > shows the current FAIL financial status without an old FINAL or changed quant score 5ms
+ ✓ tests/optional-ui-state.test.tsx > mounted old detail obeys current validated optional reception state > shows the current HOLD financial status without an old FINAL or changed quant score 5ms
+ ✓ tests/optional-ui-state.test.tsx > mounted old detail obeys current validated optional reception state > shows the current NOT_APPLICABLE financial status without an old FINAL or changed quant score 5ms
+ ✓ tests/optional-ui-state.test.tsx > mounted old detail obeys current validated optional reception state > replaces stale VALID optional source states with the current validation failure on the sources tab 36ms
+ ✓ tests/optional-ui-state.test.tsx > mounted old detail obeys current validated optional reception state > holds old PASS and FINAL for a CONTROLLED same-date corrected current core while the genuine old detail is mounted 5ms
+ ✓ tests/optional-ui-state.test.tsx > mounted old detail obeys current validated optional reception state > detects a CONTROLLED same-date nested original metric correction even when rank and score are unchanged 5ms
+ ✓ tests/optional-ui-state.test.tsx > mounted old detail obeys current validated optional reception state > keeps valid original PASS and FINAL when JSON object key order alone differs at every level 9ms
+ ✓ tests/optional-ui-state.test.tsx > mounted old detail obeys current validated optional reception state > holds a CONTROLLED candidate source mismatch independently of matching current core ({ sourceRank: 7 }) 5ms
+ ✓ tests/optional-ui-state.test.tsx > mounted old detail obeys current validated optional reception state > holds a CONTROLLED candidate source mismatch independently of matching current core ({ compositeScore: 86.5 }) 5ms
+
+ Test Files  1 passed (1)
+      Tests  18 passed (18)
+   Start at  02:38:47
+   Duration  784ms (transform 192ms, setup 0ms, collect 435ms, tests 153ms, environment 0ms, prepare 59ms)
+

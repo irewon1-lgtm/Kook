@@ -1,0 +1,1146 @@
+{
+  "kind": "REAL_MARKET_SOURCE_DECIMAL_EXPECTATIONS",
+  "method": "Python Decimal over actual original-source quarter amounts; missing, scope changes and nonpositive comparison bases stay missing; one decimal HALF_UP display",
+  "records": [
+    {
+      "code": "005930",
+      "sourceSha256": "fea8028da2371094fdc46c905f4fabaad8706fde388ffd981e8256057ecd0e2e",
+      "rows": [
+        {
+          "period": "2026Q2",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "1,813.8%",
+              "exactDecimalPct": "1813.843479666736312239136520",
+              "current": 89492412000000.0,
+              "prior": 4676057000000.0,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            },
+            {
+              "gap": 1,
+              "expected": "56.4%",
+              "exactDecimalPct": "56.36560973946459405085514170",
+              "current": 89492412000000.0,
+              "prior": 57232797000000.0,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            }
+          ]
+        },
+        {
+          "period": "2026Q1",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "756.1%",
+              "exactDecimalPct": "756.1027434635419471339386041",
+              "current": 57232797000000.0,
+              "prior": 6685272000000.0,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            },
+            {
+              "gap": 1,
+              "expected": "185.1%",
+              "exactDecimalPct": "185.1139104677472867429258043",
+              "current": 57232797000000.0,
+              "prior": 20073660000000.0,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            }
+          ]
+        },
+        {
+          "period": "2025Q4",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "209.2%",
+              "exactDecimalPct": "209.1726204017032659587232005",
+              "current": 20073660000000.0,
+              "prior": 6492703000000.0,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            },
+            {
+              "gap": 1,
+              "expected": "65.0%",
+              "exactDecimalPct": "64.99718643551216490594902440",
+              "current": 20073660000000.0,
+              "prior": 12166062000000.0,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            }
+          ]
+        },
+        {
+          "period": "2025Q3",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "32.5%",
+              "exactDecimalPct": "32.47926061138115840033033620",
+              "current": 12166062000000.0,
+              "prior": 9183371000000.0,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            },
+            {
+              "gap": 1,
+              "expected": "160.2%",
+              "exactDecimalPct": "160.1777950953121401214741394",
+              "current": 12166062000000.0,
+              "prior": 4676057000000.0,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            }
+          ]
+        },
+        {
+          "period": "2025Q2",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": 4676057000000.0,
+              "prior": null,
+              "scope": "CFS",
+              "priorScope": null
+            },
+            {
+              "gap": 1,
+              "expected": "-30.1%",
+              "exactDecimalPct": "-30.05434932191240685494920775",
+              "current": 4676057000000.0,
+              "prior": 6685272000000.0,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            }
+          ]
+        },
+        {
+          "period": "2025Q1",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": 6685272000000.0,
+              "prior": null,
+              "scope": "CFS",
+              "priorScope": null
+            },
+            {
+              "gap": 1,
+              "expected": "3.0%",
+              "exactDecimalPct": "2.965929598196621653570169500",
+              "current": 6685272000000.0,
+              "prior": 6492703000000.0,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            }
+          ]
+        },
+        {
+          "period": "2024Q4",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": 6492703000000.0,
+              "prior": null,
+              "scope": "CFS",
+              "priorScope": null
+            },
+            {
+              "gap": 1,
+              "expected": "-29.3%",
+              "exactDecimalPct": "-29.29934987925457873802550284",
+              "current": 6492703000000.0,
+              "prior": 9183371000000.0,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            }
+          ]
+        },
+        {
+          "period": "2024Q3",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": 9183371000000.0,
+              "prior": null,
+              "scope": "CFS",
+              "priorScope": null
+            },
+            {
+              "gap": 1,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": 9183371000000.0,
+              "prior": null,
+              "scope": "CFS",
+              "priorScope": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "000020",
+      "sourceSha256": "0e8455606803a29c999e1ad406d40565fd909a43421d7fc95f14882af393fc06",
+      "rows": [
+        {
+          "period": "2026Q2",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "1,575.5%",
+              "exactDecimalPct": "1575.537568737085818044671791",
+              "current": 10289858450.0,
+              "prior": 614122813.0,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            },
+            {
+              "gap": 1,
+              "expected": "-8.4%",
+              "exactDecimalPct": "-8.358522438335880951878726090",
+              "current": 10289858450.0,
+              "prior": 11228385578.0,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            }
+          ]
+        },
+        {
+          "period": "2026Q1",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "394.8%",
+              "exactDecimalPct": "394.8334089807948302998079227",
+              "current": 11228385578.0,
+              "prior": 2269124391.0,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            },
+            {
+              "gap": 1,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": 11228385578.0,
+              "prior": -3996403038.0,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            }
+          ]
+        },
+        {
+          "period": "2025Q4",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "-240.6%",
+              "exactDecimalPct": "-240.5977246747381731205852848",
+              "current": -3996403038.0,
+              "prior": 2842437918.0,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            },
+            {
+              "gap": 1,
+              "expected": "-391.7%",
+              "exactDecimalPct": "-391.7277317602482381825329409",
+              "current": -3996403038.0,
+              "prior": 1369908515.0,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            }
+          ]
+        },
+        {
+          "period": "2025Q3",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": 1369908515.0,
+              "prior": -582474956.0,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            },
+            {
+              "gap": 1,
+              "expected": "123.1%",
+              "exactDecimalPct": "123.0675177670040406071024754",
+              "current": 1369908515.0,
+              "prior": 614122813.0,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            }
+          ]
+        },
+        {
+          "period": "2025Q2",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": 614122813.0,
+              "prior": null,
+              "scope": "CFS",
+              "priorScope": null
+            },
+            {
+              "gap": 1,
+              "expected": "-72.9%",
+              "exactDecimalPct": "-72.93569204774371490152476176",
+              "current": 614122813.0,
+              "prior": 2269124391.0,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            }
+          ]
+        },
+        {
+          "period": "2025Q1",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": 2269124391.0,
+              "prior": null,
+              "scope": "CFS",
+              "priorScope": null
+            },
+            {
+              "gap": 1,
+              "expected": "-20.2%",
+              "exactDecimalPct": "-20.16978184006902204574376213",
+              "current": 2269124391.0,
+              "prior": 2842437918.0,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            }
+          ]
+        },
+        {
+          "period": "2024Q4",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": 2842437918.0,
+              "prior": null,
+              "scope": "CFS",
+              "priorScope": null
+            },
+            {
+              "gap": 1,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": 2842437918.0,
+              "prior": -582474956.0,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            }
+          ]
+        },
+        {
+          "period": "2024Q3",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": -582474956.0,
+              "prior": null,
+              "scope": "CFS",
+              "priorScope": null
+            },
+            {
+              "gap": 1,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": -582474956.0,
+              "prior": null,
+              "scope": "CFS",
+              "priorScope": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "003060",
+      "sourceSha256": "a5179752a600df4915c116845d61b1e35770f284370031eb1d8961878e25efc8",
+      "rows": [
+        {
+          "period": "2026Q2",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": -17459164920.0,
+              "prior": -17951428693.0,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            },
+            {
+              "gap": 1,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": -17459164920.0,
+              "prior": -13615433832.0,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            }
+          ]
+        },
+        {
+          "period": "2026Q1",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": -13615433832.0,
+              "prior": -15737831227.0,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            },
+            {
+              "gap": 1,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": -13615433832.0,
+              "prior": -15990187548.0,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            }
+          ]
+        },
+        {
+          "period": "2025Q4",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": -15990187548.0,
+              "prior": -16037158302.0,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            },
+            {
+              "gap": 1,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": -15990187548.0,
+              "prior": -10675216917.0,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            }
+          ]
+        },
+        {
+          "period": "2025Q3",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": -10675216917.0,
+              "prior": -13131981560.0,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            },
+            {
+              "gap": 1,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": -10675216917.0,
+              "prior": -17951428693.0,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            }
+          ]
+        },
+        {
+          "period": "2025Q2",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": -17951428693.0,
+              "prior": null,
+              "scope": "CFS",
+              "priorScope": null
+            },
+            {
+              "gap": 1,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": -17951428693.0,
+              "prior": -15737831227.0,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            }
+          ]
+        },
+        {
+          "period": "2025Q1",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": -15737831227.0,
+              "prior": null,
+              "scope": "CFS",
+              "priorScope": null
+            },
+            {
+              "gap": 1,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": -15737831227.0,
+              "prior": -16037158302.0,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            }
+          ]
+        },
+        {
+          "period": "2024Q4",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": -16037158302.0,
+              "prior": null,
+              "scope": "CFS",
+              "priorScope": null
+            },
+            {
+              "gap": 1,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": -16037158302.0,
+              "prior": -13131981560.0,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            }
+          ]
+        },
+        {
+          "period": "2024Q3",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": -13131981560.0,
+              "prior": null,
+              "scope": "CFS",
+              "priorScope": null
+            },
+            {
+              "gap": 1,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": -13131981560.0,
+              "prior": null,
+              "scope": "CFS",
+              "priorScope": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "395400",
+      "sourceSha256": "97332baa0de635d7d729a0736ccf1c2509fe7f820d77b97785838f4574be23ca",
+      "rows": [
+        {
+          "period": "2026Q2",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": null,
+              "prior": null,
+              "scope": "",
+              "priorScope": ""
+            },
+            {
+              "gap": 1,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": null,
+              "prior": null,
+              "scope": "",
+              "priorScope": ""
+            }
+          ]
+        },
+        {
+          "period": "2026Q1",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": null,
+              "prior": null,
+              "scope": "",
+              "priorScope": ""
+            },
+            {
+              "gap": 1,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": null,
+              "prior": null,
+              "scope": "",
+              "priorScope": "CFS"
+            }
+          ]
+        },
+        {
+          "period": "2025Q4",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": null,
+              "prior": null,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            },
+            {
+              "gap": 1,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": null,
+              "prior": null,
+              "scope": "CFS",
+              "priorScope": ""
+            }
+          ]
+        },
+        {
+          "period": "2025Q3",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": null,
+              "prior": null,
+              "scope": "",
+              "priorScope": ""
+            },
+            {
+              "gap": 1,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": null,
+              "prior": null,
+              "scope": "",
+              "priorScope": ""
+            }
+          ]
+        },
+        {
+          "period": "2025Q2",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": null,
+              "prior": null,
+              "scope": "",
+              "priorScope": null
+            },
+            {
+              "gap": 1,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": null,
+              "prior": null,
+              "scope": "",
+              "priorScope": ""
+            }
+          ]
+        },
+        {
+          "period": "2025Q1",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": null,
+              "prior": null,
+              "scope": "",
+              "priorScope": null
+            },
+            {
+              "gap": 1,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": null,
+              "prior": null,
+              "scope": "",
+              "priorScope": "CFS"
+            }
+          ]
+        },
+        {
+          "period": "2024Q4",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": null,
+              "prior": null,
+              "scope": "CFS",
+              "priorScope": null
+            },
+            {
+              "gap": 1,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": null,
+              "prior": null,
+              "scope": "CFS",
+              "priorScope": ""
+            }
+          ]
+        },
+        {
+          "period": "2024Q3",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": null,
+              "prior": null,
+              "scope": "",
+              "priorScope": null
+            },
+            {
+              "gap": 1,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": null,
+              "prior": null,
+              "scope": "",
+              "priorScope": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "474930",
+      "sourceSha256": "11f80faa3a803fce188956b1f5429ebed5270a0f153cd04aa2ca766a07afc1b2",
+      "rows": [
+        {
+          "period": "2026Q2",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": null,
+              "prior": null,
+              "scope": "OFS",
+              "priorScope": ""
+            },
+            {
+              "gap": 1,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": null,
+              "prior": null,
+              "scope": "OFS",
+              "priorScope": "OFS"
+            }
+          ]
+        },
+        {
+          "period": "2026Q1",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": null,
+              "prior": null,
+              "scope": "OFS",
+              "priorScope": ""
+            },
+            {
+              "gap": 1,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": null,
+              "prior": null,
+              "scope": "OFS",
+              "priorScope": ""
+            }
+          ]
+        },
+        {
+          "period": "2025Q4",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": null,
+              "prior": null,
+              "scope": "",
+              "priorScope": ""
+            },
+            {
+              "gap": 1,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": null,
+              "prior": null,
+              "scope": "",
+              "priorScope": ""
+            }
+          ]
+        },
+        {
+          "period": "2025Q3",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": null,
+              "prior": null,
+              "scope": "",
+              "priorScope": ""
+            },
+            {
+              "gap": 1,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": null,
+              "prior": null,
+              "scope": "",
+              "priorScope": ""
+            }
+          ]
+        },
+        {
+          "period": "2025Q2",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": null,
+              "prior": null,
+              "scope": "",
+              "priorScope": null
+            },
+            {
+              "gap": 1,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": null,
+              "prior": null,
+              "scope": "",
+              "priorScope": ""
+            }
+          ]
+        },
+        {
+          "period": "2025Q1",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": null,
+              "prior": null,
+              "scope": "",
+              "priorScope": null
+            },
+            {
+              "gap": 1,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": null,
+              "prior": null,
+              "scope": "",
+              "priorScope": ""
+            }
+          ]
+        },
+        {
+          "period": "2024Q4",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": null,
+              "prior": null,
+              "scope": "",
+              "priorScope": null
+            },
+            {
+              "gap": 1,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": null,
+              "prior": null,
+              "scope": "",
+              "priorScope": ""
+            }
+          ]
+        },
+        {
+          "period": "2024Q3",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": null,
+              "prior": null,
+              "scope": "",
+              "priorScope": null
+            },
+            {
+              "gap": 1,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": null,
+              "prior": null,
+              "scope": "",
+              "priorScope": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "142210",
+      "sourceSha256": "e5a068c19868352409ce0b182e4df26477550f489ea1c9526e76fdbd3ac8c711",
+      "rows": [
+        {
+          "period": "2026Q2",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "972.9%",
+              "exactDecimalPct": "972.9220314154122076519293810",
+              "current": 38540229358.0,
+              "prior": 3592081086.0,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            },
+            {
+              "gap": 1,
+              "expected": "109.0%",
+              "exactDecimalPct": "109.0025510954990207579699816",
+              "current": 38540229358.0,
+              "prior": 18440076045.0,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            }
+          ]
+        },
+        {
+          "period": "2026Q1",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "84.7%",
+              "exactDecimalPct": "84.71414508319205551745049010",
+              "current": 18440076045.0,
+              "prior": 9983034075.0,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            },
+            {
+              "gap": 1,
+              "expected": "56.1%",
+              "exactDecimalPct": "56.12725768430876811858836260",
+              "current": 18440076045.0,
+              "prior": 11810926752.0,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            }
+          ]
+        },
+        {
+          "period": "2025Q4",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "-12.7%",
+              "exactDecimalPct": "-12.72975417347025060099768983",
+              "current": 11810926752.0,
+              "prior": 13533738378.0,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            },
+            {
+              "gap": 1,
+              "expected": "71.6%",
+              "exactDecimalPct": "71.60801819965245768139968320",
+              "current": 11810926752.0,
+              "prior": 6882502855.0,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            }
+          ]
+        },
+        {
+          "period": "2025Q3",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "47.2%",
+              "exactDecimalPct": "47.15436709344443674942108770",
+              "current": 6882502855.0,
+              "prior": 4677063271.0,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            },
+            {
+              "gap": 1,
+              "expected": "91.6%",
+              "exactDecimalPct": "91.60210168485044048362554140",
+              "current": 6882502855.0,
+              "prior": 3592081086.0,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            }
+          ]
+        },
+        {
+          "period": "2025Q2",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": 3592081086.0,
+              "prior": null,
+              "scope": "CFS",
+              "priorScope": null
+            },
+            {
+              "gap": 1,
+              "expected": "-64.0%",
+              "exactDecimalPct": "-64.01814259058311388163823331",
+              "current": 3592081086.0,
+              "prior": 9983034075.0,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            }
+          ]
+        },
+        {
+          "period": "2025Q1",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": 9983034075.0,
+              "prior": null,
+              "scope": "CFS",
+              "priorScope": null
+            },
+            {
+              "gap": 1,
+              "expected": "-26.2%",
+              "exactDecimalPct": "-26.23594607659852607208423458",
+              "current": 9983034075.0,
+              "prior": 13533738378.0,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            }
+          ]
+        },
+        {
+          "period": "2024Q4",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": 13533738378.0,
+              "prior": null,
+              "scope": "CFS",
+              "priorScope": null
+            },
+            {
+              "gap": 1,
+              "expected": "189.4%",
+              "exactDecimalPct": "189.3640216910377563288687869",
+              "current": 13533738378.0,
+              "prior": 4677063271.0,
+              "scope": "CFS",
+              "priorScope": "CFS"
+            }
+          ]
+        },
+        {
+          "period": "2024Q3",
+          "columns": [
+            {
+              "gap": 4,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": 4677063271.0,
+              "prior": null,
+              "scope": "CFS",
+              "priorScope": null
+            },
+            {
+              "gap": 1,
+              "expected": "미확보",
+              "exactDecimalPct": null,
+              "current": 4677063271.0,
+              "prior": null,
+              "scope": "CFS",
+              "priorScope": null
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

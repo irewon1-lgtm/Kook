@@ -1,0 +1,33 @@
+{
+  "sourceHead": "e388ea2b7aa52843af5c0d32861cc0493bfe5f5a",
+  "changesDuringRun": "documentation/evidence only; runtime/exporter/test/data inputs unchanged",
+  "python": {
+    "passed": 366,
+    "subtests": 103,
+    "failed": 0
+  },
+  "frontend": {
+    "passed": 319,
+    "failed": 0
+  },
+  "build": "PASS",
+  "staticSiteBytes": 836256941,
+  "files": {
+    "final-integrate-python.log": {
+      "sha256": "8052d829f1ac247b67c80e258ece48a03889f1045455ead68642ccb13dd01184",
+      "bytes": 494
+    },
+    "final-integrate-python.xml": {
+      "sha256": "46414879aa7379f826ccb81a16172bbeeb37215030108084654b579fa24f18de",
+      "bytes": 51888
+    },
+    "final-integrate-web.log": {
+      "sha256": "060858f6321d4276f628afd602f31b57b3da8aac9add1a63a73c81d2da8de8b8",
+      "bytes": 1892
+    },
+    "final-integrate-build.log": {
+      "sha256": "b53bda1affdb7a420b7aadcab254ba7549ac45ca74d59bc02629df2af2a33407",
+      "bytes": 10269
+    }
+  }
+}

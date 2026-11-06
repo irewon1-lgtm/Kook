@@ -1,0 +1,25 @@
+
+ RUN  v3.2.4 /workspace/kr4-pc-web/web
+
+ ✓ tests/review-regressions.test.ts (2 tests) 1290ms
+   ✓ R1 candidate reception HOLD applies to detail and recovers only after a verified candidate transaction  679ms
+   ✓ R2 blocked storage plus offline refresh retains the newer genuinely received in-memory core  610ms
+ ✓ tests/oracle-parity.test.ts (16 tests) 1339ms
+   ✓ All 2,649 actual stocks × 15 original Kotlin ranking masks > is unchanged when every financial risk status changes independently  820ms
+ ✓ tests/price-oracle-parity.test.ts (229 tests) 230ms
+ ✓ tests/optional-stages.test.ts (2 tests) 911ms
+   ✓ receives the exact original Stage5 and candidate maps without client-side thresholds  502ms
+   ✓ keeps original PER classifications independent when Stage4 fails and holds dependent final candidates  408ms
+ ✓ tests/chart.test.ts (26 tests) 99ms
+ ✓ tests/receiver.test.ts (14 tests) 2668ms
+   ✓ Independent optional financial failure and verified cache recovery > receives actual complete quant even when safety bytes are invalid  314ms
+   ✓ Independent optional financial failure and verified cache recovery > uses actual previous verified cache on network failure  535ms
+   ✓ Independent optional financial failure and verified cache recovery > does not call cached stock bytes LIVE merely because the manifest request succeeded  568ms
+ ✓ tests/ranking.test.ts (8 tests) 5ms
+ ✓ tests/format.test.ts (3 tests) 33ms
+
+ Test Files  8 passed (8)
+      Tests  300 passed (300)
+   Start at  01:38:52
+   Duration  3.23s (transform 461ms, setup 0ms, collect 1.21s, tests 6.58s, environment 1ms, prepare 461ms)
+

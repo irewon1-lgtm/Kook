@@ -1,0 +1,62 @@
+{
+  "verdict": "APPROVED",
+  "findingP2": "CLOSED",
+  "reviewedFiles": {
+    "web/src/screens/Detail.tsx": "dcb4b589244e8ab562759b8d9b9bbfc0e0f38f259de3a7e30df22c2276842c70",
+    "web/tests/optional-ui-state.test.tsx": "702af423f975f5c12c8f8d473151bd8a9825a0c68f5b971dadbe6131ae056283",
+    "web/vite.config.ts": "eff03e015c2375a43fc9927f3cff935d40d65f7cb7a33e8b663721bad6c2e9e6"
+  },
+  "independentUnit": {
+    "passed": 18,
+    "failed": 0
+  },
+  "independentExtraSsr": {
+    "classification": "INDEPENDENT_LOCAL_SSR_REVIEW",
+    "results": [
+      {
+        "name": "candidate issuer mismatch",
+        "status": "PASS"
+      },
+      {
+        "name": "candidate financial-date mismatch",
+        "status": "PASS"
+      },
+      {
+        "name": "candidate price-cutoff mismatch",
+        "status": "PASS"
+      },
+      {
+        "name": "financial issuer mismatch",
+        "status": "PASS"
+      },
+      {
+        "name": "financial validation state absent",
+        "status": "PASS"
+      },
+      {
+        "name": "manifest absent",
+        "status": "PASS"
+      },
+      {
+        "name": "empty current candidate map after valid receipt",
+        "status": "PASS"
+      },
+      {
+        "name": "genuine valid current baseline still visible",
+        "status": "PASS"
+      }
+    ],
+    "boundary": {
+      "classification": "CONTROLLED_SAME_DATE_RECEIVER_STATE_ONLY_NOT_MARKET_DATA",
+      "oldDisplayedSummaryRank": 6,
+      "currentCandidateSourceRank": 7,
+      "oldSummaryScoreRetained": true,
+      "currentCandidateStillShown": false,
+      "sourceFieldsModified": false
+    }
+  },
+  "allActualSummariesCompared": 2649,
+  "matchingActualCandidatePairs": 10,
+  "dataSource": "original Kotlin oracle-stage5-candidates; unmodified actual source JSON",
+  "publicOrWindowsApproval": false
+}
