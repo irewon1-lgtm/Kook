@@ -1,0 +1,2003 @@
+{
+  "numericComparison": "exact IEEE-754 values; no tolerance or rounding",
+  "modeMeaning": "24 rendering selections share 12 unique interval/window OHLCV projections per case",
+  "actualCases": 6,
+  "controlledCases": 3,
+  "actualRenderingSelections": 144,
+  "actualUniqueProjections": 72,
+  "controlledRenderingSelections": 72,
+  "controlledUniqueProjections": 36,
+  "comparisons": [
+    {
+      "id": "005930",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 1,
+      "mode": "candle",
+      "bars": 22,
+      "status": "PASS"
+    },
+    {
+      "id": "005930",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 1,
+      "mode": "line",
+      "bars": 22,
+      "status": "PASS"
+    },
+    {
+      "id": "005930",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 3,
+      "mode": "candle",
+      "bars": 62,
+      "status": "PASS"
+    },
+    {
+      "id": "005930",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 3,
+      "mode": "line",
+      "bars": 62,
+      "status": "PASS"
+    },
+    {
+      "id": "005930",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 6,
+      "mode": "candle",
+      "bars": 124,
+      "status": "PASS"
+    },
+    {
+      "id": "005930",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 6,
+      "mode": "line",
+      "bars": 124,
+      "status": "PASS"
+    },
+    {
+      "id": "005930",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 12,
+      "mode": "candle",
+      "bars": 245,
+      "status": "PASS"
+    },
+    {
+      "id": "005930",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 12,
+      "mode": "line",
+      "bars": 245,
+      "status": "PASS"
+    },
+    {
+      "id": "005930",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 1,
+      "mode": "candle",
+      "bars": 5,
+      "status": "PASS"
+    },
+    {
+      "id": "005930",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 1,
+      "mode": "line",
+      "bars": 5,
+      "status": "PASS"
+    },
+    {
+      "id": "005930",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 3,
+      "mode": "candle",
+      "bars": 14,
+      "status": "PASS"
+    },
+    {
+      "id": "005930",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 3,
+      "mode": "line",
+      "bars": 14,
+      "status": "PASS"
+    },
+    {
+      "id": "005930",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 6,
+      "mode": "candle",
+      "bars": 27,
+      "status": "PASS"
+    },
+    {
+      "id": "005930",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 6,
+      "mode": "line",
+      "bars": 27,
+      "status": "PASS"
+    },
+    {
+      "id": "005930",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 12,
+      "mode": "candle",
+      "bars": 53,
+      "status": "PASS"
+    },
+    {
+      "id": "005930",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 12,
+      "mode": "line",
+      "bars": 53,
+      "status": "PASS"
+    },
+    {
+      "id": "005930",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 1,
+      "mode": "candle",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "005930",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 1,
+      "mode": "line",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "005930",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 3,
+      "mode": "candle",
+      "bars": 4,
+      "status": "PASS"
+    },
+    {
+      "id": "005930",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 3,
+      "mode": "line",
+      "bars": 4,
+      "status": "PASS"
+    },
+    {
+      "id": "005930",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 6,
+      "mode": "candle",
+      "bars": 7,
+      "status": "PASS"
+    },
+    {
+      "id": "005930",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 6,
+      "mode": "line",
+      "bars": 7,
+      "status": "PASS"
+    },
+    {
+      "id": "005930",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 12,
+      "mode": "candle",
+      "bars": 13,
+      "status": "PASS"
+    },
+    {
+      "id": "005930",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 12,
+      "mode": "line",
+      "bars": 13,
+      "status": "PASS"
+    },
+    {
+      "id": "000660",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 1,
+      "mode": "candle",
+      "bars": 22,
+      "status": "PASS"
+    },
+    {
+      "id": "000660",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 1,
+      "mode": "line",
+      "bars": 22,
+      "status": "PASS"
+    },
+    {
+      "id": "000660",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 3,
+      "mode": "candle",
+      "bars": 62,
+      "status": "PASS"
+    },
+    {
+      "id": "000660",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 3,
+      "mode": "line",
+      "bars": 62,
+      "status": "PASS"
+    },
+    {
+      "id": "000660",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 6,
+      "mode": "candle",
+      "bars": 124,
+      "status": "PASS"
+    },
+    {
+      "id": "000660",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 6,
+      "mode": "line",
+      "bars": 124,
+      "status": "PASS"
+    },
+    {
+      "id": "000660",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 12,
+      "mode": "candle",
+      "bars": 245,
+      "status": "PASS"
+    },
+    {
+      "id": "000660",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 12,
+      "mode": "line",
+      "bars": 245,
+      "status": "PASS"
+    },
+    {
+      "id": "000660",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 1,
+      "mode": "candle",
+      "bars": 5,
+      "status": "PASS"
+    },
+    {
+      "id": "000660",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 1,
+      "mode": "line",
+      "bars": 5,
+      "status": "PASS"
+    },
+    {
+      "id": "000660",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 3,
+      "mode": "candle",
+      "bars": 14,
+      "status": "PASS"
+    },
+    {
+      "id": "000660",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 3,
+      "mode": "line",
+      "bars": 14,
+      "status": "PASS"
+    },
+    {
+      "id": "000660",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 6,
+      "mode": "candle",
+      "bars": 27,
+      "status": "PASS"
+    },
+    {
+      "id": "000660",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 6,
+      "mode": "line",
+      "bars": 27,
+      "status": "PASS"
+    },
+    {
+      "id": "000660",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 12,
+      "mode": "candle",
+      "bars": 53,
+      "status": "PASS"
+    },
+    {
+      "id": "000660",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 12,
+      "mode": "line",
+      "bars": 53,
+      "status": "PASS"
+    },
+    {
+      "id": "000660",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 1,
+      "mode": "candle",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "000660",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 1,
+      "mode": "line",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "000660",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 3,
+      "mode": "candle",
+      "bars": 4,
+      "status": "PASS"
+    },
+    {
+      "id": "000660",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 3,
+      "mode": "line",
+      "bars": 4,
+      "status": "PASS"
+    },
+    {
+      "id": "000660",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 6,
+      "mode": "candle",
+      "bars": 7,
+      "status": "PASS"
+    },
+    {
+      "id": "000660",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 6,
+      "mode": "line",
+      "bars": 7,
+      "status": "PASS"
+    },
+    {
+      "id": "000660",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 12,
+      "mode": "candle",
+      "bars": 13,
+      "status": "PASS"
+    },
+    {
+      "id": "000660",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 12,
+      "mode": "line",
+      "bars": 13,
+      "status": "PASS"
+    },
+    {
+      "id": "000020",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 1,
+      "mode": "candle",
+      "bars": 22,
+      "status": "PASS"
+    },
+    {
+      "id": "000020",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 1,
+      "mode": "line",
+      "bars": 22,
+      "status": "PASS"
+    },
+    {
+      "id": "000020",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 3,
+      "mode": "candle",
+      "bars": 62,
+      "status": "PASS"
+    },
+    {
+      "id": "000020",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 3,
+      "mode": "line",
+      "bars": 62,
+      "status": "PASS"
+    },
+    {
+      "id": "000020",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 6,
+      "mode": "candle",
+      "bars": 124,
+      "status": "PASS"
+    },
+    {
+      "id": "000020",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 6,
+      "mode": "line",
+      "bars": 124,
+      "status": "PASS"
+    },
+    {
+      "id": "000020",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 12,
+      "mode": "candle",
+      "bars": 245,
+      "status": "PASS"
+    },
+    {
+      "id": "000020",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 12,
+      "mode": "line",
+      "bars": 245,
+      "status": "PASS"
+    },
+    {
+      "id": "000020",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 1,
+      "mode": "candle",
+      "bars": 5,
+      "status": "PASS"
+    },
+    {
+      "id": "000020",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 1,
+      "mode": "line",
+      "bars": 5,
+      "status": "PASS"
+    },
+    {
+      "id": "000020",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 3,
+      "mode": "candle",
+      "bars": 14,
+      "status": "PASS"
+    },
+    {
+      "id": "000020",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 3,
+      "mode": "line",
+      "bars": 14,
+      "status": "PASS"
+    },
+    {
+      "id": "000020",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 6,
+      "mode": "candle",
+      "bars": 27,
+      "status": "PASS"
+    },
+    {
+      "id": "000020",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 6,
+      "mode": "line",
+      "bars": 27,
+      "status": "PASS"
+    },
+    {
+      "id": "000020",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 12,
+      "mode": "candle",
+      "bars": 53,
+      "status": "PASS"
+    },
+    {
+      "id": "000020",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 12,
+      "mode": "line",
+      "bars": 53,
+      "status": "PASS"
+    },
+    {
+      "id": "000020",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 1,
+      "mode": "candle",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "000020",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 1,
+      "mode": "line",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "000020",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 3,
+      "mode": "candle",
+      "bars": 4,
+      "status": "PASS"
+    },
+    {
+      "id": "000020",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 3,
+      "mode": "line",
+      "bars": 4,
+      "status": "PASS"
+    },
+    {
+      "id": "000020",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 6,
+      "mode": "candle",
+      "bars": 7,
+      "status": "PASS"
+    },
+    {
+      "id": "000020",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 6,
+      "mode": "line",
+      "bars": 7,
+      "status": "PASS"
+    },
+    {
+      "id": "000020",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 12,
+      "mode": "candle",
+      "bars": 13,
+      "status": "PASS"
+    },
+    {
+      "id": "000020",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 12,
+      "mode": "line",
+      "bars": 13,
+      "status": "PASS"
+    },
+    {
+      "id": "0001A0",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 1,
+      "mode": "candle",
+      "bars": 22,
+      "status": "PASS"
+    },
+    {
+      "id": "0001A0",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 1,
+      "mode": "line",
+      "bars": 22,
+      "status": "PASS"
+    },
+    {
+      "id": "0001A0",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 3,
+      "mode": "candle",
+      "bars": 62,
+      "status": "PASS"
+    },
+    {
+      "id": "0001A0",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 3,
+      "mode": "line",
+      "bars": 62,
+      "status": "PASS"
+    },
+    {
+      "id": "0001A0",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 6,
+      "mode": "candle",
+      "bars": 124,
+      "status": "PASS"
+    },
+    {
+      "id": "0001A0",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 6,
+      "mode": "line",
+      "bars": 124,
+      "status": "PASS"
+    },
+    {
+      "id": "0001A0",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 12,
+      "mode": "candle",
+      "bars": 186,
+      "status": "PASS"
+    },
+    {
+      "id": "0001A0",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 12,
+      "mode": "line",
+      "bars": 186,
+      "status": "PASS"
+    },
+    {
+      "id": "0001A0",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 1,
+      "mode": "candle",
+      "bars": 5,
+      "status": "PASS"
+    },
+    {
+      "id": "0001A0",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 1,
+      "mode": "line",
+      "bars": 5,
+      "status": "PASS"
+    },
+    {
+      "id": "0001A0",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 3,
+      "mode": "candle",
+      "bars": 14,
+      "status": "PASS"
+    },
+    {
+      "id": "0001A0",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 3,
+      "mode": "line",
+      "bars": 14,
+      "status": "PASS"
+    },
+    {
+      "id": "0001A0",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 6,
+      "mode": "candle",
+      "bars": 27,
+      "status": "PASS"
+    },
+    {
+      "id": "0001A0",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 6,
+      "mode": "line",
+      "bars": 27,
+      "status": "PASS"
+    },
+    {
+      "id": "0001A0",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 12,
+      "mode": "candle",
+      "bars": 41,
+      "status": "PASS"
+    },
+    {
+      "id": "0001A0",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 12,
+      "mode": "line",
+      "bars": 41,
+      "status": "PASS"
+    },
+    {
+      "id": "0001A0",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 1,
+      "mode": "candle",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "0001A0",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 1,
+      "mode": "line",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "0001A0",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 3,
+      "mode": "candle",
+      "bars": 4,
+      "status": "PASS"
+    },
+    {
+      "id": "0001A0",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 3,
+      "mode": "line",
+      "bars": 4,
+      "status": "PASS"
+    },
+    {
+      "id": "0001A0",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 6,
+      "mode": "candle",
+      "bars": 7,
+      "status": "PASS"
+    },
+    {
+      "id": "0001A0",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 6,
+      "mode": "line",
+      "bars": 7,
+      "status": "PASS"
+    },
+    {
+      "id": "0001A0",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 12,
+      "mode": "candle",
+      "bars": 11,
+      "status": "PASS"
+    },
+    {
+      "id": "0001A0",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 12,
+      "mode": "line",
+      "bars": 11,
+      "status": "PASS"
+    },
+    {
+      "id": "000300",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 1,
+      "mode": "candle",
+      "bars": 5,
+      "status": "PASS"
+    },
+    {
+      "id": "000300",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 1,
+      "mode": "line",
+      "bars": 5,
+      "status": "PASS"
+    },
+    {
+      "id": "000300",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 3,
+      "mode": "candle",
+      "bars": 5,
+      "status": "PASS"
+    },
+    {
+      "id": "000300",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 3,
+      "mode": "line",
+      "bars": 5,
+      "status": "PASS"
+    },
+    {
+      "id": "000300",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 6,
+      "mode": "candle",
+      "bars": 5,
+      "status": "PASS"
+    },
+    {
+      "id": "000300",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 6,
+      "mode": "line",
+      "bars": 5,
+      "status": "PASS"
+    },
+    {
+      "id": "000300",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 12,
+      "mode": "candle",
+      "bars": 5,
+      "status": "PASS"
+    },
+    {
+      "id": "000300",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 12,
+      "mode": "line",
+      "bars": 5,
+      "status": "PASS"
+    },
+    {
+      "id": "000300",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 1,
+      "mode": "candle",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "000300",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 1,
+      "mode": "line",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "000300",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 3,
+      "mode": "candle",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "000300",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 3,
+      "mode": "line",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "000300",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 6,
+      "mode": "candle",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "000300",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 6,
+      "mode": "line",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "000300",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 12,
+      "mode": "candle",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "000300",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 12,
+      "mode": "line",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "000300",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 1,
+      "mode": "candle",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "000300",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 1,
+      "mode": "line",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "000300",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 3,
+      "mode": "candle",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "000300",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 3,
+      "mode": "line",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "000300",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 6,
+      "mode": "candle",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "000300",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 6,
+      "mode": "line",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "000300",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 12,
+      "mode": "candle",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "000300",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 12,
+      "mode": "line",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "005030",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 1,
+      "mode": "candle",
+      "bars": 0,
+      "status": "PASS"
+    },
+    {
+      "id": "005030",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 1,
+      "mode": "line",
+      "bars": 0,
+      "status": "PASS"
+    },
+    {
+      "id": "005030",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 3,
+      "mode": "candle",
+      "bars": 0,
+      "status": "PASS"
+    },
+    {
+      "id": "005030",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 3,
+      "mode": "line",
+      "bars": 0,
+      "status": "PASS"
+    },
+    {
+      "id": "005030",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 6,
+      "mode": "candle",
+      "bars": 0,
+      "status": "PASS"
+    },
+    {
+      "id": "005030",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 6,
+      "mode": "line",
+      "bars": 0,
+      "status": "PASS"
+    },
+    {
+      "id": "005030",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 12,
+      "mode": "candle",
+      "bars": 0,
+      "status": "PASS"
+    },
+    {
+      "id": "005030",
+      "kind": "actual",
+      "interval": "DAY",
+      "months": 12,
+      "mode": "line",
+      "bars": 0,
+      "status": "PASS"
+    },
+    {
+      "id": "005030",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 1,
+      "mode": "candle",
+      "bars": 0,
+      "status": "PASS"
+    },
+    {
+      "id": "005030",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 1,
+      "mode": "line",
+      "bars": 0,
+      "status": "PASS"
+    },
+    {
+      "id": "005030",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 3,
+      "mode": "candle",
+      "bars": 0,
+      "status": "PASS"
+    },
+    {
+      "id": "005030",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 3,
+      "mode": "line",
+      "bars": 0,
+      "status": "PASS"
+    },
+    {
+      "id": "005030",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 6,
+      "mode": "candle",
+      "bars": 0,
+      "status": "PASS"
+    },
+    {
+      "id": "005030",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 6,
+      "mode": "line",
+      "bars": 0,
+      "status": "PASS"
+    },
+    {
+      "id": "005030",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 12,
+      "mode": "candle",
+      "bars": 0,
+      "status": "PASS"
+    },
+    {
+      "id": "005030",
+      "kind": "actual",
+      "interval": "WEEK",
+      "months": 12,
+      "mode": "line",
+      "bars": 0,
+      "status": "PASS"
+    },
+    {
+      "id": "005030",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 1,
+      "mode": "candle",
+      "bars": 0,
+      "status": "PASS"
+    },
+    {
+      "id": "005030",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 1,
+      "mode": "line",
+      "bars": 0,
+      "status": "PASS"
+    },
+    {
+      "id": "005030",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 3,
+      "mode": "candle",
+      "bars": 0,
+      "status": "PASS"
+    },
+    {
+      "id": "005030",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 3,
+      "mode": "line",
+      "bars": 0,
+      "status": "PASS"
+    },
+    {
+      "id": "005030",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 6,
+      "mode": "candle",
+      "bars": 0,
+      "status": "PASS"
+    },
+    {
+      "id": "005030",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 6,
+      "mode": "line",
+      "bars": 0,
+      "status": "PASS"
+    },
+    {
+      "id": "005030",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 12,
+      "mode": "candle",
+      "bars": 0,
+      "status": "PASS"
+    },
+    {
+      "id": "005030",
+      "kind": "actual",
+      "interval": "MONTH",
+      "months": 12,
+      "mode": "line",
+      "bars": 0,
+      "status": "PASS"
+    },
+    {
+      "id": "missing-volume",
+      "kind": "controlled",
+      "interval": "DAY",
+      "months": 1,
+      "mode": "candle",
+      "bars": 3,
+      "status": "PASS"
+    },
+    {
+      "id": "missing-volume",
+      "kind": "controlled",
+      "interval": "DAY",
+      "months": 1,
+      "mode": "line",
+      "bars": 3,
+      "status": "PASS"
+    },
+    {
+      "id": "missing-volume",
+      "kind": "controlled",
+      "interval": "DAY",
+      "months": 3,
+      "mode": "candle",
+      "bars": 3,
+      "status": "PASS"
+    },
+    {
+      "id": "missing-volume",
+      "kind": "controlled",
+      "interval": "DAY",
+      "months": 3,
+      "mode": "line",
+      "bars": 3,
+      "status": "PASS"
+    },
+    {
+      "id": "missing-volume",
+      "kind": "controlled",
+      "interval": "DAY",
+      "months": 6,
+      "mode": "candle",
+      "bars": 3,
+      "status": "PASS"
+    },
+    {
+      "id": "missing-volume",
+      "kind": "controlled",
+      "interval": "DAY",
+      "months": 6,
+      "mode": "line",
+      "bars": 3,
+      "status": "PASS"
+    },
+    {
+      "id": "missing-volume",
+      "kind": "controlled",
+      "interval": "DAY",
+      "months": 12,
+      "mode": "candle",
+      "bars": 3,
+      "status": "PASS"
+    },
+    {
+      "id": "missing-volume",
+      "kind": "controlled",
+      "interval": "DAY",
+      "months": 12,
+      "mode": "line",
+      "bars": 3,
+      "status": "PASS"
+    },
+    {
+      "id": "missing-volume",
+      "kind": "controlled",
+      "interval": "WEEK",
+      "months": 1,
+      "mode": "candle",
+      "bars": 1,
+      "status": "PASS"
+    },
+    {
+      "id": "missing-volume",
+      "kind": "controlled",
+      "interval": "WEEK",
+      "months": 1,
+      "mode": "line",
+      "bars": 1,
+      "status": "PASS"
+    },
+    {
+      "id": "missing-volume",
+      "kind": "controlled",
+      "interval": "WEEK",
+      "months": 3,
+      "mode": "candle",
+      "bars": 1,
+      "status": "PASS"
+    },
+    {
+      "id": "missing-volume",
+      "kind": "controlled",
+      "interval": "WEEK",
+      "months": 3,
+      "mode": "line",
+      "bars": 1,
+      "status": "PASS"
+    },
+    {
+      "id": "missing-volume",
+      "kind": "controlled",
+      "interval": "WEEK",
+      "months": 6,
+      "mode": "candle",
+      "bars": 1,
+      "status": "PASS"
+    },
+    {
+      "id": "missing-volume",
+      "kind": "controlled",
+      "interval": "WEEK",
+      "months": 6,
+      "mode": "line",
+      "bars": 1,
+      "status": "PASS"
+    },
+    {
+      "id": "missing-volume",
+      "kind": "controlled",
+      "interval": "WEEK",
+      "months": 12,
+      "mode": "candle",
+      "bars": 1,
+      "status": "PASS"
+    },
+    {
+      "id": "missing-volume",
+      "kind": "controlled",
+      "interval": "WEEK",
+      "months": 12,
+      "mode": "line",
+      "bars": 1,
+      "status": "PASS"
+    },
+    {
+      "id": "missing-volume",
+      "kind": "controlled",
+      "interval": "MONTH",
+      "months": 1,
+      "mode": "candle",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "missing-volume",
+      "kind": "controlled",
+      "interval": "MONTH",
+      "months": 1,
+      "mode": "line",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "missing-volume",
+      "kind": "controlled",
+      "interval": "MONTH",
+      "months": 3,
+      "mode": "candle",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "missing-volume",
+      "kind": "controlled",
+      "interval": "MONTH",
+      "months": 3,
+      "mode": "line",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "missing-volume",
+      "kind": "controlled",
+      "interval": "MONTH",
+      "months": 6,
+      "mode": "candle",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "missing-volume",
+      "kind": "controlled",
+      "interval": "MONTH",
+      "months": 6,
+      "mode": "line",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "missing-volume",
+      "kind": "controlled",
+      "interval": "MONTH",
+      "months": 12,
+      "mode": "candle",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "missing-volume",
+      "kind": "controlled",
+      "interval": "MONTH",
+      "months": 12,
+      "mode": "line",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "year-boundary",
+      "kind": "controlled",
+      "interval": "DAY",
+      "months": 1,
+      "mode": "candle",
+      "bars": 3,
+      "status": "PASS"
+    },
+    {
+      "id": "year-boundary",
+      "kind": "controlled",
+      "interval": "DAY",
+      "months": 1,
+      "mode": "line",
+      "bars": 3,
+      "status": "PASS"
+    },
+    {
+      "id": "year-boundary",
+      "kind": "controlled",
+      "interval": "DAY",
+      "months": 3,
+      "mode": "candle",
+      "bars": 4,
+      "status": "PASS"
+    },
+    {
+      "id": "year-boundary",
+      "kind": "controlled",
+      "interval": "DAY",
+      "months": 3,
+      "mode": "line",
+      "bars": 4,
+      "status": "PASS"
+    },
+    {
+      "id": "year-boundary",
+      "kind": "controlled",
+      "interval": "DAY",
+      "months": 6,
+      "mode": "candle",
+      "bars": 4,
+      "status": "PASS"
+    },
+    {
+      "id": "year-boundary",
+      "kind": "controlled",
+      "interval": "DAY",
+      "months": 6,
+      "mode": "line",
+      "bars": 4,
+      "status": "PASS"
+    },
+    {
+      "id": "year-boundary",
+      "kind": "controlled",
+      "interval": "DAY",
+      "months": 12,
+      "mode": "candle",
+      "bars": 4,
+      "status": "PASS"
+    },
+    {
+      "id": "year-boundary",
+      "kind": "controlled",
+      "interval": "DAY",
+      "months": 12,
+      "mode": "line",
+      "bars": 4,
+      "status": "PASS"
+    },
+    {
+      "id": "year-boundary",
+      "kind": "controlled",
+      "interval": "WEEK",
+      "months": 1,
+      "mode": "candle",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "year-boundary",
+      "kind": "controlled",
+      "interval": "WEEK",
+      "months": 1,
+      "mode": "line",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "year-boundary",
+      "kind": "controlled",
+      "interval": "WEEK",
+      "months": 3,
+      "mode": "candle",
+      "bars": 3,
+      "status": "PASS"
+    },
+    {
+      "id": "year-boundary",
+      "kind": "controlled",
+      "interval": "WEEK",
+      "months": 3,
+      "mode": "line",
+      "bars": 3,
+      "status": "PASS"
+    },
+    {
+      "id": "year-boundary",
+      "kind": "controlled",
+      "interval": "WEEK",
+      "months": 6,
+      "mode": "candle",
+      "bars": 3,
+      "status": "PASS"
+    },
+    {
+      "id": "year-boundary",
+      "kind": "controlled",
+      "interval": "WEEK",
+      "months": 6,
+      "mode": "line",
+      "bars": 3,
+      "status": "PASS"
+    },
+    {
+      "id": "year-boundary",
+      "kind": "controlled",
+      "interval": "WEEK",
+      "months": 12,
+      "mode": "candle",
+      "bars": 3,
+      "status": "PASS"
+    },
+    {
+      "id": "year-boundary",
+      "kind": "controlled",
+      "interval": "WEEK",
+      "months": 12,
+      "mode": "line",
+      "bars": 3,
+      "status": "PASS"
+    },
+    {
+      "id": "year-boundary",
+      "kind": "controlled",
+      "interval": "MONTH",
+      "months": 1,
+      "mode": "candle",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "year-boundary",
+      "kind": "controlled",
+      "interval": "MONTH",
+      "months": 1,
+      "mode": "line",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "year-boundary",
+      "kind": "controlled",
+      "interval": "MONTH",
+      "months": 3,
+      "mode": "candle",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "year-boundary",
+      "kind": "controlled",
+      "interval": "MONTH",
+      "months": 3,
+      "mode": "line",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "year-boundary",
+      "kind": "controlled",
+      "interval": "MONTH",
+      "months": 6,
+      "mode": "candle",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "year-boundary",
+      "kind": "controlled",
+      "interval": "MONTH",
+      "months": 6,
+      "mode": "line",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "year-boundary",
+      "kind": "controlled",
+      "interval": "MONTH",
+      "months": 12,
+      "mode": "candle",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "year-boundary",
+      "kind": "controlled",
+      "interval": "MONTH",
+      "months": 12,
+      "mode": "line",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "calendar-gaps",
+      "kind": "controlled",
+      "interval": "DAY",
+      "months": 1,
+      "mode": "candle",
+      "bars": 3,
+      "status": "PASS"
+    },
+    {
+      "id": "calendar-gaps",
+      "kind": "controlled",
+      "interval": "DAY",
+      "months": 1,
+      "mode": "line",
+      "bars": 3,
+      "status": "PASS"
+    },
+    {
+      "id": "calendar-gaps",
+      "kind": "controlled",
+      "interval": "DAY",
+      "months": 3,
+      "mode": "candle",
+      "bars": 3,
+      "status": "PASS"
+    },
+    {
+      "id": "calendar-gaps",
+      "kind": "controlled",
+      "interval": "DAY",
+      "months": 3,
+      "mode": "line",
+      "bars": 3,
+      "status": "PASS"
+    },
+    {
+      "id": "calendar-gaps",
+      "kind": "controlled",
+      "interval": "DAY",
+      "months": 6,
+      "mode": "candle",
+      "bars": 3,
+      "status": "PASS"
+    },
+    {
+      "id": "calendar-gaps",
+      "kind": "controlled",
+      "interval": "DAY",
+      "months": 6,
+      "mode": "line",
+      "bars": 3,
+      "status": "PASS"
+    },
+    {
+      "id": "calendar-gaps",
+      "kind": "controlled",
+      "interval": "DAY",
+      "months": 12,
+      "mode": "candle",
+      "bars": 3,
+      "status": "PASS"
+    },
+    {
+      "id": "calendar-gaps",
+      "kind": "controlled",
+      "interval": "DAY",
+      "months": 12,
+      "mode": "line",
+      "bars": 3,
+      "status": "PASS"
+    },
+    {
+      "id": "calendar-gaps",
+      "kind": "controlled",
+      "interval": "WEEK",
+      "months": 1,
+      "mode": "candle",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "calendar-gaps",
+      "kind": "controlled",
+      "interval": "WEEK",
+      "months": 1,
+      "mode": "line",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "calendar-gaps",
+      "kind": "controlled",
+      "interval": "WEEK",
+      "months": 3,
+      "mode": "candle",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "calendar-gaps",
+      "kind": "controlled",
+      "interval": "WEEK",
+      "months": 3,
+      "mode": "line",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "calendar-gaps",
+      "kind": "controlled",
+      "interval": "WEEK",
+      "months": 6,
+      "mode": "candle",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "calendar-gaps",
+      "kind": "controlled",
+      "interval": "WEEK",
+      "months": 6,
+      "mode": "line",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "calendar-gaps",
+      "kind": "controlled",
+      "interval": "WEEK",
+      "months": 12,
+      "mode": "candle",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "calendar-gaps",
+      "kind": "controlled",
+      "interval": "WEEK",
+      "months": 12,
+      "mode": "line",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "calendar-gaps",
+      "kind": "controlled",
+      "interval": "MONTH",
+      "months": 1,
+      "mode": "candle",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "calendar-gaps",
+      "kind": "controlled",
+      "interval": "MONTH",
+      "months": 1,
+      "mode": "line",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "calendar-gaps",
+      "kind": "controlled",
+      "interval": "MONTH",
+      "months": 3,
+      "mode": "candle",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "calendar-gaps",
+      "kind": "controlled",
+      "interval": "MONTH",
+      "months": 3,
+      "mode": "line",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "calendar-gaps",
+      "kind": "controlled",
+      "interval": "MONTH",
+      "months": 6,
+      "mode": "candle",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "calendar-gaps",
+      "kind": "controlled",
+      "interval": "MONTH",
+      "months": 6,
+      "mode": "line",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "calendar-gaps",
+      "kind": "controlled",
+      "interval": "MONTH",
+      "months": 12,
+      "mode": "candle",
+      "bars": 2,
+      "status": "PASS"
+    },
+    {
+      "id": "calendar-gaps",
+      "kind": "controlled",
+      "interval": "MONTH",
+      "months": 12,
+      "mode": "line",
+      "bars": 2,
+      "status": "PASS"
+    }
+  ],
+  "status": "PASS",
+  "testsPassed": 229,
+  "testsFailed": 0,
+  "originalSourceSha256": {
+    "PriceHistoryRepository.kt": "607517aa1b1d0a2e06a82c5e387bbd74151d96716ffcd0af275d74450157d3a5",
+    "PriceHistoryAggregation.kt": "774f85f7746299aa4c9055c694dfd8a64808f9dc0c73c090acb45950b048f170",
+    "PriceAdjustmentProvenance.kt": "53e51a3fa75fe0a5b394b0e59a3b8e8009f4de08717e6d09dacb57003f3ef929"
+  },
+  "projectionArtifact": "/workspace/kr4-pc-work/price-oracle/original-kotlin-price-projections.json",
+  "actualCasesSummary": [
+    {
+      "id": "005930",
+      "source": "CACHE",
+      "bars": 299,
+      "lastTradingDate": "2026-11-05"
+    },
+    {
+      "id": "000660",
+      "source": "CACHE",
+      "bars": 299,
+      "lastTradingDate": "2026-11-05"
+    },
+    {
+      "id": "000020",
+      "source": "CACHE",
+      "bars": 299,
+      "lastTradingDate": "2026-11-05"
+    },
+    {
+      "id": "0001A0",
+      "source": "CACHE",
+      "bars": 186,
+      "lastTradingDate": "2026-11-05"
+    },
+    {
+      "id": "000300",
+      "source": "CACHE",
+      "bars": 5,
+      "lastTradingDate": "2025-03-06"
+    },
+    {
+      "id": "005030",
+      "source": "MISSING",
+      "bars": 0,
+      "lastTradingDate": null
+    }
+  ]
+}

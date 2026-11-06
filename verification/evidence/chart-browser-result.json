@@ -1,0 +1,219 @@
+{
+  "browser": "155.0.8059.79",
+  "priceFile": "actual published 000020.json",
+  "modes": [
+    {
+      "interval": "DAY",
+      "months": 1,
+      "mode": "candle",
+      "renderedMarks": 22
+    },
+    {
+      "interval": "DAY",
+      "months": 1,
+      "mode": "line",
+      "renderedMarks": 1
+    },
+    {
+      "interval": "DAY",
+      "months": 3,
+      "mode": "candle",
+      "renderedMarks": 62
+    },
+    {
+      "interval": "DAY",
+      "months": 3,
+      "mode": "line",
+      "renderedMarks": 1
+    },
+    {
+      "interval": "DAY",
+      "months": 6,
+      "mode": "candle",
+      "renderedMarks": 124
+    },
+    {
+      "interval": "DAY",
+      "months": 6,
+      "mode": "line",
+      "renderedMarks": 1
+    },
+    {
+      "interval": "DAY",
+      "months": 12,
+      "mode": "candle",
+      "renderedMarks": 245
+    },
+    {
+      "interval": "DAY",
+      "months": 12,
+      "mode": "line",
+      "renderedMarks": 1
+    },
+    {
+      "interval": "WEEK",
+      "months": 1,
+      "mode": "candle",
+      "renderedMarks": 5
+    },
+    {
+      "interval": "WEEK",
+      "months": 1,
+      "mode": "line",
+      "renderedMarks": 1
+    },
+    {
+      "interval": "WEEK",
+      "months": 3,
+      "mode": "candle",
+      "renderedMarks": 14
+    },
+    {
+      "interval": "WEEK",
+      "months": 3,
+      "mode": "line",
+      "renderedMarks": 1
+    },
+    {
+      "interval": "WEEK",
+      "months": 6,
+      "mode": "candle",
+      "renderedMarks": 27
+    },
+    {
+      "interval": "WEEK",
+      "months": 6,
+      "mode": "line",
+      "renderedMarks": 1
+    },
+    {
+      "interval": "WEEK",
+      "months": 12,
+      "mode": "candle",
+      "renderedMarks": 53
+    },
+    {
+      "interval": "WEEK",
+      "months": 12,
+      "mode": "line",
+      "renderedMarks": 1
+    },
+    {
+      "interval": "MONTH",
+      "months": 1,
+      "mode": "candle",
+      "renderedMarks": 2
+    },
+    {
+      "interval": "MONTH",
+      "months": 1,
+      "mode": "line",
+      "renderedMarks": 1
+    },
+    {
+      "interval": "MONTH",
+      "months": 3,
+      "mode": "candle",
+      "renderedMarks": 4
+    },
+    {
+      "interval": "MONTH",
+      "months": 3,
+      "mode": "line",
+      "renderedMarks": 1
+    },
+    {
+      "interval": "MONTH",
+      "months": 6,
+      "mode": "candle",
+      "renderedMarks": 7
+    },
+    {
+      "interval": "MONTH",
+      "months": 6,
+      "mode": "line",
+      "renderedMarks": 1
+    },
+    {
+      "interval": "MONTH",
+      "months": 12,
+      "mode": "candle",
+      "renderedMarks": 13
+    },
+    {
+      "interval": "MONTH",
+      "months": 12,
+      "mode": "line",
+      "renderedMarks": 1
+    }
+  ],
+  "keyboard": {
+    "before": "선택 2026-11-05 · 실제 1거래일",
+    "previous": "선택 2026-11-04 · 실제 1거래일"
+  },
+  "pointer": "선택 2026-05-15 · 실제 1거래일",
+  "axisBounds": [
+    {
+      "text": "7,777.7",
+      "fontSize": "18px",
+      "inside": true
+    },
+    {
+      "text": "6,891.35",
+      "fontSize": "18px",
+      "inside": true
+    },
+    {
+      "text": "6,005",
+      "fontSize": "18px",
+      "inside": true
+    },
+    {
+      "text": "5,118.65",
+      "fontSize": "18px",
+      "inside": true
+    },
+    {
+      "text": "4,232.3",
+      "fontSize": "18px",
+      "inside": true
+    },
+    {
+      "text": "거래량 (주)",
+      "fontSize": "18px",
+      "inside": true
+    },
+    {
+      "text": "9,760,705",
+      "fontSize": "18px",
+      "inside": true
+    },
+    {
+      "text": "0",
+      "fontSize": "18px",
+      "inside": true
+    },
+    {
+      "text": "2026-05-06",
+      "fontSize": "18px",
+      "inside": true
+    },
+    {
+      "text": "2026-07-06",
+      "fontSize": "18px",
+      "inside": true
+    },
+    {
+      "text": "2026-09-03",
+      "fontSize": "18px",
+      "inside": true
+    },
+    {
+      "text": "2026-11-05",
+      "fontSize": "18px",
+      "inside": true
+    }
+  ],
+  "source": "CACHE · 네이버증권 · 공개된 수집 가격화면 요청 기준일2026-11-05가격 파일 기준일2026-11-05실제 최근 거래일2026-11-05원천 수집 시각2026-11-05T23:49:08.695306Z최근 수집 시도2026-11-05T23:49:08.695306Z네이버증권 원문 출처 ↗공식 기업행사별 적용일·조정계수와 제공 OHLC의 기수정 여부를 확인하지 못했습니다. 제공 원본 OHLC 유지 · 추가 조정 없음.분할·병합 전후의 가격 변동에는 기업행사 영향이 포함될 수 있습니다. 결측 거래일은 임의로 채우지 않습니다. 4지표 순위와 별도 참고자료입니다.다시 불러오기",
+  "errors": []
+}

@@ -1,0 +1,19 @@
+test_503_refresh_preserves_actual_bodies_receipts_and_observation_time (test_context_cache.ContextCacheRetentionTest.test_503_refresh_preserves_actual_bodies_receipts_and_observation_time) ... ok
+test_body_loss_without_original_error_retains_only_lost_bodies (test_context_cache.ContextCacheRetentionTest.test_body_loss_without_original_error_retains_only_lost_bodies) ... ok
+test_fresh_news_is_independent_of_failed_dart_and_older_retained_rows (test_context_cache.ContextCacheRetentionTest.test_fresh_news_is_independent_of_failed_dart_and_older_retained_rows) ... ok
+test_legacy_cache_has_independent_missing_ir_and_official_categories (test_context_cache.ContextCacheRetentionTest.test_legacy_cache_has_independent_missing_ir_and_official_categories) ... ok
+test_original_source_exporter_is_available (test_export.ExporterAvailabilityTest.test_original_source_exporter_is_available) ... ok
+test_all_original_rank_masks_preserve_null_and_universe (test_export.OriginalSourceExportTest.test_all_original_rank_masks_preserve_null_and_universe) ... ok
+test_current_financial_publication_is_valid_or_explains_hold (test_export.OriginalSourceExportTest.test_current_financial_publication_is_valid_or_explains_hold) ... ok
+test_date_mismatched_safety_is_hold_without_blocking_quant (test_export.OriginalSourceExportTest.test_date_mismatched_safety_is_hold_without_blocking_quant) ... ok
+test_details_include_every_original_and_computed_field (test_export.OriginalSourceExportTest.test_details_include_every_original_and_computed_field) ... ok
+test_every_original_constructor_field_is_published (test_export.OriginalSourceExportTest.test_every_original_constructor_field_is_published) ... ok
+test_financial_table_preserves_exact_amount_strings (test_export.OriginalSourceExportTest.test_financial_table_preserves_exact_amount_strings) ... ok
+test_manifest_authenticates_every_published_file (test_export.OriginalSourceExportTest.test_manifest_authenticates_every_published_file) ... ok
+test_missing_optional_stage4_preserves_current_quant (test_export.OriginalSourceExportTest.test_missing_optional_stage4_preserves_current_quant) ... ok
+test_same_day_wrong_quant_fingerprint_is_hold (test_export.OriginalSourceExportTest.test_same_day_wrong_quant_fingerprint_is_hold) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 83.743s
+
+OK

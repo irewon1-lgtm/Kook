@@ -1,0 +1,35 @@
+{
+  "browser": "155.0.8059.79",
+  "results": [
+    {
+      "code": "003060",
+      "status": "FAIL",
+      "dialog": true
+    },
+    {
+      "code": "395400",
+      "status": "HOLD",
+      "dialog": true
+    },
+    {
+      "code": "474930",
+      "status": "NOT_APPLICABLE",
+      "dialog": true
+    },
+    {
+      "code": "101680",
+      "lossBandWithheld": true
+    },
+    {
+      "code": "013700",
+      "candidateLeafCount": 54,
+      "fullCandidate": true
+    },
+    {
+      "simulatedNoHistory": true,
+      "noFabricatedRows": true,
+      "simulatedNullFinancial": true
+    }
+  ],
+  "errors": []
+}

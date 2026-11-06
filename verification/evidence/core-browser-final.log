@@ -1,0 +1,30 @@
+
+> kr4-pc-web@1.0.0 test:e2e
+> playwright test e2e/public-real.spec.ts e2e/controlled-recovery.spec.ts --output=/workspace/kr4-pc-work/final-core-e2e-run
+
+
+Running 12 tests using 1 worker
+
+(node:176160) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:176160) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 e2e/controlled-recovery.spec.ts:53:1 › real last good data survives network failure and returns to LIVE after recovery (3.8s)
+  ✓   2 e2e/controlled-recovery.spec.ts:75:1 › fresh anonymous profile uses validated bundled data on network failure (1.8s)
+  ✓   3 e2e/controlled-recovery.spec.ts:85:1 › corrupt current cache falls back to the byte-identical verified backup (3.4s)
+  ✓   4 e2e/controlled-recovery.spec.ts:120:1 › invalid independent financial response never blocks genuine core reception (2.6s)
+  ✓   5 e2e/controlled-recovery.spec.ts:134:1 › a corrupted bundle and unavailable network show failure rather than invented stocks (1.2s)
+  ✓   6 e2e/controlled-recovery.spec.ts:184:1 › actual recorded earlier snapshot updates date, count and rank in memory through background reception (6.4s)
+  ✓   7 e2e/public-real.spec.ts:67:1 › anonymous real-data home, full universe and five navigation destinations (3.8s)
+  ✓   8 e2e/public-real.spec.ts:101:1 › expanded nonfixed selectors and every mask use original global ranks (12.2s)
+  ✓   9 e2e/public-real.spec.ts:134:1 › search, market, risk, sort, missing rows and return navigation remain usable (6.7s)
+  ✓  10 e2e/public-real.spec.ts:202:1 › five detailed tabs, original analysis, real quarters, source failure and financial facts (11.1s)
+  ✓  11 e2e/public-real.spec.ts:246:1 › all 24 actual chart selections preserve actual latest daily quote and CACHE provenance (8.8s)
+  ✓  12 e2e/public-real.spec.ts:272:1 › font preference and per-browser favorites survive reload without sharing accounts (5.8s)
+
+  12 passed (1.2m)
+
+To open last HTML report run:
+[36m[39m
+[36m  npx playwright show-report[39m
+[36m[39m
