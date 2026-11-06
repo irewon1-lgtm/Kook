@@ -1,0 +1,24 @@
+{
+  "observedAt": "2026-11-06T02:29:47.109382+00:00",
+  "worktree": "/workspace/kr4-ci-date-fix",
+  "branch": "fix/independent-financial-date-ci",
+  "baseCommit": "a1676eab7bfe6b0d3765e4340504f8ff2a2d2a3f",
+  "headCommit": "5fbde606098ff72558499b09353be31bd9379e95",
+  "reviewedSourceCommit": "a6f536ee83c104e5e11b2e3375d4a30f82453f91",
+  "changedFiles": [
+    ".github/workflows/android-build.yml",
+    "app/src/test/java/com/krstock/v3/data/stage/CommittedFinancialSnapshotTest.kt",
+    "tests/test_android_release_gate.py"
+  ],
+  "prUrl": "https://github.com/irewon1-lgtm/Kook/pull/42",
+  "runId": 42150459363,
+  "ciResult": "SUCCESS_ALL_SIX_JOBS",
+  "localVerification": {
+    "classification": "8 tests and 24 subtests passed",
+    "actionlint": "PASS (-shellcheck= -pyflakes=)",
+    "protectedProductionDiff": "EMPTY",
+    "exactReviewedThreeFileDiff": "EMPTY"
+  },
+  "mergeState": "OPEN_MERGEABLE_CLEAN",
+  "mergedByThisAgent": false
+}

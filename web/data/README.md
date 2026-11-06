@@ -30,8 +30,9 @@ verbatim original manifest (`oracle-manifest.json`). The root manifest binds exa
 payload bytes using SHA-256 and `generations/{content-id}/`; the initial browser
 bundle carries base64 gzip of the exact authenticated stocks text.
 
-The primary free publication uses a dedicated `kr4-pc-site` branch and the public
-raw.githack CDN; GitHub Pages is an optional second host when already configured.
+The public entry point is `https://irewon1-lgtm.github.io/Kook/`. The free
+publication uses a dedicated `kr4-pc-site` branch for verified compiled output and
+the configured official GitHub Actions Pages site for direct anonymous access.
 Readers need no account or browser API key. The PC workflow uses Python 3.12,
 JDK 17, Gradle 8.7 and Node 24, executes Python,
 original JVM, complete ranking/frontend and Chromium tests, then uploads `web/dist`.
@@ -56,32 +57,29 @@ builds and authorized manual feature-branch dispatches can publish this branch.
 Source workflow completion rebuilds current main even when collector commits use
 `[skip ci]`.
 
-Each publication returns an immutable UI URL:
-`https://rawcdn.githack.com/irewon1-lgtm/Kook/{siteCommit}/index.html`.
 The production build uses relative asset paths (`KR4_BASE_PATH=./`) and
 `VITE_KR4_DATA_BASE_URL=https://raw.githubusercontent.com/irewon1-lgtm/Kook/kr4-pc-site/data/`.
-Thus an existing pinned UI can receive later verified data through the stable
-branch endpoint. Updating UI code creates a new commit and a new UI URL; users
-must open that new URL to receive new UI code. CDN URLs are cached by their commit
-URL and query strings do not force updates. Data always retains original source
-and collection dates; a new HTTP reception does not make historical prices LIVE.
-GitHub raw responses were observed with `Cache-Control: max-age=300` and permissive
-CORS, so a newly published branch manifest may take about five minutes to appear.
+An already open UI receives later verified data through that stable branch endpoint.
+New UI code is served at the same official Pages URL after a successful deployment;
+an existing tab loads new UI code on its next navigation or reload. Data always
+retains original source and collection dates; a new HTTP reception does not make
+historical prices LIVE. The client polls every five minutes. GitHub raw responses
+were observed with `Cache-Control: max-age=300` and permissive CORS, so publication
+and independently cached responses can delay reception by additional minutes.
 Runtime manifest/generation hashes prevent mixing those independently cached files.
-Development/browser CI retains local `/Kook/` routing and local data; these production
+Development/browser CI retains local `/Kook/` routing and local data; production
 endpoint variables are scoped only to the production build step.
 
 Pages configuration is inspected through a real `GET /repos/{owner}/{repo}/pages`.
-Only HTTP200 with Actions configuration permits the optional Pages deploy job and
-its `github-pages` environment policy. HTTP403/404 or other configurations record
-the exact status and skip reason; they do not block branch/CDN publication. The
-workflow does not attempt to enable Pages or claim an absent site is deployed.
-Branch publication evidence, returned URLs and public HTTP observations are saved
-separately from browser verification.
-After successful branch publication from a main push or manual dispatch, standard
+Only HTTP200 with Actions configuration permits the official Pages deployment and
+its `github-pages` environment policy. An unavailable or misconfigured Pages site
+fails the publication after preserving exact status, branch receipt and HTTP
+observations. Branch publication alone is not a successful public-site deployment.
+The workflow does not enable Pages or bypass environment branch restrictions.
+After successful official Pages deployment from a main push or manual dispatch, standard
 `windows-latest` jobs run the public-site, viewport and controlled-recovery suites
 in two genuine stable browser channels: Chrome and Microsoft Edge. They check out
-the exact tested source, use Node 24/npm ci and the pinned public UI URL, and need
+the exact tested source, use Node 24/npm ci and the official public UI URL, and need
 no local Kotlin/data fixture build. Installed browser paths, product/file versions,
 executable hashes, Windows image/OS versions and actual browser protocol versions
 are recorded alongside unmodified PNGs, traces and test results in separately
@@ -115,35 +113,28 @@ generation, so Actions cache eviction or cross-branch builds do not remove that
 protection. An unavailable existing branch fails the restore instead of silently
 discarding public generations. Optional caches save after any successful public
 branch publication, independently of Pages. The compiled artifact expires after
-one day; reports expire after 14 days. Branch history retains old pinned UI commits
-and grows over time; future repository maintenance must account for existing URLs.
+one day; reports expire after 14 days. Branch history retains old compiled UI commits and grows over time; future
+repository maintenance must account for storage growth and open browser tabs.
 The builder caps current data at 950 MiB and CI enforces the entire current site
 below 1,000,000,000 bytes. Actions caches and artifact storage have repository limits;
 older caches may be evicted and there is no permanent archival guarantee.
 
-raw.githack describes itself as a free Cloudflare-backed caching proxy with no
-formal uptime or support guarantee. It is an external service with no SLA or
-reserved bandwidth; availability, caching policy and service limits can change.
-GitHub raw delivery has its own caching, rate and repository constraints. There is
-no unlimited-traffic or future-cost guarantee. This workflow purchases no service,
-enables no paid quota and introduces no new account, key or client credential.
-GitHub documents a 1 GB Pages site limit and a soft 100 GB monthly bandwidth limit
-for the optional Pages host. Repository files remain below GitHub's 100 MB file
-limit; repository history and stored artifacts must be monitored as they grow.
-Actions workflows can be delayed; source providers can fail or change formats;
-this static publication is not a real-time feed. GitHub-hosted standard runners
-are free for this public repository; the private-repository 2,000-minute allowance
-does not constrain the daily full context collection. This workflow does not
-purchase storage, compute, bandwidth or another service and uses only the built-in
-GitHub token.
-Initial optional Pages enablement can be done in repository Settings → Pages →
-GitHub Actions. Ordinary `GITHUB_TOKEN` cannot grant the administration permission
-needed to create an absent Pages configuration; the branch/CDN host works without
-that setting. Deploying to an already enabled Actions Pages site uses `pages:write`
-and `id-token:write`.
+GitHub Pages and raw delivery have their own availability, caching, rate and
+repository constraints. There is no unlimited-traffic, uptime or future-cost
+guarantee. This workflow purchases no service, enables no paid quota and introduces
+no new account, key or client credential. GitHub documents a 1 GB Pages site limit
+and a soft 100 GB monthly bandwidth limit. Repository files remain below GitHub's
+100 MB file limit; repository history and stored artifacts must be monitored as
+they grow. Actions workflows can be delayed; source providers can fail or change
+formats; this static publication is not a real-time feed. GitHub-hosted standard
+runners are free for this public repository; the private-repository 2,000-minute
+allowance does not constrain the daily full context collection. Only the built-in
+GitHub token is used for publication. Initial Pages enablement and deployment
+branch rules require repository administration; ordinary `GITHUB_TOKEN` cannot
+grant those permissions. Deploying the configured Actions Pages site uses
+`pages:write` and `id-token:write`.
 
-References: [raw.githack hosting and cache policy](https://raw.githack.com/),
-[GitHub file limits](https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-large-files-on-github),
+References: [GitHub file limits](https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-large-files-on-github),
 [Standard runner billing](https://docs.github.com/en/billing/managing-billing-for-your-products/managing-billing-for-github-actions/about-billing-for-github-actions),
 [Pages limits](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits),
 [Actions cache limits](https://docs.github.com/en/actions/using-workflows/caching-dependencies-to-speed-up-workflows#usage-limits-and-eviction-policy),

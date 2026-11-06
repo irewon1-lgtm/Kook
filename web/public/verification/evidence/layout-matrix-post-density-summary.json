@@ -1,0 +1,311 @@
+{
+  "kind": "LOCAL_REAL_BROWSER_VIEWPORT_MATRIX",
+  "environment": "Linux Chromium; CSS viewport/DPR simulate display scale and zoom, not physical Windows/LG settings",
+  "generatedAt": "2026-11-06T01:38:14.693423+00:00",
+  "scenarios": 27,
+  "routes": [
+    "home",
+    "ranking",
+    "detail",
+    "chart",
+    "analysis",
+    "sources"
+  ],
+  "routeAndQuarterMeasurements": 189,
+  "coreFieldMeasurements": 9585,
+  "controlMeasurements": 8424,
+  "issues": {
+    "clipped": 0,
+    "shortControls": 0,
+    "overlaps": 0,
+    "smallAuxiliary": 0,
+    "horizontalOverflow": 0
+  },
+  "allScenariosPass": true,
+  "selector": {
+    "scenarios": 27,
+    "allStaticAndScrollAway": true
+  },
+  "fontSizes": [
+    22,
+    26,
+    30
+  ],
+  "physicalLgGramVerified": false,
+  "actualWindowsBrowser": false,
+  "originalPngs": [
+    {
+      "file": "canonical-analysis-1365x853-fullpage.png",
+      "sha256": "fd0d6a44799c29d76b35115e95acfdac7b9075e95918a1deabbadda566205396",
+      "bytes": 5450613,
+      "metadata": "canonical-analysis-1365x853-fullpage.json",
+      "kind": "LOCAL_SITE_REAL_DATA_BROWSER_CAPTURE",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "generationId": "d67f91af44c21fa9cb1911fe5625190f4711b07d875c602ff9e86ff32687fc21",
+      "controlled": false
+    },
+    {
+      "file": "canonical-analysis-1365x853.png",
+      "sha256": "cf5a34758ef6ca770cd698616d213feafe873ec18de765b27d40019a7ec5e346",
+      "bytes": 493059,
+      "metadata": "canonical-analysis-1365x853.json",
+      "kind": "LOCAL_SITE_REAL_DATA_BROWSER_CAPTURE",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "generationId": "d67f91af44c21fa9cb1911fe5625190f4711b07d875c602ff9e86ff32687fc21",
+      "controlled": false
+    },
+    {
+      "file": "canonical-analysis-1920x1200-fullpage.png",
+      "sha256": "6493525241db292c0af1d19dce5fcaa5d9769908ef1181c98ea3e08e70f26590",
+      "bytes": 5900582,
+      "metadata": "canonical-analysis-1920x1200-fullpage.json",
+      "kind": "LOCAL_SITE_REAL_DATA_BROWSER_CAPTURE",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "generationId": "d67f91af44c21fa9cb1911fe5625190f4711b07d875c602ff9e86ff32687fc21",
+      "controlled": false
+    },
+    {
+      "file": "canonical-analysis-1920x1200.png",
+      "sha256": "fc069cfb50056bed6c87021e21d4bd6e1f5b7736f91078f993a1e0547e72d608",
+      "bytes": 772484,
+      "metadata": "canonical-analysis-1920x1200.json",
+      "kind": "LOCAL_SITE_REAL_DATA_BROWSER_CAPTURE",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "generationId": "d67f91af44c21fa9cb1911fe5625190f4711b07d875c602ff9e86ff32687fc21",
+      "controlled": false
+    },
+    {
+      "file": "canonical-chart-1365x853.png",
+      "sha256": "9ab0dee6a419b73c48e57360375a6a15994b3ad19179a7aa609987e0ee82b4a3",
+      "bytes": 410946,
+      "metadata": "canonical-chart-1365x853.json",
+      "kind": "LOCAL_SITE_REAL_DATA_BROWSER_CAPTURE",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "generationId": "d67f91af44c21fa9cb1911fe5625190f4711b07d875c602ff9e86ff32687fc21",
+      "controlled": false
+    },
+    {
+      "file": "canonical-chart-1920x1200.png",
+      "sha256": "f03dfcc65050be75533f5dd8c53b33e22508c5f096447960f04017b814d017b9",
+      "bytes": 632852,
+      "metadata": "canonical-chart-1920x1200.json",
+      "kind": "LOCAL_SITE_REAL_DATA_BROWSER_CAPTURE",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "generationId": "d67f91af44c21fa9cb1911fe5625190f4711b07d875c602ff9e86ff32687fc21",
+      "controlled": false
+    },
+    {
+      "file": "canonical-detail-1365x853.png",
+      "sha256": "203ce52b9eccf3c4e5f2600029013fbbcfe1462cc612ddb85128dc90b1dc718f",
+      "bytes": 503158,
+      "metadata": "canonical-detail-1365x853.json",
+      "kind": "LOCAL_SITE_REAL_DATA_BROWSER_CAPTURE",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "generationId": "d67f91af44c21fa9cb1911fe5625190f4711b07d875c602ff9e86ff32687fc21",
+      "controlled": false
+    },
+    {
+      "file": "canonical-detail-1920x1200.png",
+      "sha256": "6584b6e815ac9910c536d89cf5d69adac7a23082a02f89b8ec72cb77b921bc71",
+      "bytes": 795826,
+      "metadata": "canonical-detail-1920x1200.json",
+      "kind": "LOCAL_SITE_REAL_DATA_BROWSER_CAPTURE",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "generationId": "d67f91af44c21fa9cb1911fe5625190f4711b07d875c602ff9e86ff32687fc21",
+      "controlled": false
+    },
+    {
+      "file": "canonical-home-1365x853.png",
+      "sha256": "3208fcef5abaeac945d8e705d146dcf94e569965fc63f6d8aead206425a627b9",
+      "bytes": 445682,
+      "metadata": "canonical-home-1365x853.json",
+      "kind": "LOCAL_SITE_REAL_DATA_BROWSER_CAPTURE",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "generationId": "d67f91af44c21fa9cb1911fe5625190f4711b07d875c602ff9e86ff32687fc21",
+      "controlled": false
+    },
+    {
+      "file": "canonical-home-1920x1200.png",
+      "sha256": "a6c3bbab0b51d5b766e5f226fc39ac9ad686c3e963f54602d6d381ac2319ca21",
+      "bytes": 592595,
+      "metadata": "canonical-home-1920x1200.json",
+      "kind": "LOCAL_SITE_REAL_DATA_BROWSER_CAPTURE",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "generationId": "d67f91af44c21fa9cb1911fe5625190f4711b07d875c602ff9e86ff32687fc21",
+      "controlled": false
+    },
+    {
+      "file": "canonical-quarter-1365x853.png",
+      "sha256": "d4d6257344bfb719e66d41274bfe4ac2b4e2cc98dc099249bc011bbfdff882e5",
+      "bytes": 333403,
+      "metadata": "canonical-quarter-1365x853.json",
+      "kind": "LOCAL_SITE_REAL_DATA_BROWSER_CAPTURE",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "generationId": "d67f91af44c21fa9cb1911fe5625190f4711b07d875c602ff9e86ff32687fc21",
+      "controlled": false
+    },
+    {
+      "file": "canonical-quarter-1920x1200.png",
+      "sha256": "f269fa0c7898d2cb1d04daa28d0dc34c119cb43a2da6568049a09c7c5156cf81",
+      "bytes": 623394,
+      "metadata": "canonical-quarter-1920x1200.json",
+      "kind": "LOCAL_SITE_REAL_DATA_BROWSER_CAPTURE",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "generationId": "d67f91af44c21fa9cb1911fe5625190f4711b07d875c602ff9e86ff32687fc21",
+      "controlled": false
+    },
+    {
+      "file": "canonical-ranking-1365x853.png",
+      "sha256": "8e97eb3fccd2ccc116c32efd135bf27033b66515470fa34013cc29be49a924e2",
+      "bytes": 349049,
+      "metadata": "canonical-ranking-1365x853.json",
+      "kind": "LOCAL_SITE_REAL_DATA_BROWSER_CAPTURE",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "generationId": "d67f91af44c21fa9cb1911fe5625190f4711b07d875c602ff9e86ff32687fc21",
+      "controlled": false
+    },
+    {
+      "file": "canonical-ranking-1920x1200.png",
+      "sha256": "8791045df0eedda642cb6d7e3fbc96d3cda8b11706cac2759e11d15c2641e980",
+      "bytes": 581511,
+      "metadata": "canonical-ranking-1920x1200.json",
+      "kind": "LOCAL_SITE_REAL_DATA_BROWSER_CAPTURE",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "generationId": "d67f91af44c21fa9cb1911fe5625190f4711b07d875c602ff9e86ff32687fc21",
+      "controlled": false
+    },
+    {
+      "file": "canonical-sources-1365x853-fullpage.png",
+      "sha256": "ea6328230ab231b61ec54fe7f4bfcd28d415b8c40218e36395592c55067f87e5",
+      "bytes": 10891773,
+      "metadata": "canonical-sources-1365x853-fullpage.json",
+      "kind": "LOCAL_SITE_REAL_DATA_BROWSER_CAPTURE",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "generationId": "d67f91af44c21fa9cb1911fe5625190f4711b07d875c602ff9e86ff32687fc21",
+      "controlled": false
+    },
+    {
+      "file": "canonical-sources-1365x853.png",
+      "sha256": "4da7ade93e0b26c4f2ed7e90bc5da9acc0bdf1873ef64999c73fa7c9adb68768",
+      "bytes": 450865,
+      "metadata": "canonical-sources-1365x853.json",
+      "kind": "LOCAL_SITE_REAL_DATA_BROWSER_CAPTURE",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "generationId": "d67f91af44c21fa9cb1911fe5625190f4711b07d875c602ff9e86ff32687fc21",
+      "controlled": false
+    },
+    {
+      "file": "canonical-sources-1920x1200-fullpage.png",
+      "sha256": "cac2ed44d86075148d11ab52746218707bd9ab8061444fdb9ad69ff18376507a",
+      "bytes": 11223386,
+      "metadata": "canonical-sources-1920x1200-fullpage.json",
+      "kind": "LOCAL_SITE_REAL_DATA_BROWSER_CAPTURE",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "generationId": "d67f91af44c21fa9cb1911fe5625190f4711b07d875c602ff9e86ff32687fc21",
+      "controlled": false
+    },
+    {
+      "file": "canonical-sources-1920x1200.png",
+      "sha256": "396c4e8246c691a5f89f0c192974a0e026130d494beb18d46ba6c67e45872d1c",
+      "bytes": 756395,
+      "metadata": "canonical-sources-1920x1200.json",
+      "kind": "LOCAL_SITE_REAL_DATA_BROWSER_CAPTURE",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "generationId": "d67f91af44c21fa9cb1911fe5625190f4711b07d875c602ff9e86ff32687fc21",
+      "controlled": false
+    },
+    {
+      "file": "focus-chart-1365x853-chart-controls-and-plot.png",
+      "sha256": "c7211ece3f86cb6626b0bccbb8cb94d1e173e64ab10a1e552df1a58c979fb554",
+      "bytes": 263608,
+      "metadata": "focus-chart-1365x853-chart-controls-and-plot.json",
+      "kind": "LOCAL_SITE_REAL_DATA_BROWSER_CAPTURE",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "generationId": "d67f91af44c21fa9cb1911fe5625190f4711b07d875c602ff9e86ff32687fc21",
+      "controlled": false
+    },
+    {
+      "file": "focus-chart-1365x853-chart-plot.png",
+      "sha256": "6cd377c95fb8abce24f77c33ee868c6229dffe2bf24c939500de220ae2c80dae",
+      "bytes": 225484,
+      "metadata": "focus-chart-1365x853-chart-plot.json",
+      "kind": "LOCAL_SITE_REAL_DATA_BROWSER_CAPTURE",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "generationId": "d67f91af44c21fa9cb1911fe5625190f4711b07d875c602ff9e86ff32687fc21",
+      "controlled": false
+    },
+    {
+      "file": "focus-detail-1365x853-detail-financial.png",
+      "sha256": "07ce6464d9a36c61276965d5e181bef794b218f794391b096ab75c6ea7f4df8e",
+      "bytes": 302218,
+      "metadata": "focus-detail-1365x853-detail-financial.json",
+      "kind": "LOCAL_SITE_REAL_DATA_BROWSER_CAPTURE",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "generationId": "d67f91af44c21fa9cb1911fe5625190f4711b07d875c602ff9e86ff32687fc21",
+      "controlled": false
+    },
+    {
+      "file": "focus-detail-1365x853-detail-metric-bars.png",
+      "sha256": "5d918c59381a8eff104317247bd377f1cb120b5cc7294a42eab71b5462c1350e",
+      "bytes": 412690,
+      "metadata": "focus-detail-1365x853-detail-metric-bars.json",
+      "kind": "LOCAL_SITE_REAL_DATA_BROWSER_CAPTURE",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "generationId": "d67f91af44c21fa9cb1911fe5625190f4711b07d875c602ff9e86ff32687fc21",
+      "controlled": false
+    },
+    {
+      "file": "focus-home-1365x853-home-top-five.png",
+      "sha256": "e82bdf7a223204ef3c417664166d50667661d479b6786d19798e1d83d8a629b0",
+      "bytes": 160672,
+      "metadata": "focus-home-1365x853-home-top-five.json",
+      "kind": "LOCAL_SITE_REAL_DATA_BROWSER_CAPTURE",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "generationId": "d67f91af44c21fa9cb1911fe5625190f4711b07d875c602ff9e86ff32687fc21",
+      "controlled": false
+    },
+    {
+      "file": "focus-ranking-1365x853-ranking-table.png",
+      "sha256": "208553d0f2193eae80cfd0d850c26f82d7f757b75bf3852f974e294c407af944",
+      "bytes": 139176,
+      "metadata": "focus-ranking-1365x853-ranking-table.json",
+      "kind": "LOCAL_SITE_REAL_DATA_BROWSER_CAPTURE",
+      "fontSize": "22px",
+      "source": "LIVE",
+      "generationId": "d67f91af44c21fa9cb1911fe5625190f4711b07d875c602ff9e86ff32687fc21",
+      "controlled": false
+    }
+  ],
+  "previousFailureEvidence": "/workspace/kr4-pc-work/layout-matrix-final (2FAIL,1interrupted; actualoverlappingsiblingcontrolsfixedinproduct, detectorunchanged)",
+  "playwright": {
+    "passed": 29,
+    "failed": 0,
+    "skipped": 0,
+    "interrupted": 0,
+    "secondsApprox": 330,
+    "log": "/workspace/kr4-pc-work/viewport-matrix-post-density.log"
+  }
+}

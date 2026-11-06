@@ -1,0 +1,1991 @@
+﻿2026-11-06T02:38:50.0114506Z Current runner version: '2.338.2'
+2026-11-06T02:38:50.0141556Z ##[group]Runner Image Provisioner
+2026-11-06T02:38:50.0142466Z Hosted Compute Agent
+2026-11-06T02:38:50.0143165Z Version: 20261028.624
+2026-11-06T02:38:50.0143906Z Commit: 54898b74c23fde5556c9b3c3a2290865feef0dfe
+2026-11-06T02:38:50.0144719Z Build Date: 2026-10-28T21:51:42Z
+2026-11-06T02:38:50.0145547Z Worker ID: {c5536b52-0c08-427e-923a-7d0ad344ba11}
+2026-11-06T02:38:50.0146293Z Region: eastus
+2026-11-06T02:38:50.0147314Z Cloud: Azure
+2026-11-06T02:38:50.0147994Z ##[endgroup]
+2026-11-06T02:38:50.0149595Z ##[group]Operating System
+2026-11-06T02:38:50.0150361Z Ubuntu
+2026-11-06T02:38:50.0150928Z 24.04.5
+2026-11-06T02:38:50.0151551Z LTS
+2026-11-06T02:38:50.0152158Z ##[endgroup]
+2026-11-06T02:38:50.0152751Z ##[group]Runner Image
+2026-11-06T02:38:50.0153432Z Image: ubuntu-24.04
+2026-11-06T02:38:50.0154050Z Version: 20261101.360.1
+2026-11-06T02:38:50.0155419Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261101.360/images/ubuntu/Ubuntu2404-Readme.md
+2026-11-06T02:38:50.0157598Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261101.360
+2026-11-06T02:38:50.0158710Z ##[endgroup]
+2026-11-06T02:38:50.0159940Z ##[group]GITHUB_TOKEN Permissions
+2026-11-06T02:38:50.0162420Z Contents: write
+2026-11-06T02:38:50.0163084Z Metadata: read
+2026-11-06T02:38:50.0163745Z ##[endgroup]
+2026-11-06T02:38:50.0166082Z Secret source: Actions
+2026-11-06T02:38:50.0167598Z Cache mode: write
+2026-11-06T02:38:50.0168796Z Prepare workflow directory
+2026-11-06T02:38:50.0721393Z Prepare all required actions
+2026-11-06T02:38:50.0772624Z Getting action download info
+2026-11-06T02:38:50.3304074Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-11-06T02:38:50.7559968Z Download action repository 'actions/download-artifact@v4' (SHA:d3f86a106a0bac45b974a628896c90dbdf5c8093)
+2026-11-06T02:38:50.9266028Z Download action repository 'actions/setup-python@v5' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-11-06T02:38:51.0829197Z Download action repository 'actions/setup-java@v5' (SHA:b6effb05e454b25005698d916606bdc6ffcbf961)
+2026-11-06T02:38:51.3024109Z Download action repository 'gradle/actions@v4' (SHA:ed408507eac070d1f99cc633dbcf757c94c7933a)
+2026-11-06T02:38:51.9406904Z Download action repository 'reactivecircus/android-emulator-runner@v2' (SHA:a421e43855164a8197daf9d8d40fe71c6996bb0d)
+2026-11-06T02:38:52.1012994Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-11-06T02:38:52.2427329Z Download action repository 'actions/github-script@v8' (SHA:ed597411d8f924073f98dfc5c65a23a2325f34cd)
+2026-11-06T02:38:52.5316885Z Complete job name: extreme-cleanpass
+2026-11-06T02:38:52.6249771Z ##[group]Run actions/checkout@v4
+2026-11-06T02:38:52.6250636Z with:
+2026-11-06T02:38:52.6250937Z   fetch-depth: 2
+2026-11-06T02:38:52.6251262Z   repository: irewon1-lgtm/Kook
+2026-11-06T02:38:52.6253924Z   token: ***
+2026-11-06T02:38:52.6254216Z   ssh-strict: true
+2026-11-06T02:38:52.6254535Z   ssh-user: git
+2026-11-06T02:38:52.6254851Z   persist-credentials: true
+2026-11-06T02:38:52.6255180Z   clean: true
+2026-11-06T02:38:52.6255481Z   sparse-checkout-cone-mode: true
+2026-11-06T02:38:52.6255884Z   fetch-tags: false
+2026-11-06T02:38:52.6256169Z   show-progress: true
+2026-11-06T02:38:52.6256451Z   lfs: false
+2026-11-06T02:38:52.6256910Z   submodules: false
+2026-11-06T02:38:52.6257209Z   set-safe-directory: true
+2026-11-06T02:38:52.6257547Z   allow-unsafe-pr-checkout: false
+2026-11-06T02:38:52.6258187Z env:
+2026-11-06T02:38:52.6258673Z   EXPECTED_STABLE_CERT_SHA256: 1070e82beee574cd29ffd2dc3e693fd7f7862374f16d1606567db303ab152477
+2026-11-06T02:38:52.6259347Z   FINANCIAL_EVIDENCE_REF: fix/independent-financial-date-ci
+2026-11-06T02:38:52.6259754Z ##[endgroup]
+2026-11-06T02:38:54.4754947Z Syncing repository: irewon1-lgtm/Kook
+2026-11-06T02:38:54.4756448Z ##[group]Getting Git version info
+2026-11-06T02:38:54.4757296Z Working directory is '/home/runner/work/Kook/Kook'
+2026-11-06T02:38:54.4783963Z [command]/usr/bin/git version
+2026-11-06T02:38:54.5873915Z git version 2.56.0
+2026-11-06T02:38:54.5897996Z ##[endgroup]
+2026-11-06T02:38:54.5917081Z Temporarily overriding HOME='/home/runner/work/_temp/4cb92722-4416-4ab1-a18d-d86444bd90b2' before making global git config changes
+2026-11-06T02:38:54.5918540Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-06T02:38:54.5924163Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Kook/Kook
+2026-11-06T02:38:54.6139897Z Deleting the contents of '/home/runner/work/Kook/Kook'
+2026-11-06T02:38:54.6144198Z ##[group]Initializing the repository
+2026-11-06T02:38:54.6149548Z [command]/usr/bin/git init /home/runner/work/Kook/Kook
+2026-11-06T02:38:54.6594061Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-11-06T02:38:54.6595248Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-11-06T02:38:54.6596766Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-11-06T02:38:54.6597861Z hint: call:
+2026-11-06T02:38:54.6598512Z hint:
+2026-11-06T02:38:54.6599369Z hint: 	git config --global init.defaultBranch <name>
+2026-11-06T02:38:54.6600042Z hint:
+2026-11-06T02:38:54.6600670Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-11-06T02:38:54.6601728Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-11-06T02:38:54.6602561Z hint:
+2026-11-06T02:38:54.6602965Z hint: 	git branch -m <name>
+2026-11-06T02:38:54.6603349Z hint:
+2026-11-06T02:38:54.6603798Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-11-06T02:38:54.6673185Z Initialized empty Git repository in /home/runner/work/Kook/Kook/.git/
+2026-11-06T02:38:54.6686394Z [command]/usr/bin/git remote add origin https://github.com/irewon1-lgtm/Kook
+2026-11-06T02:38:54.6901247Z ##[endgroup]
+2026-11-06T02:38:54.6902200Z ##[group]Disabling automatic garbage collection
+2026-11-06T02:38:54.6906899Z [command]/usr/bin/git config --local gc.auto 0
+2026-11-06T02:38:54.6953609Z ##[endgroup]
+2026-11-06T02:38:54.6954315Z ##[group]Setting up auth
+2026-11-06T02:38:54.6962949Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-06T02:38:54.7016290Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-06T02:38:54.8581267Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-06T02:38:54.8629234Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-06T02:38:54.8889193Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-06T02:38:54.8942012Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-06T02:38:54.9199880Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-11-06T02:38:54.9254220Z ##[endgroup]
+2026-11-06T02:38:54.9255013Z ##[group]Fetching the repository
+2026-11-06T02:38:54.9268147Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=2 origin +ab221f2cdf339d5bc6bdf30b10ce8c7ccf131114:refs/remotes/pull/42/merge
+2026-11-06T02:38:55.9016485Z From https://github.com/irewon1-lgtm/Kook
+2026-11-06T02:38:55.9017569Z  * [new ref]         ab221f2cdf339d5bc6bdf30b10ce8c7ccf131114 -> pull/42/merge
+2026-11-06T02:38:55.9028128Z ##[endgroup]
+2026-11-06T02:38:55.9028859Z ##[group]Determining the checkout info
+2026-11-06T02:38:55.9029635Z ##[endgroup]
+2026-11-06T02:38:55.9040994Z [command]/usr/bin/git sparse-checkout disable
+2026-11-06T02:38:55.9175016Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-11-06T02:38:55.9219754Z ##[group]Checking out the ref
+2026-11-06T02:38:55.9225475Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/42/merge
+2026-11-06T02:38:56.0246242Z Note: switching to 'refs/remotes/pull/42/merge'.
+2026-11-06T02:38:56.0247245Z 
+2026-11-06T02:38:56.0247717Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-11-06T02:38:56.0248648Z changes and commit them, and you can discard any commits you make in this
+2026-11-06T02:38:56.0249479Z state without impacting any branches by switching back to a branch.
+2026-11-06T02:38:56.0249896Z 
+2026-11-06T02:38:56.0250221Z If you want to create a new branch to retain commits you create, you may
+2026-11-06T02:38:56.0250881Z do so (now or later) by using -c with the switch command. Example:
+2026-11-06T02:38:56.0251270Z 
+2026-11-06T02:38:56.0251418Z   git switch -c <new-branch-name>
+2026-11-06T02:38:56.0251675Z 
+2026-11-06T02:38:56.0251829Z Or undo this operation with:
+2026-11-06T02:38:56.0252095Z 
+2026-11-06T02:38:56.0252228Z   git switch -
+2026-11-06T02:38:56.0252400Z 
+2026-11-06T02:38:56.0252711Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-11-06T02:38:56.0253174Z 
+2026-11-06T02:38:56.0253685Z HEAD is now at ab221f2 Merge 5fbde606098ff72558499b09353be31bd9379e95 into a1676eab7bfe6b0d3765e4340504f8ff2a2d2a3f
+2026-11-06T02:38:56.0314022Z ##[endgroup]
+2026-11-06T02:38:56.0423195Z [command]/usr/bin/git log -1 --format=%H
+2026-11-06T02:38:56.0461250Z ab221f2cdf339d5bc6bdf30b10ce8c7ccf131114
+2026-11-06T02:38:56.0752583Z ##[group]Run actions/download-artifact@v4
+2026-11-06T02:38:56.0752923Z with:
+2026-11-06T02:38:56.0753143Z   name: KR4-UI-complete-gallery
+2026-11-06T02:38:56.0753435Z   path: evidence/ui-complete-gallery
+2026-11-06T02:38:56.0753730Z   merge-multiple: false
+2026-11-06T02:38:56.0753982Z   repository: irewon1-lgtm/Kook
+2026-11-06T02:38:56.0754236Z   run-id: 42150459363
+2026-11-06T02:38:56.0754452Z env:
+2026-11-06T02:38:56.0754861Z   EXPECTED_STABLE_CERT_SHA256: 1070e82beee574cd29ffd2dc3e693fd7f7862374f16d1606567db303ab152477
+2026-11-06T02:38:56.0755416Z   FINANCIAL_EVIDENCE_REF: fix/independent-financial-date-ci
+2026-11-06T02:38:56.0755763Z ##[endgroup]
+2026-11-06T02:38:56.2576979Z Downloading single artifact
+2026-11-06T02:38:56.3085279Z (node:2352) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-06T02:38:56.3087077Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-06T02:38:56.4039298Z Preparing to download the following artifacts:
+2026-11-06T02:38:56.4040968Z - KR4-UI-complete-gallery (ID: 13472288894, Size: 606096102, Expected Digest: sha256:481d1d30e71fd9a347848945e6329691715651d694daf74f11f62196ce944808)
+2026-11-06T02:38:56.5594617Z Redirecting to blob download url: https://productionresultssa31.blob.core.windows.net/actions-results/9a2b6fd4-58ca-8eb4-9944-a327ff92e4a9/workflow-job-run-3e9c1c51-b90a-513a-9fbf-26cda14afd99/artifacts/639d0a6087c2b471481252c514d11b361c17032d6dc025e1c918de5686667d3d.zip
+2026-11-06T02:38:56.5597683Z Starting download of artifact to: /home/runner/work/Kook/Kook/evidence/ui-complete-gallery
+2026-11-06T02:38:56.6425227Z (node:2352) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+2026-11-06T02:39:04.8510482Z SHA256 digest of downloaded artifact is 481d1d30e71fd9a347848945e6329691715651d694daf74f11f62196ce944808
+2026-11-06T02:39:04.8517611Z Artifact download completed successfully.
+2026-11-06T02:39:04.8522386Z Total of 1 artifact(s) downloaded
+2026-11-06T02:39:04.8522946Z Download artifact has finished successfully
+2026-11-06T02:39:04.8758531Z ##[group]Run actions/download-artifact@v4
+2026-11-06T02:39:04.8758880Z with:
+2026-11-06T02:39:04.8759118Z   name: KR4-navy-approved-comparison
+2026-11-06T02:39:04.8759432Z   path: evidence/navy-approved-comparison
+2026-11-06T02:39:04.8759949Z   merge-multiple: false
+2026-11-06T02:39:04.8760207Z   repository: irewon1-lgtm/Kook
+2026-11-06T02:39:04.8760467Z   run-id: 42150459363
+2026-11-06T02:39:04.8760695Z env:
+2026-11-06T02:39:04.8761088Z   EXPECTED_STABLE_CERT_SHA256: 1070e82beee574cd29ffd2dc3e693fd7f7862374f16d1606567db303ab152477
+2026-11-06T02:39:04.8761650Z   FINANCIAL_EVIDENCE_REF: fix/independent-financial-date-ci
+2026-11-06T02:39:04.8762016Z ##[endgroup]
+2026-11-06T02:39:05.0433764Z Downloading single artifact
+2026-11-06T02:39:05.0600260Z (node:2426) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-06T02:39:05.0601339Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-06T02:39:05.1495036Z Preparing to download the following artifacts:
+2026-11-06T02:39:05.1525755Z - KR4-navy-approved-comparison (ID: 13472532874, Size: 8006908, Expected Digest: sha256:f971e738b75076ca67deda2830ee4a23bfb8bc9d9dcb62e9c345b98113607f3b)
+2026-11-06T02:39:05.2712217Z Redirecting to blob download url: https://productionresultssa31.blob.core.windows.net/actions-results/9a2b6fd4-58ca-8eb4-9944-a327ff92e4a9/workflow-job-run-3e9c1c51-b90a-513a-9fbf-26cda14afd99/artifacts/49135679e6607927aad15b7c461e48398414acb96d09fe6ff19e677b62d4c564.zip
+2026-11-06T02:39:05.2714620Z Starting download of artifact to: /home/runner/work/Kook/Kook/evidence/navy-approved-comparison
+2026-11-06T02:39:05.3961463Z (node:2426) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+2026-11-06T02:39:05.5548879Z SHA256 digest of downloaded artifact is f971e738b75076ca67deda2830ee4a23bfb8bc9d9dcb62e9c345b98113607f3b
+2026-11-06T02:39:05.5550183Z Artifact download completed successfully.
+2026-11-06T02:39:05.5550944Z Total of 1 artifact(s) downloaded
+2026-11-06T02:39:05.5556102Z Download artifact has finished successfully
+2026-11-06T02:39:05.5757921Z ##[group]Run set -euo pipefail
+2026-11-06T02:39:05.5758352Z [36;1mset -euo pipefail[0m
+2026-11-06T02:39:05.5758641Z [36;1mAPP_CHANGED=true[0m
+2026-11-06T02:39:05.5760347Z [36;1mif [ "pull_request" != "workflow_dispatch" ] && git rev-parse HEAD^ >/dev/null 2>&1 && git diff --quiet HEAD^ HEAD -- app/ scripts/build_ui_gallery.py tests/test_ui_gallery.py scripts/build_navy_comparison.py tests/test_navy_comparison.py docs/design/approved-dark-navy/ .github/workflows/android-build.yml build.gradle.kts settings.gradle.kts gradle.properties gradle/ buildSrc/src/main/ buildSrc/build.gradle.kts buildSrc/settings.gradle.kts; then[0m
+2026-11-06T02:39:05.5762064Z [36;1m  APP_CHANGED=false[0m
+2026-11-06T02:39:05.5762333Z [36;1mfi[0m
+2026-11-06T02:39:05.5762602Z [36;1mecho "changed=$APP_CHANGED" >> "$GITHUB_OUTPUT"[0m
+2026-11-06T02:39:05.5762984Z [36;1mecho "APP_SOURCE_CHANGED=$APP_CHANGED"[0m
+2026-11-06T02:39:05.5786326Z shell: /usr/bin/bash -e {0}
+2026-11-06T02:39:05.5787048Z env:
+2026-11-06T02:39:05.5787485Z   EXPECTED_STABLE_CERT_SHA256: 1070e82beee574cd29ffd2dc3e693fd7f7862374f16d1606567db303ab152477
+2026-11-06T02:39:05.5788079Z   FINANCIAL_EVIDENCE_REF: fix/independent-financial-date-ci
+2026-11-06T02:39:05.5788443Z ##[endgroup]
+2026-11-06T02:39:05.5900057Z APP_SOURCE_CHANGED=true
+2026-11-06T02:39:05.6022868Z ##[group]Run actions/setup-python@v5
+2026-11-06T02:39:05.6023203Z with:
+2026-11-06T02:39:05.6023433Z   python-version: 3.12
+2026-11-06T02:39:05.6023684Z   check-latest: false
+2026-11-06T02:39:05.6026153Z   token: ***
+2026-11-06T02:39:05.6026399Z   update-environment: true
+2026-11-06T02:39:05.6026995Z   allow-prereleases: false
+2026-11-06T02:39:05.6027270Z   freethreaded: false
+2026-11-06T02:39:05.6027511Z env:
+2026-11-06T02:39:05.6027919Z   EXPECTED_STABLE_CERT_SHA256: 1070e82beee574cd29ffd2dc3e693fd7f7862374f16d1606567db303ab152477
+2026-11-06T02:39:05.6028496Z   FINANCIAL_EVIDENCE_REF: fix/independent-financial-date-ci
+2026-11-06T02:39:05.6028867Z ##[endgroup]
+2026-11-06T02:39:05.7474629Z ##[group]Installed versions
+2026-11-06T02:39:05.7936006Z (node:2441) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-06T02:39:05.7937377Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-06T02:39:05.7938584Z Successfully set up CPython (3.12.16)
+2026-11-06T02:39:05.7939449Z ##[endgroup]
+2026-11-06T02:39:05.8131492Z ##[group]Run pip install requests pytest
+2026-11-06T02:39:05.8132075Z [36;1mpip install requests pytest[0m
+2026-11-06T02:39:05.8215967Z shell: /usr/bin/bash -e {0}
+2026-11-06T02:39:05.8216439Z env:
+2026-11-06T02:39:05.8217333Z   EXPECTED_STABLE_CERT_SHA256: 1070e82beee574cd29ffd2dc3e693fd7f7862374f16d1606567db303ab152477
+2026-11-06T02:39:05.8218190Z   FINANCIAL_EVIDENCE_REF: fix/independent-financial-date-ci
+2026-11-06T02:39:05.8218664Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:39:05.8219187Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.16/x64/lib/pkgconfig
+2026-11-06T02:39:05.8219677Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:39:05.8220085Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:39:05.8220494Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:39:05.8220914Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.16/x64/lib
+2026-11-06T02:39:05.8221317Z ##[endgroup]
+2026-11-06T02:39:08.7485530Z Collecting requests
+2026-11-06T02:39:08.9106390Z   Downloading requests-2.34.2-py3-none-any.whl.metadata (4.8 kB)
+2026-11-06T02:39:09.0192280Z Collecting pytest
+2026-11-06T02:39:09.0568879Z   Downloading pytest-9.2.0-py3-none-any.whl.metadata (7.9 kB)
+2026-11-06T02:39:09.3358594Z Collecting charset_normalizer<4,>=2 (from requests)
+2026-11-06T02:39:09.3747369Z   Downloading charset_normalizer-3.5.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (46 kB)
+2026-11-06T02:39:09.4820257Z Collecting idna<4,>=2.5 (from requests)
+2026-11-06T02:39:09.5229475Z   Downloading idna-3.20-py3-none-any.whl.metadata (7.2 kB)
+2026-11-06T02:39:09.6007687Z Collecting urllib3<3,>=1.26 (from requests)
+2026-11-06T02:39:09.6381809Z   Downloading urllib3-2.8.0-py3-none-any.whl.metadata (7.4 kB)
+2026-11-06T02:39:09.7122737Z Collecting certifi>=2023.5.7 (from requests)
+2026-11-06T02:39:09.7547910Z   Downloading certifi-2026.10.23-py3-none-any.whl.metadata (2.5 kB)
+2026-11-06T02:39:09.8223046Z Collecting iniconfig>=2 (from pytest)
+2026-11-06T02:39:09.8616292Z   Downloading iniconfig-2.3.1-py3-none-any.whl.metadata (2.8 kB)
+2026-11-06T02:39:09.9330513Z Collecting packaging>=24 (from pytest)
+2026-11-06T02:39:09.9711364Z   Downloading packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+2026-11-06T02:39:10.0390937Z Collecting pluggy<2,>=1.6 (from pytest)
+2026-11-06T02:39:10.0757961Z   Downloading pluggy-1.7.0-py3-none-any.whl.metadata (5.0 kB)
+2026-11-06T02:39:10.1493110Z Collecting pygments>=2.15 (from pytest)
+2026-11-06T02:39:10.1875150Z   Downloading pygments-2.21.0-py3-none-any.whl.metadata (2.5 kB)
+2026-11-06T02:39:10.2305895Z Downloading requests-2.34.2-py3-none-any.whl (73 kB)
+2026-11-06T02:39:10.2838441Z Downloading charset_normalizer-3.5.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (257 kB)
+2026-11-06T02:39:10.3666202Z Downloading idna-3.20-py3-none-any.whl (69 kB)
+2026-11-06T02:39:10.4093517Z Downloading urllib3-2.8.0-py3-none-any.whl (135 kB)
+2026-11-06T02:39:10.4613108Z Downloading pytest-9.2.0-py3-none-any.whl (411 kB)
+2026-11-06T02:39:10.5667918Z Downloading pluggy-1.7.0-py3-none-any.whl (27 kB)
+2026-11-06T02:39:10.6298765Z Downloading certifi-2026.10.23-py3-none-any.whl (135 kB)
+2026-11-06T02:39:10.6740887Z Downloading iniconfig-2.3.1-py3-none-any.whl (7.6 kB)
+2026-11-06T02:39:10.7285807Z Downloading packaging-26.3-py3-none-any.whl (129 kB)
+2026-11-06T02:39:10.7992987Z Downloading pygments-2.21.0-py3-none-any.whl (1.3 MB)
+2026-11-06T02:39:10.8526311Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 29.9 MB/s  0:00:00
+2026-11-06T02:39:11.0127156Z Installing collected packages: urllib3, pygments, pluggy, packaging, iniconfig, idna, charset_normalizer, certifi, requests, pytest
+2026-11-06T02:39:12.4085458Z 
+2026-11-06T02:39:12.4103356Z Successfully installed certifi-2026.10.23 charset_normalizer-3.5.2 idna-3.20 iniconfig-2.3.1 packaging-26.3 pluggy-1.7.0 pygments-2.21.0 pytest-9.2.0 requests-2.34.2 urllib3-2.8.0
+2026-11-06T02:39:12.4113098Z 
+2026-11-06T02:39:12.4113545Z [notice] A new release of pip is available: 26.2.2 -> 26.3
+2026-11-06T02:39:12.4114117Z [notice] To update, run: pip install --upgrade pip
+2026-11-06T02:39:12.4814234Z ##[group]Run set -euo pipefail
+2026-11-06T02:39:12.4814657Z [36;1mset -euo pipefail[0m
+2026-11-06T02:39:12.4814988Z [36;1mtest -s evidence/kospi_master_snapshot.json[0m
+2026-11-06T02:39:12.4815373Z [36;1mtest -s evidence/kosdaq_master_snapshot.json[0m
+2026-11-06T02:39:12.4815774Z [36;1mtest -s evidence/real_quant_snapshot.json[0m
+2026-11-06T02:39:12.4816140Z [36;1mtest -s evidence/quarterly_history.json[0m
+2026-11-06T02:39:12.4816476Z [36;1mpython3 - <<'PY'[0m
+2026-11-06T02:39:12.4817174Z [36;1mimport json, math, re[0m
+2026-11-06T02:39:12.4817452Z [36;1mfrom datetime import date[0m
+2026-11-06T02:39:12.4817889Z [36;1mk = json.load(open('evidence/kospi_master_snapshot.json', encoding='utf-8'))[0m
+2026-11-06T02:39:12.4818484Z [36;1mq = json.load(open('evidence/kosdaq_master_snapshot.json', encoding='utf-8'))[0m
+2026-11-06T02:39:12.4819042Z [36;1md = json.load(open('evidence/real_quant_snapshot.json', encoding='utf-8'))[0m
+2026-11-06T02:39:12.4819672Z [36;1massert k['issuer_count'] + q['issuer_count'] == d['universe_count'] == len(d['records']) == 2649[0m
+2026-11-06T02:39:12.4820221Z [36;1msnap = date.fromisoformat(d['snapshot_date_kst'])[0m
+2026-11-06T02:39:12.4820655Z [36;1mprice = date.fromisoformat(d['price_cutoff_date_kst'])[0m
+2026-11-06T02:39:12.4821119Z [36;1massert price <= snap and (snap - price).days <= 10, (snap, price)[0m
+2026-11-06T02:39:12.4821516Z [36;1mc = d['coverage'][0m
+2026-11-06T02:39:12.4822032Z [36;1mfloors = {'m01_available': 2400, 'm02_available': 2300, 'm03_available': 1600, 'm04_available': 2550, 'complete_count': 1380}[0m
+2026-11-06T02:39:12.4822605Z [36;1mfor key, floor in floors.items():[0m
+2026-11-06T02:39:12.4822980Z [36;1m    assert int(c[key]) >= floor, (key, c[key], floor)[0m
+2026-11-06T02:39:12.4823377Z [36;1massert c['ranked_count'] == c['complete_count'][0m
+2026-11-06T02:39:12.4823708Z [36;1mranks = [][0m
+2026-11-06T02:39:12.4823973Z [36;1mfor code, row in d['records'].items():[0m
+2026-11-06T02:39:12.4824334Z [36;1m    assert re.fullmatch(r'[0-9A-Z]{6}', code)[0m
+2026-11-06T02:39:12.4824695Z [36;1m    metrics = [row[f'm0{i}'] for i in range(1, 5)][0m
+2026-11-06T02:39:12.4825024Z [36;1m    complete = True[0m
+2026-11-06T02:39:12.4825283Z [36;1m    for metric in metrics:[0m
+2026-11-06T02:39:12.4825576Z [36;1m        if metric['raw'] is None:[0m
+2026-11-06T02:39:12.4825872Z [36;1m            complete = False[0m
+2026-11-06T02:39:12.4826246Z [36;1m            assert metric['percentile'] is None and metric['reason'][0m
+2026-11-06T02:39:12.4827041Z [36;1m        else:[0m
+2026-11-06T02:39:12.4827389Z [36;1m            assert math.isfinite(float(metric['raw']))[0m
+2026-11-06T02:39:12.4827908Z [36;1m            assert metric['percentile'] is not None and 0 <= float(metric['percentile']) <= 100[0m
+2026-11-06T02:39:12.4828417Z [36;1m            assert metric['basis'][0m
+2026-11-06T02:39:12.4828782Z [36;1m    assert (row['composite'] is not None) == complete[0m
+2026-11-06T02:39:12.4829182Z [36;1m    assert (row['rank'] is not None) == complete[0m
+2026-11-06T02:39:12.4829526Z [36;1m    if row['rank'] is not None:[0m
+2026-11-06T02:39:12.4829846Z [36;1m        ranks.append(int(row['rank']))[0m
+2026-11-06T02:39:12.4830221Z [36;1massert sorted(ranks) == list(range(1, len(ranks) + 1))[0m
+2026-11-06T02:39:12.4830623Z [36;1massert d['records']['005930']['name'] == '삼성전자'[0m
+2026-11-06T02:39:12.4831113Z [36;1mprint('CURRENT_SNAPSHOT_VALIDATED', snap, price, json.dumps(c, ensure_ascii=False))[0m
+2026-11-06T02:39:12.4831803Z [36;1mPY[0m
+2026-11-06T02:39:12.4852871Z shell: /usr/bin/bash -e {0}
+2026-11-06T02:39:12.4853156Z env:
+2026-11-06T02:39:12.4853573Z   EXPECTED_STABLE_CERT_SHA256: 1070e82beee574cd29ffd2dc3e693fd7f7862374f16d1606567db303ab152477
+2026-11-06T02:39:12.4854166Z   FINANCIAL_EVIDENCE_REF: fix/independent-financial-date-ci
+2026-11-06T02:39:12.4854611Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:39:12.4855308Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.16/x64/lib/pkgconfig
+2026-11-06T02:39:12.4855798Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:39:12.4856218Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:39:12.4857005Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:39:12.4857445Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.16/x64/lib
+2026-11-06T02:39:12.4857793Z ##[endgroup]
+2026-11-06T02:39:12.5553890Z CURRENT_SNAPSHOT_VALIDATED 2026-11-05 2026-11-05 {"m01_available": 2561, "m02_available": 2410, "m03_available": 2626, "m04_available": 2619, "complete_count": 2376, "ranked_count": 2376}
+2026-11-06T02:39:12.5660064Z ##[group]Run set -euo pipefail
+2026-11-06T02:39:12.5660428Z [36;1mset -euo pipefail[0m
+2026-11-06T02:39:12.5660746Z [36;1mpython3 tests/test_auto_update_pipeline.py[0m
+2026-11-06T02:39:12.5661137Z [36;1mpython3 tests/test_quarterly_history.py[0m
+2026-11-06T02:39:12.5681780Z shell: /usr/bin/bash -e {0}
+2026-11-06T02:39:12.5682051Z env:
+2026-11-06T02:39:12.5682465Z   EXPECTED_STABLE_CERT_SHA256: 1070e82beee574cd29ffd2dc3e693fd7f7862374f16d1606567db303ab152477
+2026-11-06T02:39:12.5683037Z   FINANCIAL_EVIDENCE_REF: fix/independent-financial-date-ci
+2026-11-06T02:39:12.5683481Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:39:12.5683945Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.16/x64/lib/pkgconfig
+2026-11-06T02:39:12.5684413Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:39:12.5684840Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:39:12.5685275Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:39:12.5685682Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.16/x64/lib
+2026-11-06T02:39:12.5686033Z ##[endgroup]
+2026-11-06T02:39:14.2813730Z PASS test_dart_exact_company_name_recovers_code_mismatch
+2026-11-06T02:39:14.2814360Z PASS test_dart_latest_period_progression_and_future_rejection
+2026-11-06T02:39:14.2814947Z PASS test_dart_preferred_share_recovers_exact_common_sibling
+2026-11-06T02:39:14.2815453Z PASS test_dynamic_dart_headers_q1_hy_q3_fy
+2026-11-06T02:39:14.2816050Z PASS test_loss_safe_per_scoring_keeps_negative_per_at_bottom_without_dropping_record
+2026-11-06T02:39:14.2817186Z PASS test_missing_integration_eps_recovers_latest_actual_annual_eps
+2026-11-06T02:39:14.2817792Z PASS test_negative_eps_becomes_negative_per_and_available
+2026-11-06T02:39:14.2818298Z PASS test_price_cutoff_after_close_accepts_same_day
+2026-11-06T02:39:14.2818791Z PASS test_price_cutoff_conflict_fails_closed
+2026-11-06T02:39:14.2819287Z PASS test_price_cutoff_one_probe_failure_still_has_quorum
+2026-11-06T02:39:14.2819782Z PASS test_price_cutoff_preclose_rejects_same_day
+2026-11-06T02:39:14.2820242Z PASS test_price_cutoff_weekend_and_holiday_gap
+2026-11-06T02:39:14.2820682Z PASS test_runtime_kotlin_hook_is_generated
+2026-11-06T02:39:14.2821097Z PASS test_zero_eps_remains_unavailable
+2026-11-06T02:39:14.2821622Z AUTO_UPDATE_ADVERSARIAL {"status": "PASS", "tests": 14, "failures": []}
+2026-11-06T02:39:14.8821095Z QUARTERLY_PERIOD_DEFERRED 2025Q4 reporting_window_end=2026-03-31 as_of=2026-03-31 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8822497Z QUARTERLY_PERIOD_DEFERRED 2026Q1 reporting_window_end=2026-05-15 as_of=2026-03-31 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8823866Z QUARTERLY_PERIOD_DEFERRED 2026Q2 reporting_window_end=2026-08-14 as_of=2026-03-31 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8825850Z QUARTERLY_PERIOD_DEFERRED 2026Q3 reporting_window_end=2026-11-16 as_of=2026-03-31 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8827573Z QUARTERLY_PERIOD_DEFERRED 2026Q4 reporting_window_end=2027-03-31 as_of=2026-03-31 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8831139Z QUARTERLY_PERIOD_DEFERRED 2026Q1 reporting_window_end=2026-05-15 as_of=2026-04-01 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8832548Z QUARTERLY_PERIOD_DEFERRED 2026Q2 reporting_window_end=2026-08-14 as_of=2026-04-01 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8833925Z QUARTERLY_PERIOD_DEFERRED 2026Q3 reporting_window_end=2026-11-16 as_of=2026-04-01 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8835312Z QUARTERLY_PERIOD_DEFERRED 2026Q4 reporting_window_end=2027-03-31 as_of=2026-04-01 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8840253Z QUARTERLY_PERIOD_DEFERRED 2023Q4 reporting_window_end=2024-04-01 as_of=2024-03-30 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8841687Z QUARTERLY_PERIOD_DEFERRED 2024Q1 reporting_window_end=2024-05-15 as_of=2024-03-30 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8843446Z QUARTERLY_PERIOD_DEFERRED 2024Q2 reporting_window_end=2024-08-14 as_of=2024-03-30 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8844859Z QUARTERLY_PERIOD_DEFERRED 2024Q3 reporting_window_end=2024-11-14 as_of=2024-03-30 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8846237Z QUARTERLY_PERIOD_DEFERRED 2024Q4 reporting_window_end=2025-03-31 as_of=2024-03-30 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8847956Z QUARTERLY_PERIOD_DEFERRED 2025Q1 reporting_window_end=2025-05-15 as_of=2024-03-30 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8849358Z QUARTERLY_PERIOD_DEFERRED 2025Q2 reporting_window_end=2025-08-14 as_of=2024-03-30 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8850739Z QUARTERLY_PERIOD_DEFERRED 2025Q3 reporting_window_end=2025-11-14 as_of=2024-03-30 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8852200Z QUARTERLY_PERIOD_DEFERRED 2025Q4 reporting_window_end=2026-03-31 as_of=2024-03-30 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8853555Z QUARTERLY_PERIOD_DEFERRED 2026Q1 reporting_window_end=2026-05-15 as_of=2024-03-30 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8854908Z QUARTERLY_PERIOD_DEFERRED 2026Q2 reporting_window_end=2026-08-14 as_of=2024-03-30 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8856286Z QUARTERLY_PERIOD_DEFERRED 2026Q3 reporting_window_end=2026-11-16 as_of=2024-03-30 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8857944Z QUARTERLY_PERIOD_DEFERRED 2026Q4 reporting_window_end=2027-03-31 as_of=2024-03-30 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8859316Z QUARTERLY_PERIOD_DEFERRED 2023Q4 reporting_window_end=2024-04-01 as_of=2024-04-01 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8860691Z QUARTERLY_PERIOD_DEFERRED 2024Q1 reporting_window_end=2024-05-15 as_of=2024-04-01 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8862075Z QUARTERLY_PERIOD_DEFERRED 2024Q2 reporting_window_end=2024-08-14 as_of=2024-04-01 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8863880Z QUARTERLY_PERIOD_DEFERRED 2024Q3 reporting_window_end=2024-11-14 as_of=2024-04-01 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8865478Z QUARTERLY_PERIOD_DEFERRED 2024Q4 reporting_window_end=2025-03-31 as_of=2024-04-01 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8867417Z QUARTERLY_PERIOD_DEFERRED 2025Q1 reporting_window_end=2025-05-15 as_of=2024-04-01 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8869046Z QUARTERLY_PERIOD_DEFERRED 2025Q2 reporting_window_end=2025-08-14 as_of=2024-04-01 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8870578Z QUARTERLY_PERIOD_DEFERRED 2025Q3 reporting_window_end=2025-11-14 as_of=2024-04-01 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8872132Z QUARTERLY_PERIOD_DEFERRED 2025Q4 reporting_window_end=2026-03-31 as_of=2024-04-01 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8873576Z QUARTERLY_PERIOD_DEFERRED 2026Q1 reporting_window_end=2026-05-15 as_of=2024-04-01 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8875195Z QUARTERLY_PERIOD_DEFERRED 2026Q2 reporting_window_end=2026-08-14 as_of=2024-04-01 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8877712Z QUARTERLY_PERIOD_DEFERRED 2026Q3 reporting_window_end=2026-11-16 as_of=2024-04-01 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8888143Z QUARTERLY_PERIOD_DEFERRED 2026Q4 reporting_window_end=2027-03-31 as_of=2024-04-01 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8889902Z QUARTERLY_PERIOD_DEFERRED 2024Q1 reporting_window_end=2024-05-15 as_of=2024-04-02 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8906090Z QUARTERLY_PERIOD_DEFERRED 2024Q2 reporting_window_end=2024-08-14 as_of=2024-04-02 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8907650Z QUARTERLY_PERIOD_DEFERRED 2024Q3 reporting_window_end=2024-11-14 as_of=2024-04-02 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8908950Z QUARTERLY_PERIOD_DEFERRED 2024Q4 reporting_window_end=2025-03-31 as_of=2024-04-02 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8910260Z QUARTERLY_PERIOD_DEFERRED 2025Q1 reporting_window_end=2025-05-15 as_of=2024-04-02 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8911671Z QUARTERLY_PERIOD_DEFERRED 2025Q2 reporting_window_end=2025-08-14 as_of=2024-04-02 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8913493Z QUARTERLY_PERIOD_DEFERRED 2025Q3 reporting_window_end=2025-11-14 as_of=2024-04-02 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8914955Z QUARTERLY_PERIOD_DEFERRED 2025Q4 reporting_window_end=2026-03-31 as_of=2024-04-02 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8915740Z QUARTERLY_PERIOD_DEFERRED 2026Q1 reporting_window_end=2026-05-15 as_of=2024-04-02 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8916758Z QUARTERLY_PERIOD_DEFERRED 2026Q2 reporting_window_end=2026-08-14 as_of=2024-04-02 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8917597Z QUARTERLY_PERIOD_DEFERRED 2026Q3 reporting_window_end=2026-11-16 as_of=2024-04-02 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8918345Z QUARTERLY_PERIOD_DEFERRED 2026Q4 reporting_window_end=2027-03-31 as_of=2024-04-02 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8922075Z PASS test_annual_window_uses_ninety_days_and_handles_leap_year
+2026-11-06T02:39:14.8922845Z PASS test_contiguous_quarter_gate_rejects_missing_q1_q3_style_gaps
+2026-11-06T02:39:14.8923311Z PASS test_dart_entry_regex_accepts_q1_and_q3_period_codes
+2026-11-06T02:39:14.8923791Z PASS test_direct_three_month_value_wins_over_cumulative_delta
+2026-11-06T02:39:14.8924395Z QUARTERLY_PERIOD_DEFERRED 2026Q3 reporting_window_end=2026-11-16 as_of=2026-11-05 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:14.8925153Z QUARTERLY_PERIOD_DEFERRED 2026Q4 reporting_window_end=2027-03-31 as_of=2026-11-05 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:15.1044164Z QUARTERLY_PERIOD_DEFERRED 2026Q4 reporting_window_end=2027-03-31 as_of=2026-11-17 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:15.3010053Z PASS test_eight_early_filers_do_not_erase_the_rest_of_the_universe
+2026-11-06T02:39:15.3011119Z PASS test_financial_sector_does_not_fake_operating_margin
+2026-11-06T02:39:15.3011921Z PASS test_output_has_no_nonfinite_values
+2026-11-06T02:39:15.3013127Z QUARTERLY_PERIOD_DEFERRED 2026Q3 reporting_window_end=2026-11-16 as_of=2026-11-05 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:15.3014548Z QUARTERLY_PERIOD_DEFERRED 2026Q4 reporting_window_end=2027-03-31 as_of=2026-11-05 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:15.3015891Z PASS test_preliminary_q3_does_not_displace_complete_eight_quarter_window
+2026-11-06T02:39:15.3017591Z QUARTERLY_PERIOD_DEFERRED 2026Q1 reporting_window_end=2026-05-15 as_of=2026-05-15 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:15.3019259Z QUARTERLY_PERIOD_DEFERRED 2026Q2 reporting_window_end=2026-08-14 as_of=2026-05-15 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:15.3020873Z QUARTERLY_PERIOD_DEFERRED 2026Q3 reporting_window_end=2026-11-16 as_of=2026-05-15 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:15.3022293Z QUARTERLY_PERIOD_DEFERRED 2026Q4 reporting_window_end=2027-03-31 as_of=2026-05-15 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:15.3025127Z QUARTERLY_PERIOD_DEFERRED 2026Q2 reporting_window_end=2026-08-14 as_of=2026-05-16 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:15.3027282Z QUARTERLY_PERIOD_DEFERRED 2026Q3 reporting_window_end=2026-11-16 as_of=2026-05-16 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:15.3028711Z QUARTERLY_PERIOD_DEFERRED 2026Q4 reporting_window_end=2027-03-31 as_of=2026-05-16 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:15.3031962Z QUARTERLY_PERIOD_DEFERRED 2026Q2 reporting_window_end=2026-08-14 as_of=2026-08-14 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:15.3033264Z QUARTERLY_PERIOD_DEFERRED 2026Q3 reporting_window_end=2026-11-16 as_of=2026-08-14 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:15.3034548Z QUARTERLY_PERIOD_DEFERRED 2026Q4 reporting_window_end=2027-03-31 as_of=2026-08-14 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:15.3038801Z QUARTERLY_PERIOD_DEFERRED 2026Q3 reporting_window_end=2026-11-16 as_of=2026-08-15 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:15.3040137Z QUARTERLY_PERIOD_DEFERRED 2026Q4 reporting_window_end=2027-03-31 as_of=2026-08-15 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:15.3046724Z QUARTERLY_PERIOD_DEFERRED 2026Q4 reporting_window_end=2027-03-31 as_of=2026-12-31 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:15.3052923Z PASS test_q1_and_half_year_windows_do_not_accept_early_bulk_links
+2026-11-06T02:39:15.3054012Z QUARTERLY_PERIOD_DEFERRED 2026Q3 reporting_window_end=2026-11-16 as_of=2026-11-14 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:15.3055315Z QUARTERLY_PERIOD_DEFERRED 2026Q4 reporting_window_end=2027-03-31 as_of=2026-11-14 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:15.3060663Z QUARTERLY_PERIOD_DEFERRED 2026Q3 reporting_window_end=2026-11-16 as_of=2026-11-15 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:15.3061995Z QUARTERLY_PERIOD_DEFERRED 2026Q4 reporting_window_end=2027-03-31 as_of=2026-11-15 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:15.3068448Z QUARTERLY_PERIOD_DEFERRED 2026Q3 reporting_window_end=2026-11-16 as_of=2026-11-16 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:15.3069445Z QUARTERLY_PERIOD_DEFERRED 2026Q4 reporting_window_end=2027-03-31 as_of=2026-11-16 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:15.3074485Z QUARTERLY_PERIOD_DEFERRED 2026Q4 reporting_window_end=2027-03-31 as_of=2026-11-17 reason=REPORTING_WINDOW_OPEN
+2026-11-06T02:39:15.3078853Z PASS test_q3_becomes_eligible_only_after_reporting_window_closes
+2026-11-06T02:39:15.3079605Z PASS test_q4_is_annual_minus_q3_and_yoy_uses_same_quarter
+2026-11-06T02:39:15.3080043Z PASS test_scope_mismatch_fails_closed_for_derived_q4
+2026-11-06T02:39:15.3080396Z QUARTERLY_HISTORY_UNIT_PASS 12
+2026-11-06T02:39:15.3381340Z ##[group]Run python3 -m pytest -q tests
+2026-11-06T02:39:15.3381735Z [36;1mpython3 -m pytest -q tests[0m
+2026-11-06T02:39:15.3402524Z shell: /usr/bin/bash -e {0}
+2026-11-06T02:39:15.3402802Z env:
+2026-11-06T02:39:15.3403230Z   EXPECTED_STABLE_CERT_SHA256: 1070e82beee574cd29ffd2dc3e693fd7f7862374f16d1606567db303ab152477
+2026-11-06T02:39:15.3403826Z   FINANCIAL_EVIDENCE_REF: fix/independent-financial-date-ci
+2026-11-06T02:39:15.3404277Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:39:15.3404757Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.16/x64/lib/pkgconfig
+2026-11-06T02:39:15.3405219Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:39:15.3405624Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:39:15.3406046Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:39:15.3406779Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.16/x64/lib
+2026-11-06T02:39:15.3407290Z ##[endgroup]
+2026-11-06T02:39:18.8646177Z .......................................... [ 13%]
+2026-11-06T02:39:20.2659604Z ........................................................................ [ 37%]
+2026-11-06T02:39:23.7333810Z .......................................................................................................... [ 71%]
+2026-11-06T02:39:24.7970685Z ........................................................................ [ 95%]
+2026-11-06T02:39:27.1768713Z ..............                                                           [100%]
+2026-11-06T02:39:27.1772574Z 306 passed, 68 subtests passed in 11.49s
+2026-11-06T02:39:27.2422665Z ##[group]Run python3 scripts/probe_context_sources.py
+2026-11-06T02:39:27.2423158Z [36;1mpython3 scripts/probe_context_sources.py[0m
+2026-11-06T02:39:27.2443542Z shell: /usr/bin/bash -e {0}
+2026-11-06T02:39:27.2443826Z env:
+2026-11-06T02:39:27.2444246Z   EXPECTED_STABLE_CERT_SHA256: 1070e82beee574cd29ffd2dc3e693fd7f7862374f16d1606567db303ab152477
+2026-11-06T02:39:27.2444821Z   FINANCIAL_EVIDENCE_REF: fix/independent-financial-date-ci
+2026-11-06T02:39:27.2445264Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:39:27.2445715Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.16/x64/lib/pkgconfig
+2026-11-06T02:39:27.2446180Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:39:27.2446880Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:39:27.2447315Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:39:27.2447750Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.16/x64/lib
+2026-11-06T02:39:27.2448659Z   OPENDART_API_KEY: ***
+2026-11-06T02:39:27.2448916Z ##[endgroup]
+2026-11-06T02:39:33.0895418Z CONTEXT_SOURCE_LIVE_PASS {"sources": [{"code": "005930", "news_candidates": 10, "naver_disclosure_candidates": 20, "direct_dart_receipts": 30, "dart_corp_code_found": true, "dart_official_roots": 2}, {"code": "000660", "news_candidates": 10, "naver_disclosure_candidates": 20, "direct_dart_receipts": 30, "dart_corp_code_found": true, "dart_official_roots": 2}, {"code": "000250", "news_candidates": 10, "naver_disclosure_candidates": 20, "direct_dart_receipts": 30, "dart_corp_code_found": true, "dart_official_roots": 2}], "dart_receipt_sample": "20261106000022", "dart_main_bytes": 31330, "viewer_reference": true, "corp_code_success": 3, "official_root_success": 3}
+2026-11-06T02:39:33.1259647Z ##[group]Run actions/setup-java@v5
+2026-11-06T02:39:33.1259986Z with:
+2026-11-06T02:39:33.1260228Z   java-version: 17
+2026-11-06T02:39:33.1260470Z   distribution: temurin
+2026-11-06T02:39:33.1260732Z   java-package: jdk
+2026-11-06T02:39:33.1260967Z   check-latest: false
+2026-11-06T02:39:33.1261204Z   set-default: true
+2026-11-06T02:39:33.1261446Z   verify-signature: false
+2026-11-06T02:39:33.1261698Z   server-id: github
+2026-11-06T02:39:33.1261942Z   server-username: GITHUB_ACTOR
+2026-11-06T02:39:33.1262220Z   server-password: GITHUB_TOKEN
+2026-11-06T02:39:33.1262497Z   overwrite-settings: true
+2026-11-06T02:39:33.1262747Z   job-status: success
+2026-11-06T02:39:33.1265170Z   token: ***
+2026-11-06T02:39:33.1265421Z   show-download-progress: false
+2026-11-06T02:39:33.1265704Z env:
+2026-11-06T02:39:33.1266108Z   EXPECTED_STABLE_CERT_SHA256: 1070e82beee574cd29ffd2dc3e693fd7f7862374f16d1606567db303ab152477
+2026-11-06T02:39:33.1267078Z   FINANCIAL_EVIDENCE_REF: fix/independent-financial-date-ci
+2026-11-06T02:39:33.1267532Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:39:33.1268010Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.16/x64/lib/pkgconfig
+2026-11-06T02:39:33.1268466Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:39:33.1268871Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:39:33.1269286Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:39:33.1269714Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.16/x64/lib
+2026-11-06T02:39:33.1270063Z ##[endgroup]
+2026-11-06T02:39:33.2941874Z ##[group]Installed distributions
+2026-11-06T02:39:33.3156717Z Resolved Java 17.0.21+9 from tool-cache
+2026-11-06T02:39:33.3157652Z Setting Java 17.0.21+9 as the default
+2026-11-06T02:39:33.3169967Z Creating toolchains.xml for JDK version 17 from temurin
+2026-11-06T02:39:33.3277884Z Writing to /home/runner/.m2/toolchains.xml
+2026-11-06T02:39:33.3278485Z 
+2026-11-06T02:39:33.3278720Z Java configuration:
+2026-11-06T02:39:33.3279295Z   Distribution: temurin
+2026-11-06T02:39:33.3279788Z   Version: 17.0.21+9
+2026-11-06T02:39:33.3280818Z   Path: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.21-9/x64
+2026-11-06T02:39:33.3281425Z 
+2026-11-06T02:39:33.3287051Z ##[endgroup]
+2026-11-06T02:39:33.3305701Z Creating settings.xml with server-id: github
+2026-11-06T02:39:33.3308100Z Writing to /home/runner/.m2/settings.xml
+2026-11-06T02:39:33.3311038Z Configured MAVEN_ARGS to include -ntp to suppress Maven transfer progress logs. Set 'show-download-progress: true' to keep the download progress output.
+2026-11-06T02:39:33.3592836Z ##[group]Run gradle/actions/setup-gradle@v4
+2026-11-06T02:39:33.3593415Z with:
+2026-11-06T02:39:33.3593779Z   gradle-version: 8.7
+2026-11-06T02:39:33.3594205Z   cache-disabled: false
+2026-11-06T02:39:33.3594619Z   cache-read-only: true
+2026-11-06T02:39:33.3595021Z   cache-write-only: false
+2026-11-06T02:39:33.3595445Z   cache-overwrite-existing: false
+2026-11-06T02:39:33.3595894Z   cache-cleanup: on-success
+2026-11-06T02:39:33.3596408Z   gradle-home-cache-includes: caches
+notifications
+
+2026-11-06T02:39:33.3597244Z   add-job-summary: always
+2026-11-06T02:39:33.3597710Z   add-job-summary-as-pr-comment: never
+2026-11-06T02:39:33.3598213Z   dependency-graph: disabled
+2026-11-06T02:39:33.3598782Z   dependency-graph-report-dir: dependency-graph-reports
+2026-11-06T02:39:33.3599421Z   dependency-graph-continue-on-failure: true
+2026-11-06T02:39:33.3599966Z   build-scan-publish: false
+2026-11-06T02:39:33.3600403Z   validate-wrappers: true
+2026-11-06T02:39:33.3600874Z   allow-snapshot-wrappers: false
+2026-11-06T02:39:33.3601364Z   gradle-home-cache-strict-match: false
+2026-11-06T02:39:33.3601803Z   workflow-job-context: null
+2026-11-06T02:39:33.3604717Z   github-token: ***
+2026-11-06T02:39:33.3605123Z env:
+2026-11-06T02:39:33.3605652Z   EXPECTED_STABLE_CERT_SHA256: 1070e82beee574cd29ffd2dc3e693fd7f7862374f16d1606567db303ab152477
+2026-11-06T02:39:33.3606836Z   FINANCIAL_EVIDENCE_REF: fix/independent-financial-date-ci
+2026-11-06T02:39:33.3607693Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:39:33.3608597Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.16/x64/lib/pkgconfig
+2026-11-06T02:39:33.3609368Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:39:33.3609944Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:39:33.3610364Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:39:33.3610789Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.16/x64/lib
+2026-11-06T02:39:33.3611257Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.21-9/x64
+2026-11-06T02:39:33.3611773Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.21-9/x64
+2026-11-06T02:39:33.3612344Z   MAVEN_ARGS: -ntp
+2026-11-06T02:39:33.3612594Z ##[endgroup]
+2026-11-06T02:39:34.5684655Z Merged default JDK locations into /home/runner/.m2/toolchains.xml
+2026-11-06T02:39:34.5687360Z ##[group]Restore Gradle state from cache
+2026-11-06T02:39:34.6335278Z Cache hit for restore-key: gradle-home-v1|Linux-X64|extreme-cleanpass[1821e54d101464339b547b331b3c1105]-8b1b45671072636dff59f1ced48aa311204fe2ff
+2026-11-06T02:39:34.7496041Z Received 3393794 of 3393794 (100.0%), 42.6 MBs/sec
+2026-11-06T02:39:34.7498458Z Cache Size: ~3 MB (3393794 B)
+2026-11-06T02:39:34.7534164Z [command]/usr/bin/tar -xf /home/runner/work/_temp/a5504731-25d7-4b49-a614-a5a470975f29/cache.tzst -P -C /home/runner/work/Kook/Kook --use-compress-program unzstd
+2026-11-06T02:39:34.9728096Z Cache restored successfully
+2026-11-06T02:39:34.9734885Z Restored cache entry with key gradle-home-v1|Linux-X64|extreme-cleanpass[1821e54d101464339b547b331b3c1105]-ab221f2cdf339d5bc6bdf30b10ce8c7ccf131114 to /home/runner/.gradle/caches,/home/runner/.gradle/notifications,/home/runner/.gradle/.setup-gradle in 404ms
+2026-11-06T02:39:35.0491257Z Cache hit for: gradle-instrumented-jars-v1-274e2baf02cb2217e1b7e14a09a05741
+2026-11-06T02:39:35.0529487Z Cache hit for: gradle-transforms-v1-4a9dc066d73df2a20cf29a853cc30897
+2026-11-06T02:39:35.0534978Z Cache hit for: gradle-kotlin-dsl-v1-ec542583dcf4cf38710db6b265cddd86
+2026-11-06T02:39:35.0542041Z Cache hit for: gradle-generated-gradle-jars-v1-d6d47bedd9337a0be6f3a426277e63ee
+2026-11-06T02:39:35.0615355Z Cache hit for: gradle-groovy-dsl-v1-6e94983a9ec22ccdbf8b05368334e45e
+2026-11-06T02:39:35.0652984Z Cache hit for: gradle-dependencies-v1-937e1b28f34bee151a1d08129744547b
+2026-11-06T02:39:35.1577348Z Received 90428 of 90428 (100.0%), 1.1 MBs/sec
+2026-11-06T02:39:35.1578089Z Cache Size: ~0 MB (90428 B)
+2026-11-06T02:39:35.2321582Z Received 112629 of 112629 (100.0%), 1.2 MBs/sec
+2026-11-06T02:39:35.2322228Z Cache Size: ~0 MB (112629 B)
+2026-11-06T02:39:35.2542513Z [command]/usr/bin/tar -xf /home/runner/work/_temp/13f22011-3162-4f7f-b1a8-3fc3bfb8fa2f/cache.tzst -P -C /home/runner/work/Kook/Kook --use-compress-program unzstd
+2026-11-06T02:39:35.2660828Z [command]/usr/bin/tar -xf /home/runner/work/_temp/ce591f8e-1a14-46cc-86c3-9a365d72b7c7/cache.tzst -P -C /home/runner/work/Kook/Kook --use-compress-program unzstd
+2026-11-06T02:39:35.2733269Z Cache restored successfully
+2026-11-06T02:39:35.2746040Z Restored cache entry with key gradle-instrumented-jars-v1-274e2baf02cb2217e1b7e14a09a05741 to /home/runner/.gradle/caches/jars-*/*/ in 300ms
+2026-11-06T02:39:35.3079278Z Received 144818 of 144818 (100.0%), 1.0 MBs/sec
+2026-11-06T02:39:35.3080140Z Cache Size: ~0 MB (144818 B)
+2026-11-06T02:39:35.3522212Z Cache restored successfully
+2026-11-06T02:39:35.3631236Z Restored cache entry with key gradle-kotlin-dsl-v1-ec542583dcf4cf38710db6b265cddd86 to /home/runner/.gradle/caches/*/kotlin-dsl/accessors/*/,/home/runner/.gradle/caches/*/kotlin-dsl/scripts/*/ in 387ms
+2026-11-06T02:39:35.6334853Z [command]/usr/bin/tar -xf /home/runner/work/_temp/eb9a2cfd-5190-4f2e-8cd2-fcb41546a75d/cache.tzst -P -C /home/runner/work/Kook/Kook --use-compress-program unzstd
+2026-11-06T02:39:35.6601121Z Received 37946147 of 37946147 (100.0%), 67.8 MBs/sec
+2026-11-06T02:39:35.6602116Z Cache Size: ~36 MB (37946147 B)
+2026-11-06T02:39:35.6794936Z Cache restored successfully
+2026-11-06T02:39:35.6872653Z Restored cache entry with key gradle-groovy-dsl-v1-6e94983a9ec22ccdbf8b05368334e45e to /home/runner/.gradle/caches/*/groovy-dsl/*/ in 712ms
+2026-11-06T02:39:35.7152680Z [command]/usr/bin/tar -xf /home/runner/work/_temp/7ca0632b-7d34-4716-aadb-7c58e7109ad2/cache.tzst -P -C /home/runner/work/Kook/Kook --use-compress-program unzstd
+2026-11-06T02:39:36.1073923Z Received 88080384 of 173648827 (50.7%), 83.5 MBs/sec
+2026-11-06T02:39:36.1221925Z Cache restored successfully
+2026-11-06T02:39:36.1490238Z Received 88080384 of 333736206 (26.4%), 82.7 MBs/sec
+2026-11-06T02:39:36.1582819Z Restored cache entry with key gradle-generated-gradle-jars-v1-d6d47bedd9337a0be6f3a426277e63ee to /home/runner/.gradle/caches/8.7/generated-gradle-jars/gradle-api-8.7.jar in 1184ms
+2026-11-06T02:39:36.8624415Z Received 173648827 of 173648827 (100.0%), 94.0 MBs/sec
+2026-11-06T02:39:36.8627256Z Cache Size: ~166 MB (173648827 B)
+2026-11-06T02:39:36.9152368Z [command]/usr/bin/tar -xf /home/runner/work/_temp/795d4e5e-26ee-4604-bb48-402f2bbef21e/cache.tzst -P -C /home/runner/work/Kook/Kook --use-compress-program unzstd
+2026-11-06T02:39:37.1552572Z Received 285212672 of 333736206 (85.5%), 134.5 MBs/sec
+2026-11-06T02:39:37.3583055Z Received 333736206 of 333736206 (100.0%), 143.0 MBs/sec
+2026-11-06T02:39:37.3583987Z Cache Size: ~318 MB (333736206 B)
+2026-11-06T02:39:37.3756266Z [command]/usr/bin/tar -xf /home/runner/work/_temp/b914f514-8de8-47d1-b68d-848f6dc3f23a/cache.tzst -P -C /home/runner/work/Kook/Kook --use-compress-program unzstd
+2026-11-06T02:39:38.1203099Z Cache restored successfully
+2026-11-06T02:39:38.1469289Z Restored cache entry with key gradle-dependencies-v1-937e1b28f34bee151a1d08129744547b to /home/runner/.gradle/caches/modules-*/files-*/*/*/*/* in 3171ms
+2026-11-06T02:39:38.5823289Z Cache restored successfully
+2026-11-06T02:39:38.5901661Z Restored cache entry with key gradle-transforms-v1-4a9dc066d73df2a20cf29a853cc30897 to /home/runner/.gradle/caches/transforms-4/*/,/home/runner/.gradle/caches/*/transforms/*/ in 3613ms
+2026-11-06T02:39:38.6114753Z ##[endgroup]
+2026-11-06T02:39:38.6371917Z ##[group]All Gradle Wrapper jars are valid
+2026-11-06T02:39:38.6373012Z 
+2026-11-06T02:39:38.6373652Z ##[endgroup]
+2026-11-06T02:39:38.6820382Z ##[group]Provision Gradle 8.7
+2026-11-06T02:39:42.1909518Z Cache hit for: gradle-8.7
+2026-11-06T02:39:42.8471896Z Received 133909426 of 133909426 (100.0%), 201.7 MBs/sec
+2026-11-06T02:39:42.8474397Z Cache Size: ~128 MB (133909426 B)
+2026-11-06T02:39:42.8545123Z [command]/usr/bin/tar -xf /home/runner/work/_temp/2cfcc1f7-11a4-4a1f-b247-93126b3ca2c5/cache.tzst -P -C /home/runner/work/Kook/Kook --use-compress-program unzstd
+2026-11-06T02:39:43.0888656Z Cache restored successfully
+2026-11-06T02:39:43.0951151Z Restored Gradle distribution gradle-8.7 from cache to /home/runner/work/_temp/.gradle-actions/gradle-installations/downloads/gradle-8.7-bin.zip
+2026-11-06T02:39:43.0972879Z [command]/usr/bin/unzip -o -q /home/runner/work/_temp/.gradle-actions/gradle-installations/downloads/gradle-8.7-bin.zip
+2026-11-06T02:39:44.1021352Z Extracted Gradle 8.7 to /home/runner/work/_temp/.gradle-actions/gradle-installations/installs/gradle-8.7
+2026-11-06T02:39:44.1023294Z Provisioned Gradle executable /home/runner/work/_temp/.gradle-actions/gradle-installations/installs/gradle-8.7/bin/gradle
+2026-11-06T02:39:44.1025140Z ##[endgroup]
+2026-11-06T02:39:44.3242657Z ##[group]Run set -euo pipefail
+2026-11-06T02:39:44.3243323Z [36;1mset -euo pipefail[0m
+2026-11-06T02:39:44.3244000Z [36;1mpython3 tests/run_all.py evidence/clean_pass_results.json[0m
+2026-11-06T02:39:44.3244497Z [36;1mpython3 tests/run_stress.py[0m
+2026-11-06T02:39:44.3245013Z [36;1mpython3 tests/run_combo_rank_stress.py evidence/combo_rank_stress_results.json[0m
+2026-11-06T02:39:44.3245552Z [36;1mpython3 - <<'PY'[0m
+2026-11-06T02:39:44.3245882Z [36;1mimport json[0m
+2026-11-06T02:39:44.3246351Z [36;1md = json.load(open('evidence/combo_rank_stress_results.json', encoding='utf-8'))[0m
+2026-11-06T02:39:44.3247497Z [36;1massert d['status'] == 'PASS'[0m
+2026-11-06T02:39:44.3247969Z [36;1massert d['all_nonempty_combinations_tested'] == 15[0m
+2026-11-06T02:39:44.3248480Z [36;1massert d['ten_thousand_toggle_simulation_pass'] is True[0m
+2026-11-06T02:39:44.3248980Z [36;1massert d['all_four_reproduces_committed_rank'] is True[0m
+2026-11-06T02:39:44.3249524Z [36;1massert d['selected_complete_filter_checks'] == 2649 * 15[0m
+2026-11-06T02:39:44.3250200Z [36;1mprint('COMBO_RANK_EXTREME_PASS', d['all_nonempty_combinations_tested'], d['selected_complete_filter_checks'])[0m
+2026-11-06T02:39:44.3250789Z [36;1mPY[0m
+2026-11-06T02:39:44.3273919Z shell: /usr/bin/bash -e {0}
+2026-11-06T02:39:44.3274269Z env:
+2026-11-06T02:39:44.3274753Z   EXPECTED_STABLE_CERT_SHA256: 1070e82beee574cd29ffd2dc3e693fd7f7862374f16d1606567db303ab152477
+2026-11-06T02:39:44.3275447Z   FINANCIAL_EVIDENCE_REF: fix/independent-financial-date-ci
+2026-11-06T02:39:44.3275948Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:39:44.3276795Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.16/x64/lib/pkgconfig
+2026-11-06T02:39:44.3277702Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:39:44.3278521Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:39:44.3279353Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:39:44.3280364Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.16/x64/lib
+2026-11-06T02:39:44.3281267Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.21-9/x64
+2026-11-06T02:39:44.3282148Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.21-9/x64
+2026-11-06T02:39:44.3282836Z   MAVEN_ARGS: -ntp
+2026-11-06T02:39:44.3283364Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+2026-11-06T02:39:44.3283999Z   GRADLE_USER_HOME: /home/runner/.gradle
+2026-11-06T02:39:44.3284599Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+2026-11-06T02:39:44.3285272Z   GRADLE_BUILD_ACTION_CACHE_RESTORED: true
+2026-11-06T02:39:44.3286186Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+2026-11-06T02:39:44.3287781Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+2026-11-06T02:39:44.3288513Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+2026-11-06T02:39:44.3289116Z ##[endgroup]
+2026-11-06T02:39:44.4400388Z test_negative_margin (tests.test_core.C01Numbers.test_negative_margin) ... ok
+2026-11-06T02:39:44.4401806Z test_nonfinite_and_bool (tests.test_core.C01Numbers.test_nonfinite_and_bool) ... ok
+2026-11-06T02:39:44.4403127Z test_price_return_6m_hand (tests.test_core.C01Numbers.test_price_return_6m_hand) ... ok
+2026-11-06T02:39:44.4408546Z test_trailing_per_financial (tests.test_core.C01Numbers.test_trailing_per_financial) ... ok
+2026-11-06T02:39:44.4410873Z test_trailing_per_loss_making (tests.test_core.C01Numbers.test_trailing_per_loss_making) ... ok
+2026-11-06T02:39:44.4413165Z test_trailing_per_profitable (tests.test_core.C01Numbers.test_trailing_per_profitable) ... ok
+2026-11-06T02:39:44.4415376Z test_trailing_per_zero_eps (tests.test_core.C01Numbers.test_trailing_per_zero_eps) ... ok
+2026-11-06T02:39:44.4417431Z test_yoy_hand (tests.test_core.C01Numbers.test_yoy_hand) ... ok
+2026-11-06T02:39:44.4418787Z test_yoy_negative_base (tests.test_core.C01Numbers.test_yoy_negative_base) ... ok
+2026-11-06T02:39:44.4420703Z test_yoy_zero_base (tests.test_core.C01Numbers.test_yoy_zero_base) ... ok
+2026-11-06T02:39:44.4422306Z test_currency_mismatch (tests.test_core.C02Accounting.test_currency_mismatch) ... ok
+2026-11-06T02:39:44.4424117Z test_dash_is_missing_not_zero (tests.test_core.C02Accounting.test_dash_is_missing_not_zero) ... ok
+2026-11-06T02:39:44.4426203Z test_direct_quarter_not_double_subtract (tests.test_core.C02Accounting.test_direct_quarter_not_double_subtract) ... ok
+2026-11-06T02:39:44.4428134Z test_issuer_mismatch (tests.test_core.C02Accounting.test_issuer_mismatch) ... ok
+2026-11-06T02:39:44.4429496Z test_money_leading_signs (tests.test_core.C02Accounting.test_money_leading_signs) ... ok
+2026-11-06T02:39:44.4430888Z test_period_mismatch (tests.test_core.C02Accounting.test_period_mismatch) ... ok
+2026-11-06T02:39:44.4432175Z test_scope_mismatch (tests.test_core.C02Accounting.test_scope_mismatch) ... ok
+2026-11-06T02:39:44.4433441Z test_ytd_needs_previous (tests.test_core.C02Accounting.test_ytd_needs_previous) ... ok
+2026-11-06T02:39:44.4434762Z test_ytd_subtraction (tests.test_core.C02Accounting.test_ytd_subtraction) ... ok
+2026-11-06T02:39:44.4436153Z test_zero_real_money (tests.test_core.C02Accounting.test_zero_real_money) ... ok
+2026-11-06T02:39:44.4437940Z test_alphanumeric (tests.test_core.C03TimeAndIdentity.test_alphanumeric) ... ok
+2026-11-06T02:39:44.4439320Z test_future_information_excluded (tests.test_core.C03TimeAndIdentity.test_future_information_excluded) ... ok
+2026-11-06T02:39:44.4440868Z test_identity_sql_rejected (tests.test_core.C03TimeAndIdentity.test_identity_sql_rejected) ... ok
+2026-11-06T02:39:44.4442302Z test_integer_identity_rejected (tests.test_core.C03TimeAndIdentity.test_integer_identity_rejected) ... ok
+2026-11-06T02:39:44.4443627Z test_leading_zero (tests.test_core.C03TimeAndIdentity.test_leading_zero) ... ok
+2026-11-06T02:39:44.4444973Z test_restatement_point_in_time (tests.test_core.C03TimeAndIdentity.test_restatement_point_in_time) ... ok
+2026-11-06T02:39:44.4446379Z test_all_ties_50 (tests.test_core.C04RankProperties.test_all_ties_50) ... ok
+2026-11-06T02:39:44.4447887Z test_all_zero_weights (tests.test_core.C04RankProperties.test_all_zero_weights) ... ok
+2026-11-06T02:39:44.4449216Z test_default_weights_sum100 (tests.test_core.C04RankProperties.test_default_weights_sum100) ... ok
+2026-11-06T02:39:44.4450679Z test_filter_does_not_recompute (tests.test_core.C04RankProperties.test_filter_does_not_recompute) ... ok
+2026-11-06T02:39:44.4452029Z test_hand_midrank_tie (tests.test_core.C04RankProperties.test_hand_midrank_tie) ... ok
+2026-11-06T02:39:44.4453288Z test_lone_stock_no_fake_50 (tests.test_core.C04RankProperties.test_lone_stock_no_fake_50) ... ok
+2026-11-06T02:39:44.4454706Z test_missing_not_in_denominator (tests.test_core.C04RankProperties.test_missing_not_in_denominator) ... ok
+2026-11-06T02:39:44.4456450Z test_negative_weights (tests.test_core.C04RankProperties.test_negative_weights) ... ok
+2026-11-06T02:39:44.4457960Z test_no_active_metrics (tests.test_core.C04RankProperties.test_no_active_metrics) ... ok
+2026-11-06T02:39:44.4459273Z test_per_low_is_high_score (tests.test_core.C04RankProperties.test_per_low_is_high_score) ... ok
+2026-11-06T02:39:44.5279199Z test_permutation_invariant_200 (tests.test_core.C04RankProperties.test_permutation_invariant_200) ... ok
+2026-11-06T02:39:44.5281459Z test_unknown_metric (tests.test_core.C04RankProperties.test_unknown_metric) ... ok
+2026-11-06T02:39:44.5283592Z test_all_missing_0_100 (tests.test_core.C05Missingness.test_all_missing_0_100) ... ok
+2026-11-06T02:39:44.5304391Z test_missing_interval_hand (tests.test_core.C05Missingness.test_missing_interval_hand) ... ok
+2026-11-06T02:39:44.5305991Z test_one_metric_cannot_be_strong_score (tests.test_core.C05Missingness.test_one_metric_cannot_be_strong_score) ... ok
+2026-11-06T02:39:44.5307376Z test_buy_is_not_probability (tests.test_core.C06Decision.test_buy_is_not_probability) ... ok
+2026-11-06T02:39:44.5308312Z test_qualified_buy_review (tests.test_core.C06Decision.test_qualified_buy_review) ... ok
+2026-11-06T02:39:44.5309321Z test_valid_quote_structure (tests.test_core.C07Evidence.test_valid_quote_structure) ... ok
+2026-11-06T02:39:44.5310234Z test_price_revalues_without_forced_prose (tests.test_core.C08Updates.test_price_revalues_without_forced_prose) ... ok
+2026-11-06T02:39:45.0107201Z test_duplicate_event_once (tests.test_core.C09Persistence.test_duplicate_event_once) ... ok
+2026-11-06T02:39:45.0109179Z test_official_https_allowed (tests.test_core.C10SecurityAndRights.test_official_https_allowed) ... ok
+2026-11-06T02:39:45.0111110Z test_cost_hand_hypothetical (tests.test_core.C11BudgetAndRetry.test_cost_hand_hypothetical) ... ok
+2026-11-06T02:39:45.0112940Z test_exact_four_slots (tests.test_core.C12PresentationContract.test_exact_four_slots) ... ok
+2026-11-06T02:39:45.0114890Z test_metric_order_is_id_based (tests.test_core.C12PresentationContract.test_metric_order_is_id_based) ... ok
+2026-11-06T02:39:45.0116086Z 
+2026-11-06T02:39:45.0116837Z ----------------------------------------------------------------------
+2026-11-06T02:39:45.0117648Z Ran 50 tests in 0.571s
+2026-11-06T02:39:45.0118055Z 
+2026-11-06T02:39:45.0118412Z OK
+2026-11-06T02:39:46.3861778Z {
+2026-11-06T02:39:46.3862477Z   "time_utc": "2026-11-06T02:39:46.385338+00:00",
+2026-11-06T02:39:46.3863534Z   "scope": "Synthetic local reference model, not current market data, production throughput, model quality or investment returns",
+2026-11-06T02:39:46.3864504Z   "total": 8,
+2026-11-06T02:39:46.3864873Z   "passed": 8,
+2026-11-06T02:39:46.3865242Z   "results": [
+2026-11-06T02:39:46.3865597Z     {
+2026-11-06T02:39:46.3865936Z       "id": "S01",
+2026-11-06T02:39:46.3866736Z       "scenario": "3,500 synthetic stocks / 35,000 metric ranking",
+2026-11-06T02:39:46.3867393Z       "status": "PASS",
+2026-11-06T02:39:46.3867853Z       "seconds": 0.049831,
+2026-11-06T02:39:46.3868268Z       "detail": {
+2026-11-06T02:39:46.3868672Z         "synthetic_issuers": 3500,
+2026-11-06T02:39:46.3869169Z         "synthetic_metric_values": 14000,
+2026-11-06T02:39:46.3869660Z         "visible": 3500,
+2026-11-06T02:39:46.3870108Z         "filter_invariance": true,
+2026-11-06T02:39:46.3870829Z         "snapshot_hash": "727c17970ee478f886a046a585c103f30cdd5659e1aebf52d8e91131becbc7c0"
+2026-11-06T02:39:46.3871559Z       }
+2026-11-06T02:39:46.3871904Z     },
+2026-11-06T02:39:46.3872231Z     {
+2026-11-06T02:39:46.3872575Z       "id": "S02",
+2026-11-06T02:39:46.3873080Z       "scenario": "Independent exact rational arithmetic oracle",
+2026-11-06T02:39:46.3873586Z       "status": "PASS",
+2026-11-06T02:39:46.3873931Z       "seconds": 0.00444,
+2026-11-06T02:39:46.3874274Z       "detail": {
+2026-11-06T02:39:46.3874620Z         "independent_pairwise_oracle": true,
+2026-11-06T02:39:46.3875047Z         "issuers": 60,
+2026-11-06T02:39:46.3875697Z         "metrics": 240,
+2026-11-06T02:39:46.3876067Z         "arithmetic": "fractions.Fraction",
+2026-11-06T02:39:46.3876696Z         "max_tolerance": 1e-10
+2026-11-06T02:39:46.3877060Z       }
+2026-11-06T02:39:46.3877342Z     },
+2026-11-06T02:39:46.3877615Z     {
+2026-11-06T02:39:46.3877910Z       "id": "S03",
+2026-11-06T02:39:46.3878381Z       "scenario": "Forced crash at 137/500 and process reopening",
+2026-11-06T02:39:46.3878895Z       "status": "PASS",
+2026-11-06T02:39:46.3879246Z       "seconds": 0.527677,
+2026-11-06T02:39:46.3879594Z       "detail": {
+2026-11-06T02:39:46.3879910Z         "failure_at": 137,
+2026-11-06T02:39:46.3880259Z         "before": 136,
+2026-11-06T02:39:46.3880592Z         "resumed_only": 364,
+2026-11-06T02:39:46.3880955Z         "after": 500,
+2026-11-06T02:39:46.3881283Z         "unique_outbox": 500
+2026-11-06T02:39:46.3881632Z       }
+2026-11-06T02:39:46.3881917Z     },
+2026-11-06T02:39:46.3882199Z     {
+2026-11-06T02:39:46.3882490Z       "id": "S04",
+2026-11-06T02:39:46.3882857Z       "scenario": "One invalid issuer among 500",
+2026-11-06T02:39:46.3883304Z       "status": "PASS",
+2026-11-06T02:39:46.3883623Z       "seconds": 0.360033,
+2026-11-06T02:39:46.3883918Z       "detail": {
+2026-11-06T02:39:46.3884204Z         "valid_published": 499,
+2026-11-06T02:39:46.3884714Z         "isolated_failure": [
+2026-11-06T02:39:46.3885048Z           "000137"
+2026-11-06T02:39:46.3885308Z         ],
+2026-11-06T02:39:46.3885594Z         "whole_universe_blocked": false
+2026-11-06T02:39:46.3885942Z       }
+2026-11-06T02:39:46.3886184Z     },
+2026-11-06T02:39:46.3886423Z     {
+2026-11-06T02:39:46.3889660Z       "id": "S05",
+2026-11-06T02:39:46.3890069Z       "scenario": "10,000 repeated event deliveries",
+2026-11-06T02:39:46.3890482Z       "status": "PASS",
+2026-11-06T02:39:46.3890801Z       "seconds": 0.294102,
+2026-11-06T02:39:46.3891104Z       "detail": {
+2026-11-06T02:39:46.3891400Z         "deliveries": 10000,
+2026-11-06T02:39:46.3891725Z         "unique_jobs": 500,
+2026-11-06T02:39:46.3892070Z         "duplicates_suppressed": 9500
+2026-11-06T02:39:46.3892421Z       }
+2026-11-06T02:39:46.3892674Z     },
+2026-11-06T02:39:46.3892918Z     {
+2026-11-06T02:39:46.3893165Z       "id": "S06",
+2026-11-06T02:39:46.3893490Z       "scenario": "Concurrent budget reservation",
+2026-11-06T02:39:46.3893885Z       "status": "PASS",
+2026-11-06T02:39:46.3894184Z       "seconds": 0.052514,
+2026-11-06T02:39:46.3894487Z       "detail": {
+2026-11-06T02:39:46.3894773Z         "parallel_threads": 16,
+2026-11-06T02:39:46.3895104Z         "requests": 100,
+2026-11-06T02:39:46.3895403Z         "accepted": 10,
+2026-11-06T02:39:46.3895710Z         "budget_limit_units": 1000,
+2026-11-06T02:39:46.3896057Z         "used_units": 1000,
+2026-11-06T02:39:46.3896372Z         "money_spent": 0
+2026-11-06T02:39:46.3897135Z       }
+2026-11-06T02:39:46.3897406Z     },
+2026-11-06T02:39:46.3897665Z     {
+2026-11-06T02:39:46.3897926Z       "id": "S07",
+2026-11-06T02:39:46.3898322Z       "scenario": "Out-of-order revisions cannot overwrite newest",
+2026-11-06T02:39:46.3898769Z       "status": "PASS",
+2026-11-06T02:39:46.3899078Z       "seconds": 0.013707,
+2026-11-06T02:39:46.3899394Z       "detail": {
+2026-11-06T02:39:46.3899684Z         "delivery_order": [
+2026-11-06T02:39:46.3899985Z           1,
+2026-11-06T02:39:46.3900234Z           3,
+2026-11-06T02:39:46.3900494Z           2,
+2026-11-06T02:39:46.3900737Z           5,
+2026-11-06T02:39:46.3900991Z           4,
+2026-11-06T02:39:46.3901236Z           9,
+2026-11-06T02:39:46.3901480Z           8,
+2026-11-06T02:39:46.3901732Z           10,
+2026-11-06T02:39:46.3901980Z           7,
+2026-11-06T02:39:46.3902231Z           6
+2026-11-06T02:39:46.3902473Z         ],
+2026-11-06T02:39:46.3902752Z         "published_versions": 5,
+2026-11-06T02:39:46.3903094Z         "outdated_rejected": 5,
+2026-11-06T02:39:46.3903413Z         "final_version": 10
+2026-11-06T02:39:46.3903706Z       }
+2026-11-06T02:39:46.3903949Z     },
+2026-11-06T02:39:46.3904198Z     {
+2026-11-06T02:39:46.3904444Z       "id": "S08",
+2026-11-06T02:39:46.3905035Z       "scenario": "Synthetic cost differential calculation",
+2026-11-06T02:39:46.3905443Z       "status": "PASS",
+2026-11-06T02:39:46.3905747Z       "seconds": 1.2e-05,
+2026-11-06T02:39:46.3906055Z       "detail": {
+2026-11-06T02:39:46.3906348Z         "synthetic_inputs_only": true,
+2026-11-06T02:39:46.3907031Z         "not_provider_price_quote": true,
+2026-11-06T02:39:46.3907416Z         "assumed_input_USD_per_million": 1,
+2026-11-06T02:39:46.3907800Z         "assumed_output_USD_per_million": 4,
+2026-11-06T02:39:46.3908170Z         "initial_USD": 96.0,
+2026-11-06T02:39:46.3908506Z         "monthly_incremental_USD": 144.0,
+2026-11-06T02:39:46.3908873Z         "monthly_full_daily_USD": 2880.0,
+2026-11-06T02:39:46.3909220Z         "relative_reduction": 20,
+2026-11-06T02:39:46.3909561Z         "other_costs_excluded": true
+2026-11-06T02:39:46.3909882Z       }
+2026-11-06T02:39:46.3910129Z     }
+2026-11-06T02:39:46.3910372Z   ]
+2026-11-06T02:39:46.3910611Z }
+2026-11-06T02:39:48.8950218Z {
+2026-11-06T02:39:48.8951051Z   "status": "PASS",
+2026-11-06T02:39:48.8951553Z   "universe_count": 2649,
+2026-11-06T02:39:48.8952030Z   "all_nonempty_combinations_tested": 15,
+2026-11-06T02:39:48.8952856Z   "combination_results": {
+2026-11-06T02:39:48.8953562Z     "m01": {
+2026-11-06T02:39:48.8954959Z       "metric_count": 1,
+2026-11-06T02:39:48.8955729Z       "eligible_count": 2561,
+2026-11-06T02:39:48.8956425Z       "top5": [
+2026-11-06T02:39:48.8957311Z         {
+2026-11-06T02:39:48.8957849Z           "code": "950220",
+2026-11-06T02:39:48.8958478Z           "rank": 1,
+2026-11-06T02:39:48.8959096Z           "score": 100.0
+2026-11-06T02:39:48.8959693Z         },
+2026-11-06T02:39:48.8960168Z         {
+2026-11-06T02:39:48.8960654Z           "code": "069920",
+2026-11-06T02:39:48.8961165Z           "rank": 2,
+2026-11-06T02:39:48.8961516Z           "score": 99.960938
+2026-11-06T02:39:48.8961891Z         },
+2026-11-06T02:39:48.8962192Z         {
+2026-11-06T02:39:48.8962512Z           "code": "287840",
+2026-11-06T02:39:48.8962887Z           "rank": 3,
+2026-11-06T02:39:48.8963239Z           "score": 99.921875
+2026-11-06T02:39:48.8963605Z         },
+2026-11-06T02:39:48.8963897Z         {
+2026-11-06T02:39:48.8964207Z           "code": "298060",
+2026-11-06T02:39:48.8964570Z           "rank": 4,
+2026-11-06T02:39:48.8964926Z           "score": 99.882812
+2026-11-06T02:39:48.8965287Z         },
+2026-11-06T02:39:48.8965595Z         {
+2026-11-06T02:39:48.8965913Z           "code": "255440",
+2026-11-06T02:39:48.8966280Z           "rank": 5,
+2026-11-06T02:39:48.8966918Z           "score": 99.84375
+2026-11-06T02:39:48.8967368Z         }
+2026-11-06T02:39:48.8967769Z       ]
+2026-11-06T02:39:48.8968167Z     },
+2026-11-06T02:39:48.8968601Z     "m02": {
+2026-11-06T02:39:48.8969118Z       "metric_count": 1,
+2026-11-06T02:39:48.8969668Z       "eligible_count": 2410,
+2026-11-06T02:39:48.8970188Z       "top5": [
+2026-11-06T02:39:48.8970606Z         {
+2026-11-06T02:39:48.8971030Z           "code": "350520",
+2026-11-06T02:39:48.8971513Z           "rank": 1,
+2026-11-06T02:39:48.8972001Z           "score": 100.0
+2026-11-06T02:39:48.8972434Z         },
+2026-11-06T02:39:48.8972800Z         {
+2026-11-06T02:39:48.8973066Z           "code": "395400",
+2026-11-06T02:39:48.8973360Z           "rank": 2,
+2026-11-06T02:39:48.8973659Z           "score": 99.958489
+2026-11-06T02:39:48.8973972Z         },
+2026-11-06T02:39:48.8974226Z         {
+2026-11-06T02:39:48.8974480Z           "code": "348950",
+2026-11-06T02:39:48.8974775Z           "rank": 3,
+2026-11-06T02:39:48.8975058Z           "score": 99.916978
+2026-11-06T02:39:48.8975361Z         },
+2026-11-06T02:39:48.8975600Z         {
+2026-11-06T02:39:48.8975856Z           "code": "088260",
+2026-11-06T02:39:48.8976167Z           "rank": 4,
+2026-11-06T02:39:48.8976732Z           "score": 99.875467
+2026-11-06T02:39:48.8977098Z         },
+2026-11-06T02:39:48.8977339Z         {
+2026-11-06T02:39:48.8977597Z           "code": "000660",
+2026-11-06T02:39:48.8977894Z           "rank": 5,
+2026-11-06T02:39:48.8978185Z           "score": 99.833956
+2026-11-06T02:39:48.8978859Z         }
+2026-11-06T02:39:48.8979104Z       ]
+2026-11-06T02:39:48.8979348Z     },
+2026-11-06T02:39:48.8979599Z     "m03": {
+2026-11-06T02:39:48.8979873Z       "metric_count": 1,
+2026-11-06T02:39:48.8980178Z       "eligible_count": 2626,
+2026-11-06T02:39:48.8980493Z       "top5": [
+2026-11-06T02:39:48.8980757Z         {
+2026-11-06T02:39:48.8981019Z           "code": "092600",
+2026-11-06T02:39:48.8981328Z           "rank": 1,
+2026-11-06T02:39:48.8981609Z           "score": 100.0
+2026-11-06T02:39:48.8981902Z         },
+2026-11-06T02:39:48.8982145Z         {
+2026-11-06T02:39:48.8982406Z           "code": "052420",
+2026-11-06T02:39:48.8982701Z           "rank": 2,
+2026-11-06T02:39:48.8982988Z           "score": 99.940719
+2026-11-06T02:39:48.8983288Z         },
+2026-11-06T02:39:48.8983532Z         {
+2026-11-06T02:39:48.8983785Z           "code": "224060",
+2026-11-06T02:39:48.8984070Z           "rank": 3,
+2026-11-06T02:39:48.8984345Z           "score": 99.881437
+2026-11-06T02:39:48.8984638Z         },
+2026-11-06T02:39:48.8984881Z         {
+2026-11-06T02:39:48.8985126Z           "code": "019010",
+2026-11-06T02:39:48.8985427Z           "rank": 4,
+2026-11-06T02:39:48.8985706Z           "score": 99.762874
+2026-11-06T02:39:48.8985991Z         },
+2026-11-06T02:39:48.8986414Z         {
+2026-11-06T02:39:48.8986989Z           "code": "040610",
+2026-11-06T02:39:48.8987295Z           "rank": 5,
+2026-11-06T02:39:48.8987577Z           "score": 99.762874
+2026-11-06T02:39:48.8987870Z         }
+2026-11-06T02:39:48.8988115Z       ]
+2026-11-06T02:39:48.8988357Z     },
+2026-11-06T02:39:48.8988605Z     "m04": {
+2026-11-06T02:39:48.8988869Z       "metric_count": 1,
+2026-11-06T02:39:48.8989181Z       "eligible_count": 2619,
+2026-11-06T02:39:48.8989485Z       "top5": [
+2026-11-06T02:39:48.8989752Z         {
+2026-11-06T02:39:48.8990013Z           "code": "007460",
+2026-11-06T02:39:48.8990308Z           "rank": 1,
+2026-11-06T02:39:48.8990588Z           "score": 100.0
+2026-11-06T02:39:48.8990872Z         },
+2026-11-06T02:39:48.8991113Z         {
+2026-11-06T02:39:48.8991369Z           "code": "003060",
+2026-11-06T02:39:48.8991663Z           "rank": 2,
+2026-11-06T02:39:48.8991939Z           "score": 99.961803
+2026-11-06T02:39:48.8992230Z         },
+2026-11-06T02:39:48.8992473Z         {
+2026-11-06T02:39:48.8992740Z           "code": "009310",
+2026-11-06T02:39:48.8993027Z           "rank": 3,
+2026-11-06T02:39:48.8993294Z           "score": 99.923606
+2026-11-06T02:39:48.8993588Z         },
+2026-11-06T02:39:48.8993826Z         {
+2026-11-06T02:39:48.8994077Z           "code": "032580",
+2026-11-06T02:39:48.8994369Z           "rank": 4,
+2026-11-06T02:39:48.8994647Z           "score": 99.885409
+2026-11-06T02:39:48.8994936Z         },
+2026-11-06T02:39:48.8995178Z         {
+2026-11-06T02:39:48.8995433Z           "code": "079650",
+2026-11-06T02:39:48.8995716Z           "rank": 5,
+2026-11-06T02:39:48.8995995Z           "score": 99.847212
+2026-11-06T02:39:48.8996288Z         }
+2026-11-06T02:39:48.8996769Z       ]
+2026-11-06T02:39:48.8997082Z     },
+2026-11-06T02:39:48.8997362Z     "m01+m02": {
+2026-11-06T02:39:48.8997642Z       "metric_count": 2,
+2026-11-06T02:39:48.8997955Z       "eligible_count": 2403,
+2026-11-06T02:39:48.8998268Z       "top5": [
+2026-11-06T02:39:48.8998533Z         {
+2026-11-06T02:39:48.8998804Z           "code": "039200",
+2026-11-06T02:39:48.8999095Z           "rank": 1,
+2026-11-06T02:39:48.8999381Z           "score": 99.2895295
+2026-11-06T02:39:48.8999672Z         },
+2026-11-06T02:39:48.8999918Z         {
+2026-11-06T02:39:48.9000175Z           "code": "000660",
+2026-11-06T02:39:48.9000466Z           "rank": 2,
+2026-11-06T02:39:48.9000746Z           "score": 98.7841655
+2026-11-06T02:39:48.9001030Z         },
+2026-11-06T02:39:48.9001273Z         {
+2026-11-06T02:39:48.9001523Z           "code": "080220",
+2026-11-06T02:39:48.9001812Z           "rank": 3,
+2026-11-06T02:39:48.9002081Z           "score": 98.581394
+2026-11-06T02:39:48.9002370Z         },
+2026-11-06T02:39:48.9002607Z         {
+2026-11-06T02:39:48.9003042Z           "code": "196170",
+2026-11-06T02:39:48.9003336Z           "rank": 4,
+2026-11-06T02:39:48.9003607Z           "score": 98.4239765
+2026-11-06T02:39:48.9003897Z         },
+2026-11-06T02:39:48.9004133Z         {
+2026-11-06T02:39:48.9004384Z           "code": "255440",
+2026-11-06T02:39:48.9004674Z           "rank": 5,
+2026-11-06T02:39:48.9004960Z           "score": 98.3237015
+2026-11-06T02:39:48.9005252Z         }
+2026-11-06T02:39:48.9005489Z       ]
+2026-11-06T02:39:48.9005745Z     },
+2026-11-06T02:39:48.9005985Z     "m01+m03": {
+2026-11-06T02:39:48.9006262Z       "metric_count": 2,
+2026-11-06T02:39:48.9006750Z       "eligible_count": 2551,
+2026-11-06T02:39:48.9007061Z       "top5": [
+2026-11-06T02:39:48.9007321Z         {
+2026-11-06T02:39:48.9007576Z           "code": "000040",
+2026-11-06T02:39:48.9007865Z           "rank": 1,
+2026-11-06T02:39:48.9008135Z           "score": 99.2847025
+2026-11-06T02:39:48.9008427Z         },
+2026-11-06T02:39:48.9008664Z         {
+2026-11-06T02:39:48.9008931Z           "code": "035290",
+2026-11-06T02:39:48.9009218Z           "rank": 2,
+2026-11-06T02:39:48.9009495Z           "score": 97.2539345
+2026-11-06T02:39:48.9009789Z         },
+2026-11-06T02:39:48.9010024Z         {
+2026-11-06T02:39:48.9010281Z           "code": "109960",
+2026-11-06T02:39:48.9010709Z           "rank": 3,
+2026-11-06T02:39:48.9010998Z           "score": 97.2440305
+2026-11-06T02:39:48.9011283Z         },
+2026-11-06T02:39:48.9011525Z         {
+2026-11-06T02:39:48.9011782Z           "code": "023590",
+2026-11-06T02:39:48.9012077Z           "rank": 4,
+2026-11-06T02:39:48.9012370Z           "score": 96.828064
+2026-11-06T02:39:48.9012666Z         },
+2026-11-06T02:39:48.9012918Z         {
+2026-11-06T02:39:48.9013173Z           "code": "032190",
+2026-11-06T02:39:48.9013472Z           "rank": 5,
+2026-11-06T02:39:48.9013754Z           "score": 96.789002
+2026-11-06T02:39:48.9014042Z         }
+2026-11-06T02:39:48.9014289Z       ]
+2026-11-06T02:39:48.9014530Z     },
+2026-11-06T02:39:48.9014784Z     "m01+m04": {
+2026-11-06T02:39:48.9015069Z       "metric_count": 2,
+2026-11-06T02:39:48.9015378Z       "eligible_count": 2538,
+2026-11-06T02:39:48.9015684Z       "top5": [
+2026-11-06T02:39:48.9015938Z         {
+2026-11-06T02:39:48.9016195Z           "code": "025560",
+2026-11-06T02:39:48.9016612Z           "rank": 1,
+2026-11-06T02:39:48.9016899Z           "score": 99.1640505
+2026-11-06T02:39:48.9017194Z         },
+2026-11-06T02:39:48.9017435Z         {
+2026-11-06T02:39:48.9017681Z           "code": "032580",
+2026-11-06T02:39:48.9017968Z           "rank": 2,
+2026-11-06T02:39:48.9018245Z           "score": 98.2434855
+2026-11-06T02:39:48.9018530Z         },
+2026-11-06T02:39:48.9018772Z         {
+2026-11-06T02:39:48.9019023Z           "code": "092870",
+2026-11-06T02:39:48.9019313Z           "rank": 3,
+2026-11-06T02:39:48.9019586Z           "score": 97.9200485
+2026-11-06T02:39:48.9019876Z         },
+2026-11-06T02:39:48.9020117Z         {
+2026-11-06T02:39:48.9020360Z           "code": "355690",
+2026-11-06T02:39:48.9020657Z           "rank": 4,
+2026-11-06T02:39:48.9020925Z           "score": 97.05672
+2026-11-06T02:39:48.9021206Z         },
+2026-11-06T02:39:48.9021440Z         {
+2026-11-06T02:39:48.9021693Z           "code": "159010",
+2026-11-06T02:39:48.9021980Z           "rank": 5,
+2026-11-06T02:39:48.9022256Z           "score": 96.995216
+2026-11-06T02:39:48.9022545Z         }
+2026-11-06T02:39:48.9022782Z       ]
+2026-11-06T02:39:48.9023023Z     },
+2026-11-06T02:39:48.9023263Z     "m02+m03": {
+2026-11-06T02:39:48.9023536Z       "metric_count": 2,
+2026-11-06T02:39:48.9023833Z       "eligible_count": 2401,
+2026-11-06T02:39:48.9024143Z       "top5": [
+2026-11-06T02:39:48.9024405Z         {
+2026-11-06T02:39:48.9024652Z           "code": "019010",
+2026-11-06T02:39:48.9024945Z           "rank": 1,
+2026-11-06T02:39:48.9025217Z           "score": 98.968195
+2026-11-06T02:39:48.9025505Z         },
+2026-11-06T02:39:48.9025744Z         {
+2026-11-06T02:39:48.9026051Z           "code": "052790",
+2026-11-06T02:39:48.9026346Z           "rank": 2,
+2026-11-06T02:39:48.9026955Z           "score": 97.72599
+2026-11-06T02:39:48.9027249Z         },
+2026-11-06T02:39:48.9027489Z         {
+2026-11-06T02:39:48.9027746Z           "code": "100030",
+2026-11-06T02:39:48.9028036Z           "rank": 3,
+2026-11-06T02:39:48.9028319Z           "score": 97.174407
+2026-11-06T02:39:48.9028616Z         },
+2026-11-06T02:39:48.9028854Z         {
+2026-11-06T02:39:48.9029108Z           "code": "016670",
+2026-11-06T02:39:48.9029392Z           "rank": 4,
+2026-11-06T02:39:48.9029678Z           "score": 96.1725225
+2026-11-06T02:39:48.9029971Z         },
+2026-11-06T02:39:48.9030218Z         {
+2026-11-06T02:39:48.9030471Z           "code": "115480",
+2026-11-06T02:39:48.9030767Z           "rank": 5,
+2026-11-06T02:39:48.9031053Z           "score": 94.7765285
+2026-11-06T02:39:48.9031336Z         }
+2026-11-06T02:39:48.9031579Z       ]
+2026-11-06T02:39:48.9031815Z     },
+2026-11-06T02:39:48.9032066Z     "m02+m04": {
+2026-11-06T02:39:48.9032332Z       "metric_count": 2,
+2026-11-06T02:39:48.9032641Z       "eligible_count": 2387,
+2026-11-06T02:39:48.9032949Z       "top5": [
+2026-11-06T02:39:48.9033204Z         {
+2026-11-06T02:39:48.9033455Z           "code": "035610",
+2026-11-06T02:39:48.9033737Z           "rank": 1,
+2026-11-06T02:39:48.9034021Z           "score": 98.5162435
+2026-11-06T02:39:48.9034444Z         },
+2026-11-06T02:39:48.9034695Z         {
+2026-11-06T02:39:48.9034948Z           "code": "025560",
+2026-11-06T02:39:48.9035236Z           "rank": 2,
+2026-11-06T02:39:48.9035512Z           "score": 98.4790055
+2026-11-06T02:39:48.9035796Z         },
+2026-11-06T02:39:48.9036039Z         {
+2026-11-06T02:39:48.9036285Z           "code": "417310",
+2026-11-06T02:39:48.9036702Z           "rank": 3,
+2026-11-06T02:39:48.9036974Z           "score": 98.062762
+2026-11-06T02:39:48.9037274Z         },
+2026-11-06T02:39:48.9037521Z         {
+2026-11-06T02:39:48.9037768Z           "code": "489460",
+2026-11-06T02:39:48.9038058Z           "rank": 4,
+2026-11-06T02:39:48.9038334Z           "score": 97.9260195
+2026-11-06T02:39:48.9038639Z         },
+2026-11-06T02:39:48.9038875Z         {
+2026-11-06T02:39:48.9039125Z           "code": "032580",
+2026-11-06T02:39:48.9039423Z           "rank": 5,
+2026-11-06T02:39:48.9039691Z           "score": 97.8671545
+2026-11-06T02:39:48.9039979Z         }
+2026-11-06T02:39:48.9040220Z       ]
+2026-11-06T02:39:48.9040465Z     },
+2026-11-06T02:39:48.9040706Z     "m03+m04": {
+2026-11-06T02:39:48.9041465Z       "metric_count": 2,
+2026-11-06T02:39:48.9041910Z       "eligible_count": 2606,
+2026-11-06T02:39:48.9042528Z       "top5": [
+2026-11-06T02:39:48.9059668Z         {
+2026-11-06T02:39:48.9060155Z           "code": "137080",
+2026-11-06T02:39:48.9060512Z           "rank": 1,
+2026-11-06T02:39:48.9060830Z           "score": 97.571739
+2026-11-06T02:39:48.9061180Z         },
+2026-11-06T02:39:48.9061445Z         {
+2026-11-06T02:39:48.9061721Z           "code": "100030",
+2026-11-06T02:39:48.9062022Z           "rank": 2,
+2026-11-06T02:39:48.9062316Z           "score": 96.282967
+2026-11-06T02:39:48.9062635Z         },
+2026-11-06T02:39:48.9062886Z         {
+2026-11-06T02:39:48.9063156Z           "code": "066900",
+2026-11-06T02:39:48.9063454Z           "rank": 3,
+2026-11-06T02:39:48.9063745Z           "score": 95.9326225
+2026-11-06T02:39:48.9064044Z         },
+2026-11-06T02:39:48.9064303Z         {
+2026-11-06T02:39:48.9064562Z           "code": "092230",
+2026-11-06T02:39:48.9064851Z           "rank": 4,
+2026-11-06T02:39:48.9065143Z           "score": 95.467234
+2026-11-06T02:39:48.9065432Z         },
+2026-11-06T02:39:48.9065683Z         {
+2026-11-06T02:39:48.9065932Z           "code": "294090",
+2026-11-06T02:39:48.9066232Z           "rank": 5,
+2026-11-06T02:39:48.9066754Z           "score": 95.058674
+2026-11-06T02:39:48.9067105Z         }
+2026-11-06T02:39:48.9067358Z       ]
+2026-11-06T02:39:48.9067602Z     },
+2026-11-06T02:39:48.9067859Z     "m01+m02+m03": {
+2026-11-06T02:39:48.9068151Z       "metric_count": 3,
+2026-11-06T02:39:48.9068476Z       "eligible_count": 2394,
+2026-11-06T02:39:48.9069043Z       "top5": [
+2026-11-06T02:39:48.9069323Z         {
+2026-11-06T02:39:48.9069605Z           "code": "255440",
+2026-11-06T02:39:48.9069908Z           "rank": 1,
+2026-11-06T02:39:48.9070204Z           "score": 96.422288
+2026-11-06T02:39:48.9070500Z         },
+2026-11-06T02:39:48.9070750Z         {
+2026-11-06T02:39:48.9071011Z           "code": "052790",
+2026-11-06T02:39:48.9071315Z           "rank": 2,
+2026-11-06T02:39:48.9071599Z           "score": 95.853785
+2026-11-06T02:39:48.9071888Z         },
+2026-11-06T02:39:48.9072140Z         {
+2026-11-06T02:39:48.9072395Z           "code": "115480",
+2026-11-06T02:39:48.9072692Z           "rank": 3,
+2026-11-06T02:39:48.9072970Z           "score": 93.43174833
+2026-11-06T02:39:48.9073276Z         },
+2026-11-06T02:39:48.9073519Z         {
+2026-11-06T02:39:48.9073784Z           "code": "187870",
+2026-11-06T02:39:48.9074083Z           "rank": 4,
+2026-11-06T02:39:48.9074362Z           "score": 93.08374833
+2026-11-06T02:39:48.9074660Z         },
+2026-11-06T02:39:48.9074921Z         {
+2026-11-06T02:39:48.9075183Z           "code": "297570",
+2026-11-06T02:39:48.9075468Z           "rank": 5,
+2026-11-06T02:39:48.9075749Z           "score": 92.54786733
+2026-11-06T02:39:48.9076049Z         }
+2026-11-06T02:39:48.9076290Z       ]
+2026-11-06T02:39:48.9076690Z     },
+2026-11-06T02:39:48.9077271Z     "m01+m02+m04": {
+2026-11-06T02:39:48.9077697Z       "metric_count": 3,
+2026-11-06T02:39:48.9078014Z       "eligible_count": 2381,
+2026-11-06T02:39:48.9078333Z       "top5": [
+2026-11-06T02:39:48.9078600Z         {
+2026-11-06T02:39:48.9078852Z           "code": "025560",
+2026-11-06T02:39:48.9079147Z           "rank": 1,
+2026-11-06T02:39:48.9079426Z           "score": 98.54329533
+2026-11-06T02:39:48.9079733Z         },
+2026-11-06T02:39:48.9079977Z         {
+2026-11-06T02:39:48.9080235Z           "code": "032580",
+2026-11-06T02:39:48.9080521Z           "rank": 2,
+2026-11-06T02:39:48.9080804Z           "score": 97.44529033
+2026-11-06T02:39:48.9081099Z         },
+2026-11-06T02:39:48.9081340Z         {
+2026-11-06T02:39:48.9081602Z           "code": "098120",
+2026-11-06T02:39:48.9081895Z           "rank": 3,
+2026-11-06T02:39:48.9082178Z           "score": 96.04844567
+2026-11-06T02:39:48.9082467Z         },
+2026-11-06T02:39:48.9082720Z         {
+2026-11-06T02:39:48.9082976Z           "code": "080220",
+2026-11-06T02:39:48.9083269Z           "rank": 4,
+2026-11-06T02:39:48.9083551Z           "score": 95.36187667
+2026-11-06T02:39:48.9083840Z         },
+2026-11-06T02:39:48.9084088Z         {
+2026-11-06T02:39:48.9084346Z           "code": "489460",
+2026-11-06T02:39:48.9084631Z           "rank": 5,
+2026-11-06T02:39:48.9084910Z           "score": 94.750159
+2026-11-06T02:39:48.9085197Z         }
+2026-11-06T02:39:48.9085443Z       ]
+2026-11-06T02:39:48.9085693Z     },
+2026-11-06T02:39:48.9085942Z     "m01+m03+m04": {
+2026-11-06T02:39:48.9086227Z       "metric_count": 3,
+2026-11-06T02:39:48.9086830Z       "eligible_count": 2533,
+2026-11-06T02:39:48.9087166Z       "top5": [
+2026-11-06T02:39:48.9087424Z         {
+2026-11-06T02:39:48.9087691Z           "code": "900260",
+2026-11-06T02:39:48.9087985Z           "rank": 1,
+2026-11-06T02:39:48.9088272Z           "score": 92.88965467
+2026-11-06T02:39:48.9088614Z         },
+2026-11-06T02:39:48.9088862Z         {
+2026-11-06T02:39:48.9089116Z           "code": "031330",
+2026-11-06T02:39:48.9089413Z           "rank": 2,
+2026-11-06T02:39:48.9089702Z           "score": 92.846773
+2026-11-06T02:39:48.9089991Z         },
+2026-11-06T02:39:48.9090238Z         {
+2026-11-06T02:39:48.9090496Z           "code": "148930",
+2026-11-06T02:39:48.9090780Z           "rank": 3,
+2026-11-06T02:39:48.9091058Z           "score": 92.112302
+2026-11-06T02:39:48.9091345Z         },
+2026-11-06T02:39:48.9091592Z         {
+2026-11-06T02:39:48.9091844Z           "code": "013700",
+2026-11-06T02:39:48.9092135Z           "rank": 4,
+2026-11-06T02:39:48.9092418Z           "score": 91.98195267
+2026-11-06T02:39:48.9092707Z         },
+2026-11-06T02:39:48.9092953Z         {
+2026-11-06T02:39:48.9093206Z           "code": "032580",
+2026-11-06T02:39:48.9093726Z           "rank": 5,
+2026-11-06T02:39:48.9094000Z           "score": 91.922703
+2026-11-06T02:39:48.9094290Z         }
+2026-11-06T02:39:48.9094538Z       ]
+2026-11-06T02:39:48.9094776Z     },
+2026-11-06T02:39:48.9095029Z     "m02+m03+m04": {
+2026-11-06T02:39:48.9095311Z       "metric_count": 3,
+2026-11-06T02:39:48.9095615Z       "eligible_count": 2382,
+2026-11-06T02:39:48.9095923Z       "top5": [
+2026-11-06T02:39:48.9096190Z         {
+2026-11-06T02:39:48.9096440Z           "code": "100030",
+2026-11-06T02:39:48.9096893Z           "rank": 1,
+2026-11-06T02:39:48.9097173Z           "score": 95.875375
+2026-11-06T02:39:48.9097460Z         },
+2026-11-06T02:39:48.9097711Z         {
+2026-11-06T02:39:48.9097957Z           "code": "035610",
+2026-11-06T02:39:48.9098244Z           "rank": 2,
+2026-11-06T02:39:48.9098514Z           "score": 93.892865
+2026-11-06T02:39:48.9098800Z         },
+2026-11-06T02:39:48.9099043Z         {
+2026-11-06T02:39:48.9099291Z           "code": "137080",
+2026-11-06T02:39:48.9099587Z           "rank": 3,
+2026-11-06T02:39:48.9099864Z           "score": 93.01240333
+2026-11-06T02:39:48.9100159Z         },
+2026-11-06T02:39:48.9100401Z         {
+2026-11-06T02:39:48.9100658Z           "code": "052790",
+2026-11-06T02:39:48.9100948Z           "rank": 4,
+2026-11-06T02:39:48.9101368Z           "score": 91.86316333
+2026-11-06T02:39:48.9101670Z         },
+2026-11-06T02:39:48.9101910Z         {
+2026-11-06T02:39:48.9102165Z           "code": "059100",
+2026-11-06T02:39:48.9102447Z           "rank": 5,
+2026-11-06T02:39:48.9102726Z           "score": 91.70893033
+2026-11-06T02:39:48.9103017Z         }
+2026-11-06T02:39:48.9103262Z       ]
+2026-11-06T02:39:48.9103508Z     },
+2026-11-06T02:39:48.9103766Z     "m01+m02+m03+m04": {
+2026-11-06T02:39:48.9104065Z       "metric_count": 4,
+2026-11-06T02:39:48.9104361Z       "eligible_count": 2376,
+2026-11-06T02:39:48.9104656Z       "top5": [
+2026-11-06T02:39:48.9104903Z         {
+2026-11-06T02:39:48.9105162Z           "code": "032580",
+2026-11-06T02:39:48.9105460Z           "rank": 1,
+2026-11-06T02:39:48.9105732Z           "score": 92.90425225
+2026-11-06T02:39:48.9106028Z         },
+2026-11-06T02:39:48.9106267Z         {
+2026-11-06T02:39:48.9106687Z           "code": "052790",
+2026-11-06T02:39:48.9106978Z           "rank": 2,
+2026-11-06T02:39:48.9107259Z           "score": 91.92471625
+2026-11-06T02:39:48.9107550Z         },
+2026-11-06T02:39:48.9107787Z         {
+2026-11-06T02:39:48.9108043Z           "code": "025560",
+2026-11-06T02:39:48.9108324Z           "rank": 3,
+2026-11-06T02:39:48.9108602Z           "score": 91.09714225
+2026-11-06T02:39:48.9108890Z         },
+2026-11-06T02:39:48.9109137Z         {
+2026-11-06T02:39:48.9109386Z           "code": "059100",
+2026-11-06T02:39:48.9109678Z           "rank": 4,
+2026-11-06T02:39:48.9109959Z           "score": 88.53755725
+2026-11-06T02:39:48.9110247Z         },
+2026-11-06T02:39:48.9110496Z         {
+2026-11-06T02:39:48.9110746Z           "code": "013700",
+2026-11-06T02:39:48.9111037Z           "rank": 5,
+2026-11-06T02:39:48.9111323Z           "score": 88.33059075
+2026-11-06T02:39:48.9111615Z         }
+2026-11-06T02:39:48.9111853Z       ]
+2026-11-06T02:39:48.9112100Z     }
+2026-11-06T02:39:48.9112340Z   },
+2026-11-06T02:39:48.9112622Z   "counts_by_selected_metric_count": {
+2026-11-06T02:39:48.9112964Z     "1": {
+2026-11-06T02:39:48.9113219Z       "min": 2410,
+2026-11-06T02:39:48.9113489Z       "max": 2626,
+2026-11-06T02:39:48.9113760Z       "combos": 4
+2026-11-06T02:39:48.9114028Z     },
+2026-11-06T02:39:48.9114269Z     "2": {
+2026-11-06T02:39:48.9114526Z       "min": 2387,
+2026-11-06T02:39:48.9114793Z       "max": 2606,
+2026-11-06T02:39:48.9115064Z       "combos": 6
+2026-11-06T02:39:48.9115325Z     },
+2026-11-06T02:39:48.9115573Z     "3": {
+2026-11-06T02:39:48.9115826Z       "min": 2381,
+2026-11-06T02:39:48.9116090Z       "max": 2533,
+2026-11-06T02:39:48.9116365Z       "combos": 4
+2026-11-06T02:39:48.9116806Z     },
+2026-11-06T02:39:48.9117127Z     "4": {
+2026-11-06T02:39:48.9117376Z       "min": 2376,
+2026-11-06T02:39:48.9117795Z       "max": 2376,
+2026-11-06T02:39:48.9118060Z       "combos": 1
+2026-11-06T02:39:48.9118319Z     }
+2026-11-06T02:39:48.9118567Z   },
+2026-11-06T02:39:48.9118869Z   "all_four_reproduces_committed_rank": true,
+2026-11-06T02:39:48.9119411Z   "ten_thousand_toggle_simulation_pass": true,
+2026-11-06T02:39:48.9120006Z   "toggle_state_visits": {
+2026-11-06T02:39:48.9120505Z     "m02+m03+m04": 674,
+2026-11-06T02:39:48.9120941Z     "m03+m04": 633,
+2026-11-06T02:39:48.9121382Z     "m01+m03+m04": 701,
+2026-11-06T02:39:48.9121826Z     "m01+m04": 656,
+2026-11-06T02:39:48.9122288Z     "m04": 629,
+2026-11-06T02:39:48.9122740Z     "m02+m03": 666,
+2026-11-06T02:39:48.9123207Z     "m03": 642,
+2026-11-06T02:39:48.9123513Z     "m01+m03": 663,
+2026-11-06T02:39:48.9123781Z     "m01+m02+m03": 637,
+2026-11-06T02:39:48.9124060Z     "m01": 715,
+2026-11-06T02:39:48.9124326Z     "m01+m02+m03+m04": 676,
+2026-11-06T02:39:48.9124634Z     "m02": 694,
+2026-11-06T02:39:48.9124889Z     "m01+m02": 698,
+2026-11-06T02:39:48.9125173Z     "m01+m02+m04": 660,
+2026-11-06T02:39:48.9125452Z     "m02+m04": 656
+2026-11-06T02:39:48.9125715Z   },
+2026-11-06T02:39:48.9126058Z   "selected_complete_filter_checks": 39735,
+2026-11-06T02:39:48.9126443Z   "zero_selection_prevented": true
+2026-11-06T02:39:48.9127060Z }
+2026-11-06T02:39:48.9304586Z COMBO_RANK_EXTREME_PASS 15 39735
+2026-11-06T02:39:48.9375299Z ##[group]Run gradle :app:testDebugUnitTest --stacktrace
+2026-11-06T02:39:48.9375824Z [36;1mgradle :app:testDebugUnitTest --stacktrace[0m
+2026-11-06T02:39:48.9397448Z shell: /usr/bin/bash -e {0}
+2026-11-06T02:39:48.9397777Z env:
+2026-11-06T02:39:48.9398249Z   EXPECTED_STABLE_CERT_SHA256: 1070e82beee574cd29ffd2dc3e693fd7f7862374f16d1606567db303ab152477
+2026-11-06T02:39:48.9398887Z   FINANCIAL_EVIDENCE_REF: fix/independent-financial-date-ci
+2026-11-06T02:39:48.9399389Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:39:48.9399902Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.16/x64/lib/pkgconfig
+2026-11-06T02:39:48.9400430Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:39:48.9400891Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:39:48.9401343Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:39:48.9401808Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.16/x64/lib
+2026-11-06T02:39:48.9402353Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.21-9/x64
+2026-11-06T02:39:48.9402927Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.21-9/x64
+2026-11-06T02:39:48.9403395Z   MAVEN_ARGS: -ntp
+2026-11-06T02:39:48.9403719Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+2026-11-06T02:39:48.9404100Z   GRADLE_USER_HOME: /home/runner/.gradle
+2026-11-06T02:39:48.9404473Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+2026-11-06T02:39:48.9404844Z   GRADLE_BUILD_ACTION_CACHE_RESTORED: true
+2026-11-06T02:39:48.9405368Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+2026-11-06T02:39:48.9405933Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+2026-11-06T02:39:48.9406338Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+2026-11-06T02:39:48.9407044Z ##[endgroup]
+2026-11-06T02:39:49.7899022Z Starting a Gradle Daemon (subsequent builds will be faster)
+2026-11-06T02:40:02.0918528Z > Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-11-06T02:40:02.0919731Z > Task :app:preBuild UP-TO-DATE
+2026-11-06T02:40:02.0920848Z > Task :app:preDebugBuild UP-TO-DATE
+2026-11-06T02:40:02.1928258Z > Task :app:generateDebugBuildConfig
+2026-11-06T02:40:02.4919459Z > Task :app:generateDebugResValues
+2026-11-06T02:40:02.5898338Z > Task :app:checkDebugAarMetadata
+2026-11-06T02:40:02.5918162Z > Task :app:mapDebugSourceSetPaths
+2026-11-06T02:40:02.5937644Z > Task :app:generateDebugResources
+2026-11-06T02:40:04.2890957Z > Task :app:packageDebugResources
+2026-11-06T02:40:04.3910907Z > Task :app:mergeDebugResources
+2026-11-06T02:40:04.6963099Z > Task :app:createDebugCompatibleScreenManifests
+2026-11-06T02:40:04.6973713Z > Task :app:extractDeepLinksDebug
+2026-11-06T02:40:04.7891896Z > Task :app:parseDebugLocalResources
+2026-11-06T02:40:04.9918153Z > Task :app:processDebugMainManifest
+2026-11-06T02:40:05.0890240Z > Task :app:processDebugManifest
+2026-11-06T02:40:05.0923120Z > Task :app:preDebugUnitTestBuild UP-TO-DATE
+2026-11-06T02:40:05.1908512Z > Task :app:javaPreCompileDebug
+2026-11-06T02:40:05.1930535Z > Task :app:javaPreCompileDebugUnitTest
+2026-11-06T02:40:05.1937546Z > Task :app:processDebugManifestForPackage
+2026-11-06T02:40:05.5888803Z > Task :app:processDebugResources
+2026-11-06T02:40:35.5898073Z > Task :app:compileDebugKotlin
+2026-11-06T02:40:44.9907876Z > Task :app:compileDebugJavaWithJavac
+2026-11-06T02:40:45.0908426Z > Task :app:bundleDebugClassesToCompileJar
+2026-11-06T02:40:45.0927777Z > Task :app:processDebugJavaRes
+2026-11-06T02:40:45.0928522Z > Task :app:bundleDebugClassesToRuntimeJar
+2026-11-06T02:40:48.7888902Z > Task :app:compileDebugUnitTestKotlin
+2026-11-06T02:40:48.7928384Z > Task :app:compileDebugUnitTestJavaWithJavac NO-SOURCE
+2026-11-06T02:40:48.7957910Z > Task :app:processDebugUnitTestJavaRes
+2026-11-06T02:40:57.0888493Z > Task :app:testDebugUnitTest
+2026-11-06T02:40:57.0893185Z gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_7-1793932793674.json
+2026-11-06T02:40:57.0895012Z 
+2026-11-06T02:40:57.0895501Z BUILD SUCCESSFUL in 1m 8s
+2026-11-06T02:40:57.0896328Z 24 actionable tasks: 24 executed
+2026-11-06T02:40:57.4615864Z ##[group]Run gradle :app:assembleDebug --stacktrace
+2026-11-06T02:40:57.4616381Z [36;1mgradle :app:assembleDebug --stacktrace[0m
+2026-11-06T02:40:57.4638093Z shell: /usr/bin/bash -e {0}
+2026-11-06T02:40:57.4638422Z env:
+2026-11-06T02:40:57.4638912Z   EXPECTED_STABLE_CERT_SHA256: 1070e82beee574cd29ffd2dc3e693fd7f7862374f16d1606567db303ab152477
+2026-11-06T02:40:57.4639559Z   FINANCIAL_EVIDENCE_REF: fix/independent-financial-date-ci
+2026-11-06T02:40:57.4640060Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:40:57.4640593Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.16/x64/lib/pkgconfig
+2026-11-06T02:40:57.4641103Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:40:57.4641573Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:40:57.4642042Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:40:57.4642521Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.16/x64/lib
+2026-11-06T02:40:57.4643067Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.21-9/x64
+2026-11-06T02:40:57.4643650Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.21-9/x64
+2026-11-06T02:40:57.4644116Z   MAVEN_ARGS: -ntp
+2026-11-06T02:40:57.4644432Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+2026-11-06T02:40:57.4644818Z   GRADLE_USER_HOME: /home/runner/.gradle
+2026-11-06T02:40:57.4645182Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+2026-11-06T02:40:57.4645611Z   GRADLE_BUILD_ACTION_CACHE_RESTORED: true
+2026-11-06T02:40:57.4646145Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+2026-11-06T02:40:57.4647007Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+2026-11-06T02:40:57.4647429Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+2026-11-06T02:40:57.4647776Z ##[endgroup]
+2026-11-06T02:40:58.8148405Z > Task :app:preBuild UP-TO-DATE
+2026-11-06T02:40:58.8177596Z > Task :app:preDebugBuild UP-TO-DATE
+2026-11-06T02:40:58.8178399Z > Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+2026-11-06T02:40:58.8179331Z > Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-11-06T02:40:58.8180204Z > Task :app:generateDebugBuildConfig UP-TO-DATE
+2026-11-06T02:40:58.9138107Z > Task :app:checkDebugAarMetadata UP-TO-DATE
+2026-11-06T02:40:58.9152218Z > Task :app:generateDebugResValues UP-TO-DATE
+2026-11-06T02:40:58.9179057Z > Task :app:mapDebugSourceSetPaths UP-TO-DATE
+2026-11-06T02:40:58.9209546Z > Task :app:generateDebugResources UP-TO-DATE
+2026-11-06T02:40:58.9237455Z > Task :app:mergeDebugResources UP-TO-DATE
+2026-11-06T02:40:58.9248436Z > Task :app:packageDebugResources UP-TO-DATE
+2026-11-06T02:40:58.9297277Z > Task :app:parseDebugLocalResources UP-TO-DATE
+2026-11-06T02:40:58.9307433Z > Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
+2026-11-06T02:40:58.9387633Z > Task :app:extractDeepLinksDebug UP-TO-DATE
+2026-11-06T02:40:58.9397678Z > Task :app:processDebugMainManifest UP-TO-DATE
+2026-11-06T02:40:58.9427214Z > Task :app:processDebugManifest UP-TO-DATE
+2026-11-06T02:40:58.9427951Z > Task :app:processDebugManifestForPackage UP-TO-DATE
+2026-11-06T02:40:59.0123089Z > Task :app:processDebugResources UP-TO-DATE
+2026-11-06T02:40:59.1118487Z > Task :app:compileDebugKotlin UP-TO-DATE
+2026-11-06T02:40:59.1121002Z > Task :app:javaPreCompileDebug UP-TO-DATE
+2026-11-06T02:40:59.1122080Z > Task :app:compileDebugJavaWithJavac UP-TO-DATE
+2026-11-06T02:40:59.1122976Z > Task :app:mergeDebugShaders
+2026-11-06T02:40:59.1123766Z > Task :app:compileDebugShaders NO-SOURCE
+2026-11-06T02:40:59.1124668Z > Task :app:generateDebugAssets UP-TO-DATE
+2026-11-06T02:40:59.2127962Z > Task :app:mergeDebugAssets
+2026-11-06T02:40:59.2157433Z > Task :app:desugarDebugFileDependencies
+2026-11-06T02:40:59.3107963Z > Task :app:compressDebugAssets
+2026-11-06T02:41:10.8105922Z > Task :app:dexBuilderDebug
+2026-11-06T02:41:11.0107812Z > Task :app:processDebugJavaRes UP-TO-DATE
+2026-11-06T02:41:11.0138202Z > Task :app:mergeDebugGlobalSynthetics
+2026-11-06T02:41:11.1127194Z > Task :app:mergeDebugStartupProfile
+2026-11-06T02:41:11.1174305Z > Task :app:mergeDebugJniLibFolders
+2026-11-06T02:41:11.1175045Z > Task :app:checkDebugDuplicateClasses
+2026-11-06T02:41:11.2122724Z > Task :app:mergeDebugNativeLibs
+2026-11-06T02:41:11.3128402Z > Task :app:mergeLibDexDebug
+2026-11-06T02:41:12.3158032Z > Task :app:mergeDebugJavaResource
+2026-11-06T02:41:12.9144933Z 
+2026-11-06T02:41:12.9168100Z > Task :app:stripDebugDebugSymbols
+2026-11-06T02:41:12.9228472Z Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so.
+2026-11-06T02:41:12.9257211Z 
+2026-11-06T02:41:12.9317936Z > Task :app:mergeProjectDexDebug
+2026-11-06T02:41:14.1105528Z > Task :app:validateSigningDebug
+2026-11-06T02:41:14.1108695Z > Task :app:writeDebugAppMetadata
+2026-11-06T02:41:14.1109611Z > Task :app:writeDebugSigningConfigVersions
+2026-11-06T02:41:17.2169138Z > Task :app:mergeExtDexDebug
+2026-11-06T02:41:17.6930979Z > Task :app:packageDebug
+2026-11-06T02:41:17.6947447Z > Task :app:createDebugApkListingFileRedirect
+2026-11-06T02:41:17.6948452Z > Task :app:assembleDebug
+2026-11-06T02:41:17.6949796Z gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_8-1793932858143.json
+2026-11-06T02:41:17.6950969Z 
+2026-11-06T02:41:17.6951471Z BUILD SUCCESSFUL in 20s
+2026-11-06T02:41:17.6952419Z 38 actionable tasks: 20 executed, 18 up-to-date
+2026-11-06T02:41:17.7169172Z ##[group]Run if [ -e /dev/kvm ]; then sudo chmod 666 /dev/kvm; fi
+2026-11-06T02:41:17.7170100Z [36;1mif [ -e /dev/kvm ]; then sudo chmod 666 /dev/kvm; fi[0m
+2026-11-06T02:41:17.7170900Z [36;1mcat > "$RUNNER_TEMP/kr4-debug-e2e.sh" <<'SH'[0m
+2026-11-06T02:41:17.7171556Z [36;1m#!/usr/bin/env bash[0m
+2026-11-06T02:41:17.7172064Z [36;1mset +e[0m
+2026-11-06T02:41:17.7172685Z [36;1mgradle :app:connectedDebugAndroidTest --stacktrace \[0m
+2026-11-06T02:41:17.7173696Z [36;1m  -Pandroid.testInstrumentationRunnerArguments.deviceKind=EMULATOR \[0m
+2026-11-06T02:41:17.7175054Z [36;1m  "-Pandroid.testInstrumentationRunnerArguments.financialEvidenceRef=$FINANCIAL_EVIDENCE_REF"[0m
+2026-11-06T02:41:17.7176126Z [36;1mTEST_STATUS=$?[0m
+2026-11-06T02:41:17.7177228Z [36;1mmkdir -p evidence/ci[0m
+2026-11-06T02:41:17.7178214Z [36;1madb pull /sdcard/Android/data/com.krstock.v3/files/snapshot-e2e evidence/ci/snapshot-e2e[0m
+2026-11-06T02:41:17.7179496Z [36;1madb logcat -d -v time > evidence/ci/android-debug-logcat.txt[0m
+2026-11-06T02:41:17.7180275Z [36;1mexit "$TEST_STATUS"[0m
+2026-11-06T02:41:17.7180859Z [36;1mSH[0m
+2026-11-06T02:41:17.7210617Z shell: /usr/bin/bash -e {0}
+2026-11-06T02:41:17.7211156Z env:
+2026-11-06T02:41:17.7211932Z   EXPECTED_STABLE_CERT_SHA256: 1070e82beee574cd29ffd2dc3e693fd7f7862374f16d1606567db303ab152477
+2026-11-06T02:41:17.7213006Z   FINANCIAL_EVIDENCE_REF: fix/independent-financial-date-ci
+2026-11-06T02:41:17.7213808Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:41:17.7214675Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.16/x64/lib/pkgconfig
+2026-11-06T02:41:17.7215561Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:41:17.7216362Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:41:17.7217447Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:41:17.7218304Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.16/x64/lib
+2026-11-06T02:41:17.7219223Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.21-9/x64
+2026-11-06T02:41:17.7220733Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.21-9/x64
+2026-11-06T02:41:17.7221569Z   MAVEN_ARGS: -ntp
+2026-11-06T02:41:17.7222111Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+2026-11-06T02:41:17.7222795Z   GRADLE_USER_HOME: /home/runner/.gradle
+2026-11-06T02:41:17.7223433Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+2026-11-06T02:41:17.7224091Z   GRADLE_BUILD_ACTION_CACHE_RESTORED: true
+2026-11-06T02:41:17.7224995Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+2026-11-06T02:41:17.7225982Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+2026-11-06T02:41:17.7226947Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+2026-11-06T02:41:17.7227549Z ##[endgroup]
+2026-11-06T02:41:17.7572546Z ##[group]Run reactivecircus/android-emulator-runner@v2
+2026-11-06T02:41:17.7573255Z with:
+2026-11-06T02:41:17.7573696Z   api-level: 34
+2026-11-06T02:41:17.7574161Z   target: google_apis
+2026-11-06T02:41:17.7574640Z   arch: x86_64
+2026-11-06T02:41:17.7575092Z   profile: pixel_2
+2026-11-06T02:41:17.7575568Z   disable-animations: true
+2026-11-06T02:41:17.7576166Z   script: bash "$RUNNER_TEMP/kr4-debug-e2e.sh"
+2026-11-06T02:41:17.7577046Z   cores: 2
+2026-11-06T02:41:17.7577482Z   avd-name: test
+2026-11-06T02:41:17.7577960Z   force-avd-creation: true
+2026-11-06T02:41:17.7578502Z   emulator-boot-timeout: 600
+2026-11-06T02:41:17.7579048Z   emulator-port: 5554
+2026-11-06T02:41:17.7579883Z   emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
+2026-11-06T02:41:17.7580829Z   disable-spellchecker: false
+2026-11-06T02:41:17.7581395Z   disable-linux-hw-accel: auto
+2026-11-06T02:41:17.7581959Z   enable-hw-keyboard: false
+2026-11-06T02:41:17.7582513Z   channel: stable
+2026-11-06T02:41:17.7582957Z env:
+2026-11-06T02:41:17.7583753Z   EXPECTED_STABLE_CERT_SHA256: 1070e82beee574cd29ffd2dc3e693fd7f7862374f16d1606567db303ab152477
+2026-11-06T02:41:17.7584836Z   FINANCIAL_EVIDENCE_REF: fix/independent-financial-date-ci
+2026-11-06T02:41:17.7585684Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:41:17.7586868Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.16/x64/lib/pkgconfig
+2026-11-06T02:41:17.7587778Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:41:17.7588610Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:41:17.7589420Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:41:17.7590261Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.16/x64/lib
+2026-11-06T02:41:17.7591172Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.21-9/x64
+2026-11-06T02:41:17.7592171Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.21-9/x64
+2026-11-06T02:41:17.7592986Z   MAVEN_ARGS: -ntp
+2026-11-06T02:41:17.7593517Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+2026-11-06T02:41:17.7594180Z   GRADLE_USER_HOME: /home/runner/.gradle
+2026-11-06T02:41:17.7594809Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+2026-11-06T02:41:17.7595447Z   GRADLE_BUILD_ACTION_CACHE_RESTORED: true
+2026-11-06T02:41:17.7596354Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+2026-11-06T02:41:17.7598029Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+2026-11-06T02:41:17.7598731Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+2026-11-06T02:41:17.7599312Z ##[endgroup]
+2026-11-06T02:41:17.8235689Z ##[group]Configure emulator
+2026-11-06T02:41:17.8238902Z API level: 34
+2026-11-06T02:41:17.8239335Z System image API level: 34
+2026-11-06T02:41:17.8239812Z target: google_apis
+2026-11-06T02:41:17.8240369Z CPU architecture: x86_64
+2026-11-06T02:41:17.8240897Z Hardware profile: pixel_2
+2026-11-06T02:41:17.8242726Z Cores: 2
+2026-11-06T02:41:17.8243248Z RAM size: 
+2026-11-06T02:41:17.8243740Z Heap size: 
+2026-11-06T02:41:17.8244286Z SD card path or size: 
+2026-11-06T02:41:17.8245113Z Disk size: 
+2026-11-06T02:41:17.8245783Z AVD name: test
+2026-11-06T02:41:17.8246730Z force avd creation: true
+2026-11-06T02:41:17.8247559Z Emulator boot timeout: 600
+2026-11-06T02:41:17.8248358Z emulator port: 5554
+2026-11-06T02:41:17.8249468Z emulator options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
+2026-11-06T02:41:17.8250627Z disable animations: true
+2026-11-06T02:41:17.8251224Z disable spellchecker: false
+2026-11-06T02:41:17.8251877Z disable Linux hardware acceleration: false
+2026-11-06T02:41:17.8252602Z enable hardware keyboard: false
+2026-11-06T02:41:17.8253202Z Channel: 0 (stable)
+2026-11-06T02:41:17.8253673Z Script:
+2026-11-06T02:41:17.8254158Z bash "$RUNNER_TEMP/kr4-debug-e2e.sh"
+2026-11-06T02:41:17.8254838Z Pre emulator launch script:
+2026-11-06T02:41:17.8255773Z ##[endgroup]
+2026-11-06T02:41:17.8280363Z ##[group]Install Android SDK
+2026-11-06T02:41:17.8350822Z [command]/usr/bin/sh -c \yes | sdkmanager --licenses > /dev/null
+2026-11-06T02:41:21.9700032Z Installing latest build tools, platform tools, and platform.
+2026-11-06T02:41:21.9715146Z [command]/usr/bin/sh -c \sdkmanager --install 'build-tools;37.0.0' platform-tools 'platforms;android-34'> /dev/null
+2026-11-06T02:41:23.8913165Z Installing latest emulator.
+2026-11-06T02:41:23.8928057Z [command]/usr/bin/sh -c \sdkmanager --install emulator --channel=0 > /dev/null
+2026-11-06T02:41:31.7815299Z Installing system images.
+2026-11-06T02:41:31.7831197Z [command]/usr/bin/sh -c \sdkmanager --install 'system-images;android-34;google_apis;x86_64' --channel=0 > /dev/null
+2026-11-06T02:41:57.7989147Z ##[endgroup]
+2026-11-06T02:41:57.7990757Z ##[group]Create AVD
+2026-11-06T02:41:57.7991453Z Creating AVD.
+2026-11-06T02:41:57.8017446Z [command]/usr/bin/sh -c \echo no | avdmanager create avd --force -n test --package 'system-images;android-34;google_apis;x86_64' --device 'pixel_2'
+2026-11-06T02:41:58.6151849Z Loading local repository...                                                     
+2026-11-06T02:41:58.6162275Z [=========                              ] 25% Loading local repository...       
+2026-11-06T02:41:58.6163582Z [=========                              ] 25% Fetch remote repository...        
+2026-11-06T02:41:58.6164711Z [=======================================] 100% Fetch remote repository...       
+2026-11-06T02:41:58.7828080Z Auto-selecting single ABI x86_64
+2026-11-06T02:41:59.2222214Z [command]/usr/bin/sh -c \printf 'hw.cpu.ncore=2\n' >> /home/runner/.android/avd/test.avd/config.ini
+2026-11-06T02:41:59.2248101Z ##[endgroup]
+2026-11-06T02:41:59.2250246Z ##[group]Launch Emulator
+2026-11-06T02:41:59.2250804Z Starting emulator.
+2026-11-06T02:41:59.2267223Z [command]/usr/bin/sh -c \/usr/local/lib/android/sdk/emulator/emulator -port 5554 -avd test -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim &
+2026-11-06T02:41:59.2395469Z INFO         | Android emulator version 37.2.13.0 (build_id 16740729) (CL:N/A)
+2026-11-06T02:41:59.2396391Z INFO         | Graphics backend: gfxstream
+2026-11-06T02:41:59.2397466Z INFO         | Found systemPath /usr/local/lib/android/sdk/system-images/android-34/google_apis/x86_64/
+2026-11-06T02:41:59.2871795Z INFO         | Saving last run QEMU version for the AVD to 2
+2026-11-06T02:41:59.2872933Z INFO         | Increasing RAM size to 2560MB
+2026-11-06T02:41:59.2874402Z INFO         | Guest GLES Driver: Auto (ext controls)
+2026-11-06T02:41:59.2875695Z INFO         | emuglConfig_init: vulkan_mode_selected:swiftshader gles_mode_selected:swiftshader
+2026-11-06T02:41:59.2877044Z INFO         | Checking system compatibility:
+2026-11-06T02:41:59.2877816Z INFO         |   Checking: hasSufficientDiskSpace
+2026-11-06T02:41:59.2878671Z INFO         |      Ok: Disk space requirements to run avd: `test` are met
+2026-11-06T02:41:59.2879515Z INFO         |   Checking: hasSufficientHwGpu
+2026-11-06T02:41:59.2880355Z INFO         |      Ok: Hardware GPU compatibility checks are not required
+2026-11-06T02:41:59.2881198Z INFO         |   Checking: hasSufficientSystem
+2026-11-06T02:41:59.2882004Z INFO         |      Ok: System requirements to run avd: `test` are met
+2026-11-06T02:41:59.2883664Z WARNING      | Feature QuickbootFileBacked is disabled due to stability issues, if you really want that, the environment variable ANDROID_EMU_FORCE_QUICKBOOT_FILE_BACKED need to set to 1
+2026-11-06T02:42:00.2203967Z ERROR        | Unable to connect to adb daemon on port: 5037
+2026-11-06T02:42:00.2231096Z INFO         | Storing crashdata in: /tmp/android-runner/emu-crash-37.2.13.db, detection is enabled for process: 4063
+2026-11-06T02:42:00.2232587Z INFO         | Initializing gfxstream backend
+2026-11-06T02:42:00.2244377Z INFO         | startOpenglesRendererImpl: gpu info
+2026-11-06T02:42:00.2245074Z INFO         | 
+2026-11-06T02:42:00.2247033Z INFO         | initIcdPaths: ICD set to 'swiftshader', using Swiftshader ICD
+2026-11-06T02:42:00.2248850Z INFO         | Setting ICD filenames for the loader = /usr/local/lib/android/sdk/emulator/lib64/vulkan/vk_swiftshader_icd.json
+2026-11-06T02:42:00.2250619Z INFO         | SharedLibrary::open for [/usr/local/lib/android/sdk/emulator/qemu/linux-x86_64/lib64/vulkan/libvulkan.so]
+2026-11-06T02:42:00.2252265Z INFO         | SharedLibrary::open for [/usr/local/lib/android/sdk/emulator/qemu/linux-x86_64/lib64/vulkan/libvulkan.so.1]
+2026-11-06T02:42:00.2253808Z INFO         | SharedLibrary::open for [/usr/local/lib/android/sdk/emulator/lib64/vulkan/libvulkan.so]
+2026-11-06T02:42:00.2255007Z INFO         | Added library: /usr/local/lib/android/sdk/emulator/lib64/vulkan/libvulkan.so
+2026-11-06T02:42:00.2502318Z INFO         | Selecting Vulkan device: SwiftShader Device (Subzero), Version: 1.3.0
+2026-11-06T02:42:00.2503475Z INFO         | Using Vulkan externalMemoryMode: OpaqueFd for VkEmulation
+2026-11-06T02:42:00.3212330Z INFO         | Format VK_FORMAT_G10X6_B10X6R10X6_2PLANE_422_UNORM_3PACK16 does not support YCbCr sampler conversion
+2026-11-06T02:42:00.3244296Z INFO         | SharedLibrary::open for [libX11]
+2026-11-06T02:42:00.3248995Z WARNING      | Could not open libX11.so, try libX11.so.6
+2026-11-06T02:42:00.3249570Z INFO         | SharedLibrary::open for [libX11.so.6]
+2026-11-06T02:42:00.3250023Z INFO         | SharedLibrary::open for [libX11-xcb]
+2026-11-06T02:42:00.3250517Z WARNING      | Could not open libX11-xcb.so, try libX11-xcb.so.1
+2026-11-06T02:42:00.3251031Z INFO         | SharedLibrary::open for [libX11-xcb.so.1]
+2026-11-06T02:42:00.3372767Z INFO         | Initializing VkEmulation features:
+2026-11-06T02:42:00.3373592Z INFO         |     glInteropSupported: false
+2026-11-06T02:42:00.3374299Z INFO         |     useDeferredCommands: true
+2026-11-06T02:42:00.3375027Z INFO         |     createResourceWithRequirements: true
+2026-11-06T02:42:00.3375741Z INFO         |     useVulkanComposition: false
+2026-11-06T02:42:00.3376436Z INFO         |     useVulkanNativeSwapchain: false
+2026-11-06T02:42:00.3377521Z INFO         |     enable guestRenderDoc: false
+2026-11-06T02:42:00.3378085Z INFO         |     ASTC LDR emulation mode: Gpu
+2026-11-06T02:42:00.3378482Z INFO         |     enable ETC2 emulation: true
+2026-11-06T02:42:00.3378881Z INFO         |     enable Ycbcr emulation: false
+2026-11-06T02:42:00.3379294Z INFO         |     guestVulkanOnly: false
+2026-11-06T02:42:00.3379699Z INFO         |     useDedicatedAllocations: false
+2026-11-06T02:42:00.3380626Z INFO         |     guestVulkanMaxApiVersion: 1.3.0
+2026-11-06T02:42:00.3381297Z INFO         |     enableProtectedMemoryEmulation: false
+2026-11-06T02:42:00.3382101Z INFO         | Graphics Adapter Vendor Google (Google Inc.)
+2026-11-06T02:42:00.3383073Z INFO         | Graphics Adapter Android Emulator OpenGL ES Translator (Google SwiftShader)
+2026-11-06T02:42:00.3384173Z INFO         | Graphics API Version OpenGL ES 3.0 (OpenGL ES 3.0 SwiftShader 4.0.0.1)
+2026-11-06T02:42:00.3388428Z INFO         | Graphics API Extensions GL_OES_EGL_sync GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_depth24 GL_OES_depth32 GL_OES_element_index_uint GL_OES_texture_float GL_OES_texture_float_linear GL_OES_compressed_paletted_texture GL_OES_compressed_ETC1_RGB8_texture GL_OES_depth_texture GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_packed_depth_stencil GL_OES_vertex_half_float GL_OES_standard_derivatives GL_OES_texture_npot GL_OES_rgb8_rgba8 GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_texture_format_BGRA8888 GL_APPLE_texture_format_BGRA8888 
+2026-11-06T02:42:00.3390674Z INFO         | Graphics Device Extensions N/A
+2026-11-06T02:42:00.3391114Z INFO         | Disabling sparse binding feature support
+2026-11-06T02:42:00.3483800Z INFO         | Sending adb public key [QAAAAIsTyy7dgxBFmOz8vtb5VfZ7EvcnAjnAbbD7v3k04a0s2Lvv+0j0/BuPkruu2JObya0alMozh8vlFg6SQXdTmLO34rerMGCyB0VfRBkABklaLHKvmmbu1PZJEudHEcnIvT0fzdSvat+DUAI3WtEch32zYxj3dkDIavcAspdUASF510PmcLePcyGvpSFk6FOoz7Xslls0ky1ywcTyXsEjUun59eR+roR+BegaoUKlrvLhusGhAIPgl9wCfElysCjKbE5p5DeN3uAtiw555g5He2I93VJh5Arb2C7UfI3zC4wCoqxHmRbPc9gCHK3Odlc6JO/Q2E/hpnQP1envGCEV73ioVG3WfJU6+xcsJlShObxBqR6vUoYM89dcA998Yzj3YVaKDOAxXIzRtIEn5UoPzO/AqvC/7DeVqPpuAk1NFt35lOfoXQxKSKzkqwDMTq9cqNE7pM1xwMp6B9l7RXpDLbAfhrj/Cu2w0DSDC8BuuxWr1zCW731Ul4bDcUgA759EzjY8ptj/7yenZ30V3DJZwJ4mD9Nb07ZA2ms0ej0fkRQhBnOT5FLpSrueiCP/4LecATjxLM9JU+U1FnkXN3b5FRHRIvpNQrKa4dRObsa4DBz91Koavh4eiVDlKIkz7nBIchJb8+a/GN0xjf6xuyByudli5DK+PoD97cdoGcQJEjZjrJ2UeQEAAQA= runner@unknown]
+2026-11-06T02:42:00.3488119Z INFO         | Userspace boot properties:
+2026-11-06T02:42:00.3488686Z INFO         |   androidboot.boot_devices=pci0000:00/0000:00:03.0 pci0000:00/0000:00:06.0
+2026-11-06T02:42:00.3489258Z INFO         |   androidboot.dalvik.vm.heapsize=576m
+2026-11-06T02:42:00.3489721Z INFO         |   androidboot.debug.hwui.renderer=skiagl
+2026-11-06T02:42:00.3490180Z INFO         |   androidboot.debug.sf.nobootanimation=1
+2026-11-06T02:42:00.3490619Z INFO         |   androidboot.hardware=ranchu
+2026-11-06T02:42:00.3491051Z INFO         |   androidboot.hardware.gltransport=pipe
+2026-11-06T02:42:00.3491513Z INFO         |   androidboot.hardware.vulkan=ranchu
+2026-11-06T02:42:00.3491920Z INFO         |   androidboot.logcat=*:V
+2026-11-06T02:42:00.3492330Z INFO         |   androidboot.opengles.version=196608
+2026-11-06T02:42:00.3492733Z INFO         |   androidboot.qemu=1
+2026-11-06T02:42:00.3496463Z INFO         |   androidboot.qemu.adb.pubkey=QAAAAIsTyy7dgxBFmOz8vtb5VfZ7EvcnAjnAbbD7v3k04a0s2Lvv+0j0/BuPkruu2JObya0alMozh8vlFg6SQXdTmLO34rerMGCyB0VfRBkABklaLHKvmmbu1PZJEudHEcnIvT0fzdSvat+DUAI3WtEch32zYxj3dkDIavcAspdUASF510PmcLePcyGvpSFk6FOoz7Xslls0ky1ywcTyXsEjUun59eR+roR+BegaoUKlrvLhusGhAIPgl9wCfElysCjKbE5p5DeN3uAtiw555g5He2I93VJh5Arb2C7UfI3zC4wCoqxHmRbPc9gCHK3Odlc6JO/Q2E/hpnQP1envGCEV73ioVG3WfJU6+xcsJlShObxBqR6vUoYM89dcA998Yzj3YVaKDOAxXIzRtIEn5UoPzO/AqvC/7DeVqPpuAk1NFt35lOfoXQxKSKzkqwDMTq9cqNE7pM1xwMp6B9l7RXpDLbAfhrj/Cu2w0DSDC8BuuxWr1zCW731Ul4bDcUgA759EzjY8ptj/7yenZ30V3DJZwJ4mD9Nb07ZA2ms0ej0fkRQhBnOT5FLpSrueiCP/4LecATjxLM9JU+U1FnkXN3b5FRHRIvpNQrKa4dRObsa4DBz91Koavh4eiVDlKIkz7nBIchJb8+a/GN0xjf6xuyByudli5DK+PoD97cdoGcQJEjZjrJ2UeQEAAQA= runner@unknown
+2026-11-06T02:42:00.3500513Z INFO         |   androidboot.qemu.avd_name=test
+2026-11-06T02:42:00.3500974Z INFO         |   androidboot.qemu.camera_hq_edge_processing=0
+2026-11-06T02:42:00.3501443Z INFO         |   androidboot.qemu.camera_protocol_ver=1
+2026-11-06T02:42:00.3501901Z INFO         |   androidboot.qemu.cpuvulkan.version=4206592
+2026-11-06T02:42:00.3502656Z INFO         |   androidboot.qemu.gltransport.drawFlushInterval=800
+2026-11-06T02:42:00.3503150Z INFO         |   androidboot.qemu.gltransport.name=pipe
+2026-11-06T02:42:00.3503590Z INFO         |   androidboot.qemu.hwcodec.avcdec=2
+2026-11-06T02:42:00.3504020Z INFO         |   androidboot.qemu.hwcodec.hevcdec=2
+2026-11-06T02:42:00.3504455Z INFO         |   androidboot.qemu.hwcodec.vpxdec=2
+2026-11-06T02:42:00.3504969Z INFO         |   androidboot.qemu.settings.system.screen_off_timeout=2147483647
+2026-11-06T02:42:00.3505477Z INFO         |   androidboot.qemu.skin=1080x1920
+2026-11-06T02:42:00.3505926Z INFO         |   androidboot.qemu.virtiowifi=1
+2026-11-06T02:42:00.3506323Z INFO         |   androidboot.qemu.vsync=60
+2026-11-06T02:42:00.3507316Z INFO         |   androidboot.serialno=EMULATOR37X2X13X0
+2026-11-06T02:42:00.3507986Z INFO         |   androidboot.vbmeta.digest=451e57ed688ff746d2c636d52169ade253e2bc5bb30a5c3ff23679ca15d3bcd3
+2026-11-06T02:42:00.3508654Z INFO         |   androidboot.vbmeta.hash_alg=sha256
+2026-11-06T02:42:00.3509099Z INFO         |   androidboot.vbmeta.size=6656
+2026-11-06T02:42:00.3509516Z INFO         |   androidboot.veritymode=enforcing
+2026-11-06T02:42:00.3711900Z WARNING: cannnot unmap ptr 0x7f0ac1a01000 as it is in the protected range from 0x7f0a21a00000 to 0x7f0ac1c00000
+2026-11-06T02:42:00.4060066Z INFO         | Monitoring duration of emulator setup.
+2026-11-06T02:42:01.3877451Z INFO         | Activated packet streamer for bluetooth emulation
+2026-11-06T02:42:01.3878400Z INFO         | Successfully initialized netsim WiFi
+2026-11-06T02:42:01.3902335Z INFO         | Setting display: 0 configuration to: 1080x1920, dpi: 420x420 
+2026-11-06T02:42:01.3903377Z INFO         | setDisplayActiveConfig: id:0, 1080x1920
+2026-11-06T02:42:01.3904764Z INFO         | emulatorSetupEnvironment: Environment scene is not required
+2026-11-06T02:42:01.4036894Z USER_INFO    | Emulator is performing a full startup. This may take upto two minutes, or more.
+2026-11-06T02:42:01.4038872Z WARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.
+2026-11-06T02:42:01.4866236Z WARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.
+2026-11-06T02:42:09.2359448Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell getprop sys.boot_completed
+2026-11-06T02:42:09.2400925Z * daemon not running; starting now at tcp:5037
+2026-11-06T02:42:09.4382912Z * daemon started successfully
+2026-11-06T02:42:09.4384519Z adb: device offline
+2026-11-06T02:42:09.4387734Z The process '/usr/local/lib/android/sdk/platform-tools/adb' failed with exit code 1
+2026-11-06T02:42:11.4430454Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell getprop sys.boot_completed
+2026-11-06T02:42:11.4471567Z adb: device offline
+2026-11-06T02:42:11.4479278Z The process '/usr/local/lib/android/sdk/platform-tools/adb' failed with exit code 1
+2026-11-06T02:42:13.4609077Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell getprop sys.boot_completed
+2026-11-06T02:42:13.6273866Z 
+2026-11-06T02:42:15.6388514Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell getprop sys.boot_completed
+2026-11-06T02:42:15.7331893Z 
+2026-11-06T02:42:17.7423245Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell getprop sys.boot_completed
+2026-11-06T02:42:17.7658431Z 
+2026-11-06T02:42:19.7717066Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell getprop sys.boot_completed
+2026-11-06T02:42:19.7982675Z 
+2026-11-06T02:42:21.8038580Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell getprop sys.boot_completed
+2026-11-06T02:42:21.8325428Z 
+2026-11-06T02:42:23.8404734Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell getprop sys.boot_completed
+2026-11-06T02:42:23.8747775Z 
+2026-11-06T02:42:25.8831883Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell getprop sys.boot_completed
+2026-11-06T02:42:25.9189827Z 
+2026-11-06T02:42:27.9254567Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell getprop sys.boot_completed
+2026-11-06T02:42:27.9536954Z 
+2026-11-06T02:42:29.9665850Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell getprop sys.boot_completed
+2026-11-06T02:42:30.0067256Z 
+2026-11-06T02:42:32.0122697Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell getprop sys.boot_completed
+2026-11-06T02:42:32.0327650Z 
+2026-11-06T02:42:34.0381725Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell getprop sys.boot_completed
+2026-11-06T02:42:34.0671637Z 
+2026-11-06T02:42:36.0741550Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell getprop sys.boot_completed
+2026-11-06T02:42:36.1180932Z 
+2026-11-06T02:42:38.1278556Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell getprop sys.boot_completed
+2026-11-06T02:42:38.2010279Z 
+2026-11-06T02:42:40.2184380Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell getprop sys.boot_completed
+2026-11-06T02:42:40.2653744Z 1
+2026-11-06T02:42:40.2667597Z Emulator booted.
+2026-11-06T02:42:40.2687352Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell input keyevent 82
+2026-11-06T02:42:40.3664277Z Disabling animations.
+2026-11-06T02:42:40.3698470Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell settings put global window_animation_scale 0.0
+2026-11-06T02:42:40.4223752Z INFO         | Boot completed in 41154 ms
+2026-11-06T02:42:40.4228347Z INFO         | Increasing screen off timeout, logcat buffer size to 2M.
+2026-11-06T02:42:40.4638628Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell settings put global transition_animation_scale 0.0
+2026-11-06T02:42:40.5731113Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell settings put global animator_duration_scale 0.0
+2026-11-06T02:42:40.7112433Z ##[endgroup]
+2026-11-06T02:42:40.7134042Z [command]/usr/bin/sh -c bash "$RUNNER_TEMP/kr4-debug-e2e.sh"
+2026-11-06T02:42:42.5217391Z 
+2026-11-06T02:42:42.5297736Z > Configure project :app
+2026-11-06T02:42:42.5329577Z Passing custom test runner argument android.testInstrumentationRunnerArguments.financialEvidenceRef from gradle.properties or command line is not compatible with configuration caching. Please specify this argument using android gradle dsl.
+2026-11-06T02:42:42.5370023Z Passing custom test runner argument android.testInstrumentationRunnerArguments.deviceKind from gradle.properties or command line is not compatible with configuration caching. Please specify this argument using android gradle dsl.
+2026-11-06T02:42:42.8127262Z 
+2026-11-06T02:42:42.8151512Z > Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-11-06T02:42:42.8178800Z > Task :app:preBuild UP-TO-DATE
+2026-11-06T02:42:42.8207448Z > Task :app:preDebugBuild UP-TO-DATE
+2026-11-06T02:42:42.8230964Z > Task :app:generateDebugBuildConfig UP-TO-DATE
+2026-11-06T02:42:42.9130339Z > Task :app:checkDebugAarMetadata UP-TO-DATE
+2026-11-06T02:42:42.9177903Z > Task :app:generateDebugResValues UP-TO-DATE
+2026-11-06T02:42:42.9217444Z > Task :app:mapDebugSourceSetPaths UP-TO-DATE
+2026-11-06T02:42:42.9247357Z > Task :app:generateDebugResources UP-TO-DATE
+2026-11-06T02:42:42.9258916Z > Task :app:mergeDebugResources UP-TO-DATE
+2026-11-06T02:42:42.9307622Z > Task :app:packageDebugResources UP-TO-DATE
+2026-11-06T02:42:42.9327873Z > Task :app:parseDebugLocalResources UP-TO-DATE
+2026-11-06T02:42:42.9367686Z > Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
+2026-11-06T02:42:42.9387325Z > Task :app:extractDeepLinksDebug UP-TO-DATE
+2026-11-06T02:42:43.0120892Z > Task :app:processDebugMainManifest UP-TO-DATE
+2026-11-06T02:42:43.0178078Z > Task :app:processDebugManifest UP-TO-DATE
+2026-11-06T02:42:43.0192131Z > Task :app:processDebugManifestForPackage UP-TO-DATE
+2026-11-06T02:42:43.0207428Z > Task :app:processDebugResources UP-TO-DATE
+2026-11-06T02:42:43.1147773Z > Task :app:compileDebugKotlin UP-TO-DATE
+2026-11-06T02:42:43.1167991Z > Task :app:javaPreCompileDebug UP-TO-DATE
+2026-11-06T02:42:43.1177997Z > Task :app:compileDebugJavaWithJavac UP-TO-DATE
+2026-11-06T02:42:43.1179261Z > Task :app:bundleDebugClassesToCompileJar UP-TO-DATE
+2026-11-06T02:42:43.1201917Z > Task :app:preDebugAndroidTestBuild SKIPPED
+2026-11-06T02:42:43.2118299Z > Task :app:processDebugAndroidTestManifest
+2026-11-06T02:42:43.2157781Z > Task :app:generateDebugAndroidTestBuildConfig
+2026-11-06T02:42:43.2187621Z > Task :app:checkDebugAndroidTestAarMetadata
+2026-11-06T02:42:43.2217565Z > Task :app:generateDebugAndroidTestResValues
+2026-11-06T02:42:43.2247805Z > Task :app:mapDebugAndroidTestSourceSetPaths
+2026-11-06T02:42:43.2277740Z > Task :app:generateDebugAndroidTestResources
+2026-11-06T02:42:43.5144806Z > Task :app:mergeDebugShaders UP-TO-DATE
+2026-11-06T02:42:43.5171870Z > Task :app:compileDebugShaders NO-SOURCE
+2026-11-06T02:42:43.5197493Z > Task :app:generateDebugAssets UP-TO-DATE
+2026-11-06T02:42:43.5268007Z > Task :app:mergeDebugAssets UP-TO-DATE
+2026-11-06T02:42:43.6155012Z > Task :app:compressDebugAssets UP-TO-DATE
+2026-11-06T02:42:43.6171679Z > Task :app:desugarDebugFileDependencies UP-TO-DATE
+2026-11-06T02:42:43.6187468Z > Task :app:javaPreCompileDebugAndroidTest
+2026-11-06T02:42:43.6219326Z > Task :app:dexBuilderDebug UP-TO-DATE
+2026-11-06T02:42:43.6249337Z > Task :app:mergeDebugGlobalSynthetics UP-TO-DATE
+2026-11-06T02:42:43.6250216Z > Task :app:processDebugJavaRes UP-TO-DATE
+2026-11-06T02:42:43.6274702Z > Task :app:mergeDebugJavaResource UP-TO-DATE
+2026-11-06T02:42:43.6278572Z > Task :app:checkDebugDuplicateClasses UP-TO-DATE
+2026-11-06T02:42:43.6299450Z > Task :app:mergeDebugStartupProfile UP-TO-DATE
+2026-11-06T02:42:43.7149145Z > Task :app:mergeExtDexDebug UP-TO-DATE
+2026-11-06T02:42:43.7167750Z > Task :app:mergeLibDexDebug UP-TO-DATE
+2026-11-06T02:42:43.7248226Z > Task :app:mergeProjectDexDebug UP-TO-DATE
+2026-11-06T02:42:43.7287808Z > Task :app:mergeDebugJniLibFolders UP-TO-DATE
+2026-11-06T02:42:43.7311054Z > Task :app:mergeDebugNativeLibs UP-TO-DATE
+2026-11-06T02:42:43.7347672Z > Task :app:stripDebugDebugSymbols UP-TO-DATE
+2026-11-06T02:42:43.7348874Z > Task :app:validateSigningDebug UP-TO-DATE
+2026-11-06T02:42:43.7377361Z > Task :app:writeDebugAppMetadata UP-TO-DATE
+2026-11-06T02:42:43.7407653Z > Task :app:writeDebugSigningConfigVersions UP-TO-DATE
+2026-11-06T02:42:43.7408759Z > Task :app:packageDebug UP-TO-DATE
+2026-11-06T02:42:43.7447633Z > Task :app:createDebugApkListingFileRedirect UP-TO-DATE
+2026-11-06T02:42:43.7457621Z > Task :app:mergeDebugAndroidTestShaders
+2026-11-06T02:42:43.7459908Z > Task :app:compileDebugAndroidTestShaders NO-SOURCE
+2026-11-06T02:42:43.7460893Z > Task :app:generateDebugAndroidTestAssets UP-TO-DATE
+2026-11-06T02:42:43.8163533Z > Task :app:mergeDebugAndroidTestResources
+2026-11-06T02:42:43.8189953Z > Task :app:mergeDebugAndroidTestAssets
+2026-11-06T02:42:43.9173333Z > Task :app:desugarDebugAndroidTestFileDependencies
+2026-11-06T02:42:44.0123616Z > Task :app:checkDebugAndroidTestDuplicateClasses
+2026-11-06T02:42:44.0287884Z > Task :app:mergeDebugAndroidTestJniLibFolders
+2026-11-06T02:42:44.1149001Z > Task :app:compressDebugAndroidTestAssets
+2026-11-06T02:42:44.2128135Z > Task :app:mergeDebugAndroidTestNativeLibs NO-SOURCE
+2026-11-06T02:42:44.2177084Z > Task :app:mergeLibDexDebugAndroidTest
+2026-11-06T02:42:44.2238417Z > Task :app:stripDebugAndroidTestDebugSymbols NO-SOURCE
+2026-11-06T02:42:44.2243510Z > Task :app:validateSigningDebugAndroidTest
+2026-11-06T02:42:44.3160712Z > Task :app:writeDebugAndroidTestSigningConfigVersions
+2026-11-06T02:42:44.3187805Z > Task :app:processDebugAndroidTestResources
+2026-11-06T02:42:44.8138212Z > Task :app:mergeExtDexDebugAndroidTest
+2026-11-06T02:42:51.6135463Z 
+2026-11-06T02:42:51.6148508Z > Task :app:compileDebugAndroidTestKotlin
+2026-11-06T02:42:51.6182605Z w: file:///home/runner/work/Kook/Kook/app/src/androidTest/java/com/krstock/v3/NavyNavigationInstrumentedTest.kt:91:51 'var systemUiVisibility: Int' is deprecated. Deprecated in Java.
+2026-11-06T02:42:51.6200390Z w: file:///home/runner/work/Kook/Kook/app/src/androidTest/java/com/krstock/v3/NavyNavigationInstrumentedTest.kt:92:44 'static field SYSTEM_UI_FLAG_LIGHT_STATUS_BAR: Int' is deprecated. Deprecated in Java.
+2026-11-06T02:42:51.6227168Z w: file:///home/runner/work/Kook/Kook/app/src/androidTest/java/com/krstock/v3/NavyNavigationInstrumentedTest.kt:93:44 'static field SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR: Int' is deprecated. Deprecated in Java.
+2026-11-06T02:42:51.6258454Z w: file:///home/runner/work/Kook/Kook/app/src/androidTest/java/com/krstock/v3/NavyNavigationInstrumentedTest.kt:331:24 'static fun getWindowInsetsController(p0: View): WindowInsetsControllerCompat?' is deprecated. Deprecated in Java.
+2026-11-06T02:42:52.1117193Z 
+2026-11-06T02:42:52.1147738Z > Task :app:compileDebugAndroidTestJavaWithJavac
+2026-11-06T02:42:53.4117808Z > Task :app:dexBuilderDebugAndroidTest
+2026-11-06T02:42:53.4167779Z > Task :app:mergeDebugAndroidTestGlobalSynthetics
+2026-11-06T02:42:53.5121977Z > Task :app:processDebugAndroidTestJavaRes
+2026-11-06T02:42:53.7117884Z > Task :app:mergeDebugAndroidTestJavaResource
+2026-11-06T02:42:53.7188070Z > Task :app:mergeProjectDexDebugAndroidTest
+2026-11-06T02:42:53.9117875Z > Task :app:packageDebugAndroidTest
+2026-11-06T02:42:53.9129074Z > Task :app:createDebugAndroidTestApkListingFileRedirect
+2026-11-06T02:42:54.2128052Z [EmulatorConsole]: Failed to start Emulator console for 5554
+2026-11-06T02:43:14.7177325Z 
+2026-11-06T02:43:14.7197508Z > Task :app:connectedDebugAndroidTest
+2026-11-06T02:43:14.7250287Z Starting 41 tests on emulator-5554 - 14
+2026-11-06T02:43:24.8113258Z 
+2026-11-06T02:43:24.8116105Z emulator-5554 - 14 Tests 4/41 completed. (0 skipped) (0 failed)
+2026-11-06T02:44:14.7115482Z emulator-5554 - 14 Tests 5/41 completed. (0 skipped) (0 failed)
+2026-11-06T02:44:44.8123524Z emulator-5554 - 14 Tests 6/41 completed. (0 skipped) (0 failed)
+2026-11-06T02:44:54.8122974Z emulator-5554 - 14 Tests 7/41 completed. (0 skipped) (0 failed)
+2026-11-06T02:45:34.8114254Z emulator-5554 - 14 Tests 8/41 completed. (0 skipped) (0 failed)
+2026-11-06T02:45:44.8113531Z emulator-5554 - 14 Tests 9/41 completed. (0 skipped) (0 failed)
+2026-11-06T02:45:54.8168118Z emulator-5554 - 14 Tests 12/41 completed. (0 skipped) (0 failed)
+2026-11-06T02:46:04.7114064Z emulator-5554 - 14 Tests 13/41 completed. (0 skipped) (0 failed)
+2026-11-06T02:46:24.8128996Z emulator-5554 - 14 Tests 19/41 completed. (0 skipped) (0 failed)
+2026-11-06T02:46:34.7132756Z emulator-5554 - 14 Tests 20/41 completed. (0 skipped) (0 failed)
+2026-11-06T02:46:54.8121097Z emulator-5554 - 14 Tests 21/41 completed. (0 skipped) (0 failed)
+2026-11-06T02:47:14.7140932Z emulator-5554 - 14 Tests 25/41 completed. (0 skipped) (0 failed)
+2026-11-06T02:47:24.8113381Z emulator-5554 - 14 Tests 27/41 completed. (0 skipped) (0 failed)
+2026-11-06T02:47:34.8208000Z emulator-5554 - 14 Tests 28/41 completed. (0 skipped) (0 failed)
+2026-11-06T02:47:44.8114823Z emulator-5554 - 14 Tests 31/41 completed. (0 skipped) (0 failed)
+2026-11-06T02:48:04.8113527Z emulator-5554 - 14 Tests 35/41 completed. (0 skipped) (0 failed)
+2026-11-06T02:48:14.8128553Z emulator-5554 - 14 Tests 37/41 completed. (0 skipped) (0 failed)
+2026-11-06T02:48:24.8114605Z emulator-5554 - 14 Tests 39/41 completed. (0 skipped) (0 failed)
+2026-11-06T02:48:34.8113220Z emulator-5554 - 14 Tests 41/41 completed. (0 skipped) (0 failed)
+2026-11-06T02:48:51.0114414Z Finished 41 tests on emulator-5554 - 14
+2026-11-06T02:48:52.4942361Z gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__reactivecircus_android-emulator-runner-1793932961934.json
+2026-11-06T02:48:52.4953190Z 
+2026-11-06T02:48:52.4953768Z BUILD SUCCESSFUL in 6m 11s
+2026-11-06T02:48:52.4957434Z 68 actionable tasks: 29 executed, 39 up-to-date
+2026-11-06T02:48:52.8278372Z adb: error: failed to stat remote object '/sdcard/Android/data/com.krstock.v3/files/snapshot-e2e': No such file or directory
+2026-11-06T02:48:53.1497204Z ##[group]Terminate Emulator
+2026-11-06T02:48:53.1515173Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 emu kill
+2026-11-06T02:48:53.1553894Z OK: killing emulator, bye bye
+2026-11-06T02:48:53.1554878Z OK
+2026-11-06T02:48:53.1556824Z INFO         | Wait for emulator (pid 4063) 20 seconds to shutdown gracefully before kill;you can set environment variable ANDROID_EMULATOR_WAIT_TIME_BEFORE_KILL(in seconds) to change the default value (20 seconds)
+2026-11-06T02:48:53.1558157Z 
+2026-11-06T02:48:53.1558725Z ##[endgroup]
+2026-11-06T02:48:53.1927559Z USER_INFO    | Snapshots have been disabled by the user, save request is ignored.
+2026-11-06T02:48:53.1929368Z INFO         | Saving snapshot 'default_boot' took 0 ms
+2026-11-06T02:48:53.6068745Z ERROR        | stop: Not implemented
+2026-11-06T02:48:53.6069985Z WARNING      | Emulator client has not yet been configured.. Call configure me first!
+2026-11-06T02:48:53.6309362Z INFO         | removeAll
+2026-11-06T02:48:53.6704101Z WARNING      | Netsim Wifi dns:///localhost:43455 is gone due to Stream removed (CANCELLED)
+2026-11-06T02:48:53.8532872Z ##[group]Run set -euo pipefail
+2026-11-06T02:48:53.8533357Z [36;1mset -euo pipefail[0m
+2026-11-06T02:48:53.8533765Z [36;1mAPK="app/build/outputs/apk/debug/app-debug.apk"[0m
+2026-11-06T02:48:53.8534187Z [36;1mtest -s "$APK"[0m
+2026-11-06T02:48:53.8534514Z [36;1mmkdir -p dist evidence/ci[0m
+2026-11-06T02:48:53.8534953Z [36;1mcp "$APK" dist/KR4_AUTOUPDATE_Extreme_CleanPass_debug.apk[0m
+2026-11-06T02:48:53.8535463Z [36;1msha256sum "$APK" | tee evidence/ci/APK_SHA256.txt[0m
+2026-11-06T02:48:53.8535987Z [36;1mstat --printf='APK_BYTES=%s\n' "$APK" | tee evidence/ci/APK_SIZE.txt[0m
+2026-11-06T02:48:53.8536925Z [36;1mgrep -q 'applicationId = "com.krstock.v3"' app/build.gradle.kts[0m
+2026-11-06T02:48:53.8537651Z [36;1mgrep -q 'AppAutoUpdater.checkAndDownload' app/src/main/java/com/krstock/v3/MainActivity.kt[0m
+2026-11-06T02:48:53.8538478Z [36;1mgrep -q 'PeriodicWorkRequestBuilder<AppUpdateWorker>' app/src/main/java/com/krstock/v3/KR4Application.kt[0m
+2026-11-06T02:48:53.8539285Z [36;1mgrep -q 'REQUEST_INSTALL_PACKAGES' app/src/main/AndroidManifest.xml[0m
+2026-11-06T02:48:53.8539842Z [36;1mgrep -q 'FileProvider' app/src/main/AndroidManifest.xml[0m
+2026-11-06T02:48:53.8540527Z [36;1mgrep -q 'releases/latest/download/update.json' app/src/main/java/com/krstock/v3/update/AppAutoUpdater.kt[0m
+2026-11-06T02:48:53.8541436Z [36;1mgrep -q 'signerDigests(installed) == signerDigests(archive)' app/src/main/java/com/krstock/v3/update/AppAutoUpdater.kt[0m
+2026-11-06T02:48:53.8542297Z [36;1mgrep -q 'sha256(apk) != info.sha256' app/src/main/java/com/krstock/v3/update/AppAutoUpdater.kt[0m
+2026-11-06T02:48:53.8542957Z [36;1mgrep -q 'id-token: write' .github/workflows/android-build.yml[0m
+2026-11-06T02:48:53.8543594Z [36;1mgrep -q 'kr4-signing-vault-5yh3dd.v2.appdeploy.ai' .github/workflows/android-build.yml[0m
+2026-11-06T02:48:53.8544273Z [36;1mgrep -q "$EXPECTED_STABLE_CERT_SHA256" .github/workflows/android-build.yml[0m
+2026-11-06T02:48:53.8638806Z shell: /usr/bin/bash -e {0}
+2026-11-06T02:48:53.8639178Z env:
+2026-11-06T02:48:53.8639770Z   EXPECTED_STABLE_CERT_SHA256: 1070e82beee574cd29ffd2dc3e693fd7f7862374f16d1606567db303ab152477
+2026-11-06T02:48:53.8640447Z   FINANCIAL_EVIDENCE_REF: fix/independent-financial-date-ci
+2026-11-06T02:48:53.8640957Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:48:53.8641499Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.16/x64/lib/pkgconfig
+2026-11-06T02:48:53.8642028Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:48:53.8642517Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:48:53.8642996Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:48:53.8643481Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.16/x64/lib
+2026-11-06T02:48:53.8644025Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.21-9/x64
+2026-11-06T02:48:53.8644824Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.21-9/x64
+2026-11-06T02:48:53.8645325Z   MAVEN_ARGS: -ntp
+2026-11-06T02:48:53.8645660Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+2026-11-06T02:48:53.8646056Z   GRADLE_USER_HOME: /home/runner/.gradle
+2026-11-06T02:48:53.8646437Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+2026-11-06T02:48:53.8647099Z   GRADLE_BUILD_ACTION_CACHE_RESTORED: true
+2026-11-06T02:48:53.8647650Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+2026-11-06T02:48:53.8648247Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+2026-11-06T02:48:53.8648652Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+2026-11-06T02:48:53.8649046Z   ANDROID_AVD_HOME: /home/runner/.android/avd
+2026-11-06T02:48:53.8649410Z ##[endgroup]
+2026-11-06T02:48:53.8914144Z 2be496b050d37632c9d494572de5f603d9071cf728451eb48daf91f21b1f27fc  app/build/outputs/apk/debug/app-debug.apk
+2026-11-06T02:48:53.8937812Z APK_BYTES=11641507
+2026-11-06T02:48:53.9201630Z ##[group]Run actions/upload-artifact@v4
+2026-11-06T02:48:53.9202024Z with:
+2026-11-06T02:48:53.9202310Z   name: KR4_AUTOUPDATE_Extreme_CleanPass
+2026-11-06T02:48:53.9204361Z   path: dist/KR4_AUTOUPDATE_Extreme_CleanPass_debug.apk
+evidence/ci/APK_SHA256.txt
+evidence/ci/APK_SIZE.txt
+evidence/ci/snapshot-e2e/
+evidence/ci/android-debug-logcat.txt
+evidence/combo_rank_stress_results.json
+evidence/real_quant_snapshot.json
+evidence/quarterly_history.json
+evidence/clean_pass_results.json
+evidence/stress_results.json
+app/build/reports/tests/testDebugUnitTest/
+app/build/reports/androidTests/
+app/build/outputs/androidTest-results/
+app/build/outputs/connected_android_test_additional_output/
+
+2026-11-06T02:48:53.9206427Z   if-no-files-found: error
+2026-11-06T02:48:53.9207203Z   retention-days: 14
+2026-11-06T02:48:53.9207511Z   compression-level: 6
+2026-11-06T02:48:53.9207817Z   overwrite: false
+2026-11-06T02:48:53.9208102Z   include-hidden-files: false
+2026-11-06T02:48:53.9208421Z env:
+2026-11-06T02:48:53.9208902Z   EXPECTED_STABLE_CERT_SHA256: 1070e82beee574cd29ffd2dc3e693fd7f7862374f16d1606567db303ab152477
+2026-11-06T02:48:53.9209537Z   FINANCIAL_EVIDENCE_REF: fix/independent-financial-date-ci
+2026-11-06T02:48:53.9210039Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:48:53.9210568Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.16/x64/lib/pkgconfig
+2026-11-06T02:48:53.9211097Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:48:53.9211572Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:48:53.9212038Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.16/x64
+2026-11-06T02:48:53.9212513Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.16/x64/lib
+2026-11-06T02:48:53.9213037Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.21-9/x64
+2026-11-06T02:48:53.9213607Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.21-9/x64
+2026-11-06T02:48:53.9214086Z   MAVEN_ARGS: -ntp
+2026-11-06T02:48:53.9214412Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+2026-11-06T02:48:53.9214812Z   GRADLE_USER_HOME: /home/runner/.gradle
+2026-11-06T02:48:53.9215189Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+2026-11-06T02:48:53.9215565Z   GRADLE_BUILD_ACTION_CACHE_RESTORED: true
+2026-11-06T02:48:53.9216090Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+2026-11-06T02:48:53.9216941Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+2026-11-06T02:48:53.9217362Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+2026-11-06T02:48:53.9217745Z   ANDROID_AVD_HOME: /home/runner/.android/avd
+2026-11-06T02:48:53.9218098Z ##[endgroup]
+2026-11-06T02:48:54.1306781Z (node:5136) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-06T02:48:54.1308305Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-06T02:48:54.2700273Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2026-11-06T02:48:54.2706432Z The least common ancestor is /home/runner/work/Kook/Kook. This will be the root directory of the artifact
+2026-11-06T02:48:54.2707878Z With the provided path, there will be 431 files uploaded
+2026-11-06T02:48:54.2708934Z Artifact name is valid!
+2026-11-06T02:48:54.2709485Z Root directory input is valid!
+2026-11-06T02:48:54.4645699Z Beginning upload of artifact content to blob storage
+2026-11-06T02:48:54.7621494Z (node:5136) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-11-06T02:48:54.9965886Z Uploaded bytes 8388608
+2026-11-06T02:48:55.5542272Z Uploaded bytes 16777216
+2026-11-06T02:48:55.9386430Z Uploaded bytes 25165824
+2026-11-06T02:48:56.1242162Z Uploaded bytes 33554432
+2026-11-06T02:48:56.4779147Z Uploaded bytes 41943040
+2026-11-06T02:48:56.5806971Z Uploaded bytes 46454242
+2026-11-06T02:48:56.6124841Z Finished uploading artifact content to blob storage!
+2026-11-06T02:48:56.6128278Z SHA256 digest of uploaded artifact zip is 8700f4d0e707606e8cda5624715d982d6891f2eb55c6ecfb5928b7bfa2bc9751
+2026-11-06T02:48:56.6130697Z Finalizing artifact upload
+2026-11-06T02:48:57.0168631Z Artifact KR4_AUTOUPDATE_Extreme_CleanPass.zip successfully finalized. Artifact ID 13472588399
+2026-11-06T02:48:57.0169965Z Artifact KR4_AUTOUPDATE_Extreme_CleanPass has been successfully uploaded! Final size is 46454242 bytes. Artifact ID is 13472588399
+2026-11-06T02:48:57.0177254Z Artifact download URL: https://github.com/irewon1-lgtm/Kook/actions/runs/42150459363/artifacts/13472588399
+2026-11-06T02:48:57.0667027Z Post job cleanup.
+2026-11-06T02:48:57.3369585Z In post-action step
+2026-11-06T02:48:57.3381920Z Cache is read-only: will not save state for use in subsequent builds.
+2026-11-06T02:48:57.3389590Z Generating Job Summary
+2026-11-06T02:48:57.3408839Z Completed post-action step
+2026-11-06T02:48:57.3699691Z Post job cleanup.
+2026-11-06T02:48:57.5357340Z Post job cleanup.
+2026-11-06T02:48:57.6768757Z (node:5170) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-06T02:48:57.6770527Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-06T02:48:57.6985266Z Post job cleanup.
+2026-11-06T02:48:57.8042148Z [command]/usr/bin/git version
+2026-11-06T02:48:57.8127690Z git version 2.56.0
+2026-11-06T02:48:57.8169678Z Temporarily overriding HOME='/home/runner/work/_temp/c33f112a-a76e-45ab-ad3d-5e42b3e95b4c' before making global git config changes
+2026-11-06T02:48:57.8171146Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-06T02:48:57.8172270Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Kook/Kook
+2026-11-06T02:48:57.8241693Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-06T02:48:57.8298610Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-06T02:48:57.8746892Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-06T02:48:57.8790634Z http.https://github.com/.extraheader
+2026-11-06T02:48:57.8807623Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-11-06T02:48:57.8875726Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-06T02:48:57.9245301Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-06T02:48:57.9295569Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-06T02:48:57.9733306Z Cleaning up orphan processes
+2026-11-06T02:48:58.0323858Z Terminate orphan process: pid (3387) (java)
+2026-11-06T02:48:58.0569578Z Terminate orphan process: pid (3501) (java)
+2026-11-06T02:48:58.0862454Z Terminate orphan process: pid (4224) (adb)
+2026-11-06T02:48:58.0993858Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/download-artifact@v4, actions/setup-python@v5, actions/upload-artifact@v4, gradle/actions/setup-gradle@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

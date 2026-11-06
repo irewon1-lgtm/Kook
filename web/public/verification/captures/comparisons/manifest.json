@@ -1,0 +1,151 @@
+{
+  "kind": "LABELED_SIDE_BY_SIDE_BROWSER_COMPARISON",
+  "captureScope": "PUBLIC",
+  "originalImagesUnmodified": true,
+  "images": [
+    {
+      "file": "approved/home.jpg",
+      "sha256": "e0c407f25aca3d888e579aee5bf583606c65dc23e90fbe5b6705643ad5d4f906",
+      "bytes": 102937,
+      "originalPath": "/workspace/kr4-pc-web/docs/design/approved-dark-navy/home.jpg"
+    },
+    {
+      "file": "actual/canonical-home-1365x853.png",
+      "sha256": "a3823382b3a239885d99c9123b712382832c9701a1716634b809b265d9522066",
+      "bytes": 446709,
+      "originalPath": "/workspace/kr4-pc-work/official-pages-final-captures/canonical-home-1365x853.png"
+    },
+    {
+      "file": "actual/canonical-home-1365x853.json",
+      "sha256": "3c357543257e81c29e964a3176b50ed2b1c6d7eb0e76be0010dc36a5721824e0",
+      "bytes": 6100,
+      "originalPath": "/workspace/kr4-pc-work/official-pages-final-captures/canonical-home-1365x853.json"
+    },
+    {
+      "file": "actual/focus-home-1365x853-home-top-five.png",
+      "sha256": "0176f7417ee0a6e3651aea2d52330c311ac6102103ee8e446e78f70fc6dd5ed9",
+      "bytes": 155989,
+      "originalPath": "/workspace/kr4-pc-work/official-pages-final-captures/focus-home-1365x853-home-top-five.png"
+    },
+    {
+      "file": "actual/focus-home-1365x853-home-top-five.json",
+      "sha256": "6db21e00277208a86460714c7b1c568be99eab95c8bfdfbd089b4ecde7ddac57",
+      "bytes": 6103,
+      "originalPath": "/workspace/kr4-pc-work/official-pages-final-captures/focus-home-1365x853-home-top-five.json"
+    },
+    {
+      "file": "approved/ranking.jpg",
+      "sha256": "c89d0e6b640bed0b7ce6305a355a9d364cc14cbdd4fd4f12bd8143aa40afd26f",
+      "bytes": 106436,
+      "originalPath": "/workspace/kr4-pc-web/docs/design/approved-dark-navy/ranking.jpg"
+    },
+    {
+      "file": "actual/canonical-ranking-1365x853.png",
+      "sha256": "240bfb7e6d071964516545126893cf1232b935debf84b760474e1b190722e30b",
+      "bytes": 349485,
+      "originalPath": "/workspace/kr4-pc-work/official-pages-final-captures/canonical-ranking-1365x853.png"
+    },
+    {
+      "file": "actual/canonical-ranking-1365x853.json",
+      "sha256": "d168d70a08ffaf6e69f6a2d8ab1a208ca985f5d9daecca2562abd924c6076acd",
+      "bytes": 6108,
+      "originalPath": "/workspace/kr4-pc-work/official-pages-final-captures/canonical-ranking-1365x853.json"
+    },
+    {
+      "file": "actual/focus-ranking-1365x853-ranking-table.png",
+      "sha256": "9da6cd282dfcbd40d7e2074426ae8a97364a9ca277c07bde7a7dab03cd0f0ee1",
+      "bytes": 133666,
+      "originalPath": "/workspace/kr4-pc-work/official-pages-final-captures/focus-ranking-1365x853-ranking-table.png"
+    },
+    {
+      "file": "actual/focus-ranking-1365x853-ranking-table.json",
+      "sha256": "5691a0a5c5114cfa73a15311aacfa6cb432798564bdc29e5296a494da39a944e",
+      "bytes": 6111,
+      "originalPath": "/workspace/kr4-pc-work/official-pages-final-captures/focus-ranking-1365x853-ranking-table.json"
+    },
+    {
+      "file": "approved/detail.jpg",
+      "sha256": "6ae973d5a809ecbb3255d2734643bb585d433485e317138d91e70b14ffab78c1",
+      "bytes": 101711,
+      "originalPath": "/workspace/kr4-pc-web/docs/design/approved-dark-navy/detail.jpg"
+    },
+    {
+      "file": "actual/canonical-detail-1365x853.png",
+      "sha256": "4db78275d29bfc76259d83ffde507d9e41a4df93598e76e62d38b24cbb2ecf52",
+      "bytes": 487908,
+      "originalPath": "/workspace/kr4-pc-work/official-pages-final-captures/canonical-detail-1365x853.png"
+    },
+    {
+      "file": "actual/canonical-detail-1365x853.json",
+      "sha256": "05f1504d867a5da016663898e99477918a720aaf8704e7f02717234a52970f53",
+      "bytes": 6115,
+      "originalPath": "/workspace/kr4-pc-work/official-pages-final-captures/canonical-detail-1365x853.json"
+    },
+    {
+      "file": "actual/focus-detail-1365x853-detail-metric-bars.png",
+      "sha256": "975143c99c9f79a814a6072c6fcd8585bb5aed9b4a409a2b8fa959501c2ed174",
+      "bytes": 412974,
+      "originalPath": "/workspace/kr4-pc-work/official-pages-final-captures/focus-detail-1365x853-detail-metric-bars.png"
+    },
+    {
+      "file": "actual/focus-detail-1365x853-detail-metric-bars.json",
+      "sha256": "3aa9457e24a36d4e891a01db9a61ad3dc6e2df1bdec20a8daec83895d42218c2",
+      "bytes": 6117,
+      "originalPath": "/workspace/kr4-pc-work/official-pages-final-captures/focus-detail-1365x853-detail-metric-bars.json"
+    },
+    {
+      "file": "actual/focus-detail-1365x853-detail-financial.png",
+      "sha256": "801a0f066123f50b842957d7bfebd355fcdd9a62d46313c261947a5d936bc93e",
+      "bytes": 302288,
+      "originalPath": "/workspace/kr4-pc-work/official-pages-final-captures/focus-detail-1365x853-detail-financial.png"
+    },
+    {
+      "file": "actual/focus-detail-1365x853-detail-financial.json",
+      "sha256": "6ac3ba53d24953fc767a3362707ad74d7c037e74d89090db413682f4e8263e20",
+      "bytes": 6117,
+      "originalPath": "/workspace/kr4-pc-work/official-pages-final-captures/focus-detail-1365x853-detail-financial.json"
+    },
+    {
+      "file": "approved/chart.jpg",
+      "sha256": "4f6f09806da3146629d9474c941d77b9e04f01b4209a24260260472b44ba395d",
+      "bytes": 82059,
+      "originalPath": "/workspace/kr4-pc-web/docs/design/approved-dark-navy/chart.jpg"
+    },
+    {
+      "file": "actual/canonical-chart-1365x853.png",
+      "sha256": "9ab0dee6a419b73c48e57360375a6a15994b3ad19179a7aa609987e0ee82b4a3",
+      "bytes": 410946,
+      "originalPath": "/workspace/kr4-pc-work/official-pages-final-captures/canonical-chart-1365x853.png"
+    },
+    {
+      "file": "actual/canonical-chart-1365x853.json",
+      "sha256": "710707f497fc421e483568eef4518819c4416fde820ee71b4f20410ff542f277",
+      "bytes": 6115,
+      "originalPath": "/workspace/kr4-pc-work/official-pages-final-captures/canonical-chart-1365x853.json"
+    },
+    {
+      "file": "actual/focus-chart-1365x853-chart-controls-and-plot.png",
+      "sha256": "c7211ece3f86cb6626b0bccbb8cb94d1e173e64ab10a1e552df1a58c979fb554",
+      "bytes": 263608,
+      "originalPath": "/workspace/kr4-pc-work/official-pages-final-captures/focus-chart-1365x853-chart-controls-and-plot.png"
+    },
+    {
+      "file": "actual/focus-chart-1365x853-chart-controls-and-plot.json",
+      "sha256": "bafe36d3977ca7d6954df39eb3de0b13ebe3c21d6edbfc940896af4a6db79b2f",
+      "bytes": 6117,
+      "originalPath": "/workspace/kr4-pc-work/official-pages-final-captures/focus-chart-1365x853-chart-controls-and-plot.json"
+    },
+    {
+      "file": "actual/focus-chart-1365x853-chart-plot.png",
+      "sha256": "6cd377c95fb8abce24f77c33ee868c6229dffe2bf24c939500de220ae2c80dae",
+      "bytes": 225484,
+      "originalPath": "/workspace/kr4-pc-work/official-pages-final-captures/focus-chart-1365x853-chart-plot.png"
+    },
+    {
+      "file": "actual/focus-chart-1365x853-chart-plot.json",
+      "sha256": "c48f381ec1faf4afb02ef34c6fe6714acf0321ab229fd8353874c2eb916df8ed",
+      "bytes": 6117,
+      "originalPath": "/workspace/kr4-pc-work/official-pages-final-captures/focus-chart-1365x853-chart-plot.json"
+    }
+  ]
+}

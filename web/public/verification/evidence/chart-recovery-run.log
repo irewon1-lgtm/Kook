@@ -1,0 +1,11 @@
+
+Running 2 tests using 1 worker
+
+(node:186258) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:186258) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 e2e/chart-recovery.spec.ts:71:1 › actual Samsung six-month observed bars expose bounds, changes and partial-period dates (5.7s)
+  ✓  2 e2e/chart-recovery.spec.ts:144:1 › real CACHE survives a controlled price 503 and recovers; genuine MISSING stays empty with retry (4.7s)
+
+  2 passed (12.0s)

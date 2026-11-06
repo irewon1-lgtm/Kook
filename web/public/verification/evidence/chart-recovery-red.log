@@ -1,0 +1,72 @@
+
+Running 2 tests using 1 worker
+
+(node:184620) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:184620) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 e2e/chart-recovery.spec.ts:71:1 › actual Samsung six-month observed bars expose bounds, changes and partial-period dates (4.3s)
+  ✘  2 e2e/chart-recovery.spec.ts:144:1 › real CACHE survives a controlled price 503 and recovers; genuine MISSING stays empty with retry (45.0s)
+
+
+  1) e2e/chart-recovery.spec.ts:144:1 › real CACHE survives a controlled price 503 and recovers; genuine MISSING stays empty with retry 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoContainText[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator: locator('.pc-chart__error')
+    Expected substring: [32m"503"[39m
+    Timeout: 20000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "soft toContainText" with timeout 20000ms[22m
+    [2m  - waiting for locator('.pc-chart__error')[22m
+
+
+      104 |   expect(await page.getByTestId('chart_last_ohlc').innerText()).toBe(before.ohlc); await expect(page.getByTestId('chart_latest_close')).toHaveText(before.quote);
+      105 |   await expect(page.getByTestId('chart_source')).toContainText('CACHE');
+    > 106 |   await expect.soft(page.locator('.pc-chart__error')).toContainText('503');
+          |                                                       ^
+      107 |   await expect.soft(page.locator('.pc-chart__error')).toContainText('CACHE');
+      108 |   await page.unroute(actual.url);
+      109 |   await page.route(actual.url, async route => { restored++; await route.continue(); });
+        at /workspace/kr4-pc-web/web/e2e/chart-recovery.spec.ts:106:55
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoContainText[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator: locator('.pc-chart__error')
+    Expected substring: [32m"CACHE"[39m
+    Timeout: 20000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "soft toContainText" with timeout 20000ms[22m
+    [2m  - waiting for locator('.pc-chart__error')[22m
+
+
+      105 |   await expect(page.getByTestId('chart_source')).toContainText('CACHE');
+      106 |   await expect.soft(page.locator('.pc-chart__error')).toContainText('503');
+    > 107 |   await expect.soft(page.locator('.pc-chart__error')).toContainText('CACHE');
+          |                                                       ^
+      108 |   await page.unroute(actual.url);
+      109 |   await page.route(actual.url, async route => { restored++; await route.continue(); });
+      110 |   await page.getByRole('button', { name: '다시 불러오기', exact: true }).click();
+        at /workspace/kr4-pc-web/web/e2e/chart-recovery.spec.ts:107:55
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../kr4-pc-work/chart-recovery-red-run/chart-recovery-real-CACHE--bf816-SING-stays-empty-with-retry/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../kr4-pc-work/chart-recovery-red-run/chart-recovery-real-CACHE--bf816-SING-stays-empty-with-retry/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../kr4-pc-work/chart-recovery-red-run/chart-recovery-real-CACHE--bf816-SING-stays-empty-with-retry/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../kr4-pc-work/chart-recovery-red-run/chart-recovery-real-CACHE--bf816-SING-stays-empty-with-retry/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    e2e/chart-recovery.spec.ts:144:1 › real CACHE survives a controlled price 503 and recovers; genuine MISSING stays empty with retry 
+  1 passed (51.5s)

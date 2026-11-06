@@ -1,0 +1,38 @@
+{
+  "kind": "DERIVED_GIT_WEB_PRODUCT_IDENTITY",
+  "refs": {
+    "mountedUi": "d7272beb76c6763276db12dc7b36d707351bd2a6",
+    "newPublication": "e388ea2b7aa52843af5c0d32861cc0493bfe5f5a"
+  },
+  "paths": [
+    "web/src",
+    "web/e2e",
+    "web/tests",
+    "web/package.json",
+    "web/package-lock.json"
+  ],
+  "gitDiffNameStatus": "",
+  "identicalGitObjects": {
+    "web/src": {
+      "mountedUi": "b40912365a5f1cfeb5a1f97c4d74c9357730a47b",
+      "newPublication": "b40912365a5f1cfeb5a1f97c4d74c9357730a47b"
+    },
+    "web/e2e": {
+      "mountedUi": "7dceb379d88ae491412c75d740a5c8ded7755542",
+      "newPublication": "7dceb379d88ae491412c75d740a5c8ded7755542"
+    },
+    "web/tests": {
+      "mountedUi": "75c849131367d628acf66dc88125b821aeeb84ad",
+      "newPublication": "75c849131367d628acf66dc88125b821aeeb84ad"
+    },
+    "web/package.json": {
+      "mountedUi": "8c4aeff8625c4943f1664267bb2c0c38bcfa73b0",
+      "newPublication": "8c4aeff8625c4943f1664267bb2c0c38bcfa73b0"
+    },
+    "web/package-lock.json": {
+      "mountedUi": "fcf1baa0458a1471f190cf8626bd86dd90635b7d",
+      "newPublication": "fcf1baa0458a1471f190cf8626bd86dd90635b7d"
+    }
+  },
+  "note": "Derived equality proof only. Actual mounted browser UI commit remains D727; new publication source commit remains E388. No browser metadata was altered."
+}

@@ -11,7 +11,7 @@ Separate, anonymous PC application for the existing KR4 Android source and verif
 
 ## Development and verification
 
-Node24, Python3.12 with requests/pytest, JDK17 and Gradle8.7 are used by the workflow.
+Node24, Python3.12 with requests, pandas, lxml, pytest and pytest-subtests, JDK17 and Gradle8.7 are used by the workflow.
 
 From the repository root:
 
@@ -35,11 +35,11 @@ Generated public/data, src/generated, Gradle output, node_modules and test artif
 
 ## Free publication
 
-The reviewed workflow publishes compiled output only to kr4-pc-site. A pinned free raw.githack CDN URL loads the UI; a stable anonymous GitHub raw endpoint supplies current immutable, SHA-verified generations. No ChatGPT/GitHub account or token is required in the browser. GitHub Pages is additionally deployed when the repository has an existing Actions-configured Pages site.
+The public entry point is https://irewon1-lgtm.github.io/Kook/. The reviewed workflow publishes verified compiled output to the dedicated kr4-pc-site branch and deploys it to the configured GitHub Actions Pages site. A stable anonymous GitHub raw endpoint supplies current immutable, SHA-verified data generations. No ChatGPT/GitHub account or token is required in the browser. A failed or unavailable official Pages deployment fails publication after preserving the actual branch receipt and HTTP evidence.
 
 Daily source refresh, independent source-triggered publication, current/previous verified IndexedDB cache and in-memory recovery preserve honest dates and errors. A failed optional financial/candidate transaction never blocks valid quant reception. Public errors preserve verified context rows with original dates; new failed attempts are not relabeled as fresh verification.
 
-See data/README.md for free service limits, pinned UI update behavior,300-second raw endpoint caching, history growth and lack of third-party CDN uptime guarantees. No paid plan or payment registration is used.
+See data/README.md for free service limits, UI/data update behavior, 300-second raw endpoint caching and repository growth. The client checks for verified data every five minutes; this is a published-data service, not an intraday exchange feed. No paid plan or payment registration is used.
 
 ## Evidence and differences
 

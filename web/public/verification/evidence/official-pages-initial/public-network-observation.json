@@ -1,0 +1,213 @@
+{
+  "kind": "PUBLIC_SITE_ANONYMOUS_NETWORK_OBSERVATION",
+  "observedAt": "2026-11-06T02:36:12.915Z",
+  "browserVersion": "155.0.8059.79",
+  "actualWindowsBrowser": false,
+  "physicalLgGramVerified": false,
+  "controlled": false,
+  "result": {
+    "url": "https://irewon1-lgtm.github.io/Kook/#stock/005930/4",
+    "uiVersion": "1.0.0",
+    "uiCommit": "e3b0d190d6c95dde304110aa78b51db435280915",
+    "sourceCommit": "e3b0d190d6c95dde304110aa78b51db435280915",
+    "generationId": "96d942100b13167f4947254e26fe3fd2df2ad2acba7798e5ac66f1ff309d872e",
+    "dataBase": "https://raw.githubusercontent.com/irewon1-lgtm/Kook/kr4-pc-site/data/",
+    "source": "LIVE",
+    "bodyFont": "\"Noto Sans KR Variable\", \"Malgun Gothic\", \"Apple SD Gothic Neo\", system-ui, sans-serif",
+    "fontsStatus": "loaded",
+    "fontCheck": true,
+    "candleCount": 124,
+    "latestPrice": "201,500원",
+    "chartSource": "CACHE · 네이버증권 · 공개된 수집 가격화면 요청 기준일2026-11-05가격 파일 기준일2026-11-05실제 최근 거래일2026-11-05원천 수집 시각2026-11-05T23:47:47.409232Z최근 수집 시도2026-11-05T23:47:47.409232Z네이버증권 원문 출처 ↗공식 기업행사별 적용일·조정계수와 제공 OHLC의 기수정 여부를 확인하지 못했습니다. 제공 원본 OHLC 유지 · 추가 조정 없음.분할·병합 전후의 가격 변동에는 기업행사 영향이 포함될 수 있습니다. 결측 거래일은 임의로 채우지 않습니다. 4지표 순위와 별도 참고자료입니다.다시 불러오기"
+  },
+  "error": null,
+  "responses": [
+    {
+      "url": "https://irewon1-lgtm.github.io/Kook/",
+      "status": 200,
+      "resourceType": "document",
+      "contentType": "text/html; charset=utf-8",
+      "cors": "*"
+    },
+    {
+      "url": "https://irewon1-lgtm.github.io/Kook/assets/index-4eeSaoqG.css",
+      "status": 200,
+      "resourceType": "stylesheet",
+      "contentType": "text/css; charset=utf-8",
+      "cors": "*"
+    },
+    {
+      "url": "https://irewon1-lgtm.github.io/Kook/assets/index-DuqP0tmS.js",
+      "status": 200,
+      "resourceType": "script",
+      "contentType": "application/javascript; charset=utf-8",
+      "cors": "*"
+    },
+    {
+      "url": "https://irewon1-lgtm.github.io/Kook/assets/noto-sans-kr-117-wght-normal-CcgSePNz.woff2",
+      "status": 200,
+      "resourceType": "font",
+      "contentType": "font/woff2",
+      "cors": "*"
+    },
+    {
+      "url": "https://irewon1-lgtm.github.io/Kook/assets/noto-sans-kr-116-wght-normal-EurSqPfX.woff2",
+      "status": 200,
+      "resourceType": "font",
+      "contentType": "font/woff2",
+      "cors": "*"
+    },
+    {
+      "url": "https://irewon1-lgtm.github.io/Kook/assets/noto-sans-kr-112-wght-normal-RTI2uVq-.woff2",
+      "status": 200,
+      "resourceType": "font",
+      "contentType": "font/woff2",
+      "cors": "*"
+    },
+    {
+      "url": "https://irewon1-lgtm.github.io/Kook/assets/noto-sans-kr-115-wght-normal-H0Z-Rvr3.woff2",
+      "status": 200,
+      "resourceType": "font",
+      "contentType": "font/woff2",
+      "cors": "*"
+    },
+    {
+      "url": "https://irewon1-lgtm.github.io/Kook/assets/noto-sans-kr-111-wght-normal-CG1HTgcy.woff2",
+      "status": 200,
+      "resourceType": "font",
+      "contentType": "font/woff2",
+      "cors": "*"
+    },
+    {
+      "url": "https://irewon1-lgtm.github.io/Kook/assets/noto-sans-kr-108-wght-normal-BVjpkeA2.woff2",
+      "status": 200,
+      "resourceType": "font",
+      "contentType": "font/woff2",
+      "cors": "*"
+    },
+    {
+      "url": "https://irewon1-lgtm.github.io/Kook/assets/noto-sans-kr-119-wght-normal-SS-AArfl.woff2",
+      "status": 200,
+      "resourceType": "font",
+      "contentType": "font/woff2",
+      "cors": "*"
+    },
+    {
+      "url": "https://irewon1-lgtm.github.io/Kook/assets/noto-sans-kr-118-wght-normal-Brd0-IeA.woff2",
+      "status": 200,
+      "resourceType": "font",
+      "contentType": "font/woff2",
+      "cors": "*"
+    },
+    {
+      "url": "https://irewon1-lgtm.github.io/Kook/assets/noto-sans-kr-109-wght-normal-D6YMW89j.woff2",
+      "status": 200,
+      "resourceType": "font",
+      "contentType": "font/woff2",
+      "cors": "*"
+    },
+    {
+      "url": "https://irewon1-lgtm.github.io/Kook/assets/noto-sans-kr-114-wght-normal-BY06UsNu.woff2",
+      "status": 200,
+      "resourceType": "font",
+      "contentType": "font/woff2",
+      "cors": "*"
+    },
+    {
+      "url": "https://irewon1-lgtm.github.io/Kook/assets/noto-sans-kr-latin-wght-normal-CniUieP-.woff2",
+      "status": 200,
+      "resourceType": "font",
+      "contentType": "font/woff2",
+      "cors": "*"
+    },
+    {
+      "url": "https://irewon1-lgtm.github.io/Kook/assets/noto-sans-kr-113-wght-normal-DhCHf0Kh.woff2",
+      "status": 200,
+      "resourceType": "font",
+      "contentType": "font/woff2",
+      "cors": "*"
+    },
+    {
+      "url": "https://irewon1-lgtm.github.io/Kook/assets/noto-sans-kr-106-wght-normal-BmR0DBYv.woff2",
+      "status": 200,
+      "resourceType": "font",
+      "contentType": "font/woff2",
+      "cors": "*"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/irewon1-lgtm/Kook/kr4-pc-site/data/manifest.json",
+      "status": 200,
+      "resourceType": "fetch",
+      "contentType": "text/plain; charset=utf-8",
+      "cors": "*"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/irewon1-lgtm/Kook/kr4-pc-site/data/generations/96d942100b13167f4947254e26fe3fd2df2ad2acba7798e5ac66f1ff309d872e/stocks.json",
+      "status": 200,
+      "resourceType": "fetch",
+      "contentType": "text/plain; charset=utf-8",
+      "cors": "*"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/irewon1-lgtm/Kook/kr4-pc-site/data/generations/96d942100b13167f4947254e26fe3fd2df2ad2acba7798e5ac66f1ff309d872e/financial.json",
+      "status": 200,
+      "resourceType": "fetch",
+      "contentType": "text/plain; charset=utf-8",
+      "cors": "*"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/irewon1-lgtm/Kook/kr4-pc-site/data/generations/96d942100b13167f4947254e26fe3fd2df2ad2acba7798e5ac66f1ff309d872e/valuations.json",
+      "status": 200,
+      "resourceType": "fetch",
+      "contentType": "text/plain; charset=utf-8",
+      "cors": "*"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/irewon1-lgtm/Kook/kr4-pc-site/data/generations/96d942100b13167f4947254e26fe3fd2df2ad2acba7798e5ac66f1ff309d872e/candidates.json",
+      "status": 200,
+      "resourceType": "fetch",
+      "contentType": "text/plain; charset=utf-8",
+      "cors": "*"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/irewon1-lgtm/Kook/kr4-pc-site/data/generations/96d942100b13167f4947254e26fe3fd2df2ad2acba7798e5ac66f1ff309d872e/details/005930.json",
+      "status": 200,
+      "resourceType": "fetch",
+      "contentType": "text/plain; charset=utf-8",
+      "cors": "*"
+    },
+    {
+      "url": "https://irewon1-lgtm.github.io/Kook/assets/noto-sans-kr-110-wght-normal-BatyA0y1.woff2",
+      "status": 200,
+      "resourceType": "font",
+      "contentType": "font/woff2",
+      "cors": "*"
+    },
+    {
+      "url": "https://irewon1-lgtm.github.io/Kook/assets/noto-sans-kr-103-wght-normal-Qv2qVnZD.woff2",
+      "status": 200,
+      "resourceType": "font",
+      "contentType": "font/woff2",
+      "cors": "*"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/irewon1-lgtm/Kook/kr4-pc-site/data/generations/96d942100b13167f4947254e26fe3fd2df2ad2acba7798e5ac66f1ff309d872e/prices/005930.json",
+      "status": 200,
+      "resourceType": "fetch",
+      "contentType": "text/plain; charset=utf-8",
+      "cors": "*"
+    },
+    {
+      "url": "https://irewon1-lgtm.github.io/Kook/assets/noto-sans-kr-98-wght-normal-DMGuWyzz.woff2",
+      "status": 200,
+      "resourceType": "font",
+      "contentType": "font/woff2",
+      "cors": "*"
+    }
+  ],
+  "failures": [],
+  "pageErrors": [],
+  "consoleErrors": [
+    "Failed to load resource: the server responded with a status of 404 ()"
+  ]
+}

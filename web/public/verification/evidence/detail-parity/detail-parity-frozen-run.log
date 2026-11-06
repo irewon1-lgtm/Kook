@@ -1,0 +1,20 @@
+
+Running 6 tests using 1 worker
+
+(node:185333) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:185333) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 e2e/detail-parity.spec.ts:104:37 › original-source information remains readable across all detail tabs: 005930 (19.6s)
+  ✓  2 e2e/detail-parity.spec.ts:104:37 › original-source information remains readable across all detail tabs: 000020 (20.4s)
+  ✓  3 e2e/detail-parity.spec.ts:104:37 › original-source information remains readable across all detail tabs: 003060 (31.0s)
+  ✓  4 e2e/detail-parity.spec.ts:104:37 › original-source information remains readable across all detail tabs: 395400 (23.2s)
+  ✓  5 e2e/detail-parity.spec.ts:104:37 › original-source information remains readable across all detail tabs: 474930 (12.5s)
+  ✓  6 e2e/detail-parity.spec.ts:104:37 › original-source information remains readable across all detail tabs: 142210 (19.9s)
+
+  6 passed (2.1m)
+
+To open last HTML report run:
+[36m[39m
+[36m  npx playwright show-report[39m
+[36m[39m

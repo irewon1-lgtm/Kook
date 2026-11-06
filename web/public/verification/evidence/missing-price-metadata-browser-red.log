@@ -1,0 +1,49 @@
+
+Running 1 test using 1 worker
+
+(node:209401) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:209401) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 e2e/chart-recovery.spec.ts:144:1 › real CACHE survives a controlled price 503 and recovers; genuine MISSING stays empty with retry (25.0s)
+
+
+  1) e2e/chart-recovery.spec.ts:144:1 › real CACHE survives a controlled price 503 and recovers; genuine MISSING stays empty with retry 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveAttribute[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator: getByTestId('chart_source').getByRole('link', { name: '네이버증권 원문 출처 ↗' })
+    Expected: [32m"https://m.stock.naver.com/api/stock/005030/price"[39m
+    Timeout: 20000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toHaveAttribute" with timeout 20000ms[22m
+    [2m  - waiting for getByTestId('chart_source').getByRole('link', { name: '네이버증권 원문 출처 ↗' })[22m
+
+
+      125 |   await expect(page.getByTestId('chart_source')).toContainText('MISSING');
+      126 |   const missingSource=page.getByTestId('chart_source');
+    > 127 |   await expect(missingSource.getByRole('link', { name: '네이버증권 원문 출처 ↗' })).toHaveAttribute('href', missing.data.sourceUrl);
+          |                                                                            ^
+      128 |   await expect(missingSource.locator('dt').filter({ hasText: /^가격 파일 기준일$/ }).locator('..').locator('dd')).toHaveText(missing.data.requestedCutoffDate);
+      129 |   await expect(missingSource.locator('dt').filter({ hasText: /^최근 수집 시도$/ }).locator('..').locator('dd')).toHaveText(missing.data.lastAttemptAt);
+      130 |   await expect(missingSource.locator('dt').filter({ hasText: /^원천 수집 시각$/ }).locator('..').locator('dd')).toHaveText(missing.data.collectedAt || '미확보');
+        at /workspace/kr4-pc-web/web/e2e/chart-recovery.spec.ts:127:76
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../kr4-pc-work/missing-price-metadata-browser-red/chart-recovery-real-CACHE--bf816-SING-stays-empty-with-retry/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../kr4-pc-work/missing-price-metadata-browser-red/chart-recovery-real-CACHE--bf816-SING-stays-empty-with-retry/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../kr4-pc-work/missing-price-metadata-browser-red/chart-recovery-real-CACHE--bf816-SING-stays-empty-with-retry/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../kr4-pc-work/missing-price-metadata-browser-red/chart-recovery-real-CACHE--bf816-SING-stays-empty-with-retry/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    e2e/chart-recovery.spec.ts:144:1 › real CACHE survives a controlled price 503 and recovers; genuine MISSING stays empty with retry 

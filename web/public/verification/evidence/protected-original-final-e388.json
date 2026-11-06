@@ -1,0 +1,244 @@
+{
+  "base": "d377f493fc4cc92fc748d6193e12980e27e21745",
+  "pcHead": "e388ea2b7aa52843af5c0d32861cc0493bfe5f5a",
+  "protectedFileCount": 59,
+  "changed": [],
+  "files": [
+    {
+      "path": "app/build.gradle.kts",
+      "sha256": "3aa45fb5293406ce397d6a235b1b0e619044151728e0ff3b8f37938442b5b316"
+    },
+    {
+      "path": "app/src/main/AndroidManifest.xml",
+      "sha256": "5c138afc47622247c21dd8ef28e9d5abb54d30023292a138035e676034d5f7bb"
+    },
+    {
+      "path": "app/src/main/assets/quarterly_history.json",
+      "sha256": "e072c78cbff85111c7c27f4d10821b52a2851088b64f59e4494265e40dab3be7"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/KR4Application.kt",
+      "sha256": "3f9bf9bf67521861a3109aebf7ee13ec6a88e6eac63b46a8d046688a092fafc7"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/MainActivity.kt",
+      "sha256": "f4ad790576dfedeae7abe899fb7ea319f4e802fd5d7f111a35c0348a035fbb0d"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/data/analysis/IndustryInsightCatalog.kt",
+      "sha256": "e00a2534d2e6055c5c74d1d63188f3ab4e9bc56d25c72846232eb02b0650b990"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/data/analysis/IndustryKpiCatalog.kt",
+      "sha256": "830e77768e8bd06d4e8be75700b0d920d27c39c8593f33439340682c87bf3980"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/data/analysis/IntegratedInterpretationEngine.kt",
+      "sha256": "09044e9f649ed22aa41b72f88bb6604d0ca6c889447fc4fdd7fdbc71717d094f"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/data/analysis/QuarterlyTrendAnalyzer.kt",
+      "sha256": "d2a7572d6c2019564bb96cfcb3a40d5a593e3c5998944ea457c18c9e1d871c5a"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/data/candidate/FinalCandidateEngine.kt",
+      "sha256": "3f82a04e11a0bbf4ab8e0db2afeb9410fabbbce3bfcb464bc91157729619f1a7"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/data/candidate/FinalCandidateRepository.kt",
+      "sha256": "eec338db3479a9129e7756afaf9c197e269d9916ffee2f5a54a8ce12bb5c3972"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/data/candidate/FinalCandidateRuntimeStore.kt",
+      "sha256": "c98260362e995f5f5790eaee2e675772be035688dda402024f9e32dcdcec8cad"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/data/candidate/FinalCandidateSnapshotUpdater.kt",
+      "sha256": "b7f5bbd147fb670d28352a63edeeb17c93b20fd04026ff285072a7c1eab86418"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/data/evidence/ContextEvidenceRepository.kt",
+      "sha256": "63163f96b22215c31a2dd650cd7e5143ef7efaa1b8ef9f194c79a18c49a1747a"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/data/evidence/DisclosureDiffEngine.kt",
+      "sha256": "d0c897e2d6a634d33a5c434d0683e3feb8d1439dffaa3d41a72b311e2aa5cfc6"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/data/evidence/OfficialSourceCollector.kt",
+      "sha256": "903ef3cfd2dd5780c076f11301c1f39b9c179c3cb056a52acefcff3302079855"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/data/generated/GeneratedKosdaqMaster.kt",
+      "sha256": "2e3eb4cf4bc7ce58b53a24de7c17b8f4f86f08a122958b6bda9e9b302f0db0ef"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/data/generated/GeneratedKospiMaster.kt",
+      "sha256": "69a7acf31b339f5a6607fbcfe7b42df1579dfc922522e3b680c08933bbd5d465"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/data/generated/GeneratedRealQuantSnapshot.kt",
+      "sha256": "464726ea0a4f95ac19cbbb2e05c90558f8b31cd70430c0cce455a48bf74960c7"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/data/history/QuarterlyHistoryRepository.kt",
+      "sha256": "02baf680e5779592e5486e2628ddee93b155b49892858afd3117382bb0ed1714"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/data/model/FinalCandidateModels.kt",
+      "sha256": "73ee63871a4411b61bfa33661994b84b2a44a298b0a5ddb1081871a0b89ba228"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/data/model/IntegratedAnalysisModels.kt",
+      "sha256": "585df9c7b86855dd28d26c72953a8b505e98e6c9fbbf3aae9648d3afe5e7463d"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/data/model/KospiIssuer.kt",
+      "sha256": "d85e3158ee5ddcb03f8e097f2442f0f0689ed7db9bd51498a4ab229182a53d05"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/data/model/QuarterlyHistoryModels.kt",
+      "sha256": "8db2a29f90df238bb95f87062e643c5b38ff4c79cb8f5ed127c81323a5165f31"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/data/model/RealQuantModels.kt",
+      "sha256": "9fdcba19c17fc3e9d10ab1a9dca84f1796ae4cbf32d963dcc887db66a82b7b0f"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/data/model/Stage45Models.kt",
+      "sha256": "310ba525f27d1f55f86c63da67e9c8516caa86c989bd8f900151d44131cef551"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/data/model/StockModels.kt",
+      "sha256": "2f20221bfc81c259132745d9a5b657c6eb24b743fb4e8cad2113964303f6d492"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/data/peer/PeerBenchmarkEngine.kt",
+      "sha256": "d47152ea9ee8754ea5bf5a02ff203e8d9c39ce982246062a8f8aa10ceaaea81e"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/data/price/PriceAdjustmentProvenance.kt",
+      "sha256": "53e51a3fa75fe0a5b394b0e59a3b8e8009f4de08717e6d09dacb57003f3ef929"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/data/price/PriceHistoryAggregation.kt",
+      "sha256": "774f85f7746299aa4c9055c694dfd8a64808f9dc0c73c090acb45950b048f170"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/data/price/PriceHistoryRepository.kt",
+      "sha256": "607517aa1b1d0a2e06a82c5e387bbd74151d96716ffcd0af275d74450157d3a5"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/data/ranking/DynamicRankingEngine.kt",
+      "sha256": "fd0791f34f0155534c43c8fb37e21f63f8c642aac8d94559e33816abbb1e7c6d"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/data/repository/StockRepository.kt",
+      "sha256": "3e022220006544d283c98f7e54ef39471335835147b3cb05c0941efa78005ed2"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/data/stage/FinancialSafetySnapshotUpdater.kt",
+      "sha256": "0d947377a1fa85923c0114bb80915e3234489f3d7dbe1ab1ded74604fbd03b10"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/data/stage/Stage45Data.kt",
+      "sha256": "bc1745574aa56f39f54a00269f815d05dd686bd5171bb7ab10a696e433205d85"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/data/stage/VerifiedFinancialFactsParser.kt",
+      "sha256": "46b911c2a9e8e7e29c315e86020cbe41235fc99a87b5f44e488b740b03f907be"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/data/update/SnapshotAutoUpdater.kt",
+      "sha256": "d8c76076e40adf940e5e37c69d22abdf353c220a2796420e2d4950506036aca7"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/data/update/SnapshotRefreshWorker.kt",
+      "sha256": "c5ef1a3c6dbf3173c869de05c42fcc1a3020056ddec075315e1b057baf1d5f79"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/ui/components/FinancialSafetyPresentation.kt",
+      "sha256": "c72105a3683e3b335e3fbac5d885023b158474f10bcfaa92b7220d70cafffc26"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/ui/components/PriceChartPanel.kt",
+      "sha256": "b7b334cca14d2756bbd7208ba51101d107cab71359705f3be8ba464897d4ad1f"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/ui/components/Stage45Components.kt",
+      "sha256": "73fd2dbb904b7dd9d71f9d5816ad14d5a7463416425e83df1264280202e430b2"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/ui/components/StatusBadge.kt",
+      "sha256": "ea2ec782dcce6e2455bc72004547ef8d12784f0814627b70732fb3050d044148"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/ui/navigation/FavoritesScreen.kt",
+      "sha256": "fd707ef5b1cac4f7f5b1fbce7ea61e4efd861b061de80c1b933ec8ac81ae33fd"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/ui/navigation/NavyAppNavigation.kt",
+      "sha256": "45b97872e53551cbb12d05dea6da29c9b8bd99a9931c34ca260abd4741ce472c"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/ui/navigation/NavyMoreScreen.kt",
+      "sha256": "7e9d83c55d649ffb7c9cfa71fcb0d8bf1e4b4cf4ba7f71247f40d1594b8ba61e"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/ui/screens/HomeScreen.kt",
+      "sha256": "73d0ac2739d775d5152747859e8133a6c57bcf29b5c4a5528690513aeac48e5d"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/ui/screens/StockDetailScreen.kt",
+      "sha256": "e6adbdf3e2a15715d6d7dfd9c30166dd9ae9091a6c4d354c8df027a865dbd8f9"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/ui/screens/StockListScreen.kt",
+      "sha256": "c82eb1f88901c571c474ad859de530b934119e68e924f022f94c2e47ce0eec04"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/ui/theme/Theme.kt",
+      "sha256": "1f74e410c13c9adc1988b9497a7bdb36513ceaaf9115d7edc7ab0ca3d93cee99"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/update/AppAutoUpdater.kt",
+      "sha256": "30239793a8de379d7921deaa91348d468795997417ebce3a3f768a6fe6e048f7"
+    },
+    {
+      "path": "app/src/main/java/com/krstock/v3/update/AppUpdateWorker.kt",
+      "sha256": "9c82a469c0eab41514d319a9f5b5a0bd90db693f85e63e796c87485ee2541473"
+    },
+    {
+      "path": "app/src/main/res/drawable/ic_launcher.xml",
+      "sha256": "da1cac8b1f83ecbb624b3bb4654906bccc486203a3cfde09c8cb0d86236281d4"
+    },
+    {
+      "path": "app/src/main/res/values-night/themes.xml",
+      "sha256": "b2c6f050e15ee024c7b2e8357b2991e2869e9f3aa46df81f56d0d5b2e327f87b"
+    },
+    {
+      "path": "app/src/main/res/values/themes.xml",
+      "sha256": "3ecdb12b750b59794a10e4043d6ad2433205e00aa6a74f0cefb4bd30653de1b1"
+    },
+    {
+      "path": "app/src/main/res/xml/file_paths.xml",
+      "sha256": "1aee4d9f85c9ca82564c18d509fc830099fac295e2fb04eb2e6a7edc60184a54"
+    },
+    {
+      "path": "build.gradle.kts",
+      "sha256": "e946826cbfc27c45e11f9fd55fcb894840cd264b1f01c4c48c425c136076cd14"
+    },
+    {
+      "path": "gradle.properties",
+      "sha256": "4e9924f610852bbee062b04c93853138d8763caf91af8978d44804cb50e976bf"
+    },
+    {
+      "path": "gradle/libs.versions.toml",
+      "sha256": "02fc404980edc8fe7f227e6084752670e0f7196fbf559daab72f8dd4b64f856a"
+    },
+    {
+      "path": "settings.gradle.kts",
+      "sha256": "a6f9ac8c48dbfbc406a288dd0b95e98578bba320de2c05b489f15bd08ad54255"
+    }
+  ]
+}
