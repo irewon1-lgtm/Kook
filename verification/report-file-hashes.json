@@ -10,11 +10,11 @@
       "bytes": 7795
     },
     "captures/KR4_PC_PUBLIC_PROOF.zip": {
-      "sha256": "3c5be8dd03445cc17325761034c5df86b43dbb4732b4ee78a03ca88a6678254d",
-      "bytes": 51803167
+      "sha256": "bfd3fb2a0e46b5b54fe8234e52f0dbc5a889fdb294b7ce79c1a8dacd15a89526",
+      "bytes": 51803751
     },
     "captures/KR4_PC_PUBLIC_PROOF.zip.sha256": {
-      "sha256": "ed637289fa231f1fa6c3182e199ee6cc67303028e04ac4cefa19c6e57053c25a",
+      "sha256": "0e00ac0462d10e0328264232b3e61bc321c89a67183ba5dc08a523875f038aaf",
       "bytes": 90
     },
     "captures/README.md": {
@@ -118,8 +118,8 @@
       "bytes": 106436
     },
     "captures/comparisons/chart.html": {
-      "sha256": "5a8ea43d2c90dbfb5dffe1c07d5e7f739e36af3ade1d03257c86e0e1bb861850",
-      "bytes": 4407
+      "sha256": "6056ec90d5b0b583ddf5f98ae4735f401a4c31a33e4237a722e98b5df11b9879",
+      "bytes": 4437
     },
     "captures/comparisons/comparison-browser-evidence.json": {
       "sha256": "6f999604ab470603b6d6585b54d6d0d1328d5c4b6c43803fbe71413e410480d3",
@@ -142,12 +142,12 @@
       "bytes": 1021212
     },
     "captures/comparisons/detail.html": {
-      "sha256": "41c3fa2e57a8533c3c29dd15bf26f91a4b3aca1e966f9dd4476b5dcd33a1347d",
-      "bytes": 4437
+      "sha256": "323156a88ed3da65d98ec8fe21f8be434121a186f45e61560784d06875595391",
+      "bytes": 4467
     },
     "captures/comparisons/home.html": {
-      "sha256": "196bda0605b6269b131ec09dc7f99fd0159dee19fdd38a5270659d546ccfd6c5",
-      "bytes": 4106
+      "sha256": "c4f26d227de8c98e52a4443c883851dbc29ae8478ddc36c8af493220d3cc0535",
+      "bytes": 4136
     },
     "captures/comparisons/index.html": {
       "sha256": "ca41cbe76577e0f3f46fd640878ec702c0aa953ee2b54a0b0d23a342cc4b8655",
@@ -158,8 +158,8 @@
       "bytes": 7013
     },
     "captures/comparisons/ranking.html": {
-      "sha256": "7bf41fda24fee3c97d6a02ec375a8a53ebed93fa39798edb735669d302f46ae6",
-      "bytes": 4147
+      "sha256": "30a87ec587d750d1449d982db3763a7e209387ff28a2883b6993d6286b9b64cf",
+      "bytes": 4177
     },
     "captures/gallery-1366.png": {
       "sha256": "d3e7df09f9ad29f894b42f2eb6965403943343f6008aa299c22291d0e4121afa",
@@ -186,8 +186,8 @@
       "bytes": 22340
     },
     "captures/manifest.json": {
-      "sha256": "a884928d333956a1fedde503b15dff7fe08ce81cdcf5992bac2be24ef323ff08",
-      "bytes": 17546
+      "sha256": "f23b852ed586761d374b345a979bfe0f2de75d3568e743f2145b3a0d6e4ebb8e",
+      "bytes": 18567
     },
     "captures/official-public-capture-summary.json": {
       "sha256": "2aa3d021f84ff70e082e64920f2f203b061aa8038a84bf09719c2675335304ce",
@@ -632,6 +632,38 @@
     "evidence/final-integrate-web.log": {
       "sha256": "060858f6321d4276f628afd602f31b57b3da8aac9add1a63a73c81d2da8de8b8",
       "bytes": 1892
+    },
+    "evidence/gallery-wrap-fix/comparison-css-same-helper-green.log": {
+      "sha256": "301d5cb761875a31b38a1ca87f3d3d6b6aa3e11cf67ea480498564382470976e",
+      "bytes": 49
+    },
+    "evidence/gallery-wrap-fix/comparison-home-mobile-diagnostic.json": {
+      "sha256": "bc37804eef80ca9bef774f959e8c3b644e9f0cf74d0273ea40beca4785474b2e",
+      "bytes": 211
+    },
+    "evidence/gallery-wrap-fix/comparison-home-mobile-diagnostic.png": {
+      "sha256": "a85fa395c366e4c94cbb9730399597be59a12015ad6ef7243d2756956f7427b8",
+      "bytes": 87405
+    },
+    "evidence/gallery-wrap-fix/comparison-home-mobile-overflow-elements.json": {
+      "sha256": "bb905bcf9c9a97f327a4193cb3b370a5afd6ab40673f2e246903aecf0b375446",
+      "bytes": 1660
+    },
+    "evidence/gallery-wrap-fix/comparison-wrap-green.log": {
+      "sha256": "231515eb745968500b5472c7fdb721f6163230778b78b0939685e2e504338b41",
+      "bytes": 84
+    },
+    "evidence/gallery-wrap-fix/comparison-wrap-red.log": {
+      "sha256": "083364a441ecad281aa538b09295b4edcb655a22c3a4d6521eacec2c695ff830",
+      "bytes": 1315
+    },
+    "evidence/gallery-wrap-fix/gallery-wrap-fix-integrity.json": {
+      "sha256": "53d4488cd3f522878a692027c297ae5d63230872bd5f9eca23b47dce44678dd0",
+      "bytes": 1288
+    },
+    "evidence/gallery-wrap-fix/report.md": {
+      "sha256": "33277d177aed61009b51fa4d238f553637a5be239f118540b78bb48ac403f0e4",
+      "bytes": 1348
     },
     "evidence/gha-three-issuer-context-access.json": {
       "sha256": "e49bc65602cd3835522a700c0ab3a3a0851febf50b77d531d450de98ab3b5944",
@@ -1302,8 +1334,8 @@
       "bytes": 341570
     },
     "index.html": {
-      "sha256": "38eb51c6c784d6b89b29d2c33ad4e24fc68fe9259992ed13793426152f44c17e",
-      "bytes": 531314
+      "sha256": "111bcc8c0ae088fb964d120570b0f10af7a56e1b022e2eb9c2cd8bba38eaf7fb",
+      "bytes": 531401
     }
   }
 }

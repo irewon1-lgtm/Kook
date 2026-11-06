@@ -137,8 +137,8 @@
     },
     {
       "path": "comparisons/chart.html",
-      "sha256": "5a8ea43d2c90dbfb5dffe1c07d5e7f739e36af3ade1d03257c86e0e1bb861850",
-      "bytes": 4407
+      "sha256": "6056ec90d5b0b583ddf5f98ae4735f401a4c31a33e4237a722e98b5df11b9879",
+      "bytes": 4437
     },
     {
       "path": "comparisons/comparison-browser-evidence.json",
@@ -167,13 +167,13 @@
     },
     {
       "path": "comparisons/detail.html",
-      "sha256": "41c3fa2e57a8533c3c29dd15bf26f91a4b3aca1e966f9dd4476b5dcd33a1347d",
-      "bytes": 4437
+      "sha256": "323156a88ed3da65d98ec8fe21f8be434121a186f45e61560784d06875595391",
+      "bytes": 4467
     },
     {
       "path": "comparisons/home.html",
-      "sha256": "196bda0605b6269b131ec09dc7f99fd0159dee19fdd38a5270659d546ccfd6c5",
-      "bytes": 4106
+      "sha256": "c4f26d227de8c98e52a4443c883851dbc29ae8478ddc36c8af493220d3cc0535",
+      "bytes": 4136
     },
     {
       "path": "comparisons/index.html",
@@ -187,8 +187,8 @@
     },
     {
       "path": "comparisons/ranking.html",
-      "sha256": "7bf41fda24fee3c97d6a02ec375a8a53ebed93fa39798edb735669d302f46ae6",
-      "bytes": 4147
+      "sha256": "30a87ec587d750d1449d982db3763a7e209387ff28a2883b6993d6286b9b64cf",
+      "bytes": 4177
     },
     {
       "path": "gallery-1366.png",
@@ -490,5 +490,34 @@
       "sha256": "7e1eccbeea6ac644e0ba69fff48951c37e657ddc34796d686e0d1b813fe9298d",
       "bytes": 5925
     }
-  ]
+  ],
+  "supplementalDocumentFix": {
+    "kind": "COMPARISON_METADATA_WHITESPACE_ONLY",
+    "baseCommit": "1c5b587419cc8c717b4540eac81b736d9975ec23",
+    "verifiedAt": "2026-11-06T04:46:35.380340+00:00",
+    "changedDocuments": [
+      "comparisons/chart.html",
+      "comparisons/detail.html",
+      "comparisons/home.html",
+      "comparisons/ranking.html"
+    ],
+    "cssDeclaration": "pre.meta{white-space:pre-wrap}",
+    "rootCause": "HTML pre default white-space:pre prevents existing overflow-wrap:anywhere from wrapping long source hashes on narrow screens",
+    "captureImagesAndMetadataUnmodified": true,
+    "comparisonPngsUnmodified": true,
+    "originalCaptureUiCommitUnmodified": true,
+    "localActualBrowserRegression": {
+      "samePublishedVerifierRoutes": 20,
+      "extraBoundsHitAreasVerifierRoutes": 20,
+      "viewports": [
+        375,
+        768,
+        1366,
+        1920
+      ],
+      "linkChecks": 60,
+      "result": "PASS"
+    },
+    "publicAfterFixVerification": "NOT_RUN_AT_REPACK_TIME"
+  }
 }
