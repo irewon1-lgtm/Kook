@@ -37,10 +37,14 @@ export function createPriceStore(loader: (issuerId: string, cutoffDate: string) 
         if (data.issuerId !== issuerId) throw new Error('Price issuer mismatch');
         if (data.schemaVersion !== 1 || !['CACHE','MISSING'].includes(data.source) || !Array.isArray(data.bars)) throw new Error('Invalid published price data');
         const bars = normalizeDaily(data.bars,cutoffDate);
+        if (data.source === 'MISSING' && !data.bars.length && !value.state.data?.bars.length) {
+          update(value,{data,loading:false,error:data.error});
+          return;
+        }
         if (!bars.length) throw new Error(data.error || '과거 종가 자료 미확보');
         update(value,{data:{...data,source:'CACHE',bars},loading:false,error:data.error});
       }).catch(error => {
-        update(value,{data:value.state.data ? {...value.state.data,source:'CACHE'} : null,
+        update(value,{data:value.state.data,
           loading:false,error:error instanceof Error ? error.message : String(error)});
       }).finally(() => {value.pending=undefined;});
       return value.pending;

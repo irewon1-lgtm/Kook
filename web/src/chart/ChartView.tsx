@@ -114,7 +114,7 @@ function ChartPanel({data,error,loading,cutoffDate,onReload,preferenceKey}:Chart
         </div>
         <dl className="pc-chart-quote__ohlc">{(['open','high','low','close'] as const).map((key,index)=><div key={key}><dt>{['시가','고가','저가','종가'][index]}</dt><dd>{number(latest[key])}</dd></div>)}</dl>
         <p className="pc-chart-quote__source" data-testid="chart_latest_volume">{`${quote.date} · 거래량 ${latest.volume===null?'미확보':`${number(latest.volume)}주`} · CACHE · 화면 기준 ${cutoffDate}`}</p>
-      </> : <><p>최근 실제 거래 가격</p><strong>가격 자료 대기</strong><p className="pc-chart-quote__source">화면 기준 {cutoffDate} · 수집된 실제 가격을 기다립니다.</p></>}
+      </> : <><p>최근 실제 거래 가격</p><strong>{data?.source==='MISSING'&&!loading?'가격 자료 미확보':'가격 자료 대기'}</strong><p className="pc-chart-quote__source">화면 기준 {cutoffDate} · {data?.source==='MISSING'&&!loading?'실제 일봉을 확보하지 못했습니다.':'수집된 실제 가격을 기다립니다.'}</p></>}
     </aside>
     <section className="pc-chart" aria-labelledby={titleId} data-testid="price_chart_panel" data-interval={interval} data-months={months} data-chart-mode={candleMode?'candle':'line'}>
     <header className="pc-chart__heading"><h2 id={titleId}>주가 차트</h2><span className="pc-chart__warning">⚠ 수정주가 미확인</span></header>
@@ -123,7 +123,7 @@ function ChartPanel({data,error,loading,cutoffDate,onReload,preferenceKey}:Chart
       <div className="pc-chart__choices" role="group" aria-label="조회 기간">{([1,3,6,12] as const).map(value=><button key={value} type="button" aria-pressed={months===value} onClick={()=>updatePreferences({months:value})} data-testid={`chart_period_${value}`}>{value===12?'1년':`${value}개월`}</button>)}</div>
       <button className="pc-chart__switch" type="button" role="switch" aria-checked={candleMode} aria-label="캔들차트" onClick={()=>updatePreferences({candleMode:!candleMode})} data-testid="chart_candle_toggle"><span>{candleMode?'캔들차트':'선차트'}</span><span aria-hidden="true" className="pc-chart__switch-track"><span/></span></button>
     </div>
-    {!!errors.length && <div role="alert" className="pc-chart__error">가격 수신 오류: {errors.join(' · ')}{data && ' · 저장된 검증 가격 CACHE를 표시합니다.'}</div>}
+    {!!errors.length && <div role="alert" className="pc-chart__error">가격 수신 오류: {errors.join(' · ')}{data?.source==='CACHE' && data.bars.length>0 && ' · 저장된 검증 가격 CACHE를 표시합니다.'}</div>}
     {data && data.requestedCutoffDate!==cutoffDate && <p role="alert" className="pc-chart__error">요청 기준일 불일치: 화면 {cutoffDate} · 가격 파일 {data.requestedCutoffDate}. 화면 기준 이후 가격은 제외했습니다.</p>}
     {data && actualLast && data.lastTradingDate!==actualLast && <p role="alert" className="pc-chart__error">최근 거래일 표시 불일치: 가격 파일 {data.lastTradingDate} · 표시 가능한 실제 거래일 {actualLast}</p>}
     {loading && <p role="status" className="pc-chart__status">실제 일별 주가 불러오는 중…</p>}

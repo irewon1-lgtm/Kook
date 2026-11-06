@@ -1,3 +1,7 @@
+import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { describe, expect, it, vi } from 'vitest';
 import {createElement} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
@@ -57,6 +61,42 @@ describe('original calendar price semantics', () => {
 });
 
 describe('shared actual-price reception', () => {
+  it('retains genuine recorded MISSING metadata and reason without promoting an empty history to CACHE', async () => {
+    const directory=resolve('oracle/testdata');
+    const provenance=JSON.parse(readFileSync(resolve(directory,'price_observations_20261105.provenance.json'),'utf8'));
+    const archive=resolve(directory,provenance.archive.path);
+    expect(createHash('sha256').update(readFileSync(archive)).digest('hex')).toBe(provenance.archive.sha256);
+    const raw=execFileSync('tar',['-xOzf',archive,'prices/005030.json']);
+    expect(createHash('sha256').update(raw).digest('hex')).toBe(provenance.files['prices/005030.json'].sha256);
+    const missing=JSON.parse(raw.toString()) as PriceData;
+    expect(missing).toMatchObject({issuerId:'005030',source:'MISSING',bars:[],collectedAt:null,lastTradingDate:null});
+    let rejectRetry=false;
+    const store=createPriceStore(async()=> {if(rejectRetry) throw new Error('CONTROLLED_UNIT_HTTP_503'); return missing;});
+    await store.load(missing.issuerId,missing.requestedCutoffDate);
+    expect(store.get(missing.issuerId,missing.requestedCutoffDate)).toEqual({data:missing,error:missing.error,loading:false});
+    const html=renderToStaticMarkup(createElement(ChartView,{data:store.get(missing.issuerId,missing.requestedCutoffDate).data,error:missing.error,loading:false,cutoffDate:missing.requestedCutoffDate,onReload:()=>{}}));
+    expect(html).toContain(missing.lastAttemptAt);
+    expect(html).toContain(`href="${missing.sourceUrl}"`);
+    expect(html).toContain('<strong>가격 자료 미확보</strong>');
+    expect(html).not.toContain('가격 자료 대기');
+    expect(html).not.toContain('저장된 검증 가격 CACHE');
+    expect(html).not.toContain('<svg');
+    rejectRetry=true;
+    await store.load(missing.issuerId,missing.requestedCutoffDate,true);
+    expect(store.get(missing.issuerId,missing.requestedCutoffDate)).toEqual({data:missing,error:'CONTROLLED_UNIT_HTTP_503',loading:false});
+
+    // A deliberately invalid source label is a controlled malformed input,
+    // not permission to accept empty CACHE or replace a verified history.
+    const malformed=createPriceStore(async()=>({...missing,source:'CACHE'}));
+    await malformed.load(missing.issuerId,missing.requestedCutoffDate);
+    expect(malformed.get(missing.issuerId,missing.requestedCutoffDate)).toMatchObject({data:null,error:missing.error,loading:false});
+    let emptyCache=false;
+    const retained=createPriceStore(async()=>emptyCache?{...price([])}:price());
+    await retained.load('005930','2026-11-05'); emptyCache=true;
+    await retained.load('005930','2026-11-05',true);
+    expect(retained.get('005930','2026-11-05')).toMatchObject({data:{source:'CACHE',bars:boundary},loading:false});
+    expect(retained.get('005930','2026-11-05').error).toBeTruthy();
+  });
   it('shares one request across quote and chart, then retains verified CACHE on failed retry', async () => {
     let calls=0;
     const store=createPriceStore(async()=> {calls++; if(calls>1) throw new Error('offline'); return price();});
