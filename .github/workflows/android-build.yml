@@ -208,7 +208,7 @@ jobs:
         run: |
           set -euo pipefail
           APP_CHANGED=true
-          if [ "${{ github.event_name }}" != "workflow_dispatch" ] && git rev-parse HEAD^ >/dev/null 2>&1 && git diff --quiet HEAD^ HEAD -- app/ scripts/build_ui_gallery.py tests/test_ui_gallery.py scripts/build_navy_comparison.py tests/test_navy_comparison.py docs/design/approved-dark-navy/ .github/workflows/android-build.yml; then
+          if [ "${{ github.event_name }}" != "workflow_dispatch" ] && git rev-parse HEAD^ >/dev/null 2>&1 && git diff --quiet HEAD^ HEAD -- app/ scripts/build_ui_gallery.py tests/test_ui_gallery.py scripts/build_navy_comparison.py tests/test_navy_comparison.py docs/design/approved-dark-navy/ .github/workflows/android-build.yml build.gradle.kts settings.gradle.kts gradle.properties gradle/ buildSrc/src/main/ buildSrc/build.gradle.kts buildSrc/settings.gradle.kts; then
             APP_CHANGED=false
           fi
           echo "changed=$APP_CHANGED" >> "$GITHUB_OUTPUT"
@@ -402,7 +402,9 @@ jobs:
           if [ "$GITHUB_REF" = "refs/heads/main" ]; then
             if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
               RELEASE_READY=true
-            elif git rev-parse HEAD^ >/dev/null 2>&1 && ! git diff --quiet HEAD^ HEAD -- app/ scripts/build_ui_gallery.py tests/test_ui_gallery.py scripts/build_navy_comparison.py tests/test_navy_comparison.py docs/design/approved-dark-navy/ .github/workflows/android-build.yml; then
+            # Validation remains broader than release eligibility in app_scope;
+            # only APK production inputs trigger an automatic release.
+            elif git rev-parse HEAD^ >/dev/null 2>&1 && ! git diff --quiet HEAD^ HEAD -- app/src/main/ app/src/release/ app/build.gradle.kts app/proguard-rules.pro app/libs/ build.gradle.kts settings.gradle.kts gradle.properties gradle/ buildSrc/src/main/ buildSrc/build.gradle.kts buildSrc/settings.gradle.kts; then
               RELEASE_READY=true
             fi
           fi
@@ -1345,7 +1347,7 @@ jobs:
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         run: |
           if [ "${{ steps.release_gate.outputs.app_changed }}" != "true" ]; then
-            echo "No app/workflow code change: APK release intentionally skipped."
+            echo "No APK production input change: signed release intentionally skipped."
           else
             test -s dist/KR4.apk
             test -s dist/update.json
