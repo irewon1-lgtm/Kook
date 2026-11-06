@@ -27,6 +27,10 @@ on:
       - '.github/workflows/pc-web.yml'
   workflow_dispatch:
     inputs:
+      pages_enablement_only:
+        description: 'Only probe/create this repository Pages site with Actions pages:write (no build or publication)'
+        type: boolean
+        default: false
       refresh_context:
         description: 'Refresh all 2,649 original-source context observations (otherwise reuse verified cache)'
         type: boolean
@@ -49,12 +53,68 @@ permissions:
   contents: read
 
 concurrency:
-  group: kr4-pc-${{ github.event_name == 'pull_request' && github.event.pull_request.number || 'publication' }}
+  group: kr4-pc-${{ github.event_name == 'workflow_dispatch' && inputs.pages_enablement_only == true && 'pages-enable-only' || github.event_name == 'pull_request' && github.event.pull_request.number || 'publication' }}
   cancel-in-progress: false
 
 jobs:
+  enable_pages:
+    if: github.event_name == 'workflow_dispatch' && inputs.pages_enablement_only == true
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pages: write
+    steps:
+      - name: Probe and enable only this repository Pages site with Actions token
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const evidence = {repository: `${context.repo.owner}/${context.repo.repo}`, tokenKind: 'Actions GITHUB_TOKEN',
+              requestedPermission: 'pages:write', startedAt: new Date().toISOString(), requests: []};
+            async function request(method) {
+              try {
+                const response = await github.request(`${method} /repos/{owner}/{repo}/pages`, {
+                  ...context.repo, ...(method === 'POST' ? {build_type: 'workflow'} : {}),
+                  headers: {'X-GitHub-Api-Version': '2022-11-28'}
+                });
+                evidence.requests.push({method, httpStatus: response.status, body: response.data,
+                  requestId: response.headers['x-github-request-id'], acceptedPermissions: response.headers['x-accepted-github-permissions']});
+                return response;
+              } catch (error) {
+                evidence.requests.push({method, httpStatus: error.status || null,
+                  body: error.response?.data || {message: error.message},
+                  requestId: error.response?.headers?.['x-github-request-id'],
+                  acceptedPermissions: error.response?.headers?.['x-accepted-github-permissions']});
+                return null;
+              }
+            }
+            let site = await request('GET');
+            if (!site) {
+              await request('POST');
+              site = await request('GET');
+            }
+            evidence.enabled = site?.status === 200 && site.data.build_type === 'workflow';
+            evidence.pagesUrl = site?.data?.html_url || null;
+            evidence.completedAt = new Date().toISOString();
+            fs.mkdirSync('.pc-pages-enable', {recursive: true});
+            fs.writeFileSync('.pc-pages-enable/evidence.json', JSON.stringify(evidence, null, 2) + '\n');
+            core.info(JSON.stringify(evidence, null, 2));
+            core.setOutput('enabled', String(evidence.enabled));
+            await core.summary.addHeading('Actual Actions-token Pages enablement probe')
+              .addCodeBlock(JSON.stringify(evidence, null, 2), 'json').write();
+            if (!evidence.enabled) core.setFailed('Pages Actions configuration not verified; exact GET/POST HTTP evidence preserved.');
+      - name: Preserve actual Pages credential-probe HTTP evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kr4-pc-pages-enable-${{ github.run_id }}
+          retention-days: 14
+          path: .pc-pages-enable
+          if-no-files-found: warn
+
   build:
-    if: github.event_name != 'workflow_run' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_repository.full_name == github.repository)
+    if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.pages_enablement_only == true) && (github.event_name != 'workflow_run' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_repository.full_name == github.repository)) }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
