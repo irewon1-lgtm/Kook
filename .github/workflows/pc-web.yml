@@ -646,7 +646,7 @@ jobs:
       - name: Operate actual public UI, viewport profiles and controlled recovery in Windows browser
         working-directory: web
         shell: pwsh
-        run: npm run test:e2e -- e2e/public-real.spec.ts e2e/viewport-matrix.spec.ts e2e/controlled-recovery.spec.ts
+        run: npm run test:e2e
       - name: Preserve unmodified Windows browser PNGs, metadata and test results
         if: always()
         uses: actions/upload-artifact@v4

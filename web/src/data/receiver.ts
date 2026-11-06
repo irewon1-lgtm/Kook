@@ -270,7 +270,9 @@ export class MarketReceiver {
     const manifest = this.state.manifest;
     try {
       requireValue(manifest, '게시 자료를 먼저 받아야 합니다.');
-      const text = await this.artifact(manifest, `prices/${code}.json`);
+      // This method has its own verified-price fallback, which also reports the
+      // failed reception. A generic silent artifact fallback would hide outages.
+      const text = await this.artifact(manifest, `prices/${code}.json`, false);
       const price = validatePrice(JSON.parse(text), code, cutoff);
       await this.save(`price:${code}`, { text, sha256: await sha256(text) });
       return price;

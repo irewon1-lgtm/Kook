@@ -1,7 +1,8 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { MarketReceiver, MemoryStore, validateStocks, validateManifest, validatePrice } from '../src/data/receiver';
+import { MarketReceiver, MemoryStore, validateStocks, validateManifest, validatePrice, sha256 } from '../src/data/receiver';
+import { recordedTar } from './recorded-fixture';
 import type { PublicationManifest, Stock } from '../src/types';
 
 const oracle = process.env.KR4_ORACLE_DIR || '/workspace/kr4-pc-work/oracle-v2';
@@ -94,4 +95,23 @@ it('rejects synthetic or future OHLCV and keeps a genuine older last trade date'
 it('retains null dates and an explicit reason for a genuine empty-source MISSING payload', () => {
   const missing = { schemaVersion: 1, issuerId: '005030', source: 'MISSING', requestedCutoffDate: '2026-11-05', lastTradingDate: null, collectedAt: null, lastAttemptAt: '2026-11-06T00:00:00Z', sourceUrl: 'https://m.stock.naver.com/api/stock/005030/price', adjustment: 'UNVERIFIED', error: 'No completed daily prices', bars: [], pages: [] };
   expect(validatePrice(missing, '005030', '2026-11-05')).toEqual(missing);
+});
+
+it('reports a failed price refresh while preserving genuine verified CACHE and clears the error after recovery', async () => {
+  const actual = recordedTar('oracle/testdata/price_observations_20261105.tar.gz', 'de5cc3f9b8edf5fc41dbfd0299f258a60afbadb47bd58fa95d47e552ec39d032');
+  const text = actual.get('prices/005930.json')!;
+  const price = JSON.parse(text);
+  const withPrice = { ...manifest, files: { ...manifest.files, 'prices/005930.json': { sha256: await sha256(text), bytes: new TextEncoder().encode(text).length } } };
+  let failing = false;
+  const receiver = new MarketReceiver({ bundled: { manifest: withPrice, stocksText }, store: new MemoryStore(), baseUrl: '/data/', fetcher: async url => {
+    if (url.endsWith('prices/005930.json')) return failing ? new Response('CONTROLLED_PRICE_OUTAGE', { status: 503 }) : new Response(text);
+    return new Response('missing', { status: 404 });
+  } });
+  expect((await receiver.loadPrice('005930', manifest.priceCutoffDate)).bars).toEqual(price.bars);
+  failing = true;
+  const cached = await receiver.loadPrice('005930', manifest.priceCutoffDate);
+  expect(cached.source).toBe('CACHE'); expect(cached.bars).toEqual(price.bars);
+  expect(cached.error).toContain('HTTP 503');
+  failing = false;
+  expect((await receiver.loadPrice('005930', manifest.priceCutoffDate)).error).toBe(price.error);
 });

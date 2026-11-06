@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Check, ChevronLeft, ChevronRight, Search } from 'lucide-react';
 import type { MarketState, MetricId, Stock } from '../types';
 import { METRIC_IDS, METRIC_LABELS } from '../types';
@@ -18,6 +18,8 @@ export default function Ranking({ state, selected, onSelected, query, onQuery, o
   const [sort, setSort] = useState<Sort>('COMBINATION');
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(50);
+  const searchInput = useRef<HTMLInputElement>(null);
+  useEffect(() => { if (mode === 'search') searchInput.current?.focus(); }, [mode]);
   const ranks = useMemo(() => rankStocks(state.stocks, selected), [state.stocks, selected]);
   const rankedCount = useMemo(() => [...ranks.values()].filter(rank => rank.isEligible).length, [ranks]);
   const filtered = useMemo(() => {
@@ -56,7 +58,7 @@ export default function Ranking({ state, selected, onSelected, query, onQuery, o
     <div className="ranking-source-summary panel"><span className={`source-dot${state.source === 'LIVE' ? ' live' : ''}`} /><strong>데이터 출처 <span className="source-label">{sourceLabels[state.source]}</span></strong><span className="muted">GitHub 게시 자료 · 재무 {state.manifest?.snapshotDate || '미확보'} · 주가 {state.manifest?.priceCutoffDate || '미확보'}</span><span className="muted ranking-receive-times">최근 갱신 {state.lastSuccessAt ? formatDate(state.lastSuccessAt) : '성공 기록 없음'} · 최근 확인 {state.lastAttemptAt ? formatDate(state.lastAttemptAt) : '확인 기록 없음'}</span>{state.error && <span className="status-error">갱신 실패 · {state.error} · {state.stocks.length ? '마지막 정상 자료 표시' : '표시할 검증 자료 없음'}</span>}</div>
     <FinancialAvailability state={state} />
     <section className="ranking-filters panel" aria-label="종목 검색 및 필터">
-      <label className="search-field"><span>회사명 · 종목코드 · 업종 · 시장 검색</span><span className="search-input-wrap"><Search size={24} aria-hidden="true" /><input type="search" value={query} onChange={event => resetPage(() => onQuery(event.target.value))} placeholder="회사명 또는 종목코드를 입력하세요" autoFocus={mode === 'search'} /></span></label>
+      <label className="search-field"><span>회사명 · 종목코드 · 업종 · 시장 검색</span><span className="search-input-wrap"><Search size={24} aria-hidden="true" /><input ref={searchInput} type="search" value={query} onChange={event => resetPage(() => onQuery(event.target.value))} placeholder="회사명 또는 종목코드를 입력하세요" /></span></label>
       <div className="filter-line"><div className="filter-group" role="group" aria-label="시장">{['전체', 'KOSPI', 'KOSDAQ'].map(value => <button type="button" key={value} className={`button filter-button${market === value ? ' active' : ''}`} aria-pressed={market === value} onClick={() => resetPage(() => setMarket(value))}>{value}</button>)}</div><label className="sort-select">정렬 <select value={sort} onChange={event => resetPage(() => setSort(event.target.value as Sort))}><option value="COMBINATION">종합점수 순</option><option value="CODE">종목코드</option><option value="NAME">회사명</option></select></label></div>
       <div className="filter-line"><div className="filter-group" role="group" aria-label="재무자료 상태">{(['ALL', 'HOLD', 'FAIL'] as const).map(value => <button type="button" key={value} className={`button filter-button${safety === value ? ' active' : ''}`} aria-pressed={safety === value} onClick={() => resetPage(() => setSafety(value))}>{value === 'ALL' ? '전체' : value === 'HOLD' ? '미확보만' : '재무위험만'}</button>)}</div><span className="filter-explanation muted">재무자료 상태는 점수·순위에 영향 없음</span></div>
     </section>

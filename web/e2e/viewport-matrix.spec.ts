@@ -53,7 +53,7 @@ async function capture(page: Page, name: string, fullPage = false, scenario: unk
     const app = document.querySelector<HTMLElement>('[data-testid="kr4-app"]');
     return { url: location.href, capturedAt: new Date().toISOString(), viewport: { width: innerWidth, height: innerHeight }, devicePixelRatio, userAgent: navigator.userAgent, platform: navigator.platform,
       source: document.querySelector('[data-testid="kr4-app"]')?.getAttribute('data-source'), sourceCommit: document.querySelector('[data-testid="kr4-app"]')?.getAttribute('data-source-commit'),
-      inputHashes: JSON.parse(app?.dataset.inputHashes || '{}'), generationId: app?.dataset.generationId || '', stocksSha256: app?.dataset.stocksSha || '', fontSize: getComputedStyle(document.documentElement).fontSize, controlled: false, physicalLgGramVerified: false };
+      uiCommit: app?.dataset.uiCommit || '', uiVersion: app?.dataset.uiVersion || '', inputHashes: JSON.parse(app?.dataset.inputHashes || '{}'), generationId: app?.dataset.generationId || '', stocksSha256: app?.dataset.stocksSha || '', fontSize: getComputedStyle(document.documentElement).fontSize, controlled: false, physicalLgGramVerified: false };
   });
   save(name, { ...metadata, kind: process.env.KR4_PUBLIC_URL ? 'PUBLIC_SITE_REAL_DATA_BROWSER_CAPTURE' : 'LOCAL_SITE_REAL_DATA_BROWSER_CAPTURE', browserEnvironment: `${process.platform} ${process.env.KR4_BROWSER_CHANNEL || 'chromium'}`, actualWindowsBrowser: process.platform === 'win32', fullPage, scenario,
     emulationNote: 'CSS viewport and DPR emulate display scale and browser zoom; actual physical LG Gram display settings were not changed.' });
