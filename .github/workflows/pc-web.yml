@@ -27,14 +27,6 @@ on:
       - '.github/workflows/pc-web.yml'
   workflow_dispatch:
     inputs:
-      pages_enablement_only:
-        description: 'Only probe/create this repository Pages site with Actions pages:write (no build or publication)'
-        type: boolean
-        default: false
-      pages_deploy_run_id:
-        description: 'Deploy only the allowlisted reviewed e3 build artifact (42145573441) to already-enabled Pages'
-        type: string
-        default: ''
       refresh_context:
         description: 'Refresh all 2,649 original-source context observations (otherwise reuse verified cache)'
         type: boolean
@@ -57,207 +49,12 @@ permissions:
   contents: read
 
 concurrency:
-  group: kr4-pc-${{ github.event_name == 'workflow_dispatch' && inputs.pages_enablement_only == true && 'pages-enable-only' || github.event_name == 'workflow_dispatch' && inputs.pages_deploy_run_id != '' && 'pages-deploy-only' || github.event_name == 'pull_request' && github.event.pull_request.number || 'publication' }}
+  group: kr4-pc-${{ github.event_name == 'pull_request' && github.event.pull_request.number || 'publication' }}
   cancel-in-progress: false
 
 jobs:
-  enable_pages:
-    if: github.event_name == 'workflow_dispatch' && inputs.pages_enablement_only == true
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    permissions:
-      contents: read
-      pages: write
-    steps:
-      - name: Probe and enable only this repository Pages site with Actions token
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const fs = require('fs');
-            const evidence = {repository: `${context.repo.owner}/${context.repo.repo}`, tokenKind: 'Actions GITHUB_TOKEN',
-              requestedPermission: 'pages:write', startedAt: new Date().toISOString(), requests: []};
-            async function request(method) {
-              try {
-                const response = await github.request(`${method} /repos/{owner}/{repo}/pages`, {
-                  ...context.repo, ...(method === 'POST' ? {build_type: 'workflow'} : {}),
-                  headers: {'X-GitHub-Api-Version': '2022-11-28'}
-                });
-                evidence.requests.push({method, httpStatus: response.status, body: response.data,
-                  requestId: response.headers['x-github-request-id'], acceptedPermissions: response.headers['x-accepted-github-permissions']});
-                return response;
-              } catch (error) {
-                evidence.requests.push({method, httpStatus: error.status || null,
-                  body: error.response?.data || {message: error.message},
-                  requestId: error.response?.headers?.['x-github-request-id'],
-                  acceptedPermissions: error.response?.headers?.['x-accepted-github-permissions']});
-                return null;
-              }
-            }
-            let site = await request('GET');
-            if (!site) {
-              await request('POST');
-              site = await request('GET');
-            }
-            evidence.enabled = site?.status === 200 && site.data.build_type === 'workflow';
-            evidence.pagesUrl = site?.data?.html_url || null;
-            evidence.completedAt = new Date().toISOString();
-            fs.mkdirSync('.pc-pages-enable', {recursive: true});
-            fs.writeFileSync('.pc-pages-enable/evidence.json', JSON.stringify(evidence, null, 2) + '\n');
-            core.info(JSON.stringify(evidence, null, 2));
-            core.setOutput('enabled', String(evidence.enabled));
-            await core.summary.addHeading('Actual Actions-token Pages enablement probe')
-              .addCodeBlock(JSON.stringify(evidence, null, 2), 'json').write();
-            if (!evidence.enabled) core.setFailed('Pages Actions configuration not verified; exact GET/POST HTTP evidence preserved.');
-      - name: Preserve actual Pages credential-probe HTTP evidence
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: kr4-pc-pages-enable-${{ github.run_id }}
-          include-hidden-files: true
-          retention-days: 14
-          path: .pc-pages-enable
-          if-no-files-found: warn
-
-  reuse_pages_artifact:
-    if: github.event_name == 'workflow_dispatch' && inputs.pages_enablement_only != true && inputs.pages_deploy_run_id != ''
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    permissions:
-      contents: read
-      actions: read
-      pages: read
-    outputs:
-      source_commit: ${{ steps.trust.outputs.source_commit }}
-    steps:
-      - name: Verify explicitly reviewed source run and successful build provenance
-        id: trust
-        uses: actions/github-script@v7
-        env:
-          PC_REUSE_RUN_ID: ${{ inputs.pages_deploy_run_id }}
-        with:
-          script: |
-            const fs = require('fs');
-            const approved = {'42145573441': {sha: 'e3b0d190d6c95dde304110aa78b51db435280915',
-              ref: 'feature/kr4-pc-full-parity-senior-ui', workflowId: 408831066, event: 'workflow_dispatch'}};
-            const id = process.env.PC_REUSE_RUN_ID;
-            if (!Object.hasOwn(approved, id)) throw Error('Run is not in the explicitly reviewed artifact allowlist');
-            const expected = approved[id];
-            const {data: run} = await github.rest.actions.getWorkflowRun({...context.repo, run_id: Number(id)});
-            const repository = `${context.repo.owner}/${context.repo.repo}`;
-            if (run.repository?.full_name !== repository || run.head_repository?.full_name !== repository ||
-                run.head_sha !== expected.sha || run.head_branch !== expected.ref || run.event !== expected.event ||
-                run.workflow_id !== expected.workflowId || run.path !== '.github/workflows/pc-web.yml')
-              throw Error('Artifact run repository/event/ref/source/workflow identity mismatch');
-            const jobs = await github.paginate(github.rest.actions.listJobsForWorkflowRun,
-              {...context.repo, run_id: Number(id), filter: 'latest', per_page: 100});
-            const builds = jobs.filter(job => job.name === 'build');
-            if (builds.length !== 1 || builds[0].status !== 'completed' || builds[0].conclusion !== 'success' || builds[0].head_sha !== expected.sha)
-              throw Error('Exact reviewed source build has not completed successfully');
-            const artifacts = await github.paginate(github.rest.actions.listWorkflowRunArtifacts,
-              {...context.repo, run_id: Number(id), per_page: 100});
-            const matches = artifacts.filter(artifact => artifact.name === 'github-pages' && !artifact.expired);
-            if (matches.length !== 1) throw Error('Expected exactly one nonexpired github-pages artifact');
-            const artifact = matches[0], build = builds[0];
-            if (artifact.workflow_run?.id !== Number(id) || artifact.workflow_run?.head_sha !== expected.sha ||
-                ![artifact.created_at, build.started_at, build.completed_at].every(value => Number.isFinite(Date.parse(value))) ||
-                Date.parse(artifact.created_at) < Date.parse(build.started_at) || Date.parse(artifact.created_at) > Date.parse(build.completed_at))
-              throw Error('Artifact is not bound to the successful reviewed build attempt');
-            const pages = await github.request('GET /repos/{owner}/{repo}/pages', context.repo);
-            if (pages.status !== 200 || pages.data.build_type !== 'workflow') throw Error('Pages is not already enabled for Actions');
-            const evidence = {classification: 'EXPLICIT_REVIEWED_BUILD_REUSE', sourceRunId: Number(id),
-              sourceCommit: expected.sha, sourceRef: expected.ref, sourceEvent: expected.event,
-              buildJobId: build.id, buildConclusion: build.conclusion, artifactId: artifact.id,
-              artifactDigest: artifact.digest || null, artifactCreatedAt: artifact.created_at,
-              pagesHttpStatus: pages.status, pagesBuildType: pages.data.build_type, pagesUrl: pages.data.html_url};
-            fs.mkdirSync('.pc-reuse-proof', {recursive: true});
-            fs.writeFileSync('.pc-reuse-proof/trusted-run.json', JSON.stringify(evidence, null, 2) + '\n');
-            if (!/^sha256:[0-9a-f]{64}$/.test(artifact.digest || '')) throw Error('Approved artifact has no verifiable GitHub SHA256 digest');
-            core.setOutput('artifact_id', String(artifact.id));
-            core.setOutput('artifact_digest', artifact.digest);
-            core.setOutput('source_commit', expected.sha);
-            core.info(JSON.stringify(evidence));
-      - name: Check out exact reviewed source for existing generation verifier
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ steps.trust.outputs.source_commit }}
-          path: .pc-reviewed-source
-          persist-credentials: false
-      - name: Download approved artifact and enforce its GitHub archive digest
-        uses: actions/github-script@v7
-        env:
-          PC_APPROVED_ARTIFACT: ${{ steps.trust.outputs.artifact_id }}
-          PC_APPROVED_DIGEST: ${{ steps.trust.outputs.artifact_digest }}
-        with:
-          script: |
-            const fs = require('fs'), crypto = require('crypto');
-            const response = await github.rest.actions.downloadArtifact({...context.repo,
-              artifact_id: Number(process.env.PC_APPROVED_ARTIFACT), archive_format: 'zip'});
-            const content = Buffer.from(response.data);
-            const actual = 'sha256:' + crypto.createHash('sha256').update(content).digest('hex');
-            if (actual !== process.env.PC_APPROVED_DIGEST) throw Error('Downloaded artifact archive digest differs from trusted GitHub metadata');
-            fs.mkdirSync('.pc-reuse-archive', {recursive: true});
-            fs.writeFileSync('.pc-reuse-archive/source.zip', content);
-            core.info(`Verified approved artifact archive digest ${actual}`);
-      - name: Authenticate exact generation payloads and reviewed source before re-upload
-        env:
-          PC_REVIEWED_SOURCE: ${{ steps.trust.outputs.source_commit }}
-        run: |
-          python - <<'PY'
-          import json, os, sys, tarfile, zipfile
-          from pathlib import Path
-          sys.path.insert(0, str(Path('.pc-reviewed-source').resolve()))
-          from scripts.build_pc_publication import validate_retained_generation
-          output=Path('.pc-reused-site'); seen=set(); total=0
-          with zipfile.ZipFile('.pc-reuse-archive/source.zip') as zipped:
-              if zipped.namelist() != ['artifact.tar']:
-                  raise ValueError('Approved Pages ZIP has unexpected members')
-              with zipped.open('artifact.tar') as source, tarfile.open(fileobj=source,mode='r|') as archive:
-                  for member in archive:
-                      if member.isdir():
-                          continue
-                      name=member.name.removeprefix('./')
-                      if not member.isfile() or not name or name in seen or any(part in ('', '.', '..', '.git', '.github') for part in name.split('/')) or '\\' in name or member.size >= 100_000_000:
-                          raise ValueError('Unsafe or oversized reused artifact member: '+name)
-                      seen.add(name); total+=member.size
-                      if total >= 1_000_000_000:
-                          raise ValueError('Reused site exceeds current static site size limit')
-                      target=output/name; target.parent.mkdir(parents=True,exist_ok=True)
-                      target.write_bytes(archive.extractfile(member).read())
-          if not (output/'index.html').is_file():
-              raise ValueError('Reviewed artifact has no index.html')
-          data=output/'data'; manifest=json.loads((data/'manifest.json').read_bytes())
-          history=json.loads((data/'publication-history.json').read_bytes())
-          if manifest['sourceCommit'] != os.environ['PC_REVIEWED_SOURCE'] or not 1 <= len(history) <= 3 or len(set(history)) != len(history) or history[0] != manifest['generationId']:
-              raise ValueError('Reused artifact source or current generation identity mismatch')
-          for generation in history:
-              validate_retained_generation(data,generation)
-          if (data/'manifest.json').read_bytes() != (data/manifest['basePath']/'manifest.json').read_bytes():
-              raise ValueError('Reused current manifest differs from immutable generation')
-          original=json.loads((data/manifest['basePath']/'oracle-manifest.json').read_bytes())
-          if any(manifest.get(key) != value for key,value in original.items() if key != 'files') or any(manifest['files'].get(name) != info for name,info in original['files'].items()):
-              raise ValueError('Reused publication metadata differs from authenticated original oracle')
-          proof=dict(sourceCommit=manifest['sourceCommit'],generationId=manifest['generationId'],
-              retainedGenerations=history,authenticatedFiles=len(manifest['files']),siteBytes=total,status='AUTHENTICATED_REVIEWED_BUILD_ARTIFACT')
-          Path('.pc-reuse-proof/generation-verification.json').write_text(json.dumps(proof,indent=2)+'\n')
-          print(json.dumps(proof))
-          PY
-      - name: Upload verified reused site as this run Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: .pc-reused-site
-          retention-days: 1
-      - name: Preserve trusted-source and generation-verification evidence
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: kr4-pc-pages-reuse-${{ github.run_id }}
-          include-hidden-files: true
-          retention-days: 14
-          path: .pc-reuse-proof
-          if-no-files-found: warn
-
   build:
-    if: ${{ !(github.event_name == 'workflow_dispatch' && (inputs.pages_enablement_only == true || inputs.pages_deploy_run_id != '')) && (github.event_name != 'workflow_run' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_repository.full_name == github.repository)) }}
+    if: github.event_name != 'workflow_run' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_repository.full_name == github.repository)
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -521,7 +318,7 @@ jobs:
             web/playwright-report
             web/test-results
           if-no-files-found: warn
-      - name: Upload verified static site for branch and optional Pages
+      - name: Upload verified static site for branch and Pages
         if: github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v3
         with:
@@ -540,7 +337,7 @@ jobs:
     outputs:
       site_commit: ${{ steps.site.outputs.site_commit }}
       site_url: ${{ steps.pages.outputs.preferred_site_url }}
-      cdn_url: ${{ steps.site.outputs.site_url }}
+      branch_url: ${{ steps.site.outputs.branch_url }}
       pages_enabled: ${{ steps.pages.outputs.enabled }}
     steps:
       - name: Check out exact tested source for authentication and verification helpers
@@ -632,15 +429,15 @@ jobs:
               git('push', 'origin', 'HEAD:' + ref, cwd=worktree)
           commit = git('rev-parse', 'HEAD', cwd=worktree).stdout.strip()
           repository = os.environ['GITHUB_REPOSITORY']
-          url = f'https://rawcdn.githack.com/{repository}/{commit}/index.html'
-          report = dict(siteCommit=commit, siteUrl=url, changed=changed.returncode == 1,
+          url = f'https://github.com/{repository}/tree/{commit}'
+          report = dict(siteCommit=commit, branchUrl=url, changed=changed.returncode == 1,
               dataBaseUrl=f'https://raw.githubusercontent.com/{repository}/kr4-pc-site/data/',
               status='BRANCH_PUBLISHED', publicBrowserVerification='NOT_RUN_BY_PUBLISHER')
           reports = root/'.pc-publish'
           reports.mkdir(exist_ok=True)
           (reports/'branch-publication.json').write_text(json.dumps(report, indent=2) + '\n')
           with Path(os.environ['GITHUB_OUTPUT']).open('a') as output:
-              output.write(f'site_commit={commit}\nsite_url={url}\n')
+              output.write(f'site_commit={commit}\nbranch_url={url}\n')
           with Path(os.environ['GITHUB_STEP_SUMMARY']).open('a') as summary:
               summary.write(f'Compiled site branch published: [{commit}]({url}). Public browser verification remains separate.\n')
           print(json.dumps(report))
@@ -682,13 +479,13 @@ jobs:
             fs.writeFileSync('.pc-publish/pages-status.json', JSON.stringify(evidence, null, 2) + '\n');
             core.setOutput('enabled', String(evidence.enabled));
             core.setOutput('preferred_site_url', evidence.enabled ? evidence.htmlUrl : '');
-            if (!evidence.enabled) core.warning('Direct public hosting is blocked until Pages is enabled; known CDN browser interstitial is not accepted as public-site PASS.');
+            if (!evidence.enabled) core.warning('Official Pages deployment is unavailable; publication will fail after preserving the compiled-branch receipt and HTTP evidence.');
             core.info(JSON.stringify(evidence));
-            await core.summary.addRaw(`Pages configuration HTTP ${evidence.httpStatus}; ${evidence.enabled ? 'optional deployment enabled' : evidence.skipReason}.`).write();
-      - name: Record actual CDN and stable raw-data HTTP responses
+            await core.summary.addRaw(`Pages configuration HTTP ${evidence.httpStatus}; ${evidence.enabled ? 'Actions deployment configured; current UI is not yet deployed by this run' : evidence.skipReason}.`).write();
+      - name: Observe configured Pages before deployment and stable raw-data HTTP responses
         continue-on-error: true
         env:
-          PC_SITE_URL: ${{ steps.site.outputs.site_url }}
+          PC_PAGES_URL: ${{ steps.pages.outputs.preferred_site_url }}
         run: |
           python - <<'PY'
           import hashlib, json, os
@@ -697,10 +494,11 @@ jobs:
           from urllib.request import Request, urlopen
           repository = os.environ['GITHUB_REPOSITORY']
           observations = []
-          for label, url, local in [
-              ('pinned-ui', os.environ['PC_SITE_URL'], Path('.pc-site-dist/index.html')),
-              ('stable-data', f'https://raw.githubusercontent.com/{repository}/kr4-pc-site/data/manifest.json', Path('.pc-site-dist/data/manifest.json'))]:
-              result = dict(label=label, url=url)
+          endpoints = [('stable-data', f'https://raw.githubusercontent.com/{repository}/kr4-pc-site/data/manifest.json')]
+          if os.environ.get('PC_PAGES_URL'):
+              endpoints.insert(0, ('configured-pages-before-deployment', os.environ['PC_PAGES_URL']))
+          for label, url in endpoints:
+              result = dict(label=label, url=url, purpose='HTTP observation only; this run has not deployed its Pages UI yet')
               try:
                   try:
                       response = urlopen(Request(url, headers={'User-Agent': 'KR4-PC-Publication'}), timeout=30)
@@ -710,7 +508,7 @@ jobs:
                       content = response.read(5_000_001)
                       result.update(httpStatus=response.status, contentType=response.headers.get('content-type'),
                           cacheControl=response.headers.get('cache-control'), allowOrigin=response.headers.get('access-control-allow-origin'),
-                          bytes=len(content), sha256=hashlib.sha256(content).hexdigest(), matchesPublishedBytes=content == local.read_bytes())
+                          bytes=len(content), sha256=hashlib.sha256(content).hexdigest())
               except Exception as error:
                   result['error'] = f'{type(error).__name__}: {error}'
               observations.append(result)
@@ -731,9 +529,15 @@ jobs:
           path: .pc-publish
           if-no-files-found: warn
 
+      - name: Require configured official Pages after preserving publication evidence
+        if: steps.pages.outputs.enabled != 'true'
+        run: |
+          echo 'Official GitHub Pages is not configured for Actions deployment. Compiled-branch receipt and available HTTP evidence were preserved; public-site publication has failed.' >&2
+          exit 1
+
   deploy_pages:
-    if: ${{ always() && github.event_name != 'pull_request' && ((needs.publish.result == 'success' && needs.publish.outputs.pages_enabled == 'true') || needs.reuse_pages_artifact.result == 'success') }}
-    needs: [build, publish, reuse_pages_artifact]
+    if: ${{ always() && !cancelled() && github.event_name != 'pull_request' && needs.build.result == 'success' && needs.publish.result == 'success' && needs.publish.outputs.pages_enabled == 'true' }}
+    needs: [build, publish]
     concurrency:
       group: kr4-pc-pages-deployment
       cancel-in-progress: false
@@ -741,7 +545,7 @@ jobs:
     timeout-minutes: 10
     outputs:
       page_url: ${{ steps.deployment.outputs.page_url }}
-      source_commit: ${{ needs.reuse_pages_artifact.outputs.source_commit || needs.build.outputs.source_commit }}
+      source_commit: ${{ needs.build.outputs.source_commit }}
     permissions:
       pages: write
       id-token: write
@@ -749,7 +553,7 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Deploy optional already-configured Pages site
+      - name: Deploy verified site to configured official Pages
         id: deployment
         uses: actions/deploy-pages@v4
 
