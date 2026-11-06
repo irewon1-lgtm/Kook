@@ -1,0 +1,42 @@
+{
+  "width": 375,
+  "scrollWidth": 960,
+  "elements": [
+    {
+      "tag": "HTML",
+      "className": "",
+      "text": "홈 대시보드 — 승인 이미지와 실제 PC 화면 비교*{box-sizing:border-box}body{margin:0;padding:24px;background:#061321;color:#f3f6fc;font:20px/1.5 system-ui,sans-serif}h1{",
+      "client": 375,
+      "scroll": 960,
+      "whiteSpace": "normal",
+      "overflowWrap": "normal"
+    },
+    {
+      "tag": "BODY",
+      "className": "",
+      "text": "홈 대시보드 — 승인 이미지와 실제 PC 화면 비교홈 대시보드전체 종목 순위종목 상세 · 4지표실제 주가 차트공식 공개 웹 · 실제 실행 증거새 익명 브라우저에서 공식 Pages URL로 직접 접속했습니다. 로그인·쿠키 사전 주입·호스팅 안내 클릭이 없었습니다. Lin",
+      "client": 375,
+      "scroll": 960,
+      "whiteSpace": "normal",
+      "overflowWrap": "normal"
+    },
+    {
+      "tag": "SECTION",
+      "className": "note",
+      "text": "실제 실행 정보{\n  \"url\": \"https://irewon1-lgtm.github.io/Kook/\",\n  \"capturedAt\": \"2026-11-06T04:08:47.583Z\",\n  \"viewport\": {\n    \"width\": 1365,\n    \"height\"",
+      "client": 325,
+      "scroll": 935,
+      "whiteSpace": "normal",
+      "overflowWrap": "normal"
+    },
+    {
+      "tag": "PRE",
+      "className": "meta",
+      "text": "{\n  \"url\": \"https://irewon1-lgtm.github.io/Kook/\",\n  \"capturedAt\": \"2026-11-06T04:08:47.583Z\",\n  \"viewport\": {\n    \"width\": 1365,\n    \"height\": 853\n  ",
+      "client": 297,
+      "scroll": 921,
+      "whiteSpace": "pre",
+      "overflowWrap": "anywhere"
+    }
+  ]
+}

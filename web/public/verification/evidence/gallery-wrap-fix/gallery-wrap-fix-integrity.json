@@ -1,0 +1,43 @@
+{
+  "kind": "SUPPLEMENTAL_COMPARISON_HTML_WRAP_FIX_INTEGRITY",
+  "status": "PASS",
+  "baseCommit": "1c5b587419cc8c717b4540eac81b736d9975ec23",
+  "actualChangedFiles": [
+    "KR4_PC_PUBLIC_PROOF.zip",
+    "KR4_PC_PUBLIC_PROOF.zip.sha256",
+    "comparisons/chart.html",
+    "comparisons/detail.html",
+    "comparisons/home.html",
+    "comparisons/ranking.html",
+    "manifest.json"
+  ],
+  "protectedImageFiles": 46,
+  "allImageBytesAndHashesUnchanged": true,
+  "allOriginalMetadataBytesUnchanged": true,
+  "originalUiCaptureCommitUnchanged": "e388ea2b7aa52843af5c0d32861cc0493bfe5f5a",
+  "zipMembers": 97,
+  "zipMemberNamesOrderPreserved": true,
+  "changedZipMembers": [
+    "comparisons/chart.html",
+    "comparisons/detail.html",
+    "comparisons/home.html",
+    "comparisons/ranking.html",
+    "manifest.json"
+  ],
+  "allOtherZipMemberBytesUnchanged": true,
+  "zipCrcPassed": true,
+  "zipBytes": 51803751,
+  "oldZipSha256": "3c5be8dd03445cc17325761034c5df86b43dbb4732b4ee78a03ca88a6678254d",
+  "newZipSha256": "bfd3fb2a0e46b5b54fe8234e52f0dbc5a889fdb294b7ce79c1a8dacd15a89526",
+  "localActualBrowserRoutes": 20,
+  "samePublishedHelperRoutes": 20,
+  "linkChecks": 60,
+  "viewports": [
+    375,
+    768,
+    1366,
+    1920
+  ],
+  "localRegression": "PASS",
+  "publicAfterFix": "NOT_RUN"
+}
