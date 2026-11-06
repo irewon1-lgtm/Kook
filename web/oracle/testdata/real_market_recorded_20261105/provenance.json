@@ -1,0 +1,26 @@
+{
+  "classification": "REAL_MARKET_RECORDED",
+  "purpose": "Positive original-source Stage4 parser and exact nullable Long serialization regression; never LIVE or latest data.",
+  "sourceCommit": "a1676eab7bfe6b0d3765e4340504f8ff2a2d2a3f",
+  "snapshotDate": "2026-11-05",
+  "priceCutoffDate": "2026-11-05",
+  "quantRecordsSha256": "3998e553bb75834d8da92e7ea35f5e74d61546126ee43cb9b2ddcd987ea3eab4",
+  "files": {
+    "real_quant_snapshot.json": {
+      "path": "real_quant_snapshot.json.gz",
+      "sourcePath": "evidence/real_quant_snapshot.json",
+      "sha256": "a7e296f069387674d52c9fdf39bd18088dc331c68127e153417f3447b4119745",
+      "bytes": 2328697,
+      "gzipSha256": "3bb8ee361c935512d4aac596620aa7e342f62b74450a74f7b96ddc7a27d09dc3",
+      "gzipBytes": 250193
+    },
+    "financial_safety_snapshot.json": {
+      "path": "financial_safety_snapshot.json.gz",
+      "sourcePath": "evidence/financial_safety_snapshot.json",
+      "sha256": "15ed6fa759d0da700408e74d411ec5250186342f122731fadc37f1d470224ad7",
+      "bytes": 9866010,
+      "gzipSha256": "657bf1bbb6943cf20810f309ced90c6b3fd0de2ed7b1b3b864b75881a1788088",
+      "gzipBytes": 683302
+    }
+  }
+}

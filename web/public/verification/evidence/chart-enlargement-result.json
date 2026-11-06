@@ -1,0 +1,107 @@
+[
+  {
+    "width": 960,
+    "rootSize": 20,
+    "axisSize": "18px",
+    "inside": true,
+    "overflow": false
+  },
+  {
+    "width": 960,
+    "rootSize": 25,
+    "axisSize": "22.5px",
+    "inside": true,
+    "overflow": false
+  },
+  {
+    "width": 960,
+    "rootSize": 30,
+    "axisSize": "27px",
+    "inside": true,
+    "overflow": false
+  },
+  {
+    "width": 1280,
+    "rootSize": 20,
+    "axisSize": "18px",
+    "inside": true,
+    "overflow": false
+  },
+  {
+    "width": 1280,
+    "rootSize": 25,
+    "axisSize": "22.5px",
+    "inside": true,
+    "overflow": false
+  },
+  {
+    "width": 1280,
+    "rootSize": 30,
+    "axisSize": "27px",
+    "inside": true,
+    "overflow": false
+  },
+  {
+    "width": 1440,
+    "rootSize": 20,
+    "axisSize": "18px",
+    "inside": true,
+    "overflow": false
+  },
+  {
+    "width": 1440,
+    "rootSize": 25,
+    "axisSize": "22.5px",
+    "inside": true,
+    "overflow": false
+  },
+  {
+    "width": 1440,
+    "rootSize": 30,
+    "axisSize": "27px",
+    "inside": true,
+    "overflow": false
+  },
+  {
+    "width": 1920,
+    "rootSize": 20,
+    "axisSize": "18px",
+    "inside": true,
+    "overflow": false
+  },
+  {
+    "width": 1920,
+    "rootSize": 25,
+    "axisSize": "22.5px",
+    "inside": true,
+    "overflow": false
+  },
+  {
+    "width": 1920,
+    "rootSize": 30,
+    "axisSize": "27px",
+    "inside": true,
+    "overflow": false
+  },
+  {
+    "width": 2560,
+    "rootSize": 20,
+    "axisSize": "18px",
+    "inside": true,
+    "overflow": false
+  },
+  {
+    "width": 2560,
+    "rootSize": 25,
+    "axisSize": "22.5px",
+    "inside": true,
+    "overflow": false
+  },
+  {
+    "width": 2560,
+    "rootSize": 30,
+    "axisSize": "27px",
+    "inside": true,
+    "overflow": false
+  }
+]

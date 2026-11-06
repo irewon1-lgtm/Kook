@@ -1,0 +1,26 @@
+[hidden] { display: none !important; }
+.header-tools, .action-row { display:flex;flex-wrap:wrap;align-items:center;gap:12px; }
+.header-tools .icon-button { min-width:48px;padding:10px; }
+.brand strong,.brand small { display:block; }
+.text-controls { width:100%;justify-content:flex-end; }
+.text-controls button { display:inline-flex;align-items:center;gap:7px; }
+.skip-link { position:absolute;left:16px;top:-100px;padding:14px;background:#178cff;color:white;z-index:20; }
+.skip-link:focus { top:12px; }
+.app-footer { margin-top:48px;border-top:1px solid var(--border);padding-top:24px;font-size:.9rem;color:var(--muted);overflow-wrap:anywhere; }
+.storage-notice,.notice-warning { padding:14px;border:1px solid #b87a2b;color:#ffd69a;border-radius:10px; }
+.favorite-list { display:grid;gap:16px; }
+.favorite-row { display:flex;flex-wrap:wrap;gap:16px;align-items:center; }
+.favorite-row>div:first-child { flex:1;min-width:240px; }
+.stock-open-button { display:flex;flex-direction:column;gap:6px;align-items:flex-start;border:0;padding:4px;background:transparent;text-align:left; }
+.stock-open-button strong { font-size:1.2rem;overflow-wrap:anywhere; }
+.stock-open-button span { color:var(--muted);font-size:.9rem; }
+.favorite-dialog { width:min(850px,94vw);max-height:90vh;padding:28px;border:1px solid var(--border);border-radius:18px;color:var(--text);background:var(--surface); }
+.favorite-dialog::backdrop { background:#000b; }
+.favorite-dialog input[type=checkbox] { width:24px;min-height:24px;height:24px;accent-color:var(--accent);flex-shrink:0; }
+.favorite-picker-list { max-height:45vh;overflow-y:auto;display:flex;flex-direction:column; }
+.favorite-choice { min-height:64px;display:flex;align-items:center;gap:16px;border-bottom:1px solid var(--border);padding:10px;cursor:pointer; }
+.favorite-choice span { display:grid;gap:4px;min-width:0;overflow-wrap:anywhere; }
+.favorite-choice small { color:var(--muted); }
+.field-label { display:grid;gap:10px; }
+.field-label input { width:100%;padding:12px;border:1px solid var(--border);border-radius:10px;color:var(--text);background:var(--background); }
+@media(max-width:800px) { .text-controls { justify-content:flex-start; }.favorite-dialog { padding:18px; }.header-tools { margin-left:auto; } }

@@ -1,0 +1,117 @@
+{
+  "scope": "LOCAL_BROWSER_STATIC_REPORT",
+  "browser": "155.0.8059.79",
+  "rows": 548,
+  "layouts": [
+    {
+      "width": 390,
+      "font": 22,
+      "scroll": 390,
+      "links": true
+    },
+    {
+      "width": 390,
+      "font": 26,
+      "scroll": 390,
+      "links": true
+    },
+    {
+      "width": 390,
+      "font": 30,
+      "scroll": 390,
+      "links": true
+    },
+    {
+      "width": 768,
+      "font": 22,
+      "scroll": 768,
+      "links": true
+    },
+    {
+      "width": 768,
+      "font": 26,
+      "scroll": 768,
+      "links": true
+    },
+    {
+      "width": 768,
+      "font": 30,
+      "scroll": 768,
+      "links": true
+    },
+    {
+      "width": 1024,
+      "font": 22,
+      "scroll": 1024,
+      "links": true
+    },
+    {
+      "width": 1024,
+      "font": 26,
+      "scroll": 1024,
+      "links": true
+    },
+    {
+      "width": 1024,
+      "font": 30,
+      "scroll": 1024,
+      "links": true
+    },
+    {
+      "width": 1366,
+      "font": 22,
+      "scroll": 1366,
+      "links": true
+    },
+    {
+      "width": 1366,
+      "font": 26,
+      "scroll": 1366,
+      "links": true
+    },
+    {
+      "width": 1366,
+      "font": 30,
+      "scroll": 1366,
+      "links": true
+    },
+    {
+      "width": 1920,
+      "font": 22,
+      "scroll": 1920,
+      "links": true
+    },
+    {
+      "width": 1920,
+      "font": 26,
+      "scroll": 1920,
+      "links": true
+    },
+    {
+      "width": 1920,
+      "font": 30,
+      "scroll": 1920,
+      "links": true
+    },
+    {
+      "width": 2560,
+      "font": 22,
+      "scroll": 2560,
+      "links": true
+    },
+    {
+      "width": 2560,
+      "font": 26,
+      "scroll": 2560,
+      "links": true
+    },
+    {
+      "width": 2560,
+      "font": 30,
+      "scroll": 2560,
+      "links": true
+    }
+  ],
+  "broken": [],
+  "errors": []
+}

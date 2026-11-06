@@ -1,0 +1,540 @@
+{
+  "browser": "155.0.8059.79",
+  "actualFixture": "oracle-v2/details/005930.json",
+  "checks": [
+    "all 4 original metric descriptions, interpretations, basis, source, caution",
+    "all 5 exact financial amounts, strict original DART URL, Escape dismissal",
+    "all20 engine analysis fields + all source quarters (no invented rows)",
+    "complete CompanyReport 14 fields",
+    "keyboard ArrowRight/End and actual chart mount",
+    "favorite and refresh callbacks"
+  ],
+  "viewports": [
+    {
+      "width": 1024,
+      "font": 22,
+      "tab": "요약",
+      "scroll": 1024,
+      "aux": "22px"
+    },
+    {
+      "width": 1024,
+      "font": 22,
+      "tab": "4지표",
+      "scroll": 1024,
+      "aux": "22px"
+    },
+    {
+      "width": 1024,
+      "font": 22,
+      "tab": "종합해석",
+      "scroll": 1024,
+      "aux": "22px"
+    },
+    {
+      "width": 1024,
+      "font": 22,
+      "tab": "체크·출처",
+      "scroll": 1024,
+      "aux": "22px"
+    },
+    {
+      "width": 1024,
+      "font": 22,
+      "tab": "차트",
+      "scroll": 1024,
+      "aux": "22px"
+    },
+    {
+      "width": 1024,
+      "font": 26,
+      "tab": "요약",
+      "scroll": 1024,
+      "aux": "26px"
+    },
+    {
+      "width": 1024,
+      "font": 26,
+      "tab": "4지표",
+      "scroll": 1024,
+      "aux": "26px"
+    },
+    {
+      "width": 1024,
+      "font": 26,
+      "tab": "종합해석",
+      "scroll": 1024,
+      "aux": "26px"
+    },
+    {
+      "width": 1024,
+      "font": 26,
+      "tab": "체크·출처",
+      "scroll": 1024,
+      "aux": "26px"
+    },
+    {
+      "width": 1024,
+      "font": 26,
+      "tab": "차트",
+      "scroll": 1024,
+      "aux": "26px"
+    },
+    {
+      "width": 1024,
+      "font": 30,
+      "tab": "요약",
+      "scroll": 1024,
+      "aux": "30px"
+    },
+    {
+      "width": 1024,
+      "font": 30,
+      "tab": "4지표",
+      "scroll": 1024,
+      "aux": "30px"
+    },
+    {
+      "width": 1024,
+      "font": 30,
+      "tab": "종합해석",
+      "scroll": 1024,
+      "aux": "30px"
+    },
+    {
+      "width": 1024,
+      "font": 30,
+      "tab": "체크·출처",
+      "scroll": 1024,
+      "aux": "30px"
+    },
+    {
+      "width": 1024,
+      "font": 30,
+      "tab": "차트",
+      "scroll": 1024,
+      "aux": "30px"
+    },
+    {
+      "width": 1280,
+      "font": 22,
+      "tab": "요약",
+      "scroll": 1280,
+      "aux": "22px"
+    },
+    {
+      "width": 1280,
+      "font": 22,
+      "tab": "4지표",
+      "scroll": 1280,
+      "aux": "22px"
+    },
+    {
+      "width": 1280,
+      "font": 22,
+      "tab": "종합해석",
+      "scroll": 1280,
+      "aux": "22px"
+    },
+    {
+      "width": 1280,
+      "font": 22,
+      "tab": "체크·출처",
+      "scroll": 1280,
+      "aux": "22px"
+    },
+    {
+      "width": 1280,
+      "font": 22,
+      "tab": "차트",
+      "scroll": 1280,
+      "aux": "22px"
+    },
+    {
+      "width": 1280,
+      "font": 26,
+      "tab": "요약",
+      "scroll": 1280,
+      "aux": "26px"
+    },
+    {
+      "width": 1280,
+      "font": 26,
+      "tab": "4지표",
+      "scroll": 1280,
+      "aux": "26px"
+    },
+    {
+      "width": 1280,
+      "font": 26,
+      "tab": "종합해석",
+      "scroll": 1280,
+      "aux": "26px"
+    },
+    {
+      "width": 1280,
+      "font": 26,
+      "tab": "체크·출처",
+      "scroll": 1280,
+      "aux": "26px"
+    },
+    {
+      "width": 1280,
+      "font": 26,
+      "tab": "차트",
+      "scroll": 1280,
+      "aux": "26px"
+    },
+    {
+      "width": 1280,
+      "font": 30,
+      "tab": "요약",
+      "scroll": 1280,
+      "aux": "30px"
+    },
+    {
+      "width": 1280,
+      "font": 30,
+      "tab": "4지표",
+      "scroll": 1280,
+      "aux": "30px"
+    },
+    {
+      "width": 1280,
+      "font": 30,
+      "tab": "종합해석",
+      "scroll": 1280,
+      "aux": "30px"
+    },
+    {
+      "width": 1280,
+      "font": 30,
+      "tab": "체크·출처",
+      "scroll": 1280,
+      "aux": "30px"
+    },
+    {
+      "width": 1280,
+      "font": 30,
+      "tab": "차트",
+      "scroll": 1280,
+      "aux": "30px"
+    },
+    {
+      "width": 1366,
+      "font": 22,
+      "tab": "요약",
+      "scroll": 1366,
+      "aux": "22px"
+    },
+    {
+      "width": 1366,
+      "font": 22,
+      "tab": "4지표",
+      "scroll": 1366,
+      "aux": "22px"
+    },
+    {
+      "width": 1366,
+      "font": 22,
+      "tab": "종합해석",
+      "scroll": 1366,
+      "aux": "22px"
+    },
+    {
+      "width": 1366,
+      "font": 22,
+      "tab": "체크·출처",
+      "scroll": 1366,
+      "aux": "22px"
+    },
+    {
+      "width": 1366,
+      "font": 22,
+      "tab": "차트",
+      "scroll": 1366,
+      "aux": "22px"
+    },
+    {
+      "width": 1366,
+      "font": 26,
+      "tab": "요약",
+      "scroll": 1366,
+      "aux": "26px"
+    },
+    {
+      "width": 1366,
+      "font": 26,
+      "tab": "4지표",
+      "scroll": 1366,
+      "aux": "26px"
+    },
+    {
+      "width": 1366,
+      "font": 26,
+      "tab": "종합해석",
+      "scroll": 1366,
+      "aux": "26px"
+    },
+    {
+      "width": 1366,
+      "font": 26,
+      "tab": "체크·출처",
+      "scroll": 1366,
+      "aux": "26px"
+    },
+    {
+      "width": 1366,
+      "font": 26,
+      "tab": "차트",
+      "scroll": 1366,
+      "aux": "26px"
+    },
+    {
+      "width": 1366,
+      "font": 30,
+      "tab": "요약",
+      "scroll": 1366,
+      "aux": "30px"
+    },
+    {
+      "width": 1366,
+      "font": 30,
+      "tab": "4지표",
+      "scroll": 1366,
+      "aux": "30px"
+    },
+    {
+      "width": 1366,
+      "font": 30,
+      "tab": "종합해석",
+      "scroll": 1366,
+      "aux": "30px"
+    },
+    {
+      "width": 1366,
+      "font": 30,
+      "tab": "체크·출처",
+      "scroll": 1366,
+      "aux": "30px"
+    },
+    {
+      "width": 1366,
+      "font": 30,
+      "tab": "차트",
+      "scroll": 1366,
+      "aux": "30px"
+    },
+    {
+      "width": 1920,
+      "font": 22,
+      "tab": "요약",
+      "scroll": 1920,
+      "aux": "22px"
+    },
+    {
+      "width": 1920,
+      "font": 22,
+      "tab": "4지표",
+      "scroll": 1920,
+      "aux": "22px"
+    },
+    {
+      "width": 1920,
+      "font": 22,
+      "tab": "종합해석",
+      "scroll": 1920,
+      "aux": "22px"
+    },
+    {
+      "width": 1920,
+      "font": 22,
+      "tab": "체크·출처",
+      "scroll": 1920,
+      "aux": "22px"
+    },
+    {
+      "width": 1920,
+      "font": 22,
+      "tab": "차트",
+      "scroll": 1920,
+      "aux": "22px"
+    },
+    {
+      "width": 1920,
+      "font": 26,
+      "tab": "요약",
+      "scroll": 1920,
+      "aux": "26px"
+    },
+    {
+      "width": 1920,
+      "font": 26,
+      "tab": "4지표",
+      "scroll": 1920,
+      "aux": "26px"
+    },
+    {
+      "width": 1920,
+      "font": 26,
+      "tab": "종합해석",
+      "scroll": 1920,
+      "aux": "26px"
+    },
+    {
+      "width": 1920,
+      "font": 26,
+      "tab": "체크·출처",
+      "scroll": 1920,
+      "aux": "26px"
+    },
+    {
+      "width": 1920,
+      "font": 26,
+      "tab": "차트",
+      "scroll": 1920,
+      "aux": "26px"
+    },
+    {
+      "width": 1920,
+      "font": 30,
+      "tab": "요약",
+      "scroll": 1920,
+      "aux": "30px"
+    },
+    {
+      "width": 1920,
+      "font": 30,
+      "tab": "4지표",
+      "scroll": 1920,
+      "aux": "30px"
+    },
+    {
+      "width": 1920,
+      "font": 30,
+      "tab": "종합해석",
+      "scroll": 1920,
+      "aux": "30px"
+    },
+    {
+      "width": 1920,
+      "font": 30,
+      "tab": "체크·출처",
+      "scroll": 1920,
+      "aux": "30px"
+    },
+    {
+      "width": 1920,
+      "font": 30,
+      "tab": "차트",
+      "scroll": 1920,
+      "aux": "30px"
+    },
+    {
+      "width": 2560,
+      "font": 22,
+      "tab": "요약",
+      "scroll": 2560,
+      "aux": "22px"
+    },
+    {
+      "width": 2560,
+      "font": 22,
+      "tab": "4지표",
+      "scroll": 2560,
+      "aux": "22px"
+    },
+    {
+      "width": 2560,
+      "font": 22,
+      "tab": "종합해석",
+      "scroll": 2560,
+      "aux": "22px"
+    },
+    {
+      "width": 2560,
+      "font": 22,
+      "tab": "체크·출처",
+      "scroll": 2560,
+      "aux": "22px"
+    },
+    {
+      "width": 2560,
+      "font": 22,
+      "tab": "차트",
+      "scroll": 2560,
+      "aux": "22px"
+    },
+    {
+      "width": 2560,
+      "font": 26,
+      "tab": "요약",
+      "scroll": 2560,
+      "aux": "26px"
+    },
+    {
+      "width": 2560,
+      "font": 26,
+      "tab": "4지표",
+      "scroll": 2560,
+      "aux": "26px"
+    },
+    {
+      "width": 2560,
+      "font": 26,
+      "tab": "종합해석",
+      "scroll": 2560,
+      "aux": "26px"
+    },
+    {
+      "width": 2560,
+      "font": 26,
+      "tab": "체크·출처",
+      "scroll": 2560,
+      "aux": "26px"
+    },
+    {
+      "width": 2560,
+      "font": 26,
+      "tab": "차트",
+      "scroll": 2560,
+      "aux": "26px"
+    },
+    {
+      "width": 2560,
+      "font": 30,
+      "tab": "요약",
+      "scroll": 2560,
+      "aux": "30px"
+    },
+    {
+      "width": 2560,
+      "font": 30,
+      "tab": "4지표",
+      "scroll": 2560,
+      "aux": "30px"
+    },
+    {
+      "width": 2560,
+      "font": 30,
+      "tab": "종합해석",
+      "scroll": 2560,
+      "aux": "30px"
+    },
+    {
+      "width": 2560,
+      "font": 30,
+      "tab": "체크·출처",
+      "scroll": 2560,
+      "aux": "30px"
+    },
+    {
+      "width": 2560,
+      "font": 30,
+      "tab": "차트",
+      "scroll": 2560,
+      "aux": "30px"
+    }
+  ],
+  "errors": []
+}

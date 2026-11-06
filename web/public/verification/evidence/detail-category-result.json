@@ -1,0 +1,29 @@
+{
+  "scenario": "Explicit simulated wrapper metadata with real original evidence rows; cached disclosures and newly observed news; IR and official missing",
+  "browser": "155.0.8059.79",
+  "checkedAt": "cached2026-11-05T22:00:00Z",
+  "lastAttemptAt": "2026-11-06T04:00:00Z",
+  "cachedItemNotFresh": true,
+  "newItemFresh": true,
+  "emptyCategoriesMissing": true,
+  "noUniversalComplete": true,
+  "outerSection": true,
+  "viewports": [
+    {
+      "width": 1024,
+      "font": 22,
+      "scroll": 1024
+    },
+    {
+      "width": 1024,
+      "font": 26,
+      "scroll": 1024
+    },
+    {
+      "width": 1024,
+      "font": 30,
+      "scroll": 1024
+    }
+  ],
+  "errors": []
+}

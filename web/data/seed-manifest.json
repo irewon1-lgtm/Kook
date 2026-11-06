@@ -1,0 +1,10 @@
+{
+  "context-seed.tar.gz": {
+    "sha256": "c81a8f0a00897fa9ff53b31988aa554567624213761bd02842ff441aebf213bb",
+    "bytes": 2059978
+  },
+  "pc-price-seed.tar.gz": {
+    "sha256": "dde9e78ae73b0b71a5efc6e1ee7d4f750bd1003f6e084002a71179b54733c08d",
+    "bytes": 13342218
+  }
+}
