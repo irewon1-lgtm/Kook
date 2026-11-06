@@ -44,6 +44,14 @@ const SOURCE_STATUS_KO: Record<string, string> = {
   ERROR: '확인 실패', MISSING: '미확보', NOT_COLLECTED: '미수집', UNRECORDED: '수록 자료 있음 · 확인 상태 미확보',
 };
 function sourceRecord(value: unknown): Record<string, unknown> | undefined { return value !== null && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, unknown> : undefined; }
+function sameOriginalValue(left: unknown, right: unknown): boolean {
+  if (left === right) return true;
+  if (Array.isArray(left) || Array.isArray(right)) return Array.isArray(left) && Array.isArray(right) && left.length === right.length && left.every((value, index) => sameOriginalValue(value, right[index]));
+  const a = sourceRecord(left), b = sourceRecord(right);
+  if (!a || !b) return false;
+  const keys = Object.keys(a);
+  return keys.length === Object.keys(b).length && keys.every(key => Object.hasOwn(b, key) && sameOriginalValue(a[key], b[key]));
+}
 function contextState(detail: StockDetail) { return sourceRecord(detail.sourceStates?.context); }
 function sourceStatusKo(value: unknown) { return typeof value === 'string' ? SOURCE_STATUS_KO[value] || `확인 상태 · ${value}` : '확인 상태 미확보'; }
 
@@ -308,26 +316,43 @@ export default function Detail({ detail, state, initialTab = 0, onBack, onToggle
   const [tab, setTab] = useState(Math.min(4, Math.max(0, initialTab))), [modal, setModal] = useState<'finance' | 'update' | null>(null);
   const tabsRef = useRef<Array<HTMLButtonElement | null>>([]), scrolls = useRef<Record<number, number>>({}), panelRef = useRef<HTMLDivElement>(null);
   const id = useId(), s = detail.summary, metrics = [s.m01RevGrowth, s.m02OpMargin, s.m03Per, s.m04Price6m];
-  const safety = state.financialByCode[s.issuerId] || detail.financial;
   const cutoffDate = state.manifest?.priceCutoffDate || '';
+  const matchingDate = !!state.manifest && s.asOfDate === state.manifest.snapshotDate;
+  const matchingCore = matchingDate && sameOriginalValue(s, state.stocks.find(stock => stock.issuerId === s.issuerId));
+  // A mounted detail may outlive a core/optional reception transaction. Only the
+  // current validated maps can authorize active financial or candidate status.
+  const financialReady = matchingCore && state.financialDate === state.manifest?.snapshotDate && state.financialError === null;
+  const currentFinancial = financialReady ? state.financialByCode[s.issuerId] : null;
+  const safety = currentFinancial?.issuerId === s.issuerId ? currentFinancial : null;
+  const financialHold = !matchingCore ? '종목 상세와 현재 공개자료의 기준 또는 원본 내용이 다릅니다.' : state.financialError || (state.financialDate !== state.manifest?.snapshotDate ? '현재 기준일의 재무자료 검증 대기' : '검증된 재무자료 미확보 · 검증 대기');
+  const currentCandidate = state.candidatesByCode?.[s.issuerId];
+  const candidateDatesMatch = !currentCandidate || (currentCandidate.issuerId === s.issuerId && currentCandidate.financialSnapshotDate === state.manifest?.snapshotDate && currentCandidate.priceCutoffDate === cutoffDate);
+  const candidateSourceMatch = !currentCandidate || (currentCandidate.sourceRank === s.rankOrder && currentCandidate.compositeScore === s.compositeScore);
+  const candidateHold = !safety || safety.status !== 'PASS' ? '현재 재무자료의 PASS 확인 전까지 최종후보 표시 보류' : state.candidatesError !== null ? state.candidatesError || '현재 최종후보 목록 검증 대기' : !candidateDatesMatch ? '최종후보의 종목·기준일 불일치' : !candidateSourceMatch ? '최종후보의 원본 순위·종합점수 불일치' : null;
+  const candidate = candidateHold ? null : currentCandidate ?? null;
+  const currentDetail: StockDetail = { ...detail, financial: safety, candidate, sourceStates: {
+    ...detail.sourceStates,
+    financial: { ...sourceRecord(detail.sourceStates?.financial), status: safety ? 'VALID' : 'HOLD', error: safety ? null : financialHold },
+    candidate: { ...sourceRecord(detail.sourceStates?.candidate), status: candidateHold ? 'HOLD' : 'VALID', error: candidateHold },
+  } };
   useEffect(() => { setTab(Math.min(4, Math.max(0, initialTab))); setModal(null); scrolls.current = {}; }, [s.issuerId, initialTab]);
   function selectTab(next: number, focus = false) { if (panelRef.current) scrolls.current[tab] = window.scrollY; setTab(next); if (focus) tabsRef.current[next]?.focus(); }
   useEffect(() => { window.scrollTo({ top: scrolls.current[tab] ?? 0, behavior: 'instant' }); }, [tab, s.issuerId]);
-  const matchingDate = s.asOfDate === state.manifest?.snapshotDate;
   const updateRows: Array<[string, ReactNode]> = [
-    ['연결 출처', matchingDate ? `${state.source}${state.source === 'LIVE' ? ' · GitHub에 공개된 자료 수신' : state.source === 'CACHE' ? ' · 검증된 저장자료' : ''}` : '데이터 출처 확인 중 · 종목과 공개자료의 기준일 불일치'], ['화면의 재무 기준일', formatDate(s.asOfDate)], ['공개자료 재무 기준일', formatDate(state.manifest?.snapshotDate || '')], ['주가 마감일', formatDate(cutoffDate)],
+    ['연결 출처', matchingCore ? `${state.source}${state.source === 'LIVE' ? ' · GitHub에 공개된 자료 수신' : state.source === 'CACHE' ? ' · 검증된 저장자료' : ''}` : '데이터 출처 확인 중 · 종목과 공개자료의 기준 또는 원본 내용 불일치'], ['화면의 재무 기준일', formatDate(s.asOfDate)], ['공개자료 재무 기준일', formatDate(state.manifest?.snapshotDate || '')], ['주가 마감일', formatDate(cutoffDate)],
     ['4지표 완성', `${state.stocks.filter(stock => stock.isCompositeComplete).length} / ${state.stocks.length}`], ['최근 정상 수신', text(state.lastSuccessAt)], ['최근 확인 시도', text(state.lastAttemptAt)], ['연결 상태', state.error ? `갱신 실패 · 마지막 정상 자료를 표시합니다. ${state.error}` : state.refreshing ? '자료 갱신 중…' : '기록된 수신 오류 없음'], ['공개자료 생성 시각', text(state.manifest?.generatedAt)],
   ];
   return <section className="detail-screen" data-testid="stock-detail"><header className="dtl-company-header"><button type="button" className="dtl-button dtl-back" onClick={onBack} aria-label="종목 목록으로 돌아가기">← <span>목록</span></button><div className="dtl-company-identity"><h1>{s.name} <span>({s.issuerId})</span></h1><p>{s.market} · {s.sector}</p></div><div className="dtl-header-actions"><button type="button" className={`dtl-button ${isFavorite ? 'dtl-favorited' : ''}`} onClick={() => onToggleFavorite(s.issuerId)} aria-pressed={isFavorite} aria-label={`${s.name} 관심종목 ${isFavorite ? '해제' : '추가'}`}>{isFavorite ? '★ 관심종목' : '☆ 관심 추가'}</button><button type="button" className="dtl-button" onClick={() => setModal('update')} aria-label="데이터 갱신 상태 열기">↻ 갱신 상태</button></div></header>
+    {!matchingCore && <p className="dtl-info-note" role="status">데이터 출처 확인 중 · 종목 상세와 현재 공개자료의 기준 또는 원본 내용이 달라 재무·최종후보 표시를 보류합니다.</p>}
     {tab !== 4 && <Quote issuerId={s.issuerId} cutoffDate={cutoffDate} />}
     <div className="dtl-tabs" role="tablist" aria-label="종목 상세 정보">{TABS.map((label, i) => <button key={label} type="button" id={`${id}-tab-${i}`} role="tab" aria-selected={tab === i} aria-controls={`${id}-panel-${i}`} tabIndex={tab === i ? 0 : -1} ref={el => { tabsRef.current[i] = el; }} onClick={() => selectTab(i)} onKeyDown={e => { let next = i; if (e.key === 'ArrowRight') next = (i + 1) % 5; else if (e.key === 'ArrowLeft') next = (i + 4) % 5; else if (e.key === 'Home') next = 0; else if (e.key === 'End') next = 4; else return; e.preventDefault(); selectTab(next, true); }}>{label}</button>)}</div>
     <div role="tabpanel" tabIndex={0} id={`${id}-panel-${tab}`} aria-labelledby={`${id}-tab-${tab}`} className="dtl-tab-panel" ref={panelRef}>
-      {tab === 0 && <div className="dtl-stack"><div className="dtl-overview-grid"><Composite detail={detail} state={state} /><CompactMetrics metrics={metrics} /></div>{detail.candidate && <CandidateCard candidate={detail.candidate} />}<div className="dtl-two-columns"><FinancialCard safety={safety} snapshotDate={s.asOfDate} onOpen={() => setModal('finance')} /><Valuation metric={s.m03Per} band={detail.valuation} /></div><Panel title="핵심 판독" eyebrow={detail.analysis.regimeTitle}><Prose>{detail.analysis.thesis}</Prose><button className="dtl-button" onClick={() => selectTab(2)}>종합해석 전체 보기 →</button></Panel><Panel title="종목 기본정보"><Rows rows={[
+      {tab === 0 && <div className="dtl-stack"><div className="dtl-overview-grid"><Composite detail={detail} state={state} /><CompactMetrics metrics={metrics} /></div>{candidate && <CandidateCard candidate={candidate} />}<div className="dtl-two-columns"><FinancialCard safety={safety} snapshotDate={s.asOfDate} onOpen={() => setModal('finance')} /><Valuation metric={s.m03Per} band={detail.valuation} /></div><Panel title="핵심 판독" eyebrow={detail.analysis.regimeTitle}><Prose>{detail.analysis.thesis}</Prose><button className="dtl-button" onClick={() => selectTab(2)}>종합해석 전체 보기 →</button></Panel><Panel title="종목 기본정보"><Rows rows={[
         ['종목코드', s.issuerId], ['시장', s.market], ['업종', s.sector], ['상장일', text(s.listingDate, '확인 필요')], ['재무 기준일', formatDate(s.asOfDate)], ['주가 마감일', formatDate(cutoffDate)], ['원자료 출처', s.dataSource], ['금융업 여부', s.isFinancial ? '금융업' : '비금융업'], ['적자 여부', s.isLossMaking ? '적자' : '적자 표시 없음'],
       ]} /><button className="dtl-button" onClick={() => selectTab(1)}>4지표 근거와 업종 비교 보기 →</button></Panel></div>}
       {tab === 1 && <div className="dtl-stack"><div className="dtl-overview-grid"><Composite detail={detail} state={state} /><CompactMetrics metrics={metrics} /></div><FinancialCard safety={safety} snapshotDate={s.asOfDate} onOpen={() => setModal('finance')} /><p className="dtl-info-note">ⓘ 은행·보험·증권 등 금융업은 일반기업의 부채·유동비율과 직접 비교하지 않아 비교에서 제외합니다.</p><div className="dtl-tab-intro"><h2>지표별 근거와 업종 비교</h2><p>실제 값, 업종 중앙값, 전체 시장의 상대 위치와 계산 근거를 구분해 확인합니다.</p></div><div className="dtl-two-columns">{metrics.map(m => <MetricDetail metric={m} loss={s.isLossMaking} key={m.id} />)}</div><Valuation metric={s.m03Per} band={detail.valuation} /></div>}
       {tab === 2 && <AnalysisTab detail={detail} toSources={() => selectTab(3)} />}
-      {tab === 3 && <SourcesTab detail={detail} state={state} />}
+      {tab === 3 && <SourcesTab detail={currentDetail} state={state} />}
       {tab === 4 && <PriceChart issuerId={s.issuerId} cutoffDate={cutoffDate} />}
     </div>
     {TABS.map((_, i) => i !== tab && <div key={i} hidden role="tabpanel" id={`${id}-panel-${i}`} aria-labelledby={`${id}-tab-${i}`} />)}

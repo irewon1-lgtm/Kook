@@ -14,6 +14,6 @@ export default defineConfig({
     'import.meta.env.VITE_KR4_UI_VERSION': JSON.stringify(version),
     'import.meta.env.VITE_KR4_UI_COMMIT': JSON.stringify(revision),
   },
-  test: { include: ['tests/**/*.test.ts'], environment: 'node' },
+  test: { include: ['tests/**/*.test.{ts,tsx}'], environment: 'node' },
   build: { sourcemap: true },
 });
