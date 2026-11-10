@@ -71,7 +71,7 @@
       "financial_safety": {
         "status": "PASS",
         "reason": "PASS",
-        "basis": "2026_3Q_BS_20261110032625.zip:OFS:2026-09-30:KRW",
+        "basis": "2026_3Q_BS_20261111030212.zip:OFS:2026-09-30:KRW",
         "debt_to_equity_pct": 62.297171,
         "current_ratio_pct": 254.834339,
         "identity_gap_pct": 0.0
