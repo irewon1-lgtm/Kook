@@ -6,12 +6,12 @@
   "price_cutoff_date_kst": "2026-11-11",
   "universe_count": 2649,
   "financial_safety_policy_version": "STAGE4_BS_SAFETY_V1",
-  "eligible_count": 1371,
+  "eligible_count": 1370,
   "candidate_limit": 10,
   "candidate_count": 10,
   "reject_counts": {
     "base_incomplete_or_nonpositive_per": 1168,
-    "financial_safety_not_pass": 110
+    "financial_safety_not_pass": 111
   },
   "selection_policy": {
     "purpose": "research_priority_only",
@@ -71,7 +71,7 @@
       "financial_safety": {
         "status": "PASS",
         "reason": "PASS",
-        "basis": "2026_3Q_BS_20261111030212.zip:OFS:2026-09-30:KRW",
+        "basis": "2026_3Q_BS_20261112032723.zip:OFS:2026-09-30:KRW",
         "debt_to_equity_pct": 62.297171,
         "current_ratio_pct": 254.834339,
         "identity_gap_pct": 0.0
@@ -141,7 +141,7 @@
       "financial_safety": {
         "status": "PASS",
         "reason": "PASS",
-        "basis": "2026_2Q_BS_20261110030329.zip:CFS:2026-06-30:KRW",
+        "basis": "2026_2Q_BS_20261112030336.zip:CFS:2026-06-30:KRW",
         "debt_to_equity_pct": 23.975568,
         "current_ratio_pct": 672.045262,
         "identity_gap_pct": 0.0
@@ -210,7 +210,7 @@
       "financial_safety": {
         "status": "PASS",
         "reason": "PASS",
-        "basis": "2026_2Q_BS_20261110030329.zip:CFS:2026-06-30:KRW",
+        "basis": "2026_2Q_BS_20261112030336.zip:CFS:2026-06-30:KRW",
         "debt_to_equity_pct": 36.262736,
         "current_ratio_pct": 200.650714,
         "identity_gap_pct": 0.0
@@ -280,7 +280,7 @@
       "financial_safety": {
         "status": "PASS",
         "reason": "PASS",
-        "basis": "2026_2Q_BS_20261110030329.zip:OFS:2026-06-30:KRW",
+        "basis": "2026_2Q_BS_20261112030336.zip:OFS:2026-06-30:KRW",
         "debt_to_equity_pct": 31.272254,
         "current_ratio_pct": 339.778941,
         "identity_gap_pct": 0.0
@@ -314,7 +314,7 @@
       "name": "까뮤이앤씨",
       "market": "KOSPI",
       "sector": "건물 건설업",
-      "composite_score": 88.872906,
+      "composite_score": 88.883284,
       "financial_snapshot_date": "2026-11-12",
       "price_cutoff_date": "2026-11-11",
       "metrics": {
@@ -328,7 +328,7 @@
         "M02": {
           "id": "M02",
           "raw": 11.161711,
-          "percentile": 77.376505,
+          "percentile": 77.418016,
           "basis": "2026HY_3M_CFS",
           "as_of_date": "2026-11-12"
         },
@@ -350,7 +350,7 @@
       "financial_safety": {
         "status": "PASS",
         "reason": "PASS",
-        "basis": "2026_2Q_BS_20261110030329.zip:CFS:2026-06-30:KRW",
+        "basis": "2026_2Q_BS_20261112030336.zip:CFS:2026-06-30:KRW",
         "debt_to_equity_pct": 132.833628,
         "current_ratio_pct": 165.967411,
         "identity_gap_pct": 0.0
@@ -420,7 +420,7 @@
       "financial_safety": {
         "status": "PASS",
         "reason": "PASS",
-        "basis": "2026_2Q_BS_20261110030329.zip:CFS:2026-06-30:KRW",
+        "basis": "2026_2Q_BS_20261112030336.zip:CFS:2026-06-30:KRW",
         "debt_to_equity_pct": 61.055732,
         "current_ratio_pct": 184.736689,
         "identity_gap_pct": 0.0
@@ -453,7 +453,7 @@
       "name": "이수화학",
       "market": "KOSPI",
       "sector": "기초 화학물질 제조업",
-      "composite_score": 87.514133,
+      "composite_score": 87.524511,
       "financial_snapshot_date": "2026-11-12",
       "price_cutoff_date": "2026-11-11",
       "metrics": {
@@ -467,7 +467,7 @@
         "M02": {
           "id": "M02",
           "raw": 12.988252,
-          "percentile": 81.237028,
+          "percentile": 81.278539,
           "basis": "2026HY_3M_CFS",
           "as_of_date": "2026-11-12"
         },
@@ -489,7 +489,7 @@
       "financial_safety": {
         "status": "PASS",
         "reason": "PASS",
-        "basis": "2026_2Q_BS_20261110030329.zip:CFS:2026-06-30:KRW",
+        "basis": "2026_2Q_BS_20261112030336.zip:CFS:2026-06-30:KRW",
         "debt_to_equity_pct": 151.095189,
         "current_ratio_pct": 116.820765,
         "identity_gap_pct": 0.0
@@ -558,7 +558,7 @@
       "financial_safety": {
         "status": "PASS",
         "reason": "PASS",
-        "basis": "2026_2Q_BS_20261110030329.zip:CFS:2026-06-30:KRW",
+        "basis": "2026_2Q_BS_20261112030336.zip:CFS:2026-06-30:KRW",
         "debt_to_equity_pct": 63.575862,
         "current_ratio_pct": 385.856194,
         "identity_gap_pct": 0.0
@@ -628,7 +628,7 @@
       "financial_safety": {
         "status": "PASS",
         "reason": "PASS",
-        "basis": "2026_2Q_BS_20261110030329.zip:CFS:2026-06-30:KRW",
+        "basis": "2026_2Q_BS_20261112030336.zip:CFS:2026-06-30:KRW",
         "debt_to_equity_pct": 5.212721,
         "current_ratio_pct": 1872.836655,
         "identity_gap_pct": 0.0
@@ -698,7 +698,7 @@
       "financial_safety": {
         "status": "PASS",
         "reason": "PASS",
-        "basis": "2026_2Q_BS_20261110030329.zip:CFS:2026-06-30:KRW",
+        "basis": "2026_2Q_BS_20261112030336.zip:CFS:2026-06-30:KRW",
         "debt_to_equity_pct": 75.198108,
         "current_ratio_pct": 117.359895,
         "identity_gap_pct": 0.0
