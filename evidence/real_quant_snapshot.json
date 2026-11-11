@@ -12,9 +12,9 @@
     "naver_integration_pattern": "https://m.stock.naver.com/api/stock/{code}/integration",
     "naver_price_pattern": "https://m.stock.naver.com/api/stock/{code}/price?pageSize=60&page={page}"
   },
-  "dart_bulk_file": "2026_2Q_PL_20261110030700.zip",
-  "dart_bulk_zip_sha256": "b2bd48a8970468be69594912de5e02142109af3629408bf617387964d218966e",
-  "generated_kotlin_sha256": "afe09c62efadc04c36a41f0fba4f4e20072d0e21dba54ab9b7e5a6af4236257d",
+  "dart_bulk_file": "2026_2Q_PL_20261112030725.zip",
+  "dart_bulk_zip_sha256": "7fdbc6cea4697d2ee0c3e06cf4b95d6e2904035117f405600f544c5a49a46066",
+  "generated_kotlin_sha256": "7aef42851b6bb6514b52b5e61274d228d31c733e336ec4638e49fda129f8b911",
   "coverage": {
     "m01_available": 2561,
     "m02_available": 2410,
@@ -49,8 +49,8 @@
     }
   },
   "rules": {
-    "M01": "latest OpenDART PL period; 3-month YoY preferred, YTD/annual comparable fallback; CFS preferred to OFS; deterministic name/preferred-share alias recovery; if the latest DART period is unavailable, use exactly the immediately preceding validated quarter's revenue YoY; final rankability guard -100%..5000% with fail-close before full rerank; if the latest DART period is unavailable, use exactly the immediately preceding validated quarter's revenue YoY; final rankability guard -100%..5000% with fail-close before full rerank",
-    "M02": "same latest OpenDART PL period; operating income/revenue on a matched period column; financial/insurance sectors excluded; deterministic name/preferred-share alias recovery; if the latest DART period is unavailable, use exactly the immediately preceding validated quarter's operating margin (financial-sector exclusion unchanged); final rankability guard -5000%..200% with fail-close before full rerank; if the latest DART period is unavailable, use exactly the immediately preceding validated quarter's operating margin (financial-sector exclusion unchanged); final rankability guard -5000%..200% with fail-close before full rerank",
+    "M01": "latest OpenDART PL period; 3-month YoY preferred, YTD/annual comparable fallback; CFS preferred to OFS; deterministic name/preferred-share alias recovery; if the latest DART period is unavailable, use exactly the immediately preceding validated quarter's revenue YoY; final rankability guard -100%..5000% with fail-close before full rerank",
+    "M02": "same latest OpenDART PL period; operating income/revenue on a matched period column; financial/insurance sectors excluded; deterministic name/preferred-share alias recovery; if the latest DART period is unavailable, use exactly the immediately preceding validated quarter's operating margin (financial-sector exclusion unchanged); final rankability guard -5000%..200% with fail-close before full rerank",
     "M03": "positive reported trailing PER preferred; otherwise completed-session close / actual non-consensus EPS; missing integration EPS may fall back to latest non-consensus annual EPS; negative EPS yields negative PER with 0 valuation percentile; zero EPS remains unavailable",
     "M04": "close-to-close return from last session on/before six-month target to price cutoff; at least 150 calendar days required",
     "percentiles": "available-universe percentile; higher is better except PER where lower is better",
@@ -282,7 +282,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 73.643901,
-      "rank": 122
+      "rank": 123
     },
     "000070": {
       "name": "삼양홀딩스",
@@ -329,7 +329,7 @@
       },
       "m02": {
         "raw": 10.497687,
-        "percentile": 75.591532,
+        "percentile": 75.633043,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -345,7 +345,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 51.391087,
+      "composite": 51.401465,
       "rank": 948
     },
     "000100": {
@@ -361,7 +361,7 @@
       },
       "m02": {
         "raw": 10.457261,
-        "percentile": 75.466999,
+        "percentile": 75.50851,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -377,8 +377,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 56.98506,
-      "rank": 714
+      "composite": 56.995438,
+      "rank": 713
     },
     "000120": {
       "name": "CJ대한통운",
@@ -410,7 +410,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 52.916985,
-      "rank": 894
+      "rank": 895
     },
     "000140": {
       "name": "하이트진로홀딩스",
@@ -585,7 +585,7 @@
       },
       "m02": {
         "raw": 10.906771,
-        "percentile": 77.002906,
+        "percentile": 77.044417,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -601,7 +601,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 66.219166,
+      "composite": 66.229544,
       "rank": 327
     },
     "000230": {
@@ -1385,7 +1385,7 @@
       },
       "m02": {
         "raw": 10.517185,
-        "percentile": 75.716065,
+        "percentile": 75.757576,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -1401,7 +1401,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 70.03661,
+      "composite": 70.046988,
       "rank": 207
     },
     "000720": {
@@ -2618,7 +2618,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 60.574766,
-      "rank": 553
+      "rank": 552
     },
     "0013V0": {
       "name": "삼진식품",
@@ -3145,7 +3145,7 @@
       },
       "m02": {
         "raw": 12.656989,
-        "percentile": 80.365297,
+        "percentile": 80.406808,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -3161,7 +3161,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 62.558076,
+      "composite": 62.568454,
       "rank": 480
     },
     "0015S0": {
@@ -3593,7 +3593,7 @@
       },
       "m02": {
         "raw": 10.426381,
-        "percentile": 75.383977,
+        "percentile": 75.425488,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -3609,8 +3609,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 56.480849,
-      "rank": 738
+      "composite": 56.491227,
+      "rank": 737
     },
     "001840": {
       "name": "이화공영",
@@ -3674,7 +3674,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 49.299458,
-      "rank": 1030
+      "rank": 1031
     },
     "002020": {
       "name": "코오롱",
@@ -3785,7 +3785,7 @@
       },
       "m02": {
         "raw": 11.099626,
-        "percentile": 77.251972,
+        "percentile": 77.293483,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -3801,8 +3801,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 60.139611,
-      "rank": 575
+      "composite": 60.149988,
+      "rank": 572
     },
     "002140": {
       "name": "고려산업",
@@ -3834,7 +3834,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 54.441963,
-      "rank": 828
+      "rank": 829
     },
     "002150": {
       "name": "도화엔지니어링",
@@ -4186,7 +4186,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 64.635001,
-      "rank": 390
+      "rank": 391
     },
     "002360": {
       "name": "SH에너지화학",
@@ -4474,7 +4474,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 40.834653,
-      "rank": 1399
+      "rank": 1400
     },
     "002630": {
       "name": "오리엔트바이오",
@@ -4777,7 +4777,7 @@
       },
       "m02": {
         "raw": 11.955364,
-        "percentile": 79.036945,
+        "percentile": 79.078456,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -4793,7 +4793,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 67.979349,
+      "composite": 67.989727,
       "rank": 271
     },
     "002810": {
@@ -4969,7 +4969,7 @@
       },
       "m02": {
         "raw": 10.512725,
-        "percentile": 75.674554,
+        "percentile": 75.716065,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -4985,7 +4985,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 64.049785,
+      "composite": 64.060163,
       "rank": 414
     },
     "002920": {
@@ -5129,7 +5129,7 @@
       },
       "m02": {
         "raw": 11.074273,
-        "percentile": 77.210461,
+        "percentile": 77.251972,
         "reason": null,
         "basis": "2026HY_3M_OFS"
       },
@@ -5145,7 +5145,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 66.762945,
+      "composite": 66.773322,
       "rank": 312
     },
     "003030": {
@@ -5289,7 +5289,7 @@
       },
       "m02": {
         "raw": 13.426665,
-        "percentile": 82.108759,
+        "percentile": 82.15027,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -5305,7 +5305,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 65.35249,
+      "composite": 65.362868,
       "rank": 370
     },
     "0030R0": {
@@ -5609,7 +5609,7 @@
       },
       "m02": {
         "raw": 12.988793,
-        "percentile": 81.278539,
+        "percentile": 81.32005,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -5625,7 +5625,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 58.627652,
+      "composite": 58.63803,
       "rank": 630
     },
     "003310": {
@@ -6249,7 +6249,7 @@
       },
       "m02": {
         "raw": 13.278123,
-        "percentile": 81.652138,
+        "percentile": 81.693649,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -6265,8 +6265,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 58.793684,
-      "rank": 626
+      "composite": 58.804061,
+      "rank": 624
     },
     "003780": {
       "name": "진양산업",
@@ -6537,7 +6537,7 @@
       },
       "m02": {
         "raw": 10.559556,
-        "percentile": 75.799087,
+        "percentile": 75.840598,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -6553,7 +6553,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 66.972251,
+      "composite": 66.982629,
       "rank": 306
     },
     "004020": {
@@ -6633,7 +6633,7 @@
       },
       "m02": {
         "raw": 13.864273,
-        "percentile": 82.772935,
+        "percentile": 82.814446,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -6649,8 +6649,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 60.209993,
-      "rank": 570
+      "composite": 60.220371,
+      "rank": 569
     },
     "004090": {
       "name": "한국석유공업",
@@ -7145,7 +7145,7 @@
       },
       "m02": {
         "raw": 12.118694,
-        "percentile": 79.452055,
+        "percentile": 79.493566,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -7161,7 +7161,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 73.510653,
+      "composite": 73.52103,
       "rank": 125
     },
     "004440": {
@@ -7258,7 +7258,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 58.917363,
-      "rank": 620
+      "rank": 619
     },
     "0044K0": {
       "name": "삼성스팩10호",
@@ -7386,7 +7386,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 59.771633,
-      "rank": 589
+      "rank": 588
     },
     "004650": {
       "name": "창해에탄올",
@@ -7401,7 +7401,7 @@
       },
       "m02": {
         "raw": 14.232098,
-        "percentile": 83.354089,
+        "percentile": 83.3956,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -7417,7 +7417,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 63.513858,
+      "composite": 63.524236,
       "rank": 446
     },
     "004690": {
@@ -7450,7 +7450,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 60.567213,
-      "rank": 554
+      "rank": 553
     },
     "004700": {
       "name": "조광피혁",
@@ -8250,7 +8250,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 60.496454,
-      "rank": 557
+      "rank": 556
     },
     "005300": {
       "name": "롯데칠성음료",
@@ -8442,7 +8442,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 69.042597,
-      "rank": 232
+      "rank": 233
     },
     "005440": {
       "name": "현대지에프홀딩스",
@@ -8922,7 +8922,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 58.488957,
-      "rank": 638
+      "rank": 639
     },
     "005830": {
       "name": "DB손해보험",
@@ -9161,7 +9161,7 @@
       },
       "m02": {
         "raw": 12.988252,
-        "percentile": 81.237028,
+        "percentile": 81.278539,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -9177,7 +9177,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 87.514133,
+      "composite": 87.524511,
       "rank": 7
     },
     "005960": {
@@ -9850,7 +9850,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 47.580442,
-      "rank": 1106
+      "rank": 1107
     },
     "006650": {
       "name": "대한유화",
@@ -10074,7 +10074,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 49.305504,
-      "rank": 1029
+      "rank": 1030
     },
     "006890": {
       "name": "태경케미컬",
@@ -10601,7 +10601,7 @@
       },
       "m02": {
         "raw": 12.912187,
-        "percentile": 80.946451,
+        "percentile": 80.987962,
         "reason": null,
         "basis": "2026HY_3M_OFS"
       },
@@ -10617,7 +10617,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 69.398027,
+      "composite": 69.408404,
       "rank": 224
     },
     "007390": {
@@ -11273,7 +11273,7 @@
       },
       "m02": {
         "raw": 10.375598,
-        "percentile": 75.217933,
+        "percentile": 75.259444,
         "reason": null,
         "basis": "2026HY_3M_OFS"
       },
@@ -11289,8 +11289,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 72.534069,
-      "rank": 148
+      "composite": 72.544447,
+      "rank": 146
     },
     "008290": {
       "name": "원풍물산",
@@ -11499,7 +11499,7 @@
       },
       "m02": {
         "raw": 10.564554,
-        "percentile": 75.882109,
+        "percentile": 75.92362,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -11515,7 +11515,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 71.271714,
+      "composite": 71.282092,
       "rank": 178
     },
     "008600": {
@@ -11868,7 +11868,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 60.085351,
-      "rank": 578
+      "rank": 577
     },
     "009140": {
       "name": "경인전자",
@@ -11900,7 +11900,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA1_EVT20261020:BONUS_ISSUE:0.500000"
       },
       "composite": 63.594183,
-      "rank": 439
+      "rank": 440
     },
     "009150": {
       "name": "삼성전기",
@@ -11915,7 +11915,7 @@
       },
       "m02": {
         "raw": 12.737721,
-        "percentile": 80.572852,
+        "percentile": 80.614363,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -11931,7 +11931,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 63.03472,
+      "composite": 63.045098,
       "rank": 465
     },
     "009160": {
@@ -11964,7 +11964,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 60.646945,
-      "rank": 548
+      "rank": 547
     },
     "009180": {
       "name": "한솔로지스틱스",
@@ -12331,7 +12331,7 @@
       },
       "m02": {
         "raw": 11.613461,
-        "percentile": 78.497302,
+        "percentile": 78.538813,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -12347,8 +12347,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 60.112019,
-      "rank": 576
+      "composite": 60.122396,
+      "rank": 575
     },
     "009420": {
       "name": "한올바이오파마",
@@ -12363,7 +12363,7 @@
       },
       "m02": {
         "raw": 12.642908,
-        "percentile": 80.323786,
+        "percentile": 80.365297,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -12379,7 +12379,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 55.571085,
+      "composite": 55.581463,
       "rank": 780
     },
     "009440": {
@@ -12636,7 +12636,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA1_EVT20260917:REVERSE_SPLIT:5.000000"
       },
       "composite": 59.626586,
-      "rank": 594
+      "rank": 593
     },
     "009680": {
       "name": "모토닉",
@@ -12668,7 +12668,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 58.330776,
-      "rank": 645
+      "rank": 646
     },
     "0096B0": {
       "name": "삼성스팩12호",
@@ -13195,7 +13195,7 @@
       },
       "m02": {
         "raw": 11.320249,
-        "percentile": 77.791615,
+        "percentile": 77.833126,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -13211,7 +13211,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 44.455425,
+      "composite": 44.465803,
       "rank": 1256
     },
     "010130": {
@@ -13355,7 +13355,7 @@
       },
       "m02": {
         "raw": 10.697191,
-        "percentile": 76.214197,
+        "percentile": 76.255708,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -13371,7 +13371,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 77.158613,
+      "composite": 77.168991,
       "rank": 59
     },
     "010280": {
@@ -13547,7 +13547,7 @@
       },
       "m02": {
         "raw": 11.888854,
-        "percentile": 78.870901,
+        "percentile": 78.912412,
         "reason": null,
         "basis": "2026HY_3M_OFS"
       },
@@ -13563,7 +13563,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 71.513035,
+      "composite": 71.523413,
       "rank": 171
     },
     "010660": {
@@ -13724,7 +13724,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 43.756408,
-      "rank": 1283
+      "rank": 1284
     },
     "010950": {
       "name": "S-Oil",
@@ -13852,7 +13852,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 59.824008,
-      "rank": 587
+      "rank": 586
     },
     "011070": {
       "name": "LG이노텍",
@@ -14027,7 +14027,7 @@
       },
       "m02": {
         "raw": 10.409216,
-        "percentile": 75.300955,
+        "percentile": 75.342466,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -14043,8 +14043,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 69.035152,
-      "rank": 233
+      "composite": 69.04553,
+      "rank": 232
     },
     "011210": {
       "name": "현대위아",
@@ -14347,7 +14347,7 @@
       },
       "m02": {
         "raw": 10.746899,
-        "percentile": 76.421752,
+        "percentile": 76.463263,
         "reason": null,
         "basis": "2026HY_3M_OFS"
       },
@@ -14363,8 +14363,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 52.910775,
-      "rank": 896
+      "composite": 52.921153,
+      "rank": 894
     },
     "011560": {
       "name": "세보엠이씨",
@@ -14524,7 +14524,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 71.10982,
-      "rank": 182
+      "rank": 183
     },
     "011780": {
       "name": "금호석유화학",
@@ -14859,7 +14859,7 @@
       },
       "m02": {
         "raw": 11.71016,
-        "percentile": 78.621835,
+        "percentile": 78.663346,
         "reason": null,
         "basis": "2026HY_3M_OFS"
       },
@@ -14875,8 +14875,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 34.253194,
-      "rank": 1665
+      "composite": 34.263571,
+      "rank": 1664
     },
     "012280": {
       "name": "영화금속",
@@ -15051,7 +15051,7 @@
       },
       "m02": {
         "raw": 11.216432,
-        "percentile": 77.542549,
+        "percentile": 77.58406,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -15067,8 +15067,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 58.965504,
-      "rank": 619
+      "composite": 58.975882,
+      "rank": 618
     },
     "012620": {
       "name": "원일특강",
@@ -15228,7 +15228,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 60.204566,
-      "rank": 571
+      "rank": 570
     },
     "012750": {
       "name": "에스원",
@@ -15260,7 +15260,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 54.815191,
-      "rank": 815
+      "rank": 816
     },
     "012790": {
       "name": "신일제약",
@@ -15804,7 +15804,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 74.998007,
-      "rank": 88
+      "rank": 89
     },
     "013700": {
       "name": "까뮤이앤씨",
@@ -15819,7 +15819,7 @@
       },
       "m02": {
         "raw": 11.161711,
-        "percentile": 77.376505,
+        "percentile": 77.418016,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -15835,7 +15835,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 88.872906,
+      "composite": 88.883284,
       "rank": 5
     },
     "013720": {
@@ -15851,7 +15851,7 @@
       },
       "m02": {
         "raw": 12.686474,
-        "percentile": 80.48983,
+        "percentile": 80.531341,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -15867,7 +15867,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA1_EVT20260728:CAPITAL_REDUCTION:4.872390"
       },
-      "composite": 53.066417,
+      "composite": 53.076794,
       "rank": 887
     },
     "013810": {
@@ -15979,7 +15979,7 @@
       },
       "m02": {
         "raw": 14.270326,
-        "percentile": 83.478622,
+        "percentile": 83.520133,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -15995,7 +15995,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 69.720074,
+      "composite": 69.730452,
       "rank": 215
     },
     "014100": {
@@ -16316,7 +16316,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 64.818048,
-      "rank": 385
+      "rank": 386
     },
     "014620": {
       "name": "성광벤드",
@@ -16395,7 +16395,7 @@
       },
       "m02": {
         "raw": 12.497321,
-        "percentile": 80.07472,
+        "percentile": 80.116231,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -16411,8 +16411,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 65.371914,
-      "rank": 369
+      "composite": 65.382291,
+      "rank": 368
     },
     "014790": {
       "name": "HL D&I",
@@ -16444,7 +16444,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 59.464462,
-      "rank": 599
+      "rank": 598
     },
     "014820": {
       "name": "동원시스템즈",
@@ -17291,7 +17291,7 @@
       },
       "m02": {
         "raw": 11.053466,
-        "percentile": 77.16895,
+        "percentile": 77.210461,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -17307,7 +17307,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 66.067425,
+      "composite": 66.077803,
       "rank": 331
     },
     "016590": {
@@ -17963,7 +17963,7 @@
       },
       "m02": {
         "raw": 13.103558,
-        "percentile": 81.403072,
+        "percentile": 81.444583,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -17979,7 +17979,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA1_EVT20261013:STOCK_SPLIT:0.200000"
       },
-      "composite": 67.679478,
+      "composite": 67.689856,
       "rank": 284
     },
     "017670": {
@@ -17995,7 +17995,7 @@
       },
       "m02": {
         "raw": 12.985446,
-        "percentile": 81.195517,
+        "percentile": 81.237028,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -18011,8 +18011,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 51.893158,
-      "rank": 931
+      "composite": 51.903536,
+      "rank": 930
     },
     "017800": {
       "name": "현대엘리베이터",
@@ -18027,7 +18027,7 @@
       },
       "m02": {
         "raw": 12.193031,
-        "percentile": 79.576588,
+        "percentile": 79.618099,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -18043,8 +18043,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 59.856264,
-      "rank": 585
+      "composite": 59.866642,
+      "rank": 584
     },
     "017810": {
       "name": "풀무원",
@@ -18123,7 +18123,7 @@
       },
       "m02": {
         "raw": 13.393825,
-        "percentile": 81.942715,
+        "percentile": 81.984226,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -18139,7 +18139,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 75.223462,
+      "composite": 75.23384,
       "rank": 84
     },
     "017900": {
@@ -18204,7 +18204,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 74.262816,
-      "rank": 109
+      "rank": 110
     },
     "017960": {
       "name": "한국카본",
@@ -18364,7 +18364,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 54.970112,
-      "rank": 809
+      "rank": 810
     },
     "018290": {
       "name": "브이티",
@@ -18460,7 +18460,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA1_EVT20260911:REVERSE_SPLIT:5.000000"
       },
       "composite": 60.540083,
-      "rank": 555
+      "rank": 554
     },
     "018500": {
       "name": "동원모빌리티",
@@ -18556,7 +18556,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 59.342465,
-      "rank": 605
+      "rank": 604
     },
     "018680": {
       "name": "서울제약",
@@ -18748,7 +18748,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 60.415043,
-      "rank": 563
+      "rank": 562
     },
     "019210": {
       "name": "와이지-원",
@@ -19452,7 +19452,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 71.745519,
-      "rank": 163
+      "rank": 164
     },
     "021320": {
       "name": "KCC건설",
@@ -20011,7 +20011,7 @@
       },
       "m02": {
         "raw": 10.750164,
-        "percentile": 76.463263,
+        "percentile": 76.504774,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -20027,8 +20027,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 72.831296,
-      "rank": 141
+      "composite": 72.841674,
+      "rank": 140
     },
     "023760": {
       "name": "한국캐피탈",
@@ -20203,7 +20203,7 @@
       },
       "m02": {
         "raw": 10.508841,
-        "percentile": 75.633043,
+        "percentile": 75.674554,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -20219,8 +20219,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 54.440201,
-      "rank": 829
+      "composite": 54.450578,
+      "rank": 828
     },
     "023910": {
       "name": "대한약품",
@@ -20235,7 +20235,7 @@
       },
       "m02": {
         "raw": 14.273365,
-        "percentile": 83.520133,
+        "percentile": 83.561644,
         "reason": null,
         "basis": "2026HY_3M_OFS"
       },
@@ -20251,8 +20251,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 71.102295,
-      "rank": 183
+      "composite": 71.112673,
+      "rank": 182
     },
     "023960": {
       "name": "에쓰씨엔지니어링",
@@ -20444,7 +20444,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 59.482603,
-      "rank": 598
+      "rank": 597
     },
     "024720": {
       "name": "콜마홀딩스",
@@ -20491,7 +20491,7 @@
       },
       "m02": {
         "raw": 11.566645,
-        "percentile": 78.41428,
+        "percentile": 78.455791,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -20507,8 +20507,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 59.563195,
-      "rank": 595
+      "composite": 59.573573,
+      "rank": 594
     },
     "024800": {
       "name": "유성티엔에스",
@@ -20540,7 +20540,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 58.196969,
-      "rank": 650
+      "rank": 651
     },
     "024830": {
       "name": "세원물산",
@@ -21003,7 +21003,7 @@
       },
       "m02": {
         "raw": 12.863666,
-        "percentile": 80.738896,
+        "percentile": 80.780407,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -21019,8 +21019,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 43.643628,
-      "rank": 1290
+      "composite": 43.654005,
+      "rank": 1289
     },
     "025560": {
       "name": "미래산업",
@@ -21084,7 +21084,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 48.661352,
-      "rank": 1053
+      "rank": 1054
     },
     "025750": {
       "name": "한솔홈데코",
@@ -21163,7 +21163,7 @@
       },
       "m02": {
         "raw": 10.662987,
-        "percentile": 76.089664,
+        "percentile": 76.131175,
         "reason": null,
         "basis": "2026HY_3M_OFS"
       },
@@ -21179,8 +21179,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 69.250051,
-      "rank": 229
+      "composite": 69.260429,
+      "rank": 228
     },
     "025860": {
       "name": "남해화학",
@@ -21276,7 +21276,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 60.443191,
-      "rank": 561
+      "rank": 560
     },
     "025890": {
       "name": "한국주강",
@@ -21596,7 +21596,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 53.999536,
-      "rank": 846
+      "rank": 847
     },
     "027040": {
       "name": "서울전자통신",
@@ -21899,7 +21899,7 @@
       },
       "m02": {
         "raw": 10.465808,
-        "percentile": 75.50851,
+        "percentile": 75.550021,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -21915,7 +21915,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 65.772253,
+      "composite": 65.782631,
       "rank": 348
     },
     "028080": {
@@ -22379,7 +22379,7 @@
       },
       "m02": {
         "raw": 11.952433,
-        "percentile": 78.953923,
+        "percentile": 78.995434,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -22395,7 +22395,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 67.895677,
+      "composite": 67.906055,
       "rank": 277
     },
     "030530": {
@@ -22908,7 +22908,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 43.646673,
-      "rank": 1289
+      "rank": 1290
     },
     "032350": {
       "name": "롯데관광개발",
@@ -23019,7 +23019,7 @@
       },
       "m02": {
         "raw": 11.887702,
-        "percentile": 78.82939,
+        "percentile": 78.870901,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -23035,8 +23035,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 80.311953,
-      "rank": 29
+      "composite": 80.32233,
+      "rank": 28
     },
     "032580": {
       "name": "피델릭스",
@@ -23932,7 +23932,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 60.653864,
-      "rank": 545
+      "rank": 544
     },
     "033530": {
       "name": "SJG세종",
@@ -24092,7 +24092,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 65.870898,
-      "rank": 343
+      "rank": 344
     },
     "033790": {
       "name": "피노",
@@ -24299,7 +24299,7 @@
       },
       "m02": {
         "raw": 11.176232,
-        "percentile": 77.459527,
+        "percentile": 77.501038,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -24315,8 +24315,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 54.810704,
-      "rank": 816
+      "composite": 54.821082,
+      "rank": 815
     },
     "034310": {
       "name": "NICE",
@@ -24348,7 +24348,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 57.607995,
-      "rank": 682
+      "rank": 683
     },
     "034590": {
       "name": "인천도시가스",
@@ -24540,7 +24540,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 59.694139,
-      "rank": 591
+      "rank": 590
     },
     "035000": {
       "name": "HS애드",
@@ -24619,7 +24619,7 @@
       },
       "m02": {
         "raw": 12.919857,
-        "percentile": 80.987962,
+        "percentile": 81.029473,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -24635,7 +24635,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 66.400356,
+      "composite": 66.410733,
       "rank": 323
     },
     "035200": {
@@ -24668,7 +24668,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 34.257091,
-      "rank": 1664
+      "rank": 1665
     },
     "035250": {
       "name": "강원랜드",
@@ -24683,7 +24683,7 @@
       },
       "m02": {
         "raw": 12.673568,
-        "percentile": 80.448319,
+        "percentile": 80.48983,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -24699,8 +24699,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 58.321289,
-      "rank": 646
+      "composite": 58.331667,
+      "rank": 645
     },
     "035290": {
       "name": "골드앤에스",
@@ -24939,7 +24939,7 @@
       },
       "m02": {
         "raw": 13.200959,
-        "percentile": 81.569116,
+        "percentile": 81.610627,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -24955,8 +24955,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 49.399837,
-      "rank": 1023
+      "composite": 49.410215,
+      "rank": 1022
     },
     "035760": {
       "name": "CJ ENM",
@@ -25131,7 +25131,7 @@
       },
       "m02": {
         "raw": 10.792357,
-        "percentile": 76.629307,
+        "percentile": 76.670818,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -25147,8 +25147,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 57.600214,
-      "rank": 684
+      "composite": 57.610592,
+      "rank": 681
     },
     "036030": {
       "name": "케이티알파",
@@ -25163,7 +25163,7 @@
       },
       "m02": {
         "raw": 13.201715,
-        "percentile": 81.610627,
+        "percentile": 81.652138,
         "reason": null,
         "basis": "2026HY_3M_OFS"
       },
@@ -25179,7 +25179,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 66.099581,
+      "composite": 66.109959,
       "rank": 330
     },
     "036090": {
@@ -25291,7 +25291,7 @@
       },
       "m02": {
         "raw": 12.276814,
-        "percentile": 79.825654,
+        "percentile": 79.867165,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -25307,7 +25307,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 71.061621,
+      "composite": 71.071999,
       "rank": 185
     },
     "036200": {
@@ -25739,7 +25739,7 @@
       },
       "m02": {
         "raw": 10.753593,
-        "percentile": 76.504774,
+        "percentile": 76.546285,
         "reason": null,
         "basis": "2026HY_3M_OFS"
       },
@@ -25755,7 +25755,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 66.036875,
+      "composite": 66.047253,
       "rank": 333
     },
     "036690": {
@@ -25771,7 +25771,7 @@
       },
       "m02": {
         "raw": 12.249203,
-        "percentile": 79.784143,
+        "percentile": 79.825654,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -25787,7 +25787,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 51.385081,
+      "composite": 51.395459,
       "rank": 949
     },
     "036710": {
@@ -25820,7 +25820,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 59.43833,
-      "rank": 600
+      "rank": 599
     },
     "036800": {
       "name": "나이스정보통신",
@@ -25867,7 +25867,7 @@
       },
       "m02": {
         "raw": 10.774856,
-        "percentile": 76.587796,
+        "percentile": 76.629307,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -25883,7 +25883,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 44.413471,
+      "composite": 44.423848,
       "rank": 1261
     },
     "036830": {
@@ -27179,7 +27179,7 @@
       },
       "m02": {
         "raw": 10.706561,
-        "percentile": 76.297219,
+        "percentile": 76.33873,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -27195,7 +27195,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 70.282931,
+      "composite": 70.293308,
       "rank": 200
     },
     "039420": {
@@ -27228,7 +27228,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 59.201932,
-      "rank": 611
+      "rank": 610
     },
     "039440": {
       "name": "에스티아이",
@@ -27420,7 +27420,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 59.118804,
-      "rank": 614
+      "rank": 613
     },
     "039830": {
       "name": "오로라",
@@ -27435,7 +27435,7 @@
       },
       "m02": {
         "raw": 13.357036,
-        "percentile": 81.73516,
+        "percentile": 81.776671,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -27451,7 +27451,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 71.480698,
+      "composite": 71.491076,
       "rank": 172
     },
     "039840": {
@@ -27659,7 +27659,7 @@
       },
       "m02": {
         "raw": 10.561606,
-        "percentile": 75.840598,
+        "percentile": 75.882109,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -27675,7 +27675,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 57.878582,
+      "composite": 57.88896,
       "rank": 667
     },
     "040610": {
@@ -27691,7 +27691,7 @@
       },
       "m02": {
         "raw": 11.262009,
-        "percentile": 77.708593,
+        "percentile": 77.750104,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -27707,7 +27707,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA1_EVT20260519:REVERSE_SPLIT:2.000000"
       },
-      "composite": 63.247509,
+      "composite": 63.257887,
       "rank": 455
     },
     "040910": {
@@ -28075,7 +28075,7 @@
       },
       "m02": {
         "raw": 13.953292,
-        "percentile": 82.938979,
+        "percentile": 82.98049,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -28091,7 +28091,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 51.241431,
+      "composite": 51.251809,
       "rank": 956
     },
     "041930": {
@@ -28124,7 +28124,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 50.26761,
-      "rank": 991
+      "rank": 992
     },
     "041960": {
       "name": "코미팜",
@@ -28395,7 +28395,7 @@
       },
       "m02": {
         "raw": 12.870958,
-        "percentile": 80.780407,
+        "percentile": 80.821918,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -28411,7 +28411,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 51.375944,
+      "composite": 51.386322,
       "rank": 950
     },
     "042600": {
@@ -28459,7 +28459,7 @@
       },
       "m02": {
         "raw": 13.523617,
-        "percentile": 82.233292,
+        "percentile": 82.274803,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -28475,8 +28475,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 60.461118,
-      "rank": 560
+      "composite": 60.471496,
+      "rank": 558
     },
     "042700": {
       "name": "한미반도체",
@@ -28796,7 +28796,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 59.527277,
-      "rank": 596
+      "rank": 595
     },
     "043590": {
       "name": "웰킵스하이텍",
@@ -29227,7 +29227,7 @@
       },
       "m02": {
         "raw": 14.355616,
-        "percentile": 83.603155,
+        "percentile": 83.644666,
         "reason": null,
         "basis": "2026HY_3M_OFS"
       },
@@ -29243,7 +29243,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 64.443885,
+      "composite": 64.454263,
       "rank": 402
     },
     "044990": {
@@ -29291,7 +29291,7 @@
       },
       "m02": {
         "raw": 10.895862,
-        "percentile": 76.919884,
+        "percentile": 76.961395,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -29307,8 +29307,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 71.736125,
-      "rank": 164
+      "composite": 71.746503,
+      "rank": 163
     },
     "045100": {
       "name": "한양이엔지",
@@ -29739,7 +29739,7 @@
       },
       "m02": {
         "raw": 14.159185,
-        "percentile": 83.146534,
+        "percentile": 83.188045,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -29755,8 +29755,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 67.515779,
-      "rank": 289
+      "composite": 67.526156,
+      "rank": 288
     },
     "046890": {
       "name": "서울반도체",
@@ -29867,7 +29867,7 @@
       },
       "m02": {
         "raw": 11.364795,
-        "percentile": 78.040681,
+        "percentile": 78.082192,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -29883,8 +29883,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 25.969725,
-      "rank": 1993
+      "composite": 25.980102,
+      "rank": 1992
     },
     "047050": {
       "name": "포스코인터내셔널",
@@ -29916,7 +29916,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 52.031679,
-      "rank": 923
+      "rank": 924
     },
     "047080": {
       "name": "한빛소프트",
@@ -30059,7 +30059,7 @@
       },
       "m02": {
         "raw": 13.190419,
-        "percentile": 81.527605,
+        "percentile": 81.569116,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -30075,7 +30075,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 61.433787,
+      "composite": 61.444165,
       "rank": 521
     },
     "047810": {
@@ -30428,7 +30428,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 59.703341,
-      "rank": 590
+      "rank": 589
     },
     "048910": {
       "name": "대원미디어",
@@ -30684,7 +30684,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 60.476093,
-      "rank": 558
+      "rank": 557
     },
     "049520": {
       "name": "유아이엘",
@@ -30716,7 +30716,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 60.611602,
-      "rank": 549
+      "rank": 548
     },
     "049550": {
       "name": "잉크테크",
@@ -31083,7 +31083,7 @@
       },
       "m02": {
         "raw": 13.78,
-        "percentile": 82.606891,
+        "percentile": 82.648402,
         "reason": null,
         "basis": "202606_NAVER_QUARTER_ACTUAL_OPM_FISCAL06"
       },
@@ -31099,7 +31099,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 71.579888,
+      "composite": 71.590266,
       "rank": 169
     },
     "050890": {
@@ -31292,7 +31292,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 51.895027,
-      "rank": 930
+      "rank": 931
     },
     "051390": {
       "name": "YW",
@@ -31691,7 +31691,7 @@
       },
       "m02": {
         "raw": 12.970963,
-        "percentile": 81.154006,
+        "percentile": 81.195517,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -31707,8 +31707,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA1_EVT20260522:STOCK_SPLIT:0.804136"
       },
-      "composite": 63.762453,
-      "rank": 429
+      "composite": 63.77283,
+      "rank": 427
     },
     "052330": {
       "name": "코텍",
@@ -31723,7 +31723,7 @@
       },
       "m02": {
         "raw": 12.37409,
-        "percentile": 79.950187,
+        "percentile": 79.991698,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -31739,8 +31739,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 74.254179,
-      "rank": 110
+      "composite": 74.264557,
+      "rank": 109
     },
     "052400": {
       "name": "코나아이",
@@ -31836,7 +31836,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 59.926546,
-      "rank": 582
+      "rank": 581
     },
     "052600": {
       "name": "한네트",
@@ -32668,7 +32668,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 60.76168,
-      "rank": 541
+      "rank": 540
     },
     "053950": {
       "name": "경남제약",
@@ -32988,7 +32988,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 60.36464,
-      "rank": 564
+      "rank": 563
     },
     "054450": {
       "name": "텔레칩스",
@@ -33163,7 +33163,7 @@
       },
       "m02": {
         "raw": 14.395006,
-        "percentile": 83.686177,
+        "percentile": 83.727688,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -33179,7 +33179,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 79.937005,
+      "composite": 79.947383,
       "rank": 33
     },
     "054920": {
@@ -33867,7 +33867,7 @@
       },
       "m02": {
         "raw": 11.489999,
-        "percentile": 78.331258,
+        "percentile": 78.372769,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -33883,8 +33883,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 65.864259,
-      "rank": 344
+      "composite": 65.874637,
+      "rank": 343
     },
     "058650": {
       "name": "세아홀딩스",
@@ -34044,7 +34044,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 69.253466,
-      "rank": 228
+      "rank": 229
     },
     "058970": {
       "name": "엠로",
@@ -34635,7 +34635,7 @@
       },
       "m02": {
         "raw": 11.261432,
-        "percentile": 77.667082,
+        "percentile": 77.708593,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -34651,8 +34651,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 60.172382,
-      "rank": 572
+      "composite": 60.18276,
+      "rank": 571
     },
     "060720": {
       "name": "KH바텍",
@@ -35164,7 +35164,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 59.526884,
-      "rank": 597
+      "rank": 596
     },
     "064090": {
       "name": "인크레더블버즈",
@@ -35307,7 +35307,7 @@
       },
       "m02": {
         "raw": 14.469212,
-        "percentile": 83.769199,
+        "percentile": 83.81071,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -35323,7 +35323,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 48.383369,
+      "composite": 48.393746,
       "rank": 1065
     },
     "064400": {
@@ -35627,7 +35627,7 @@
       },
       "m02": {
         "raw": 13.597283,
-        "percentile": 82.357825,
+        "percentile": 82.399336,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -35643,7 +35643,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 52.807245,
+      "composite": 52.817623,
       "rank": 898
     },
     "065130": {
@@ -36011,7 +36011,7 @@
       },
       "m02": {
         "raw": 14.191027,
-        "percentile": 83.229556,
+        "percentile": 83.271067,
         "reason": null,
         "basis": "2026HY_3M_OFS"
       },
@@ -36027,7 +36027,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 45.430028,
+      "composite": 45.440406,
       "rank": 1204
     },
     "065650": {
@@ -36348,7 +36348,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA1_EVT20260828:REVERSE_SPLIT:2.000000"
       },
       "composite": 61.878556,
-      "rank": 507
+      "rank": 508
     },
     "066410": {
       "name": "버킷스튜디오",
@@ -36668,7 +36668,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA1_EVT20260609:REVERSE_SPLIT:5.000000"
       },
       "composite": 53.9987,
-      "rank": 847
+      "rank": 848
     },
     "066970": {
       "name": "엘앤에프",
@@ -36843,7 +36843,7 @@
       },
       "m02": {
         "raw": 12.161358,
-        "percentile": 79.493566,
+        "percentile": 79.535077,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -36859,7 +36859,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 55.793473,
+      "composite": 55.80385,
       "rank": 772
     },
     "067170": {
@@ -37003,7 +37003,7 @@
       },
       "m02": {
         "raw": 12.716733,
-        "percentile": 80.531341,
+        "percentile": 80.572852,
         "reason": null,
         "basis": "2026HY_3M_OFS"
       },
@@ -37019,8 +37019,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 58.479552,
-      "rank": 639
+      "composite": 58.48993,
+      "rank": 638
     },
     "067390": {
       "name": "아스트",
@@ -37519,7 +37519,7 @@
       },
       "m02": {
         "raw": 12.594145,
-        "percentile": 80.240764,
+        "percentile": 80.282275,
         "reason": null,
         "basis": "2026HY_3M_OFS"
       },
@@ -37535,7 +37535,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 55.290951,
+      "composite": 55.301329,
       "rank": 793
     },
     "068790": {
@@ -37664,7 +37664,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 60.65176,
-      "rank": 546
+      "rank": 545
     },
     "069140": {
       "name": "누리플랜",
@@ -37679,7 +37679,7 @@
       },
       "m02": {
         "raw": 10.715658,
-        "percentile": 76.33873,
+        "percentile": 76.380241,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -37695,7 +37695,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 52.352359,
+      "composite": 52.362737,
       "rank": 914
     },
     "069260": {
@@ -37967,7 +37967,7 @@
       },
       "m02": {
         "raw": 12.046355,
-        "percentile": 79.286011,
+        "percentile": 79.327522,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -37983,7 +37983,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 74.892201,
+      "composite": 74.902578,
       "rank": 93
     },
     "069920": {
@@ -38016,7 +38016,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 52.915234,
-      "rank": 895
+      "rank": 896
     },
     "069960": {
       "name": "현대백화점",
@@ -38496,7 +38496,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 56.315629,
-      "rank": 745
+      "rank": 746
     },
     "072130": {
       "name": "유엔젤",
@@ -38528,7 +38528,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 58.89484,
-      "rank": 621
+      "rank": 620
     },
     "072470": {
       "name": "우리산업홀딩스",
@@ -38735,7 +38735,7 @@
       },
       "m02": {
         "raw": 13.702051,
-        "percentile": 82.523869,
+        "percentile": 82.56538,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -38751,7 +38751,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 53.065604,
+      "composite": 53.075982,
       "rank": 888
     },
     "073110": {
@@ -38831,7 +38831,7 @@
       },
       "m02": {
         "raw": 13.673627,
-        "percentile": 82.440847,
+        "percentile": 82.482358,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -38847,7 +38847,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 78.04393,
+      "composite": 78.054308,
       "rank": 50
     },
     "073490": {
@@ -39055,7 +39055,7 @@
       },
       "m02": {
         "raw": 11.356489,
-        "percentile": 77.99917,
+        "percentile": 78.040681,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -39071,8 +39071,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 56.269204,
-      "rank": 751
+      "composite": 56.279582,
+      "rank": 750
     },
     "074610": {
       "name": "이엔플러스",
@@ -39311,7 +39311,7 @@
       },
       "m02": {
         "raw": 11.105079,
-        "percentile": 77.293483,
+        "percentile": 77.334994,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -39327,7 +39327,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 45.174547,
+      "composite": 45.184925,
       "rank": 1220
     },
     "077500": {
@@ -39375,7 +39375,7 @@
       },
       "m02": {
         "raw": 11.719182,
-        "percentile": 78.663346,
+        "percentile": 78.704857,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -39391,8 +39391,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 40.826496,
-      "rank": 1400
+      "composite": 40.836874,
+      "rank": 1399
     },
     "078000": {
       "name": "텔코웨어",
@@ -39535,7 +39535,7 @@
       },
       "m02": {
         "raw": 10.906421,
-        "percentile": 76.961395,
+        "percentile": 77.002906,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -39551,8 +39551,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 50.261444,
-      "rank": 993
+      "composite": 50.271822,
+      "rank": 991
     },
     "078150": {
       "name": "HB테크놀러지",
@@ -40207,7 +40207,7 @@
       },
       "m02": {
         "raw": 14.057162,
-        "percentile": 83.063512,
+        "percentile": 83.105023,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -40223,8 +40223,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 61.872205,
-      "rank": 508
+      "composite": 61.882583,
+      "rank": 507
     },
     "079950": {
       "name": "인베니아",
@@ -40655,7 +40655,7 @@
       },
       "m02": {
         "raw": 10.403988,
-        "percentile": 75.259444,
+        "percentile": 75.300955,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -40671,8 +40671,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 64.480037,
-      "rank": 400
+      "composite": 64.490414,
+      "rank": 399
     },
     "081150": {
       "name": "티플랙스",
@@ -40911,7 +40911,7 @@
       },
       "m02": {
         "raw": 10.466216,
-        "percentile": 75.550021,
+        "percentile": 75.591532,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -40927,7 +40927,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 37.487125,
+      "composite": 37.497503,
       "rank": 1526
     },
     "082800": {
@@ -41039,7 +41039,7 @@
       },
       "m02": {
         "raw": 10.727183,
-        "percentile": 76.380241,
+        "percentile": 76.421752,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -41055,7 +41055,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 46.287982,
+      "composite": 46.29836,
       "rank": 1171
     },
     "083420": {
@@ -41216,7 +41216,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 59.386688,
-      "rank": 602
+      "rank": 601
     },
     "083640": {
       "name": "인콘",
@@ -42191,7 +42191,7 @@
       },
       "m02": {
         "raw": 12.941725,
-        "percentile": 81.029473,
+        "percentile": 81.070984,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -42207,8 +42207,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 74.994014,
-      "rank": 89
+      "composite": 75.004391,
+      "rank": 88
     },
     "086710": {
       "name": "선진뷰티사이언스",
@@ -42848,7 +42848,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 60.104741,
-      "rank": 577
+      "rank": 576
     },
     "088980": {
       "name": "맥쿼리인프라",
@@ -43072,7 +43072,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 60.829136,
-      "rank": 539
+      "rank": 538
     },
     "089590": {
       "name": "제주항공",
@@ -43215,7 +43215,7 @@
       },
       "m02": {
         "raw": 11.052724,
-        "percentile": 77.127439,
+        "percentile": 77.16895,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -43231,8 +43231,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 59.772206,
-      "rank": 588
+      "composite": 59.782584,
+      "rank": 587
     },
     "089890": {
       "name": "코세스",
@@ -43375,7 +43375,7 @@
       },
       "m02": {
         "raw": 13.612645,
-        "percentile": 82.399336,
+        "percentile": 82.440847,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -43391,8 +43391,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA1_EVT20260818:REVERSE_SPLIT:10.000000"
       },
-      "composite": 60.781978,
-      "rank": 540
+      "composite": 60.792356,
+      "rank": 539
     },
     "090350": {
       "name": "노루페인트",
@@ -43407,7 +43407,7 @@
       },
       "m02": {
         "raw": 10.589511,
-        "percentile": 75.965131,
+        "percentile": 76.006642,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -43423,8 +43423,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 68.413453,
-      "rank": 257
+      "composite": 68.423831,
+      "rank": 256
     },
     "090360": {
       "name": "로보스타",
@@ -43663,7 +43663,7 @@
       },
       "m02": {
         "raw": 11.583726,
-        "percentile": 78.455791,
+        "percentile": 78.497302,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -43679,8 +43679,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 59.221576,
-      "rank": 610
+      "composite": 59.231954,
+      "rank": 609
     },
     "091120": {
       "name": "이엠텍",
@@ -44399,7 +44399,7 @@
       },
       "m02": {
         "raw": 13.139753,
-        "percentile": 81.444583,
+        "percentile": 81.486094,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -44415,8 +44415,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 73.638996,
-      "rank": 123
+      "composite": 73.649374,
+      "rank": 122
     },
     "093050": {
       "name": "LF",
@@ -44448,7 +44448,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 63.57199,
-      "rank": 441
+      "rank": 443
     },
     "093190": {
       "name": "빅솔론",
@@ -44559,7 +44559,7 @@
       },
       "m02": {
         "raw": 12.431764,
-        "percentile": 79.991698,
+        "percentile": 80.033209,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -44575,7 +44575,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 62.47423,
+      "composite": 62.484607,
       "rank": 483
     },
     "093380": {
@@ -44928,7 +44928,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 52.029604,
-      "rank": 924
+      "rank": 925
     },
     "094850": {
       "name": "참좋은여행",
@@ -45615,7 +45615,7 @@
       },
       "m02": {
         "raw": 11.960325,
-        "percentile": 79.078456,
+        "percentile": 79.119967,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -45631,8 +45631,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 59.275849,
-      "rank": 607
+      "composite": 59.286227,
+      "rank": 606
     },
     "096870": {
       "name": "엘디티",
@@ -46112,7 +46112,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 59.825253,
-      "rank": 586
+      "rank": 585
     },
     "099410": {
       "name": "동방선기",
@@ -46144,7 +46144,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 68.883861,
-      "rank": 239
+      "rank": 240
     },
     "099430": {
       "name": "바이오플러스",
@@ -46223,7 +46223,7 @@
       },
       "m02": {
         "raw": 11.010171,
-        "percentile": 77.044417,
+        "percentile": 77.085928,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -46239,7 +46239,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA1_EVT20261021:BONUS_ISSUE:0.859813"
       },
-      "composite": 56.467839,
+      "composite": 56.478217,
       "rank": 739
     },
     "099750": {
@@ -46319,7 +46319,7 @@
       },
       "m02": {
         "raw": 11.346651,
-        "percentile": 77.957659,
+        "percentile": 77.99917,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -46335,7 +46335,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 35.752614,
+      "composite": 35.762992,
       "rank": 1596
     },
     "100120": {
@@ -46368,7 +46368,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 67.09122,
-      "rank": 302
+      "rank": 303
     },
     "100130": {
       "name": "동국S&C",
@@ -47151,7 +47151,7 @@
       },
       "m02": {
         "raw": 13.091926,
-        "percentile": 81.361561,
+        "percentile": 81.403072,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -47167,7 +47167,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 71.957991,
+      "composite": 71.968369,
       "rank": 159
     },
     "102370": {
@@ -47264,7 +47264,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 59.329173,
-      "rank": 606
+      "rank": 605
     },
     "102940": {
       "name": "코오롱생명과학",
@@ -47375,7 +47375,7 @@
       },
       "m02": {
         "raw": 11.290213,
-        "percentile": 77.750104,
+        "percentile": 77.791615,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -47391,7 +47391,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 45.292997,
+      "composite": 45.303374,
       "rank": 1212
     },
     "103840": {
@@ -47808,7 +47808,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 59.935783,
-      "rank": 581
+      "rank": 580
     },
     "105740": {
       "name": "디케이락",
@@ -48175,7 +48175,7 @@
       },
       "m02": {
         "raw": 10.67161,
-        "percentile": 76.172686,
+        "percentile": 76.214197,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -48191,8 +48191,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 63.497509,
-      "rank": 448
+      "composite": 63.507887,
+      "rank": 447
     },
     "108490": {
       "name": "로보티즈",
@@ -48207,7 +48207,7 @@
       },
       "m02": {
         "raw": 12.8874,
-        "percentile": 80.821918,
+        "percentile": 80.863429,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -48223,8 +48223,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 53.990931,
-      "rank": 848
+      "composite": 54.001309,
+      "rank": 846
     },
     "108670": {
       "name": "LX하우시스",
@@ -48463,7 +48463,7 @@
       },
       "m02": {
         "raw": 13.513066,
-        "percentile": 82.191781,
+        "percentile": 82.233292,
         "reason": null,
         "basis": "2026HY_3M_OFS"
       },
@@ -48479,7 +48479,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 43.349725,
+      "composite": 43.360103,
       "rank": 1301
     },
     "109860": {
@@ -48591,7 +48591,7 @@
       },
       "m02": {
         "raw": 12.114682,
-        "percentile": 79.410544,
+        "percentile": 79.452055,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -48607,7 +48607,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 41.753993,
+      "composite": 41.764371,
       "rank": 1366
     },
     "110990": {
@@ -48672,7 +48672,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 59.359708,
-      "rank": 604
+      "rank": 603
     },
     "111380": {
       "name": "동인기연",
@@ -48687,7 +48687,7 @@
       },
       "m02": {
         "raw": 12.662327,
-        "percentile": 80.406808,
+        "percentile": 80.448319,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -48703,7 +48703,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 74.206476,
+      "composite": 74.216854,
       "rank": 111
     },
     "111710": {
@@ -48751,7 +48751,7 @@
       },
       "m02": {
         "raw": 14.254039,
-        "percentile": 83.3956,
+        "percentile": 83.437111,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -48767,7 +48767,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 74.638179,
+      "composite": 74.648557,
       "rank": 102
     },
     "112040": {
@@ -48847,7 +48847,7 @@
       },
       "m02": {
         "raw": 12.533757,
-        "percentile": 80.199253,
+        "percentile": 80.240764,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -48863,7 +48863,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 48.149536,
+      "composite": 48.159914,
       "rank": 1083
     },
     "113810": {
@@ -48896,7 +48896,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA1_EVT20260728:REVERSE_SPLIT:5.000000"
       },
       "composite": 60.582356,
-      "rank": 552
+      "rank": 551
     },
     "114090": {
       "name": "GKL",
@@ -49039,7 +49039,7 @@
       },
       "m02": {
         "raw": 12.208714,
-        "percentile": 79.618099,
+        "percentile": 79.65961,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -49055,8 +49055,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 52.024799,
-      "rank": 925
+      "composite": 52.035177,
+      "rank": 923
     },
     "114840": {
       "name": "아이패밀리에스씨",
@@ -49071,7 +49071,7 @@
       },
       "m02": {
         "raw": 11.617657,
-        "percentile": 78.538813,
+        "percentile": 78.580324,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -49087,7 +49087,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 62.729503,
+      "composite": 62.739881,
       "rank": 476
     },
     "115160": {
@@ -49359,7 +49359,7 @@
       },
       "m02": {
         "raw": 11.799731,
-        "percentile": 78.787879,
+        "percentile": 78.82939,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -49375,7 +49375,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 70.790958,
+      "composite": 70.801336,
       "rank": 190
     },
     "115610": {
@@ -49839,7 +49839,7 @@
       },
       "m02": {
         "raw": 13.587485,
-        "percentile": 82.274803,
+        "percentile": 82.316314,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -49855,8 +49855,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 58.840677,
-      "rank": 623
+      "composite": 58.851054,
+      "rank": 622
     },
     "121600": {
       "name": "나노신소재",
@@ -49871,7 +49871,7 @@
       },
       "m02": {
         "raw": 14.610311,
-        "percentile": 84.018265,
+        "percentile": 84.059776,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -49887,7 +49887,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 62.460859,
+      "composite": 62.471237,
       "rank": 484
     },
     "121800": {
@@ -50063,7 +50063,7 @@
       },
       "m02": {
         "raw": 10.884797,
-        "percentile": 76.878373,
+        "percentile": 76.919884,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -50079,8 +50079,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 64.625638,
-      "rank": 391
+      "composite": 64.636015,
+      "rank": 390
     },
     "122690": {
       "name": "서진오토모티브",
@@ -50144,7 +50144,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 59.43575,
-      "rank": 601
+      "rank": 600
     },
     "122900": {
       "name": "아이마켓코리아",
@@ -51264,7 +51264,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 59.668265,
-      "rank": 593
+      "rank": 592
     },
     "129890": {
       "name": "앱코",
@@ -51296,7 +51296,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 59.147248,
-      "rank": 613
+      "rank": 612
     },
     "129920": {
       "name": "대성하이텍",
@@ -51343,7 +51343,7 @@
       },
       "m02": {
         "raw": 11.45322,
-        "percentile": 78.248236,
+        "percentile": 78.289747,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -51359,7 +51359,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 43.229883,
+      "composite": 43.240261,
       "rank": 1306
     },
     "130580": {
@@ -51407,7 +51407,7 @@
       },
       "m02": {
         "raw": 12.773454,
-        "percentile": 80.614363,
+        "percentile": 80.655874,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -51423,8 +51423,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 43.756383,
-      "rank": 1284
+      "composite": 43.766761,
+      "rank": 1283
     },
     "130740": {
       "name": "티피씨글로벌",
@@ -51503,7 +51503,7 @@
       },
       "m02": {
         "raw": 14.574992,
-        "percentile": 83.976754,
+        "percentile": 84.018265,
         "reason": null,
         "basis": "2026HY_3M_OFS"
       },
@@ -51519,7 +51519,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 76.759551,
+      "composite": 76.769929,
       "rank": 61
     },
     "131100": {
@@ -51567,7 +51567,7 @@
       },
       "m02": {
         "raw": 10.814496,
-        "percentile": 76.75384,
+        "percentile": 76.795351,
         "reason": null,
         "basis": "2026HY_3M_OFS"
       },
@@ -51583,7 +51583,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA1_EVT20260518:REVERSE_SPLIT:5.000000"
       },
-      "composite": 74.607818,
+      "composite": 74.618196,
       "rank": 104
     },
     "131220": {
@@ -51616,7 +51616,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 62.839117,
-      "rank": 470
+      "rank": 471
     },
     "131290": {
       "name": "티에스이",
@@ -51759,7 +51759,7 @@
       },
       "m02": {
         "raw": 12.172648,
-        "percentile": 79.535077,
+        "percentile": 79.576588,
         "reason": null,
         "basis": "2026HY_3M_OFS"
       },
@@ -51775,7 +51775,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 39.347154,
+      "composite": 39.357532,
       "rank": 1458
     },
     "133750": {
@@ -51791,7 +51791,7 @@
       },
       "m02": {
         "raw": 11.038776,
-        "percentile": 77.085928,
+        "percentile": 77.127439,
         "reason": null,
         "basis": "2026HY_3M_OFS"
       },
@@ -51807,7 +51807,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 58.426283,
+      "composite": 58.436661,
       "rank": 641
     },
     "133820": {
@@ -52143,7 +52143,7 @@
       },
       "m02": {
         "raw": 14.513131,
-        "percentile": 83.893732,
+        "percentile": 83.935243,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -52159,7 +52159,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 78.327823,
+      "composite": 78.338201,
       "rank": 47
     },
     "137310": {
@@ -52815,7 +52815,7 @@
       },
       "m02": {
         "raw": 13.596486,
-        "percentile": 82.316314,
+        "percentile": 82.357825,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -52831,8 +52831,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 63.570607,
-      "rank": 443
+      "composite": 63.580985,
+      "rank": 442
     },
     "141080": {
       "name": "리가켐바이오",
@@ -52879,7 +52879,7 @@
       },
       "m02": {
         "raw": 11.332018,
-        "percentile": 77.874637,
+        "percentile": 77.916148,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -52895,7 +52895,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 81.978428,
+      "composite": 81.988805,
       "rank": 21
     },
     "142280": {
@@ -52992,7 +52992,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 59.097471,
-      "rank": 615
+      "rank": 614
     },
     "143210": {
       "name": "핸즈코퍼레이션",
@@ -53088,7 +53088,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 50.264359,
-      "rank": 992
+      "rank": 993
     },
     "144510": {
       "name": "지씨셀",
@@ -53135,7 +53135,7 @@
       },
       "m02": {
         "raw": 13.073043,
-        "percentile": 81.32005,
+        "percentile": 81.361561,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -53151,7 +53151,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 70.683668,
+      "composite": 70.694046,
       "rank": 194
     },
     "145020": {
@@ -53664,7 +53664,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 59.175665,
-      "rank": 612
+      "rank": 611
     },
     "150900": {
       "name": "파수AI",
@@ -53984,7 +53984,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 72.537873,
-      "rank": 147
+      "rank": 148
     },
     "156100": {
       "name": "엘앤케이바이오",
@@ -53999,7 +53999,7 @@
       },
       "m02": {
         "raw": 10.860923,
-        "percentile": 76.836862,
+        "percentile": 76.878373,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -54015,8 +54015,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 48.660509,
-      "rank": 1054
+      "composite": 48.670887,
+      "rank": 1053
     },
     "158430": {
       "name": "아톤",
@@ -54063,7 +54063,7 @@
       },
       "m02": {
         "raw": 13.935741,
-        "percentile": 82.897468,
+        "percentile": 82.938979,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -54079,7 +54079,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 71.69237,
+      "composite": 71.702748,
       "rank": 166
     },
     "159580": {
@@ -54351,7 +54351,7 @@
       },
       "m02": {
         "raw": 12.811317,
-        "percentile": 80.655874,
+        "percentile": 80.697385,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -54367,7 +54367,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 68.469707,
+      "composite": 68.480085,
       "rank": 255
     },
     "162300": {
@@ -54415,7 +54415,7 @@
       },
       "m02": {
         "raw": 10.814868,
-        "percentile": 76.795351,
+        "percentile": 76.836862,
         "reason": null,
         "basis": "2026HY_3M_OFS"
       },
@@ -54431,8 +54431,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 49.298403,
-      "rank": 1031
+      "composite": 49.308781,
+      "rank": 1029
     },
     "163560": {
       "name": "동일고무벨트",
@@ -54528,7 +54528,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 60.843392,
-      "rank": 538
+      "rank": 537
     },
     "166480": {
       "name": "코아스템켐온",
@@ -54688,7 +54688,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 57.60888,
-      "rank": 681
+      "rank": 682
     },
     "170790": {
       "name": "파이오링크",
@@ -54863,7 +54863,7 @@
       },
       "m02": {
         "raw": 12.350157,
-        "percentile": 79.908676,
+        "percentile": 79.950187,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -54879,7 +54879,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 69.876732,
+      "composite": 69.88711,
       "rank": 213
     },
     "172670": {
@@ -54895,7 +54895,7 @@
       },
       "m02": {
         "raw": 12.969832,
-        "percentile": 81.112495,
+        "percentile": 81.154006,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -54911,7 +54911,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 45.194396,
+      "composite": 45.204774,
       "rank": 1219
     },
     "173130": {
@@ -55872,7 +55872,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 60.601256,
-      "rank": 550
+      "rank": 549
     },
     "187420": {
       "name": "HLB제넥스",
@@ -56527,7 +56527,7 @@
       },
       "m02": {
         "raw": 11.399351,
-        "percentile": 78.082192,
+        "percentile": 78.123703,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -56543,7 +56543,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 79.780372,
+      "composite": 79.79075,
       "rank": 35
     },
     "192650": {
@@ -56640,7 +56640,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA1_EVT20260522:REVERSE_SPLIT:5.000000"
       },
       "composite": 67.136743,
-      "rank": 299
+      "rank": 300
     },
     "194370": {
       "name": "제이에스코퍼레이션",
@@ -56655,7 +56655,7 @@
       },
       "m02": {
         "raw": 12.452834,
-        "percentile": 80.033209,
+        "percentile": 80.07472,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -56671,7 +56671,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 77.208176,
+      "composite": 77.218554,
       "rank": 58
     },
     "194480": {
@@ -56719,7 +56719,7 @@
       },
       "m02": {
         "raw": 10.774278,
-        "percentile": 76.546285,
+        "percentile": 76.587796,
         "reason": null,
         "basis": "2026HY_3M_OFS"
       },
@@ -56735,8 +56735,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 58.194956,
-      "rank": 651
+      "composite": 58.205334,
+      "rank": 650
     },
     "195500": {
       "name": "마니커에프앤지",
@@ -56768,7 +56768,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 50.469893,
-      "rank": 984
+      "rank": 985
     },
     "195870": {
       "name": "해성디에스",
@@ -56783,7 +56783,7 @@
       },
       "m02": {
         "raw": 11.780393,
-        "percentile": 78.704857,
+        "percentile": 78.746368,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -56799,7 +56799,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 53.799221,
+      "composite": 53.809599,
       "rank": 855
     },
     "195940": {
@@ -56815,7 +56815,7 @@
       },
       "m02": {
         "raw": 11.22974,
-        "percentile": 77.625571,
+        "percentile": 77.667082,
         "reason": null,
         "basis": "2026HY_3M_OFS"
       },
@@ -56831,7 +56831,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 52.804991,
+      "composite": 52.815368,
       "rank": 899
     },
     "195990": {
@@ -57007,7 +57007,7 @@
       },
       "m02": {
         "raw": 13.285091,
-        "percentile": 81.693649,
+        "percentile": 81.73516,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -57023,7 +57023,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 52.228654,
+      "composite": 52.239032,
       "rank": 917
     },
     "197140": {
@@ -57103,7 +57103,7 @@
       },
       "m02": {
         "raw": 12.499902,
-        "percentile": 80.116231,
+        "percentile": 80.157742,
         "reason": null,
         "basis": "2026HY_3M_OFS"
       },
@@ -57119,7 +57119,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 53.725533,
+      "composite": 53.735911,
       "rank": 859
     },
     "198940": {
@@ -57504,7 +57504,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 68.675044,
-      "rank": 247
+      "rank": 248
     },
     "200710": {
       "name": "에이디테크놀로지",
@@ -58415,7 +58415,7 @@
       },
       "m02": {
         "raw": 13.364066,
-        "percentile": 81.818182,
+        "percentile": 81.859693,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -58431,8 +58431,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 56.305484,
-      "rank": 746
+      "composite": 56.315862,
+      "rank": 745
     },
     "210120": {
       "name": "캔버스엔",
@@ -58639,7 +58639,7 @@
       },
       "m02": {
         "raw": 12.305245,
-        "percentile": 79.867165,
+        "percentile": 79.908676,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -58655,7 +58655,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 47.824866,
+      "composite": 47.835244,
       "rank": 1095
     },
     "213420": {
@@ -58688,7 +58688,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 56.273488,
-      "rank": 749
+      "rank": 751
     },
     "213500": {
       "name": "한솔제지",
@@ -58720,7 +58720,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 60.844359,
-      "rank": 537
+      "rank": 536
     },
     "214150": {
       "name": "클래시스",
@@ -58767,7 +58767,7 @@
       },
       "m02": {
         "raw": 12.525987,
-        "percentile": 80.157742,
+        "percentile": 80.199253,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -58783,8 +58783,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 60.497631,
-      "rank": 556
+      "composite": 60.508009,
+      "rank": 555
     },
     "214260": {
       "name": "라파스",
@@ -59023,7 +59023,7 @@
       },
       "m02": {
         "raw": 12.056175,
-        "percentile": 79.327522,
+        "percentile": 79.369033,
         "reason": null,
         "basis": "2026HY_3M_OFS"
       },
@@ -59039,7 +59039,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 56.987865,
+      "composite": 56.998242,
       "rank": 712
     },
     "214450": {
@@ -59249,7 +59249,7 @@
       },
       "m02": {
         "raw": 13.876975,
-        "percentile": 82.814446,
+        "percentile": 82.855957,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -59265,7 +59265,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 67.557131,
+      "composite": 67.567509,
       "rank": 286
     },
     "215360": {
@@ -59473,7 +59473,7 @@
       },
       "m02": {
         "raw": 11.481004,
-        "percentile": 78.289747,
+        "percentile": 78.331258,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -59489,7 +59489,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 48.187673,
+      "composite": 48.19805,
       "rank": 1081
     },
     "217190": {
@@ -59522,7 +59522,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 59.956816,
-      "rank": 580
+      "rank": 579
     },
     "217270": {
       "name": "넵튠",
@@ -59842,7 +59842,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 72.83403,
-      "rank": 140
+      "rank": 141
     },
     "219420": {
       "name": "링크제니시스",
@@ -60034,7 +60034,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 59.379507,
-      "rank": 603
+      "rank": 602
     },
     "221800": {
       "name": "지구홀딩스",
@@ -60098,7 +60098,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 63.770747,
-      "rank": 428
+      "rank": 429
     },
     "221980": {
       "name": "케이디켐",
@@ -60241,7 +60241,7 @@
       },
       "m02": {
         "raw": 12.222652,
-        "percentile": 79.701121,
+        "percentile": 79.742632,
         "reason": null,
         "basis": "2026HY_3M_OFS"
       },
@@ -60257,8 +60257,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 60.673691,
-      "rank": 544
+      "composite": 60.684069,
+      "rank": 542
     },
     "222800": {
       "name": "심텍",
@@ -60273,7 +60273,7 @@
       },
       "m02": {
         "raw": 12.22189,
-        "percentile": 79.65961,
+        "percentile": 79.701121,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -60289,8 +60289,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 65.334735,
-      "rank": 372
+      "composite": 65.345113,
+      "rank": 371
     },
     "222980": {
       "name": "한국맥널티",
@@ -60337,7 +60337,7 @@
       },
       "m02": {
         "raw": 11.328811,
-        "percentile": 77.833126,
+        "percentile": 77.874637,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -60353,7 +60353,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 44.365902,
+      "composite": 44.37628,
       "rank": 1263
     },
     "223310": {
@@ -60625,7 +60625,7 @@
       },
       "m02": {
         "raw": 13.789995,
-        "percentile": 82.648402,
+        "percentile": 82.689913,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -60641,8 +60641,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA1_EVT20260521:REVERSE_SPLIT:5.000000"
       },
-      "composite": 68.882904,
-      "rank": 240
+      "composite": 68.893282,
+      "rank": 239
     },
     "226320": {
       "name": "잇츠한불",
@@ -60945,7 +60945,7 @@
       },
       "m02": {
         "raw": 11.338205,
-        "percentile": 77.916148,
+        "percentile": 77.957659,
         "reason": null,
         "basis": "2026HY_3M_OFS"
       },
@@ -60961,7 +60961,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 61.757427,
+      "composite": 61.767804,
       "rank": 513
     },
     "228670": {
@@ -61169,7 +61169,7 @@
       },
       "m02": {
         "raw": 14.336483,
-        "percentile": 83.561644,
+        "percentile": 83.603155,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -61185,7 +61185,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 52.528131,
+      "composite": 52.538508,
       "rank": 909
     },
     "232680": {
@@ -61314,7 +61314,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 64.48718,
-      "rank": 399
+      "rank": 400
     },
     "234100": {
       "name": "폴라리스세원",
@@ -61442,7 +61442,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 60.648716,
-      "rank": 547
+      "rank": 546
     },
     "234920": {
       "name": "자이글",
@@ -61681,7 +61681,7 @@
       },
       "m02": {
         "raw": 13.383212,
-        "percentile": 81.901204,
+        "percentile": 81.942715,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -61697,8 +61697,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 63.58863,
-      "rank": 440
+      "composite": 63.599007,
+      "rank": 439
     },
     "238090": {
       "name": "앤디포스",
@@ -61762,7 +61762,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 59.097024,
-      "rank": 616
+      "rank": 615
     },
     "238200": {
       "name": "비피도",
@@ -62065,7 +62065,7 @@
       },
       "m02": {
         "raw": 11.949561,
-        "percentile": 78.912412,
+        "percentile": 78.953923,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -62081,8 +62081,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 54.966208,
-      "rank": 810
+      "composite": 54.976586,
+      "rank": 809
     },
     "241590": {
       "name": "화승엔터프라이즈",
@@ -62161,7 +62161,7 @@
       },
       "m02": {
         "raw": 14.179305,
-        "percentile": 83.188045,
+        "percentile": 83.229556,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -62177,7 +62177,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 72.815707,
+      "composite": 72.826085,
       "rank": 142
     },
     "241770": {
@@ -62257,7 +62257,7 @@
       },
       "m02": {
         "raw": 10.57,
-        "percentile": 75.92362,
+        "percentile": 75.965131,
         "reason": null,
         "basis": "202509_NAVER_QUARTER_ACTUAL_OPM_DIRECT_STANDARD_RECOVERY"
       },
@@ -62273,7 +62273,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 65.517607,
+      "composite": 65.527985,
       "rank": 359
     },
     "241840": {
@@ -62658,7 +62658,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 60.436761,
-      "rank": 562
+      "rank": 561
     },
     "247540": {
       "name": "에코프로비엠",
@@ -62961,7 +62961,7 @@
       },
       "m02": {
         "raw": 10.698529,
-        "percentile": 76.255708,
+        "percentile": 76.297219,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -62977,8 +62977,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 60.269497,
-      "rank": 567
+      "composite": 60.279875,
+      "rank": 566
     },
     "251370": {
       "name": "와이엠티",
@@ -63153,7 +63153,7 @@
       },
       "m02": {
         "raw": 10.630879,
-        "percentile": 76.006642,
+        "percentile": 76.048153,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -63169,7 +63169,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 57.433453,
+      "composite": 57.44383,
       "rank": 686
     },
     "253590": {
@@ -63298,7 +63298,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 63.499415,
-      "rank": 447
+      "rank": 448
     },
     "255220": {
       "name": "SG",
@@ -63377,7 +63377,7 @@
       },
       "m02": {
         "raw": 11.511777,
-        "percentile": 78.372769,
+        "percentile": 78.41428,
         "reason": null,
         "basis": "2026HY_3M_OFS"
       },
@@ -63393,8 +63393,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 68.673075,
-      "rank": 248
+      "composite": 68.683453,
+      "rank": 247
     },
     "256630": {
       "name": "포인트엔지니어링",
@@ -63409,7 +63409,7 @@
       },
       "m02": {
         "raw": 12.039909,
-        "percentile": 79.202989,
+        "percentile": 79.2445,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -63425,7 +63425,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA1_EVT20260518:REVERSE_SPLIT:5.004255"
       },
-      "composite": 44.798711,
+      "composite": 44.809089,
       "rank": 1242
     },
     "256840": {
@@ -63554,7 +63554,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 68.415753,
-      "rank": 256
+      "rank": 257
     },
     "258610": {
       "name": "케일럼",
@@ -63569,7 +63569,7 @@
       },
       "m02": {
         "raw": 13.68787,
-        "percentile": 82.482358,
+        "percentile": 82.523869,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -63585,7 +63585,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 44.269586,
+      "composite": 44.279964,
       "rank": 1270
     },
     "258790": {
@@ -63665,7 +63665,7 @@
       },
       "m02": {
         "raw": 12.604227,
-        "percentile": 80.282275,
+        "percentile": 80.323786,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -63681,7 +63681,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 48.215171,
+      "composite": 48.225549,
       "rank": 1080
     },
     "259960": {
@@ -63810,7 +63810,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 80.3151,
-      "rank": 28
+      "rank": 29
     },
     "261200": {
       "name": "덴티스",
@@ -63985,7 +63985,7 @@
       },
       "m02": {
         "raw": 10.799289,
-        "percentile": 76.670818,
+        "percentile": 76.712329,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -64001,7 +64001,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 75.64176,
+      "composite": 75.652138,
       "rank": 77
     },
     "263050": {
@@ -64066,7 +64066,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 58.980596,
-      "rank": 618
+      "rank": 617
     },
     "263690": {
       "name": "디알젬",
@@ -64081,7 +64081,7 @@
       },
       "m02": {
         "raw": 11.698415,
-        "percentile": 78.580324,
+        "percentile": 78.621835,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -64097,7 +64097,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 71.417215,
+      "composite": 71.427593,
       "rank": 176
     },
     "263700": {
@@ -64145,7 +64145,7 @@
       },
       "m02": {
         "raw": 14.117127,
-        "percentile": 83.105023,
+        "percentile": 83.146534,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -64161,7 +64161,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 44.126255,
+      "composite": 44.136633,
       "rank": 1276
     },
     "263750": {
@@ -64194,7 +64194,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 72.539214,
-      "rank": 146
+      "rank": 147
     },
     "263770": {
       "name": "유에스티",
@@ -64226,7 +64226,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 65.337165,
-      "rank": 371
+      "rank": 372
     },
     "263800": {
       "name": "데이타솔루션",
@@ -64354,7 +64354,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 59.871064,
-      "rank": 584
+      "rank": 583
     },
     "264450": {
       "name": "유비쿼스",
@@ -64401,7 +64401,7 @@
       },
       "m02": {
         "raw": 12.900927,
-        "percentile": 80.863429,
+        "percentile": 80.90494,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -64417,8 +64417,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 67.087817,
-      "rank": 303
+      "composite": 67.098195,
+      "rank": 302
     },
     "264850": {
       "name": "이랜시스",
@@ -64529,7 +64529,7 @@
       },
       "m02": {
         "raw": 14.208924,
-        "percentile": 83.271067,
+        "percentile": 83.312578,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -64545,8 +64545,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 60.287492,
-      "rank": 565
+      "composite": 60.29787,
+      "rank": 564
     },
     "265740": {
       "name": "엔에프씨",
@@ -65233,7 +65233,7 @@
       },
       "m02": {
         "raw": 12.964989,
-        "percentile": 81.070984,
+        "percentile": 81.112495,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -65249,7 +65249,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 67.246819,
+      "composite": 67.257197,
       "rank": 296
     },
     "273060": {
@@ -65297,7 +65297,7 @@
       },
       "m02": {
         "raw": 10.447152,
-        "percentile": 75.425488,
+        "percentile": 75.466999,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -65313,7 +65313,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 50.300717,
+      "composite": 50.311095,
       "rank": 989
     },
     "274090": {
@@ -65826,7 +65826,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 46.233291,
-      "rank": 1175
+      "rank": 1176
     },
     "281820": {
       "name": "케이씨텍",
@@ -66724,7 +66724,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA2_EVT20260903:BONUS_ISSUE:0.968511_EVT20261026:BONUS_ISSUE:0.502492"
       },
       "composite": 60.749526,
-      "rank": 542
+      "rank": 541
     },
     "290660": {
       "name": "다이나믹솔루션",
@@ -66995,7 +66995,7 @@
       },
       "m02": {
         "raw": 11.962502,
-        "percentile": 79.119967,
+        "percentile": 79.161478,
         "reason": null,
         "basis": "2026HY_3M_OFS"
       },
@@ -67011,7 +67011,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 62.262928,
+      "composite": 62.273306,
       "rank": 491
     },
     "293490": {
@@ -67283,7 +67283,7 @@
       },
       "m02": {
         "raw": 13.417142,
-        "percentile": 82.067248,
+        "percentile": 82.108759,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -67299,8 +67299,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 60.262138,
-      "rank": 568
+      "composite": 60.272515,
+      "rank": 567
     },
     "295310": {
       "name": "에이치브이엠",
@@ -67524,7 +67524,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 56.986683,
-      "rank": 713
+      "rank": 714
     },
     "298040": {
       "name": "효성중공업",
@@ -67731,7 +67731,7 @@
       },
       "m02": {
         "raw": 10.417627,
-        "percentile": 75.342466,
+        "percentile": 75.383977,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -67747,7 +67747,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 46.843125,
+      "composite": 46.853503,
       "rank": 1145
     },
     "299030": {
@@ -68051,7 +68051,7 @@
       },
       "m02": {
         "raw": 12.828419,
-        "percentile": 80.697385,
+        "percentile": 80.738896,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -68067,7 +68067,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 62.885589,
+      "composite": 62.895967,
       "rank": 469
     },
     "303030": {
@@ -68435,7 +68435,7 @@
       },
       "m02": {
         "raw": 11.108261,
-        "percentile": 77.334994,
+        "percentile": 77.376505,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -68451,7 +68451,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 31.209099,
+      "composite": 31.219477,
       "rank": 1790
     },
     "307280": {
@@ -68870,7 +68870,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 58.882427,
-      "rank": 622
+      "rank": 621
     },
     "310210": {
       "name": "보로노이",
@@ -69911,7 +69911,7 @@
       },
       "m02": {
         "raw": 13.731407,
-        "percentile": 82.56538,
+        "percentile": 82.606891,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -69927,7 +69927,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 55.278079,
+      "composite": 55.288457,
       "rank": 794
     },
     "321370": {
@@ -70536,7 +70536,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 59.684953,
-      "rank": 592
+      "rank": 591
     },
     "330730": {
       "name": "스톤브릿지벤처스",
@@ -70647,7 +70647,7 @@
       },
       "m02": {
         "raw": 14.033533,
-        "percentile": 82.98049,
+        "percentile": 83.022001,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -70663,7 +70663,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 76.710689,
+      "composite": 76.721067,
       "rank": 62
     },
     "331740": {
@@ -70903,7 +70903,7 @@
       },
       "m02": {
         "raw": 11.428286,
-        "percentile": 78.123703,
+        "percentile": 78.165214,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -70919,7 +70919,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 49.178356,
+      "composite": 49.188734,
       "rank": 1040
     },
     "334890": {
@@ -70935,7 +70935,7 @@
       },
       "m02": {
         "raw": 11.221937,
-        "percentile": 77.58406,
+        "percentile": 77.625571,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -70951,7 +70951,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 48.368423,
+      "composite": 48.3788,
       "rank": 1066
     },
     "334970": {
@@ -71272,7 +71272,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 60.07203,
-      "rank": 579
+      "rank": 578
     },
     "338220": {
       "name": "뷰노",
@@ -71383,7 +71383,7 @@
       },
       "m02": {
         "raw": 10.802382,
-        "percentile": 76.712329,
+        "percentile": 76.75384,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -71399,8 +71399,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 63.571913,
-      "rank": 442
+      "composite": 63.58229,
+      "rank": 441
     },
     "340360": {
       "name": "다보링크",
@@ -71703,7 +71703,7 @@
       },
       "m02": {
         "raw": 11.168166,
-        "percentile": 77.418016,
+        "percentile": 77.459527,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -71719,7 +71719,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 65.497959,
+      "composite": 65.508337,
       "rank": 361
     },
     "347700": {
@@ -72087,7 +72087,7 @@
       },
       "m02": {
         "raw": 14.469344,
-        "percentile": 83.81071,
+        "percentile": 83.852221,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -72103,7 +72103,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 75.705191,
+      "composite": 75.715569,
       "rank": 74
     },
     "348370": {
@@ -72200,7 +72200,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 60.2268,
-      "rank": 569
+      "rank": 568
     },
     "351320": {
       "name": "넥사다이내믹스",
@@ -72279,7 +72279,7 @@
       },
       "m02": {
         "raw": 10.51989,
-        "percentile": 75.757576,
+        "percentile": 75.799087,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -72295,8 +72295,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 47.579055,
-      "rank": 1107
+      "composite": 47.589433,
+      "rank": 1106
     },
     "352090": {
       "name": "스톰테크",
@@ -72328,7 +72328,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 65.374054,
-      "rank": 368
+      "rank": 369
     },
     "352480": {
       "name": "씨앤씨인터내셔널",
@@ -72439,7 +72439,7 @@
       },
       "m02": {
         "raw": 11.787917,
-        "percentile": 78.746368,
+        "percentile": 78.787879,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -72455,7 +72455,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 52.691816,
+      "composite": 52.702193,
       "rank": 904
     },
     "352910": {
@@ -72855,7 +72855,7 @@
       },
       "m02": {
         "raw": 14.474717,
-        "percentile": 83.852221,
+        "percentile": 83.893732,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -72871,8 +72871,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA2_EVT20260529:BONUS_ISSUE:0.948149_EVT20260716:BONUS_ISSUE:0.502853"
       },
-      "composite": 62.833655,
-      "rank": 471
+      "composite": 62.844033,
+      "rank": 470
     },
     "356890": {
       "name": "싸이버원",
@@ -73128,7 +73128,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 57.600428,
-      "rank": 683
+      "rank": 684
     },
     "357880": {
       "name": "SKAI",
@@ -73817,7 +73817,7 @@
       },
       "m02": {
         "raw": 12.045087,
-        "percentile": 79.2445,
+        "percentile": 79.286011,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -73833,8 +73833,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 59.229746,
-      "rank": 609
+      "composite": 59.240124,
+      "rank": 607
     },
     "366030": {
       "name": "나인앤컴퍼니",
@@ -73849,7 +73849,7 @@
       },
       "m02": {
         "raw": 13.396308,
-        "percentile": 81.984226,
+        "percentile": 82.025737,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -73865,7 +73865,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 58.664414,
+      "composite": 58.674792,
       "rank": 629
     },
     "367000": {
@@ -74201,7 +74201,7 @@
       },
       "m02": {
         "raw": 13.815723,
-        "percentile": 82.689913,
+        "percentile": 82.731424,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -74217,8 +74217,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 57.40127,
-      "rank": 688
+      "composite": 57.411648,
+      "rank": 687
     },
     "373110": {
       "name": "엑셀세라퓨틱스",
@@ -74425,7 +74425,7 @@
       },
       "m02": {
         "raw": 14.257087,
-        "percentile": 83.437111,
+        "percentile": 83.478622,
         "reason": null,
         "basis": "2026HY_3M_OFS"
       },
@@ -74441,7 +74441,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 47.01419,
+      "composite": 47.024568,
       "rank": 1138
     },
     "376270": {
@@ -74616,8 +74616,8 @@
         "basis": "2026HY_3M_CFS"
       },
       "m02": {
-        "raw": 14.632381,
-        "percentile": 84.059776,
+        "raw": 10.37494,
+        "percentile": 75.217933,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -74633,8 +74633,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 60.958827,
-      "rank": 536
+      "composite": 58.748366,
+      "rank": 626
     },
     "377030": {
       "name": "비트맥스",
@@ -75227,7 +75227,7 @@
       },
       "m02": {
         "raw": 13.854019,
-        "percentile": 82.731424,
+        "percentile": 82.772935,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -75243,7 +75243,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 66.79605,
+      "composite": 66.806428,
       "rank": 311
     },
     "382840": {
@@ -75355,7 +75355,7 @@
       },
       "m02": {
         "raw": 11.182793,
-        "percentile": 77.501038,
+        "percentile": 77.542549,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -75371,8 +75371,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 60.272191,
-      "rank": 566
+      "composite": 60.282569,
+      "rank": 565
     },
     "383800": {
       "name": "LX홀딩스",
@@ -75643,7 +75643,7 @@
       },
       "m02": {
         "raw": 10.636989,
-        "percentile": 76.048153,
+        "percentile": 76.089664,
         "reason": null,
         "basis": "2026HY_3M_OFS"
       },
@@ -75659,8 +75659,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 46.230475,
-      "rank": 1176
+      "composite": 46.240853,
+      "rank": 1175
     },
     "388720": {
       "name": "유일로보틱스",
@@ -75867,7 +75867,7 @@
       },
       "m02": {
         "raw": 13.404326,
-        "percentile": 82.025737,
+        "percentile": 82.067248,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -75883,7 +75883,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 61.787667,
+      "composite": 61.798045,
       "rank": 509
     },
     "389470": {
@@ -76733,7 +76733,7 @@
       },
       "m02": {
         "raw": 12.24,
-        "percentile": 79.742632,
+        "percentile": 79.784143,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -76749,8 +76749,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 64.817834,
-      "rank": 386
+      "composite": 64.828211,
+      "rank": 385
     },
     "403870": {
       "name": "HPSP",
@@ -77070,7 +77070,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 67.517449,
-      "rank": 288
+      "rank": 289
     },
     "411080": {
       "name": "샌즈랩",
@@ -77294,7 +77294,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 49.405623,
-      "rank": 1022
+      "rank": 1023
     },
     "415640": {
       "name": "KB발해인프라",
@@ -77757,7 +77757,7 @@
       },
       "m02": {
         "raw": 14.226488,
-        "percentile": 83.312578,
+        "percentile": 83.354089,
         "reason": null,
         "basis": "2026HY_3M_OFS"
       },
@@ -77773,7 +77773,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 67.700408,
+      "composite": 67.710786,
       "rank": 283
     },
     "418550": {
@@ -78303,7 +78303,7 @@
       },
       "m02": {
         "raw": 10.669757,
-        "percentile": 76.131175,
+        "percentile": 76.172686,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -78319,8 +78319,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 56.272203,
-      "rank": 750
+      "composite": 56.282581,
+      "rank": 749
     },
     "431190": {
       "name": "케이쓰리아이",
@@ -78704,7 +78704,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 63.77172,
-      "rank": 427
+      "rank": 428
     },
     "439580": {
       "name": "블루엠텍",
@@ -78943,7 +78943,7 @@
       },
       "m02": {
         "raw": 13.473112,
-        "percentile": 82.15027,
+        "percentile": 82.191781,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -78959,7 +78959,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 55.914574,
+      "composite": 55.924951,
       "rank": 769
     },
     "443670": {
@@ -79039,7 +79039,7 @@
       },
       "m02": {
         "raw": 13.358166,
-        "percentile": 81.776671,
+        "percentile": 81.818182,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -79055,7 +79055,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 50.982777,
+      "composite": 50.993154,
       "rank": 967
     },
     "445180": {
@@ -79071,7 +79071,7 @@
       },
       "m02": {
         "raw": 14.458904,
-        "percentile": 83.727688,
+        "percentile": 83.769199,
         "reason": null,
         "basis": "2026HY_3M_OFS"
       },
@@ -79087,7 +79087,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 65.950771,
+      "composite": 65.961149,
       "rank": 335
     },
     "445680": {
@@ -79120,7 +79120,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 25.975608,
-      "rank": 1992
+      "rank": 1993
     },
     "446070": {
       "name": "유니드비티플러스",
@@ -79263,7 +79263,7 @@
       },
       "m02": {
         "raw": 11.954288,
-        "percentile": 78.995434,
+        "percentile": 79.036945,
         "reason": null,
         "basis": "2026HY_3M_OFS"
       },
@@ -79279,7 +79279,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 62.514789,
+      "composite": 62.525167,
       "rank": 481
     },
     "448730": {
@@ -79312,7 +79312,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 59.018683,
-      "rank": 617
+      "rank": 616
     },
     "448900": {
       "name": "한국피아이엠",
@@ -79647,7 +79647,7 @@
       },
       "m02": {
         "raw": 11.447039,
-        "percentile": 78.206725,
+        "percentile": 78.248236,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -79663,7 +79663,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 29.575782,
+      "composite": 29.58616,
       "rank": 1862
     },
     "452200": {
@@ -80432,7 +80432,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 59.920605,
-      "rank": 583
+      "rank": 582
     },
     "459100": {
       "name": "위츠",
@@ -80991,7 +80991,7 @@
       },
       "m02": {
         "raw": 11.999075,
-        "percentile": 79.161478,
+        "percentile": 79.202989,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -81007,7 +81007,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 62.684101,
+      "composite": 62.694479,
       "rank": 479
     },
     "463020": {
@@ -81119,7 +81119,7 @@
       },
       "m02": {
         "raw": 12.909752,
-        "percentile": 80.90494,
+        "percentile": 80.946451,
         "reason": null,
         "basis": "2026HY_3M_OFS"
       },
@@ -81135,8 +81135,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 67.132279,
-      "rank": 300
+      "composite": 67.142657,
+      "rank": 299
     },
     "464490": {
       "name": "쿼드메디슨",
@@ -81360,7 +81360,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 56.486372,
-      "rank": 737
+      "rank": 738
     },
     "466690": {
       "name": "키움히어로제1호스팩",
@@ -81663,7 +81663,7 @@
       },
       "m02": {
         "raw": 14.553086,
-        "percentile": 83.935243,
+        "percentile": 83.976754,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -81679,7 +81679,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 73.131208,
+      "composite": 73.141586,
       "rank": 134
     },
     "473000": {
@@ -81887,7 +81887,7 @@
       },
       "m02": {
         "raw": 14.378695,
-        "percentile": 83.644666,
+        "percentile": 83.686177,
         "reason": null,
         "basis": "2026HY_3M_OFS"
       },
@@ -81903,8 +81903,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 50.468353,
-      "rank": 985
+      "composite": 50.47873,
+      "rank": 984
     },
     "474650": {
       "name": "링크솔루션",
@@ -82207,7 +82207,7 @@
       },
       "m02": {
         "raw": 13.189938,
-        "percentile": 81.486094,
+        "percentile": 81.527605,
         "reason": null,
         "basis": "2026HY_3M_OFS"
       },
@@ -82223,7 +82223,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 69.461837,
+      "composite": 69.472215,
       "rank": 223
     },
     "475460": {
@@ -82465,7 +82465,7 @@
       },
       "m02": {
         "raw": 11.431458,
-        "percentile": 78.165214,
+        "percentile": 78.206725,
         "reason": null,
         "basis": "2026HY_3M_OFS"
       },
@@ -82481,8 +82481,8 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 58.835303,
-      "rank": 624
+      "composite": 58.845681,
+      "rank": 623
     },
     "476080": {
       "name": "M83",
@@ -82913,7 +82913,7 @@
       },
       "m02": {
         "raw": 14.053993,
-        "percentile": 83.022001,
+        "percentile": 83.063512,
         "reason": null,
         "basis": "2026HY_3M_OFS"
       },
@@ -82929,7 +82929,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 45.625555,
+      "composite": 45.635933,
       "rank": 1194
     },
     "480370": {
@@ -83265,7 +83265,7 @@
       },
       "m02": {
         "raw": 13.923666,
-        "percentile": 82.855957,
+        "percentile": 82.897468,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -83281,7 +83281,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 63.077867,
+      "composite": 63.088245,
       "rank": 464
     },
     "484130": {
@@ -83346,7 +83346,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 60.58908,
-      "rank": 551
+      "rank": 550
     },
     "484810": {
       "name": "티엑스알로보틱스",
@@ -83393,7 +83393,7 @@
       },
       "m02": {
         "raw": 13.377618,
-        "percentile": 81.859693,
+        "percentile": 81.901204,
         "reason": null,
         "basis": "2026HY_3M_OFS"
       },
@@ -83409,7 +83409,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA1_EVT20260626:BONUS_ISSUE:0.333324"
       },
-      "composite": 42.788961,
+      "composite": 42.799339,
       "rank": 1324
     },
     "486630": {
@@ -83890,7 +83890,7 @@
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 57.41149,
-      "rank": 687
+      "rank": 688
     },
     "489730": {
       "name": "디비금융제13호스팩",
@@ -83937,7 +83937,7 @@
       },
       "m02": {
         "raw": 12.0929,
-        "percentile": 79.369033,
+        "percentile": 79.410544,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -83953,7 +83953,7 @@
         "reason": null,
         "basis": "2026-05-11->2026-11-11_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 50.612735,
+      "composite": 50.623113,
       "rank": 980
     },
     "490470": {
@@ -84995,10 +84995,40 @@
   "recent_dart_fallback": {
     "policy": "one-quarter-back validated OpenDART history only; no multi-quarter skip; final economic fail-close + full rerank",
     "source_period": "2026Q1",
-    "m01_recovered": 0,
-    "m02_recovered": 0,
-    "m01_codes": [],
-    "m02_codes": [],
+    "m01_recovered": 14,
+    "m02_recovered": 14,
+    "m01_codes": [
+      "001570",
+      "002630",
+      "003620",
+      "004960",
+      "018500",
+      "020180",
+      "033200",
+      "060310",
+      "067010",
+      "082660",
+      "092440",
+      "099750",
+      "344820",
+      "365330"
+    ],
+    "m02_codes": [
+      "001570",
+      "002630",
+      "003620",
+      "004960",
+      "018500",
+      "020180",
+      "033200",
+      "060310",
+      "067010",
+      "092440",
+      "099750",
+      "344820",
+      "365330",
+      "489460"
+    ],
     "economic_guard": {
       "m01_range": [
         -100.0,
@@ -85008,50 +85038,214 @@
         -5000.0,
         200.0
       ],
-      "m01_excluded_codes": [],
-      "m02_excluded_codes": []
+      "m01_excluded_codes": [
+        "068240",
+        "214610",
+        "288330",
+        "308080",
+        "493280"
+      ],
+      "m02_excluded_codes": [
+        "0082N0",
+        "068240",
+        "378800",
+        "389470"
+      ]
     },
     "coverage_before": {
-      "m01_available": 2561,
-      "m02_available": 2410,
+      "m01_available": 2471,
+      "m02_available": 2382,
       "m03_available": 2626,
       "m04_available": 2619,
-      "complete_count": 2377,
-      "ranked_count": 2377
+      "complete_count": 2354,
+      "ranked_count": 2354
     },
     "coverage_after": {
-      "m01_available": 2561,
-      "m02_available": 2410,
+      "m01_available": 2480,
+      "m02_available": 2392,
       "m03_available": 2626,
       "m04_available": 2619,
-      "complete_count": 2377,
-      "ranked_count": 2377
+      "complete_count": 2359,
+      "ranked_count": 2359
     }
   },
   "fiscal_calendar_recovery": {
     "policy": "non-December fiscal issuers only; latest completed Naver actual quarter; consensus rejected; existing numeric metrics preserved",
-    "m01_recovered": 0,
-    "m02_recovered": 0,
-    "m01_codes": [],
-    "m02_codes": [],
-    "details": {},
+    "m01_recovered": 18,
+    "m02_recovered": 12,
+    "m01_codes": [
+      "001720",
+      "021820",
+      "030960",
+      "050860",
+      "093240",
+      "097870",
+      "169330",
+      "189690",
+      "190650",
+      "289080",
+      "334970",
+      "395400",
+      "417310",
+      "448730",
+      "900120",
+      "900290",
+      "950210",
+      "950250"
+    ],
+    "m02_codes": [
+      "021820",
+      "030960",
+      "050860",
+      "093240",
+      "097870",
+      "169330",
+      "189690",
+      "334970",
+      "395400",
+      "417310",
+      "448730",
+      "950210"
+    ],
+    "details": {
+      "001720": {
+        "fiscal_month": 3,
+        "latest_actual_period": "202606",
+        "prior_year_period": "202506",
+        "m01": 84.440501
+      },
+      "021820": {
+        "fiscal_month": 6,
+        "latest_actual_period": "202606",
+        "prior_year_period": "202506",
+        "m01": -3.465347,
+        "m02": 19.31
+      },
+      "030960": {
+        "fiscal_month": 6,
+        "latest_actual_period": "202606",
+        "prior_year_period": "202506",
+        "m01": -15.730337,
+        "m02": -102.11
+      },
+      "050860": {
+        "fiscal_month": 6,
+        "latest_actual_period": "202606",
+        "prior_year_period": "202506",
+        "m01": 24.193548,
+        "m02": 13.78
+      },
+      "093240": {
+        "fiscal_month": 6,
+        "latest_actual_period": "202606",
+        "prior_year_period": "202506",
+        "m01": -16.0,
+        "m02": -0.82
+      },
+      "097870": {
+        "fiscal_month": 6,
+        "latest_actual_period": "202606",
+        "prior_year_period": "202506",
+        "m01": 36.666667,
+        "m02": -17.77
+      },
+      "169330": {
+        "fiscal_month": 6,
+        "latest_actual_period": "202606",
+        "prior_year_period": "202506",
+        "m01": -5.594406,
+        "m02": 5.81
+      },
+      "189690": {
+        "fiscal_month": 6,
+        "latest_actual_period": "202606",
+        "prior_year_period": "202506",
+        "m01": 30.985915,
+        "m02": 18.56
+      },
+      "190650": {
+        "fiscal_month": 3,
+        "latest_actual_period": "202606",
+        "prior_year_period": "202506",
+        "m01": 3.357664
+      },
+      "289080": {
+        "fiscal_month": 3,
+        "latest_actual_period": "202606",
+        "prior_year_period": "202506",
+        "m01": 40.0
+      },
+      "334970": {
+        "fiscal_month": 6,
+        "latest_actual_period": "202606",
+        "prior_year_period": "202506",
+        "m01": 150.877193,
+        "m02": -67.28
+      },
+      "395400": {
+        "fiscal_month": 3,
+        "latest_actual_period": "202606",
+        "prior_year_period": "202506",
+        "m01": 12.957746,
+        "m02": 89.48
+      },
+      "417310": {
+        "fiscal_month": 2,
+        "latest_actual_period": "202605",
+        "prior_year_period": "202505",
+        "m01": 20.0,
+        "m02": 73.6
+      },
+      "448730": {
+        "fiscal_month": 1,
+        "latest_actual_period": "202607",
+        "prior_year_period": "202507",
+        "m01": 23.770492,
+        "m02": 65.4
+      },
+      "900120": {
+        "fiscal_month": 6,
+        "latest_actual_period": "202606",
+        "prior_year_period": "202506",
+        "m01": -10.362694
+      },
+      "900290": {
+        "fiscal_month": 6,
+        "latest_actual_period": "202606",
+        "prior_year_period": "202506",
+        "m01": 38.996764
+      },
+      "950210": {
+        "fiscal_month": 6,
+        "latest_actual_period": "202606",
+        "prior_year_period": "202506",
+        "m01": 180.0,
+        "m02": -151.37
+      },
+      "950250": {
+        "fiscal_month": 4,
+        "latest_actual_period": "202607",
+        "prior_year_period": "202507",
+        "m01": -15.789474
+      }
+    },
     "coverage_before": {
-      "m01_available": 2561,
-      "m02_available": 2410,
+      "m01_available": 2480,
+      "m02_available": 2392,
       "m03_available": 2626,
       "m04_available": 2619,
-      "complete_count": 2377,
-      "ranked_count": 2377
+      "complete_count": 2359,
+      "ranked_count": 2359
     },
     "coverage_after": {
-      "m01_available": 2561,
-      "m02_available": 2410,
+      "m01_available": 2498,
+      "m02_available": 2404,
       "m03_available": 2626,
       "m04_available": 2619,
-      "complete_count": 2377,
-      "ranked_count": 2377
+      "complete_count": 2371,
+      "ranked_count": 2371
     },
-    "candidate_count": 1,
+    "candidate_count": 19,
     "source_errors": {}
   },
   "standard_actual_recovery": {
