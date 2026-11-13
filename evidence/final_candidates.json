@@ -6,12 +6,12 @@
   "price_cutoff_date_kst": "2026-11-13",
   "universe_count": 2649,
   "financial_safety_policy_version": "STAGE4_BS_SAFETY_V1",
-  "eligible_count": 1374,
+  "eligible_count": 1375,
   "candidate_limit": 10,
   "candidate_count": 10,
   "reject_counts": {
     "base_incomplete_or_nonpositive_per": 1165,
-    "financial_safety_not_pass": 110
+    "financial_safety_not_pass": 109
   },
   "selection_policy": {
     "purpose": "research_priority_only",
@@ -71,9 +71,9 @@
       "financial_safety": {
         "status": "PASS",
         "reason": "PASS",
-        "basis": "2026_2Q_BS_20261113032747.zip:CFS:2026-06-30:KRW",
-        "debt_to_equity_pct": 23.975568,
-        "current_ratio_pct": 672.045262,
+        "basis": "2026_3Q_BS_20261114044407.zip:CFS:2026-09-30:KRW",
+        "debt_to_equity_pct": 20.692547,
+        "current_ratio_pct": 674.150231,
         "identity_gap_pct": 0.0
       },
       "valuation": {
@@ -105,14 +105,14 @@
       "name": "피델릭스",
       "market": "KOSDAQ",
       "sector": "반도체 제조업",
-      "composite_score": 92.991255,
+      "composite_score": 92.981493,
       "financial_snapshot_date": "2026-11-14",
       "price_cutoff_date": "2026-11-13",
       "metrics": {
         "M01": {
           "id": "M01",
           "raw": 179.824939,
-          "percentile": 96.602889,
+          "percentile": 96.563842,
           "basis": "2026HY_3M_OFS",
           "as_of_date": "2026-11-14"
         },
@@ -141,7 +141,7 @@
       "financial_safety": {
         "status": "PASS",
         "reason": "PASS",
-        "basis": "2026_3Q_BS_20261113035015.zip:OFS:2026-09-30:KRW",
+        "basis": "2026_3Q_BS_20261114044407.zip:OFS:2026-09-30:KRW",
         "debt_to_equity_pct": 62.297171,
         "current_ratio_pct": 254.834339,
         "identity_gap_pct": 0.0
@@ -211,9 +211,9 @@
       "financial_safety": {
         "status": "PASS",
         "reason": "PASS",
-        "basis": "2026_2Q_BS_20261113032747.zip:CFS:2026-06-30:KRW",
-        "debt_to_equity_pct": 36.262736,
-        "current_ratio_pct": 200.650714,
+        "basis": "2026_3Q_BS_20261114044407.zip:CFS:2026-09-30:KRW",
+        "debt_to_equity_pct": 78.831605,
+        "current_ratio_pct": 141.636158,
         "identity_gap_pct": 0.0
       },
       "valuation": {
@@ -281,7 +281,7 @@
       "financial_safety": {
         "status": "PASS",
         "reason": "PASS",
-        "basis": "2026_2Q_BS_20261113032747.zip:CFS:2026-06-30:KRW",
+        "basis": "2026_2Q_BS_20261114042046.zip:CFS:2026-06-30:KRW",
         "debt_to_equity_pct": 132.833628,
         "current_ratio_pct": 165.967411,
         "identity_gap_pct": 0.0
@@ -351,7 +351,7 @@
       "financial_safety": {
         "status": "PASS",
         "reason": "PASS",
-        "basis": "2026_2Q_BS_20261113032747.zip:CFS:2026-06-30:KRW",
+        "basis": "2026_2Q_BS_20261114042046.zip:CFS:2026-06-30:KRW",
         "debt_to_equity_pct": 61.055732,
         "current_ratio_pct": 184.736689,
         "identity_gap_pct": 0.0
@@ -384,14 +384,14 @@
       "name": "아이컴포넌트",
       "market": "KOSDAQ",
       "sector": "전자부품 제조업",
-      "composite_score": 88.184744,
+      "composite_score": 88.174982,
       "financial_snapshot_date": "2026-11-14",
       "price_cutoff_date": "2026-11-13",
       "metrics": {
         "M01": {
           "id": "M01",
           "raw": 35.750527,
-          "percentile": 79.031628,
+          "percentile": 78.992581,
           "basis": "2026HY_3M_OFS",
           "as_of_date": "2026-11-14"
         },
@@ -420,9 +420,9 @@
       "financial_safety": {
         "status": "PASS",
         "reason": "PASS",
-        "basis": "2026_2Q_BS_20261113032747.zip:OFS:2026-06-30:KRW",
-        "debt_to_equity_pct": 31.272254,
-        "current_ratio_pct": 339.778941,
+        "basis": "2026_3Q_BS_20261114044407.zip:OFS:2026-09-30:KRW",
+        "debt_to_equity_pct": 29.328098,
+        "current_ratio_pct": 351.969953,
         "identity_gap_pct": 0.0
       },
       "valuation": {
@@ -490,7 +490,7 @@
       "financial_safety": {
         "status": "PASS",
         "reason": "PASS",
-        "basis": "2026_2Q_BS_20261113032747.zip:CFS:2026-06-30:KRW",
+        "basis": "2026_2Q_BS_20261114042046.zip:CFS:2026-06-30:KRW",
         "debt_to_equity_pct": 151.095189,
         "current_ratio_pct": 116.820765,
         "identity_gap_pct": 0.0
@@ -559,9 +559,9 @@
       "financial_safety": {
         "status": "PASS",
         "reason": "PASS",
-        "basis": "2026_2Q_BS_20261113032747.zip:CFS:2026-06-30:KRW",
-        "debt_to_equity_pct": 63.575862,
-        "current_ratio_pct": 385.856194,
+        "basis": "2026_3Q_BS_20261114044407.zip:CFS:2026-09-30:KRW",
+        "debt_to_equity_pct": 83.935367,
+        "current_ratio_pct": 269.61072,
         "identity_gap_pct": 0.0
       },
       "valuation": {
@@ -629,7 +629,7 @@
       "financial_safety": {
         "status": "PASS",
         "reason": "PASS",
-        "basis": "2026_3Q_BS_20261113035015.zip:CFS:2026-09-30:KRW",
+        "basis": "2026_3Q_BS_20261114044407.zip:CFS:2026-09-30:KRW",
         "debt_to_equity_pct": 17.677614,
         "current_ratio_pct": 462.264519,
         "identity_gap_pct": 0.0
@@ -663,14 +663,14 @@
       "name": "아이스크림미디어",
       "market": "KOSDAQ",
       "sector": "소프트웨어 개발 및 공급업",
-      "composite_score": 84.253188,
+      "composite_score": 84.243426,
       "financial_snapshot_date": "2026-11-14",
       "price_cutoff_date": "2026-11-13",
       "metrics": {
         "M01": {
           "id": "M01",
           "raw": 19.315534,
-          "percentile": 64.857478,
+          "percentile": 64.81843,
           "basis": "2026HY_3M_OFS",
           "as_of_date": "2026-11-14"
         },
@@ -699,7 +699,7 @@
       "financial_safety": {
         "status": "PASS",
         "reason": "PASS",
-        "basis": "2026_2Q_BS_20261113032747.zip:OFS:2026-06-30:KRW",
+        "basis": "2026_2Q_BS_20261114042046.zip:OFS:2026-06-30:KRW",
         "debt_to_equity_pct": 28.015776,
         "current_ratio_pct": 397.234993,
         "identity_gap_pct": 0.0
