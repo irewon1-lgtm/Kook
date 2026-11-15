@@ -236,12 +236,12 @@ jobs:
       - name: Export final context and independent financial states
         run: python scripts/export_pc_oracle.py --skip-build --output .pc-work/oracle-final --context-cache .pc-cache/context
       - name: Collect actual completed daily prices incrementally
-        if: github.event_name != 'pull_request'
         run: |
           python scripts/collect_pc_prices.py --universe .pc-work/oracle-final/stocks.json \
             --cutoff "$PC_CUTOFF" --workers 8 --output .pc-cache/prices > .pc-work/price-collection.jsonl
       - name: Build authenticated generation and compressed offline bundle
         run: |
+          set -o pipefail
           python scripts/build_pc_publication.py --oracle .pc-work/oracle-final --prices .pc-cache/prices \
             --output web/public/data --bundle web/src/generated/bundled.json | tee .pc-work/publication.json
           echo "KR4_ORACLE_DIR=$GITHUB_WORKSPACE/.pc-work/oracle-final" >> "$GITHUB_ENV"
