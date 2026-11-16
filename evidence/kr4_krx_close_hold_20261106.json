@@ -1,0 +1,352 @@
+{
+  "schema_version": 1,
+  "case": "KR4_PRICE_CLOSE_REVISION_2026-11-06",
+  "trading_date": "2026-11-06",
+  "source_repository": "irewon1-lgtm/Kook",
+  "source_pr": 45,
+  "source_run_id": 43779878087,
+  "source_run_head_sha": "5ef77b2328be8f4470c72dfee2d547ff3e2d058b",
+  "collector_log_sha256": "c7078af34d4618e845f09ed214a1c569a8c318c70de2c601a1479ff1969b8db8",
+  "archived_generation": "6f4d5c7809a58fbb5e379e02a167141e1f32b1fa03c01d33d29b76ee101665bd",
+  "archived_branch": "kr4-pc-site",
+  "krx_verification": "NOT_AVAILABLE_AUTH_REQUIRED",
+  "automatic_price_replacement": false,
+  "hold_count": 67,
+  "records": [
+    {
+      "issuer_code": "001540",
+      "archived_close_krw": 9180,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "005720",
+      "archived_close_krw": 6050,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "007210",
+      "archived_close_krw": 1265,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "008250",
+      "archived_close_krw": 2770,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "009180",
+      "archived_close_krw": 2665,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "016380",
+      "archived_close_krw": 4820,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "023590",
+      "archived_close_krw": 29900,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "023770",
+      "archived_close_krw": 1964,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "023910",
+      "archived_close_krw": 25050,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "024910",
+      "archived_close_krw": 1233,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "027410",
+      "archived_close_krw": 3580,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "027740",
+      "archived_close_krw": 1079,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "032540",
+      "archived_close_krw": 3685,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "035000",
+      "archived_close_krw": 6180,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "036670",
+      "archived_close_krw": 4860,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "036800",
+      "archived_close_krw": 7940,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "037070",
+      "archived_close_krw": 6500,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "039030",
+      "archived_close_krw": 294000,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "050120",
+      "archived_close_krw": 3630,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "051380",
+      "archived_close_krw": 1355,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "053620",
+      "archived_close_krw": 6580,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "054090",
+      "archived_close_krw": 838,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "056700",
+      "archived_close_krw": 1410,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "067730",
+      "archived_close_krw": 1975,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "069260",
+      "archived_close_krw": 15160,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "072470",
+      "archived_close_krw": 1989,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "078590",
+      "archived_close_krw": 2210,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "079370",
+      "archived_close_krw": 8990,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "080530",
+      "archived_close_krw": 2085,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "099440",
+      "archived_close_krw": 3310,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "104620",
+      "archived_close_krw": 2635,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "106240",
+      "archived_close_krw": 1018,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "111710",
+      "archived_close_krw": 2755,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "124500",
+      "archived_close_krw": 20350,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "127120",
+      "archived_close_krw": 17750,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "133750",
+      "archived_close_krw": 1389,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "137080",
+      "archived_close_krw": 6500,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "151860",
+      "archived_close_krw": 4685,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "214260",
+      "archived_close_krw": 7310,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "215200",
+      "archived_close_krw": 39550,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "219420",
+      "archived_close_krw": 2505,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "220260",
+      "archived_close_krw": 3725,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "265520",
+      "archived_close_krw": 14520,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "284740",
+      "archived_close_krw": 23400,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "296640",
+      "archived_close_krw": 7050,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "308430",
+      "archived_close_krw": 11500,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "310200",
+      "archived_close_krw": 2010,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "323350",
+      "archived_close_krw": 9930,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "338100",
+      "archived_close_krw": 3690,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "362320",
+      "archived_close_krw": 4800,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "365550",
+      "archived_close_krw": 2845,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "368600",
+      "archived_close_krw": 3690,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "376180",
+      "archived_close_krw": 1013,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "377450",
+      "archived_close_krw": 13190,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "388610",
+      "archived_close_krw": 4170,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "388870",
+      "archived_close_krw": 5340,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "417860",
+      "archived_close_krw": 6090,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "443250",
+      "archived_close_krw": 4935,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "452300",
+      "archived_close_krw": 2105,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "456010",
+      "archived_close_krw": 15250,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "458650",
+      "archived_close_krw": 6190,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "462350",
+      "archived_close_krw": 4395,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "462980",
+      "archived_close_krw": 1430,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "475430",
+      "archived_close_krw": 3680,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "484120",
+      "archived_close_krw": 16900,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "487570",
+      "archived_close_krw": 45150,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    },
+    {
+      "issuer_code": "900290",
+      "archived_close_krw": 2895,
+      "decision": "HOLD_KRX_OFFICIAL_CLOSE_UNVERIFIED"
+    }
+  ]
+}
