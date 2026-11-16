@@ -101,17 +101,33 @@ def parse_bars(payload, cutoff):
     return sorted(parsed.values(), key=lambda bar: bar['date'])
 
 
-def fetch_bars(cutoff, request_page, cached_bars=()):
-    """Bounded pageSize60 collection; cache merge requires full history and overlap."""
+def fetch_bars(cutoff, request_page, cached_bars=(), revisions=None):
+    """Merge only real overlapping history; expose, never silently overwrite revisions.
+
+    Without an explicitly provided revisions list, the original strict conflict
+    rejection remains unchanged (including all ordinary oracle/test callers).
+    """
     loaded = {}
     boundary = required_from(cutoff).isoformat()
     can_merge = bool(cached_bars) and cached_bars[0]['date'] <= boundary
-    cached_dates = {bar['date'] for bar in cached_bars}
+    cached_by_date = {bar['date']: bar for bar in cached_bars}
     for page in range(1, 9):
         rows = _array(request_page(page, 60))
         _add_unique(loaded, parse_bars(rows, cutoff))
-        if can_merge and cached_dates.intersection(loaded):
-            _add_unique(loaded, cached_bars)
+        if can_merge and cached_by_date.keys() & loaded.keys():
+            changed = [
+                dict(date=day, old=cached_by_date[day], new=loaded[day])
+                for day in sorted(cached_by_date.keys() & loaded.keys())
+                if cached_by_date[day] != loaded[day]
+            ]
+            if changed and revisions is None:
+                raise ValueError('Conflicting daily price at ' + changed[0]['date'])
+            if revisions is not None:
+                revisions.extend(changed)
+            # Candidate new observations win ONLY when the caller separately
+            # reconfirms them. Existing dates outside the observed window retain
+            # their original verified history and provenance.
+            _add_unique(loaded, (bar for bar in cached_bars if bar['date'] not in loaded))
             break
         if len(rows) < 60 or loaded and min(loaded) <= boundary:
             break
@@ -175,8 +191,10 @@ def collect_code(code, cutoff, root, request=None, now=None):
     now = now or utc_now()
     previous = _cached(root, code, cutoff)
     pages = []
+    observation_number = 0
     request = request or download
     def request_page(page, size):
+        nonlocal observation_number
         url = f'{BASE}/{code}/price?pageSize={size}&page={page}'
         status, body, headers = request(url)
         checksum = _sha(body)
@@ -185,14 +203,47 @@ def collect_code(code, cutoff, root, request=None, now=None):
         _atomic(root/'raw'/code/f'{checksum}.json', body)
         observation = dict(metadata, observedAt=now, headers={k:v for k,v in headers.items()
             if k.lower() in ('date','content-type','cache-control','expires','server')})
-        _atomic(root/'attempts'/code/f"{now.replace(':','-')}-p{page}.json", _encoded(observation))
+        observation_number += 1
+        _atomic(root/'attempts'/code/f"{now.replace(':','-')}-p{page}-obs{observation_number}.json", _encoded(observation))
         if status != 200:
             raise ValueError(f'Price source HTTP {status}')
         if not 0 < len(body) <= MAX_BYTES:
             raise ValueError('Invalid chart payload size')
         return body
     try:
-        bars = fetch_bars(cutoff, request_page, previous['bars'] if previous else ())
+        changed = []
+        bars = fetch_bars(cutoff, request_page, previous['bars'] if previous else (), changed)
+        revision_audit = None
+        if changed:
+            # A changed close may alter research signals; never auto-revise it.
+            if any(entry['old']['close'] != entry['new']['close'] for entry in changed):
+                raise ValueError('Revised close requires manual review at ' + changed[0]['date'])
+            first_pass_count = len(pages)
+            rechecked = []
+            repeated = fetch_bars(cutoff, request_page, previous['bars'], rechecked)
+            if bars != repeated or changed != rechecked or len(pages) == first_pass_count:
+                raise ValueError('Unconfirmed historical price revision at ' + changed[0]['date'])
+            original = (root/'prices'/f'{code}.json').read_bytes()
+            original_sha = _sha(original)
+            changed_fields = sorted({
+                key for item in changed for key in ('open', 'high', 'low', 'close', 'volume')
+                if item['old'][key] != item['new'][key]
+            })
+            revision_audit = dict(
+                status='RECONFIRMED_PROVIDER_REVISION_SAME_CLOSE',
+                provider='Naver Finance', verifiedAt=now,
+                changedDates=[item['date'] for item in changed],
+                changedFields=changed_fields, previousPriceSha256=original_sha,
+                firstPassPageSha256=[page['sha256'] for page in pages[:first_pass_count]],
+                confirmationPageSha256=[page['sha256'] for page in pages[first_pass_count:]])
+            # The previous authenticated price snapshot is retained privately.
+            # No raw observations or private checkpoints enter the public site.
+            preserved = root/'revisions'/code/f'{original_sha}.json'
+            if preserved.exists():
+                if _sha(preserved.read_bytes()) != original_sha:
+                    raise ValueError('Prior price revision archive hash mismatch')
+            else:
+                _atomic(preserved, original)
         old_pages = []
         if previous:
             observed_dates = {bar['date'] for page in pages for bar in parse_bars(
@@ -204,6 +255,10 @@ def collect_code(code, cutoff, root, request=None, now=None):
                       requestedCutoffDate=cutoff.isoformat(), lastTradingDate=bars[-1]['date'],
                       collectedAt=now, lastAttemptAt=now, adjustment='UNVERIFIED', bars=bars,
                       pages=list(unique_pages.values()), error=None)
+        if revision_audit:
+            result['overlapRevisionAudit'] = revision_audit
+        elif previous and previous.get('overlapRevisionAudit'):
+            result['overlapRevisionAudit'] = previous['overlapRevisionAudit']
     except Exception as error:
         result = dict(previous) if previous else dict(schemaVersion=1, issuerId=code, source='MISSING',
             sourceUrl=f'{BASE}/{code}/price', requestedCutoffDate=cutoff.isoformat(),
