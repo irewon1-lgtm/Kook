@@ -51,6 +51,8 @@ def test_official_krx_response_requires_exact_date_unique_code_and_positive_clos
     with pytest.raises(ValueError,match='OutBlock_1'):
         audit.read_official(b'{"rows":[]}', 'KOSPI')
     assert not audit.read_official(data(krx('KR7000000000','1234')),'KOSPI')
+    assert list(audit.read_official(data(krx('000001','1000'),krx('999999','0')),
+                                    'KOSPI',target_codes={'000001'}))==['000001']
 
 
 def test_no_keys_or_missing_market_files_never_claim_official_verification(tmp_path):
