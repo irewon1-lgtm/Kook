@@ -6,12 +6,12 @@
   "price_cutoff_date_kst": "2026-11-13",
   "universe_count": 2649,
   "financial_safety_policy_version": "STAGE4_BS_SAFETY_V1",
-  "eligible_count": 1375,
+  "eligible_count": 1356,
   "candidate_limit": 10,
   "candidate_count": 10,
   "reject_counts": {
     "base_incomplete_or_nonpositive_per": 1165,
-    "financial_safety_not_pass": 109
+    "financial_safety_not_pass": 128
   },
   "selection_policy": {
     "purpose": "research_priority_only",
@@ -281,7 +281,7 @@
       "financial_safety": {
         "status": "PASS",
         "reason": "PASS",
-        "basis": "2026_2Q_BS_20261114042046.zip:CFS:2026-06-30:KRW",
+        "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-06-30:KRW",
         "debt_to_equity_pct": 132.833628,
         "current_ratio_pct": 165.967411,
         "identity_gap_pct": 0.0
@@ -351,7 +351,7 @@
       "financial_safety": {
         "status": "PASS",
         "reason": "PASS",
-        "basis": "2026_2Q_BS_20261114042046.zip:CFS:2026-06-30:KRW",
+        "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-06-30:KRW",
         "debt_to_equity_pct": 61.055732,
         "current_ratio_pct": 184.736689,
         "identity_gap_pct": 0.0
@@ -490,7 +490,7 @@
       "financial_safety": {
         "status": "PASS",
         "reason": "PASS",
-        "basis": "2026_2Q_BS_20261114042046.zip:CFS:2026-06-30:KRW",
+        "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-06-30:KRW",
         "debt_to_equity_pct": 151.095189,
         "current_ratio_pct": 116.820765,
         "identity_gap_pct": 0.0
@@ -699,7 +699,7 @@
       "financial_safety": {
         "status": "PASS",
         "reason": "PASS",
-        "basis": "2026_2Q_BS_20261114042046.zip:OFS:2026-06-30:KRW",
+        "basis": "2026_2Q_BS_20261117043904.zip:OFS:2026-06-30:KRW",
         "debt_to_equity_pct": 28.015776,
         "current_ratio_pct": 397.234993,
         "identity_gap_pct": 0.0
