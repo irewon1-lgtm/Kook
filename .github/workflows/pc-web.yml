@@ -55,7 +55,7 @@ concurrency:
 jobs:
   build:
     if: github.event_name != 'workflow_run' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_repository.full_name == github.repository)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
       actions: read
@@ -104,6 +104,23 @@ jobs:
           npm ci --prefix web
           cd web
           npx playwright install --with-deps chromium
+      - name: Verify Chromium launches successfully
+        working-directory: web
+        run: |
+          node --input-type=module <<'JS'
+          import { chromium } from '@playwright/test';
+
+          const browser = await chromium.launch({
+            headless: true
+          });
+          try {
+            const page = await browser.newPage();
+            await page.goto('about:blank');
+            console.log('Chromium launch PASS:', browser.version());
+          } finally {
+            await browser.close();
+          }
+          JS
       - name: Restore actual price and context checkpoints
         id: observations
         uses: actions/cache/restore@v4
@@ -219,12 +236,12 @@ jobs:
       - name: Export final context and independent financial states
         run: python scripts/export_pc_oracle.py --skip-build --output .pc-work/oracle-final --context-cache .pc-cache/context
       - name: Collect actual completed daily prices incrementally
-        if: github.event_name != 'pull_request'
         run: |
           python scripts/collect_pc_prices.py --universe .pc-work/oracle-final/stocks.json \
             --cutoff "$PC_CUTOFF" --workers 8 --output .pc-cache/prices > .pc-work/price-collection.jsonl
       - name: Build authenticated generation and compressed offline bundle
         run: |
+          set -o pipefail
           python scripts/build_pc_publication.py --oracle .pc-work/oracle-final --prices .pc-cache/prices \
             --output web/public/data --bundle web/src/generated/bundled.json | tee .pc-work/publication.json
           echo "KR4_ORACLE_DIR=$GITHUB_WORKSPACE/.pc-work/oracle-final" >> "$GITHUB_ENV"

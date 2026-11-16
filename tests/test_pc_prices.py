@@ -186,3 +186,84 @@ def test_nonoverlapping_short_source_does_not_claim_unused_old_raw_pages(tmp_pat
     assert current['error'] is None
     assert [bar['date'] for bar in current['bars']]==['2026-11-05']
     assert previous['pages'][0] not in current['pages']
+
+
+def test_overlapping_same_close_revision_needs_two_rechecks_and_archives_original(tmp_path):
+    """A provider OHLCV revision cannot silently overwrite the verified Nov 6 record."""
+    old_cutoff, new_cutoff = date(2026, 11, 6), date(2026, 11, 13)
+    initial = pc.collect_code('005930', old_cutoff, tmp_path,
+        lambda url: response([row('2025-10-27'), row('2026-11-06')]),
+        now='2026-11-07T00:00:00Z')
+    original_bytes = (tmp_path/'prices'/'005930.json').read_bytes()
+    original_sha = hashlib.sha256(original_bytes).hexdigest()
+    requests = []
+    def current(url):
+        requests.append(url)
+        return response([row('2026-11-13'), row('2026-11-06',
+            openPrice='950', lowPrice='850', accumulatedTradingVolume='2,000')])
+    current_data = pc.collect_code('005930', new_cutoff, tmp_path, current,
+                                   now='2026-11-16T00:00:00Z')
+    assert requests == [
+        'https://m.stock.naver.com/api/stock/005930/price?pageSize=60&page=1',
+        'https://m.stock.naver.com/api/stock/005930/price?pageSize=60&page=1']
+    assert current_data['error'] is None
+    assert current_data['requestedCutoffDate'] == '2026-11-13'
+    assert current_data['lastTradingDate'] == '2026-11-13'
+    prior = next(x for x in initial['bars'] if x['date'] == '2026-11-06')
+    updated = next(x for x in current_data['bars'] if x['date'] == '2026-11-06')
+    assert updated['close'] == prior['close'] == 1050
+    assert updated['open'] == 950 and updated['low'] == 850 and updated['volume'] == 2000
+    assert next(x for x in current_data['bars'] if x['date'] == '2025-10-27') == initial['bars'][0]
+    audit = current_data['overlapRevisionAudit']
+    assert audit['status'] == 'RECONFIRMED_PROVIDER_REVISION_SAME_CLOSE'
+    assert audit['changedDates'] == ['2026-11-06']
+    assert audit['changedFields'] == ['low', 'open', 'volume']
+    assert audit['previousPriceSha256'] == original_sha
+    assert len(audit['firstPassPageSha256']) == len(audit['confirmationPageSha256']) == 1
+    assert (tmp_path/'revisions'/'005930'/f'{original_sha}.json').read_bytes() == original_bytes
+    assert len(list((tmp_path/'attempts'/'005930').glob('*.json'))) == 3
+    assert initial['pages'][0] in current_data['pages']
+    assert pc.write_index(tmp_path, ['005930'], new_cutoff)['coverage']['withBars'] == 1
+
+
+def test_overlap_revision_with_changed_close_is_never_auto_applied(tmp_path):
+    old_cutoff, new_cutoff = date(2026, 11, 6), date(2026, 11, 13)
+    old = pc.collect_code('005930', old_cutoff, tmp_path,
+        lambda url: response([row('2025-10-27'),row('2026-11-06')]))
+    updated = pc.collect_code('005930', new_cutoff, tmp_path,
+        lambda url: response([row('2026-11-13'),row('2026-11-06',closePrice='1080')]))
+    assert updated['source'] == 'CACHE'
+    assert updated['bars'] == old['bars']
+    assert updated['lastTradingDate'] == '2026-11-06'
+    assert updated['requestedCutoffDate'] == '2026-11-06'
+    assert 'Revised close requires manual review' in updated['error']
+    assert not (tmp_path/'revisions').exists()
+
+
+def test_unstable_second_provider_observation_is_quarantined(tmp_path):
+    old_cutoff, new_cutoff = date(2026, 11, 6), date(2026, 11, 13)
+    old = pc.collect_code('005930', old_cutoff, tmp_path,
+        lambda url: response([row('2025-10-27'),row('2026-11-06')]))
+    calls = []
+    def unstable(url):
+        calls.append(url)
+        return response([row('2026-11-13'),row('2026-11-06',lowPrice='850' if len(calls)==1 else '830')])
+    result = pc.collect_code('005930', new_cutoff, tmp_path, unstable)
+    assert len(calls) == 2
+    assert result['bars'] == old['bars']
+    assert result['lastTradingDate'] == '2026-11-06'
+    assert 'Unconfirmed historical price revision' in result['error']
+    assert not (tmp_path/'revisions').exists()
+
+
+def test_revision_mode_never_allows_conflicting_rows_within_one_provider_page(tmp_path):
+    old_cutoff, new_cutoff = date(2026, 11, 6), date(2026, 11, 13)
+    old = pc.collect_code('005930', old_cutoff, tmp_path,
+        lambda url: response([row('2025-10-27'),row('2026-11-06')]))
+    result = pc.collect_code('005930', new_cutoff, tmp_path,
+        lambda url: response([
+            row('2026-11-13'), row('2026-11-06',lowPrice='850'),
+            row('2026-11-06',lowPrice='830')]))
+    assert result['bars'] == old['bars']
+    assert 'Conflicting daily price at 2026-11-06' in result['error']
+    assert not (tmp_path/'revisions').exists()

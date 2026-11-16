@@ -1,0 +1,90 @@
+{
+  "schema": "KR4_MISSING_PRICE_DELISTING_REVIEW_V1",
+  "snapshot_cutoff": "2026-11-13",
+  "reviewed_on": "2026-11-16",
+  "context": "13 prices absent in PR45 2026-11-16 collection; 2,649 original universe preserved",
+  "classification": "DELISTING_REPORTED_SECONDARY_SOURCE_PRIMARY_PER_ISSUER_CONFIRMATION_PENDING",
+  "source_url": "https://www.kokstock.com/stock/delisting.asp",
+  "official_reference_url": "https://kind.krx.co.kr/investwarn/delcompany.do?currentPageSize=30&method=searchDelCompanySub",
+  "note": "Directory lists all 13 as delisted before 2026-11-13. Some entries are independently corroborated by KRX KIND. NOT an authenticated official KRX per-issuer status feed. Do not create prices, silently remove stocks, alter ranks, or classify as resolved source-data error.",
+  "rows": [
+    {
+      "issuer_id": "005030",
+      "name": "부산주공",
+      "market": "KOSPI",
+      "reported_delisting_date": "2026-10-12"
+    },
+    {
+      "issuer_id": "005110",
+      "name": "한창",
+      "market": "KOSPI",
+      "reported_delisting_date": "2026-10-15"
+    },
+    {
+      "issuer_id": "006380",
+      "name": "카프로",
+      "market": "KOSPI",
+      "reported_delisting_date": "2026-09-17"
+    },
+    {
+      "issuer_id": "008290",
+      "name": "원풍물산",
+      "market": "KOSDAQ",
+      "reported_delisting_date": "2026-09-21"
+    },
+    {
+      "issuer_id": "028080",
+      "name": "휴맥스홀딩스",
+      "market": "KOSDAQ",
+      "reported_delisting_date": "2026-10-19"
+    },
+    {
+      "issuer_id": "046070",
+      "name": "코다코",
+      "market": "KOSDAQ",
+      "reported_delisting_date": "2026-09-21"
+    },
+    {
+      "issuer_id": "082660",
+      "name": "코스나인",
+      "market": "KOSDAQ",
+      "reported_delisting_date": "2026-09-21"
+    },
+    {
+      "issuer_id": "084180",
+      "name": "수성웹툰",
+      "market": "KOSDAQ",
+      "reported_delisting_date": "2026-10-01"
+    },
+    {
+      "issuer_id": "196490",
+      "name": "디에이테크놀로지",
+      "market": "KOSDAQ",
+      "reported_delisting_date": "2026-10-07"
+    },
+    {
+      "issuer_id": "469900",
+      "name": "하나31호스팩",
+      "market": "KOSDAQ",
+      "reported_delisting_date": "2026-10-13"
+    },
+    {
+      "issuer_id": "472230",
+      "name": "SK증권제11호스팩",
+      "market": "KOSDAQ",
+      "reported_delisting_date": "2026-10-12"
+    },
+    {
+      "issuer_id": "473050",
+      "name": "유안타제15호스팩",
+      "market": "KOSDAQ",
+      "reported_delisting_date": "2026-10-12"
+    },
+    {
+      "issuer_id": "475240",
+      "name": "하나32호스팩",
+      "market": "KOSDAQ",
+      "reported_delisting_date": "2026-11-02"
+    }
+  ]
+}

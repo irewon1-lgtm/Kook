@@ -96,6 +96,17 @@ test('real CACHE survives a controlled price 503 and recovers; genuine MISSING s
   await page.getByTestId('chart_period_6').click(); await page.getByTestId('chart_interval_DAY').click();
   const toggle = page.getByTestId('chart_candle_toggle'); if (await toggle.getAttribute('aria-checked') !== 'true') await toggle.click();
   const before = { titles: await page.getByTestId('chart_candle').locator('title').allTextContents(), ohlc: await page.getByTestId('chart_last_ohlc').innerText(), quote: await page.getByTestId('chart_latest_close').innerText() };
+  // An authenticated old price snapshot may be retained after a real-source
+  // conflict. The date warning is independent of the controlled HTTP 503 error.
+  const receptionError = page.locator('.pc-chart__error').filter({ hasText: /^가격 수신 오류:/ });
+  const cutoffWarning = page.locator('.pc-chart__error').filter({ hasText: /^요청 기준일 불일치:/ });
+  const staleCutoff = actual.data.requestedCutoffDate !== manifest.priceCutoffDate;
+  await expect(cutoffWarning).toHaveCount(staleCutoff ? 1 : 0);
+  if (staleCutoff) {
+    await expect(cutoffWarning).toContainText(`화면 ${manifest.priceCutoffDate}`);
+    await expect(cutoffWarning).toContainText(`가격 파일 ${actual.data.requestedCutoffDate}`);
+  }
+  if (actual.data.error) await expect(receptionError).toContainText(actual.data.error);
   let failures = 0, restored = 0;
   await page.route(actual.url, async route => { failures++; await route.fulfill({ status: 503, contentType: 'text/plain', body: 'CONTROLLED_NETWORK_SEQUENCE: price HTTP 503' }); });
   await page.getByRole('button', { name: '다시 불러오기', exact: true }).click();
@@ -103,13 +114,16 @@ test('real CACHE survives a controlled price 503 and recovers; genuine MISSING s
   expect(await page.getByTestId('chart_candle').locator('title').allTextContents()).toEqual(before.titles);
   expect(await page.getByTestId('chart_last_ohlc').innerText()).toBe(before.ohlc); await expect(page.getByTestId('chart_latest_close')).toHaveText(before.quote);
   await expect(page.getByTestId('chart_source')).toContainText('CACHE');
-  await expect.soft(page.locator('.pc-chart__error')).toContainText('503');
-  await expect.soft(page.locator('.pc-chart__error')).toContainText('CACHE');
+  await expect.soft(receptionError).toContainText('503');
+  await expect.soft(receptionError).toContainText('CACHE');
+  await expect(cutoffWarning).toHaveCount(staleCutoff ? 1 : 0);
   await page.unroute(actual.url);
   await page.route(actual.url, async route => { restored++; await route.continue(); });
   await page.getByRole('button', { name: '다시 불러오기', exact: true }).click();
   await expect.poll(() => restored).toBe(1); await expect(page.getByRole('button', { name: '다시 불러오기', exact: true })).toBeEnabled();
-  await expect(page.locator('.pc-chart__error')).toHaveCount(actual.data.error ? 1 : 0);
+  await expect(receptionError).toHaveCount(actual.data.error ? 1 : 0);
+  if (actual.data.error) await expect(receptionError).toContainText(actual.data.error);
+  await expect(cutoffWarning).toHaveCount(staleCutoff ? 1 : 0);
   expect(await page.getByTestId('chart_candle').locator('title').allTextContents()).toEqual(before.titles);
   expect(await page.getByTestId('chart_last_ohlc').innerText()).toBe(before.ohlc); await page.unroute(actual.url);
 
@@ -138,5 +152,5 @@ test('real CACHE survives a controlled price 503 and recovers; genuine MISSING s
   await page.getByRole('button', { name: '다시 불러오기', exact: true }).click();
   await expect.poll(() => missingRequests).toBe(attemptsBefore + 1);
   await expect(page.locator('.pc-chart__error')).toContainText(missing.data.error!); await expect(page.getByTestId('chart_candle')).toHaveCount(0);
-  await evidence(testInfo, { kind: 'CONTROLLED_NETWORK_SEQUENCE', controlled: true, actualPriceUrl: actual.url, actualPriceSha256: actual.sha256, injectedStatus: 503, injectedFailures: failures, restoredActualRequests: restored, preservedCandleCount: before.titles.length, missingCode, missingUrl: missing.url, missingSha256: missing.sha256, missingSourceUrl: missing.data.sourceUrl, missingRequestedCutoffDate: missing.data.requestedCutoffDate, missingLastAttemptAt: missing.data.lastAttemptAt, genuineMissingReason: missing.data.error, missingRequests });
+  await evidence(testInfo, { kind: 'CONTROLLED_NETWORK_SEQUENCE', controlled: true, actualPriceUrl: actual.url, actualPriceSha256: actual.sha256, injectedStatus: 503, injectedFailures: failures, restoredActualRequests: restored, preservedCandleCount: before.titles.length, retainedPriceCutoff: actual.data.requestedCutoffDate, screenCutoff: manifest.priceCutoffDate, retainedSourceError: actual.data.error, staleCutoffWarningExpected: staleCutoff, missingCode, missingUrl: missing.url, missingSha256: missing.sha256, missingSourceUrl: missing.data.sourceUrl, missingRequestedCutoffDate: missing.data.requestedCutoffDate, missingLastAttemptAt: missing.data.lastAttemptAt, genuineMissingReason: missing.data.error, missingRequests });
 });
