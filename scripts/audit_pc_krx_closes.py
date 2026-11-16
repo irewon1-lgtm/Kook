@@ -65,7 +65,7 @@ def _positive_price(value: object) -> int:
     return n
 
 
-def read_official(payload: bytes, market: str, date: str=DAY) -> dict[str, dict]:
+def read_official(payload: bytes, market: str, date: str=DAY, target_codes: set[str]|None=None) -> dict[str, dict]:
     """Returns only exact six-character short codes; never guesses ISIN mappings."""
     obj = json.loads(payload)
     rows = obj.get('OutBlock_1') if isinstance(obj, dict) else None
@@ -79,6 +79,9 @@ def read_official(payload: bytes, market: str, date: str=DAY) -> dict[str, dict]
         if not isinstance(code, str) or not CODE_RE.fullmatch(code):
             # Any ISIN must be separately mapped using approved KRX base-info;
             # deriving six digits by slicing would permit a wrong match.
+            continue
+        if target_codes is not None and code not in target_codes:
+            # Unrelated suspended/zero-priced securities cannot block the 67.
             continue
         if code in result:
             raise ValueError('Duplicate official KRX issuer ' + code)
@@ -189,7 +192,7 @@ def execute(registry_path: Path, *, status_only: bool=False, files: dict[str,Pat
     source = {m:{'sha256':hashlib.sha256(raw[m]).hexdigest(), 'origin':'KRX_OPEN_API', 'api_id': 'stk_bydd_trd' if m=='KOSPI' else 'ksq_bydd_trd'} for m in raw}
     official = {}
     for m in ('KOSPI','KOSDAQ'):
-        data = read_official(raw[m],m)
+        data = read_official(raw[m],m,target_codes={x['issuer_id'] for x in registry})
         if set(official).intersection(data):
             raise ValueError('One KRX issuer appears in both KOSPI and KOSDAQ')
         official.update(data)
