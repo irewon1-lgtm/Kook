@@ -3,8 +3,8 @@
   "policy_version": "STAGE4_BS_SAFETY_V1",
   "snapshot_date_kst": "2026-11-18",
   "source": "FSS OpenDART bulk balance sheets + OPENDART_AUTHENTICATED_API",
-  "source_file": "2025_4Q_BS_20261117035210.zip|2026_1Q_BS_20261118030339.zip|2026_2Q_BS_20261117043904.zip|2026_3Q_BS_20261117050134.zip",
-  "collected_at_utc": "2026-11-17T18:49:15.314963+00:00",
+  "source_file": "2025_4Q_BS_20261117035210.zip|2026_1Q_BS_20261118030339.zip|2026_2Q_BS_20261118032826.zip|2026_3Q_BS_20261117050134.zip",
+  "collected_at_utc": "2026-11-17T18:55:18.018807+00:00",
   "quant_records_sha256": "47a8e7f2c9329c05b02999add557fb4e81f89dac6c07071016249695d69db286",
   "thresholds": {
     "debt_to_equity_max_pct": 400.0,
@@ -13,13 +13,13 @@
   },
   "coverage": {
     "pass": 2096,
-    "fail": 291,
-    "hold": 36,
+    "fail": 290,
+    "hold": 37,
     "not_applicable": 226,
     "total": 2649,
     "raw_balance_sheet": 2645,
-    "verified_facts": 2600,
-    "filing_verified": 2626,
+    "verified_facts": 2599,
+    "filing_verified": 2625,
     "hold_reasons": {
       "ACCOUNTING_IDENTITY_MISMATCH": 1,
       "CORRECTION_VALUES_NOT_RECONCILED": 6,
@@ -27,7 +27,7 @@
       "IDENTITY_MISMATCH": 1,
       "INVALID_FILING_DATE": 2,
       "ISSUER_NAME_MISMATCH": 12,
-      "MIXED_PERIOD": 12,
+      "MIXED_PERIOD": 13,
       "NONPOSITIVE_ASSETS": 1
     }
   },
@@ -792,7 +792,7 @@
       "status": "PASS",
       "reason": "PASS",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-06-30:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-06-30:KRW",
       "assets": 189538973468,
       "liabilities": 72604814556,
       "equity": 116934158912,
@@ -805,9 +805,9 @@
       "unit": "KRW",
       "report_period": "2026-06-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -815,35 +815,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "189,538,973,468",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "72,604,814,556",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "116,934,158,912",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동 자산",
           "column": "당기 반기말",
           "raw": "67,216,159,483",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동 부채",
           "column": "당기 반기말",
           "raw": "55,890,433,025",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -958,7 +958,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/08c871b55157bfe7b39ad3f6919543091e38c346a4bbdcc54eea47e76e2d493e.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/08c871b55157bfe7b39ad3f6919543091e38c346a4bbdcc54eea47e76e2d493e.metadata.json",
-        "reconciled_at_utc": "2026-11-17T18:45:36.734369+00:00",
+        "reconciled_at_utc": "2026-11-17T18:54:28.689179+00:00",
         "mismatches": {}
       }
     },
@@ -7289,7 +7289,7 @@
       "status": "NOT_APPLICABLE",
       "reason": "FINANCIAL_SECTOR_NOT_COMPARABLE",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-09-30:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-09-30:KRW",
       "assets": 13159991228368,
       "liabilities": 11029309827499,
       "equity": 2130681400869,
@@ -7302,9 +7302,9 @@
       "unit": "KRW",
       "report_period": "2026-09-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┴⌡▒╟_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┴⌡▒╟_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -7312,21 +7312,21 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "13,159,991,228,368",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┴⌡▒╟_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┴⌡▒╟_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "11,029,309,827,499",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┴⌡▒╟_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┴⌡▒╟_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "2,130,681,400,869",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┴⌡▒╟_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┴⌡▒╟_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -9661,7 +9661,7 @@
       "status": "HOLD",
       "reason": "ISSUER_NAME_MISMATCH",
       "scope": "OFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:OFS:2026-06-30:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:OFS:2026-06-30:KRW",
       "assets": 49482112584,
       "liabilities": 25206910109,
       "equity": 24275202475,
@@ -9674,9 +9674,9 @@
       "unit": "KRW",
       "report_period": "2026-06-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [
         "ISSUER_NAME_MISMATCH"
       ],
@@ -9686,35 +9686,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "49,482,112,584",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "25,206,910,109",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "24,275,202,475",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동 자산",
           "column": "당기 반기말",
           "raw": "4,688,468,290",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동 부채",
           "column": "당기 반기말",
           "raw": "17,873,911,079",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         }
       },
       "facts_verified": false,
@@ -10038,7 +10038,7 @@
       "status": "PASS",
       "reason": "PASS",
       "scope": "OFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:OFS:2026-09-30:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:OFS:2026-09-30:KRW",
       "assets": 81385230204,
       "liabilities": 10767397239,
       "equity": 70617832965,
@@ -10051,9 +10051,9 @@
       "unit": "KRW",
       "report_period": "2026-09-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -10061,35 +10061,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "81,385,230,204",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "10,767,397,239",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "70,617,832,965",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동 자산",
           "column": "당기 반기말",
           "raw": "50,398,669,417",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동 부채",
           "column": "당기 반기말",
           "raw": "3,589,910,029",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -11929,7 +11929,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/7041d5aebd6db5ee727e231ed672b164b00d72d0ddda96b9e3f302275aff09e2.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/7041d5aebd6db5ee727e231ed672b164b00d72d0ddda96b9e3f302275aff09e2.metadata.json",
-        "reconciled_at_utc": "2026-11-17T18:45:43.889467+00:00",
+        "reconciled_at_utc": "2026-11-17T18:54:29.810918+00:00",
         "mismatches": {}
       }
     },
@@ -27798,7 +27798,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/c3da6552c5b87a6222d59e7b8dffba10d87e56b5004409f1fdc33ff6ab287fbc.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/c3da6552c5b87a6222d59e7b8dffba10d87e56b5004409f1fdc33ff6ab287fbc.metadata.json",
-        "reconciled_at_utc": "2026-11-17T18:45:56.809207+00:00",
+        "reconciled_at_utc": "2026-11-17T18:54:32.686948+00:00",
         "mismatches": {}
       }
     },
@@ -34481,7 +34481,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/24e7b85eaf4c0bb96dd214ad0a035d1e60fcbb6ecef83272a59043e239898fd8.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/24e7b85eaf4c0bb96dd214ad0a035d1e60fcbb6ecef83272a59043e239898fd8.metadata.json",
-        "reconciled_at_utc": "2026-11-17T18:46:01.115132+00:00",
+        "reconciled_at_utc": "2026-11-17T18:54:33.686938+00:00",
         "mismatches": {}
       }
     },
@@ -34883,7 +34883,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/27144dfd6919c128ca17ba713d367846f6c43be476e7b8ca63341b69bebe3676.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/27144dfd6919c128ca17ba713d367846f6c43be476e7b8ca63341b69bebe3676.metadata.json",
-        "reconciled_at_utc": "2026-11-17T18:46:08.084068+00:00",
+        "reconciled_at_utc": "2026-11-17T18:54:34.814470+00:00",
         "mismatches": {}
       }
     },
@@ -36785,7 +36785,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/12e290763e1aa9316f0fd704d1259f316bc1b50b285417be945fe2c237633970.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/12e290763e1aa9316f0fd704d1259f316bc1b50b285417be945fe2c237633970.metadata.json",
-        "reconciled_at_utc": "2026-11-17T18:46:15.771734+00:00",
+        "reconciled_at_utc": "2026-11-17T18:54:35.815037+00:00",
         "mismatches": {}
       }
     },
@@ -43129,7 +43129,7 @@
       "status": "PASS",
       "reason": "PASS",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-09-30:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-09-30:KRW",
       "assets": 668275466642,
       "liabilities": 488509635868,
       "equity": 179765830774,
@@ -43142,9 +43142,9 @@
       "unit": "KRW",
       "report_period": "2026-09-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -43152,35 +43152,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "668,275,466,642",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "488,509,635,868",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "179,765,830,774",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동 자산",
           "column": "당기 반기말",
           "raw": "283,532,489,083",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동 부채",
           "column": "당기 반기말",
           "raw": "351,839,729,594",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -44779,7 +44779,7 @@
       "status": "PASS",
       "reason": "PASS",
       "scope": "OFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:OFS:2026-09-30:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:OFS:2026-09-30:KRW",
       "assets": 161395719172,
       "liabilities": 115151879791,
       "equity": 46243839381,
@@ -44792,9 +44792,9 @@
       "unit": "KRW",
       "report_period": "2026-09-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -44802,35 +44802,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "161,395,719,172",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "115,151,879,791",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "46,243,839,381",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동 자산",
           "column": "당기 반기말",
           "raw": "69,879,033,559",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동 부채",
           "column": "당기 반기말",
           "raw": "67,308,560,354",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -45679,7 +45679,7 @@
       "status": "NOT_APPLICABLE",
       "reason": "FINANCIAL_SECTOR_NOT_COMPARABLE",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-09-30:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-09-30:KRW",
       "assets": 97836269223,
       "liabilities": 16351684137,
       "equity": 81484585086,
@@ -45692,9 +45692,9 @@
       "unit": "KRW",
       "report_period": "2026-09-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_▒▌└╢▒Γ┼╕_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_▒▌└╢▒Γ┼╕_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -45702,21 +45702,21 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "97,836,269,223",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_▒▌└╢▒Γ┼╕_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_▒▌└╢▒Γ┼╕_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "16,351,684,137",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_▒▌└╢▒Γ┼╕_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_▒▌└╢▒Γ┼╕_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "81,484,585,086",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_▒▌└╢▒Γ┼╕_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_▒▌└╢▒Γ┼╕_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -47601,7 +47601,7 @@
       "status": "NOT_APPLICABLE",
       "reason": "FINANCIAL_SECTOR_NOT_COMPARABLE",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-06-30:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-06-30:KRW",
       "assets": 526866295000000,
       "liabilities": 488932282000000,
       "equity": 37934013000000,
@@ -47614,9 +47614,9 @@
       "unit": "KRW",
       "report_period": "2026-06-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_└║╟α_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_└║╟α_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -47624,21 +47624,21 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "526,866,295,000,000",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_└║╟α_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_└║╟α_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "488,932,282,000,000",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_└║╟α_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_└║╟α_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "37,934,013,000,000",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_└║╟α_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_└║╟α_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -51173,7 +51173,7 @@
       "status": "FAIL",
       "reason": "CURRENT_RATIO_UNDER_70",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-06-30:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-06-30:KRW",
       "assets": 466996518020,
       "liabilities": 337080721348,
       "equity": 129915796672,
@@ -51186,9 +51186,9 @@
       "unit": "KRW",
       "report_period": "2026-06-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -51196,35 +51196,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "466,996,518,020",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "337,080,721,348",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "129,915,796,672",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동 자산",
           "column": "당기 반기말",
           "raw": "146,402,424,973",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동 부채",
           "column": "당기 반기말",
           "raw": "277,986,051,125",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -52150,7 +52150,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/b380d03d5337d87d5ac260a039eb4e014759649f4d7cd08dc374aaa6a5ebc203.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/b380d03d5337d87d5ac260a039eb4e014759649f4d7cd08dc374aaa6a5ebc203.metadata.json",
-        "reconciled_at_utc": "2026-11-17T18:46:21.331395+00:00",
+        "reconciled_at_utc": "2026-11-17T18:54:36.690892+00:00",
         "mismatches": {}
       }
     },
@@ -54010,7 +54010,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/e27cff8890dc1a4ad4f8444be7ca2b9c366f68a1511be5782830f17fb80a7b0d.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/e27cff8890dc1a4ad4f8444be7ca2b9c366f68a1511be5782830f17fb80a7b0d.metadata.json",
-        "reconciled_at_utc": "2026-11-17T18:46:24.198781+00:00",
+        "reconciled_at_utc": "2026-11-17T18:54:37.687425+00:00",
         "mismatches": {}
       }
     },
@@ -55282,7 +55282,7 @@
       "status": "PASS",
       "reason": "PASS",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-09-30:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-09-30:KRW",
       "assets": 78238803418,
       "liabilities": 11179050120,
       "equity": 67059753298,
@@ -55295,9 +55295,9 @@
       "unit": "KRW",
       "report_period": "2026-09-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -55305,35 +55305,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "78,238,803,418",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "11,179,050,120",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "67,059,753,298",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동 자산",
           "column": "당기 반기말",
           "raw": "53,118,121,951",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동 부채",
           "column": "당기 반기말",
           "raw": "10,384,080,527",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -59184,7 +59184,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/a82f1b947fdcff28347fd72c4c595365cfa031a087e27117e83a582283a6f21a.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/a82f1b947fdcff28347fd72c4c595365cfa031a087e27117e83a582283a6f21a.metadata.json",
-        "reconciled_at_utc": "2026-11-17T18:46:29.204378+00:00",
+        "reconciled_at_utc": "2026-11-17T18:54:38.686940+00:00",
         "mismatches": {}
       }
     },
@@ -68424,7 +68424,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/d92973a65e3fa2023a2a2d7245ba3a89005adfe602b6be2be320d6b91c9950ac.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/d92973a65e3fa2023a2a2d7245ba3a89005adfe602b6be2be320d6b91c9950ac.metadata.json",
-        "reconciled_at_utc": "2026-11-17T18:46:41.889808+00:00",
+        "reconciled_at_utc": "2026-11-17T18:54:40.688242+00:00",
         "mismatches": {}
       }
     },
@@ -76851,7 +76851,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/e69c1663fb7043cd4d4d36c9ad443f4febcb863adcd240a77103cc0a1366ff5d.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/e69c1663fb7043cd4d4d36c9ad443f4febcb863adcd240a77103cc0a1366ff5d.metadata.json",
-        "reconciled_at_utc": "2026-11-17T18:46:46.188716+00:00",
+        "reconciled_at_utc": "2026-11-17T18:54:41.687532+00:00",
         "mismatches": {}
       }
     },
@@ -80823,7 +80823,7 @@
       "status": "PASS",
       "reason": "PASS",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-09-30:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-09-30:KRW",
       "assets": 69126352286,
       "liabilities": 21700257742,
       "equity": 47426094544,
@@ -80836,9 +80836,9 @@
       "unit": "KRW",
       "report_period": "2026-09-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -80846,35 +80846,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "69,126,352,286",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "21,700,257,742",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "47,426,094,544",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동 자산",
           "column": "당기 반기말",
           "raw": "23,590,298,470",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동 부채",
           "column": "당기 반기말",
           "raw": "21,268,518,400",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -81216,7 +81216,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/78c66abc625a497cdb9c7064cd4099906ba2dd98d30f0a21a3f12845ee55b9c8.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/78c66abc625a497cdb9c7064cd4099906ba2dd98d30f0a21a3f12845ee55b9c8.metadata.json",
-        "reconciled_at_utc": "2026-11-17T18:46:53.697871+00:00",
+        "reconciled_at_utc": "2026-11-17T18:54:43.691000+00:00",
         "mismatches": {}
       }
     },
@@ -81993,7 +81993,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/9df5220cef22026eff375c79ba726fe0880d421efcaa565cb87d14c65474f69a.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/9df5220cef22026eff375c79ba726fe0880d421efcaa565cb87d14c65474f69a.metadata.json",
-        "reconciled_at_utc": "2026-11-17T18:47:00.303002+00:00",
+        "reconciled_at_utc": "2026-11-17T18:54:44.691729+00:00",
         "mismatches": {}
       }
     },
@@ -85620,7 +85620,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/7925a2e264c16561283fb814fdbc5100cf613da5148aed984f35566707d930cb.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/7925a2e264c16561283fb814fdbc5100cf613da5148aed984f35566707d930cb.metadata.json",
-        "reconciled_at_utc": "2026-11-17T18:47:04.418067+00:00",
+        "reconciled_at_utc": "2026-11-17T18:54:45.684599+00:00",
         "mismatches": {}
       }
     },
@@ -85947,7 +85947,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/2b368cfffec5e5d18e77e5713b37731559d02cdae699c71d0f27a6f3c9602018.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/2b368cfffec5e5d18e77e5713b37731559d02cdae699c71d0f27a6f3c9602018.metadata.json",
-        "reconciled_at_utc": "2026-11-17T18:47:07.816794+00:00",
+        "reconciled_at_utc": "2026-11-17T18:54:46.699954+00:00",
         "mismatches": {}
       }
     },
@@ -86783,7 +86783,7 @@
       "status": "PASS",
       "reason": "PASS",
       "scope": "OFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:OFS:2026-09-30:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:OFS:2026-09-30:KRW",
       "assets": 80694314277,
       "liabilities": 28974629820,
       "equity": 51719684457,
@@ -86796,9 +86796,9 @@
       "unit": "KRW",
       "report_period": "2026-09-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -86806,35 +86806,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "80,694,314,277",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "28,974,629,820",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "51,719,684,457",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동 자산",
           "column": "당기 반기말",
           "raw": "69,026,099,819",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동 부채",
           "column": "당기 반기말",
           "raw": "27,410,419,064",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -99571,7 +99571,7 @@
       "status": "NOT_APPLICABLE",
       "reason": "FINANCIAL_SECTOR_NOT_COMPARABLE",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-06-30:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-06-30:KRW",
       "assets": 713462782000000,
       "liabilities": 665015628000000,
       "equity": 48447154000000,
@@ -99584,9 +99584,9 @@
       "unit": "KRW",
       "report_period": "2026-06-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_▒▌└╢▒Γ┼╕_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_▒▌└╢▒Γ┼╕_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -99594,21 +99594,21 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "713,462,782,000,000",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_▒▌└╢▒Γ┼╕_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_▒▌└╢▒Γ┼╕_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "665,015,628,000,000",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_▒▌└╢▒Γ┼╕_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_▒▌└╢▒Γ┼╕_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "48,447,154,000,000",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_▒▌└╢▒Γ┼╕_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_▒▌└╢▒Γ┼╕_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -100307,7 +100307,7 @@
       "status": "HOLD",
       "reason": "MIXED_PERIOD",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-09-30:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-09-30:KRW",
       "assets": null,
       "liabilities": null,
       "equity": null,
@@ -100320,9 +100320,9 @@
       "unit": "KRW",
       "report_period": "2026-09-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [
         "MIXED_PERIOD",
         "CONFLICTING_ACCOUNT_ASSETS",
@@ -100337,35 +100337,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "661,813,694,147",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "454,654,501,807",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "207,159,192,340",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동자산",
           "column": "당기 반기말",
           "raw": "15,982,063,302",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동부채",
           "column": "당기 반기말",
           "raw": "6,023,423,873",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": false,
@@ -102533,7 +102533,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/3c9271c9a7fa3a910fb82490dadb0b38acce49d02fa2a42f8770ec82eb4b7f59.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/3c9271c9a7fa3a910fb82490dadb0b38acce49d02fa2a42f8770ec82eb4b7f59.metadata.json",
-        "reconciled_at_utc": "2026-11-17T18:47:14.959160+00:00",
+        "reconciled_at_utc": "2026-11-17T18:54:47.814343+00:00",
         "mismatches": {}
       }
     },
@@ -104197,7 +104197,7 @@
       "status": "PASS",
       "reason": "PASS",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-09-30:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-09-30:KRW",
       "assets": 251529394860,
       "liabilities": 12398050603,
       "equity": 239131344257,
@@ -104210,9 +104210,9 @@
       "unit": "KRW",
       "report_period": "2026-09-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -104220,35 +104220,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "251,529,394,860",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "12,398,050,603",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "239,131,344,257",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동 자산",
           "column": "당기 반기말",
           "raw": "110,948,962,409",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동 부채",
           "column": "당기 반기말",
           "raw": "11,958,976,005",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -106130,7 +106130,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/5f9b7fa479bc154138b9f36478e2e0605763ed1e9f3465c6d0af4ecd81ee3572.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/5f9b7fa479bc154138b9f36478e2e0605763ed1e9f3465c6d0af4ecd81ee3572.metadata.json",
-        "reconciled_at_utc": "2026-11-17T18:47:20.689209+00:00",
+        "reconciled_at_utc": "2026-11-17T18:54:48.696201+00:00",
         "mismatches": {}
       }
     },
@@ -109157,7 +109157,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/78e6ccf30d34fcbe839e8bdc98df6c65bbf224e6c8eea80eac5b4b0d18f135b1.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/78e6ccf30d34fcbe839e8bdc98df6c65bbf224e6c8eea80eac5b4b0d18f135b1.metadata.json",
-        "reconciled_at_utc": "2026-11-17T18:47:24.086946+00:00",
+        "reconciled_at_utc": "2026-11-17T18:54:49.684882+00:00",
         "mismatches": {}
       }
     },
@@ -109168,7 +109168,7 @@
       "status": "PASS",
       "reason": "PASS",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-09-30:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-09-30:KRW",
       "assets": 69167127728,
       "liabilities": 25392529485,
       "equity": 43774598243,
@@ -109181,9 +109181,9 @@
       "unit": "KRW",
       "report_period": "2026-09-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -109191,35 +109191,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "69,167,127,728",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "25,392,529,485",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "43,774,598,243",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동 자산",
           "column": "당기 반기말",
           "raw": "44,220,797,827",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동 부채",
           "column": "당기 반기말",
           "raw": "21,465,666,482",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -109768,7 +109768,7 @@
       "status": "PASS",
       "reason": "PASS",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-06-30:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-06-30:KRW",
       "assets": 85100747087,
       "liabilities": 16735796983,
       "equity": 68364950104,
@@ -109781,9 +109781,9 @@
       "unit": "KRW",
       "report_period": "2026-06-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -109791,35 +109791,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "85,100,747,087",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "16,735,796,983",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "68,364,950,104",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동 자산",
           "column": "당기 반기말",
           "raw": "60,690,011,674",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동 부채",
           "column": "당기 반기말",
           "raw": "14,342,650,985",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -110970,7 +110970,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/a358324621dab0386db89525c20d3f3adb9d2952b01470a462a53695e15dd841.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/a358324621dab0386db89525c20d3f3adb9d2952b01470a462a53695e15dd841.metadata.json",
-        "reconciled_at_utc": "2026-11-17T18:47:27.664631+00:00",
+        "reconciled_at_utc": "2026-11-17T18:54:50.686750+00:00",
         "mismatches": {}
       }
     },
@@ -115933,7 +115933,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/2e20f20bb10e1d724e68d3bcaec354507621c7d8e4ac8094502edf4d03663952.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/2e20f20bb10e1d724e68d3bcaec354507621c7d8e4ac8094502edf4d03663952.metadata.json",
-        "reconciled_at_utc": "2026-11-17T18:47:34.446794+00:00",
+        "reconciled_at_utc": "2026-11-17T18:54:51.701767+00:00",
         "mismatches": {}
       }
     },
@@ -129410,7 +129410,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/858151d306754ecdb798540f57baa5ff8e27c847af654b5b99fc98e2d3badf40.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/858151d306754ecdb798540f57baa5ff8e27c847af654b5b99fc98e2d3badf40.metadata.json",
-        "reconciled_at_utc": "2026-11-17T18:47:38.736134+00:00",
+        "reconciled_at_utc": "2026-11-17T18:54:52.692291+00:00",
         "mismatches": {}
       }
     },
@@ -131373,7 +131373,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/ee5be998315640a6a4b3eafdab8f9429e12a5474164bec538597dc24f9137e3d.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/ee5be998315640a6a4b3eafdab8f9429e12a5474164bec538597dc24f9137e3d.metadata.json",
-        "reconciled_at_utc": "2026-11-17T18:47:41.778931+00:00",
+        "reconciled_at_utc": "2026-11-17T18:54:53.686367+00:00",
         "mismatches": {}
       }
     },
@@ -132961,7 +132961,7 @@
       "status": "NOT_APPLICABLE",
       "reason": "FINANCIAL_SECTOR_NOT_COMPARABLE",
       "scope": "OFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:OFS:2026-09-30:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:OFS:2026-09-30:KRW",
       "assets": 954838908681,
       "liabilities": 852753465502,
       "equity": 102085443179,
@@ -132974,9 +132974,9 @@
       "unit": "KRW",
       "report_period": "2026-09-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┴⌡▒╟_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┴⌡▒╟_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -132984,21 +132984,21 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "954,838,908,681",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┴⌡▒╟_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┴⌡▒╟_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "852,753,465,502",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┴⌡▒╟_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┴⌡▒╟_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "102,085,443,179",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┴⌡▒╟_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┴⌡▒╟_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -133638,7 +133638,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/350f004afd72d5ae01c6a38b53aebfece9216dfe5eb9e8aff314141d54e84bcf.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/350f004afd72d5ae01c6a38b53aebfece9216dfe5eb9e8aff314141d54e84bcf.metadata.json",
-        "reconciled_at_utc": "2026-11-17T18:47:52.683025+00:00",
+        "reconciled_at_utc": "2026-11-17T18:54:55.690271+00:00",
         "mismatches": {}
       }
     },
@@ -134265,7 +134265,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/2329d98f718685173ddabdc03601bde553ec6992d9a3ea12b61229a9e2f94c0d.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/2329d98f718685173ddabdc03601bde553ec6992d9a3ea12b61229a9e2f94c0d.metadata.json",
-        "reconciled_at_utc": "2026-11-17T18:47:56.259283+00:00",
+        "reconciled_at_utc": "2026-11-17T18:54:56.691056+00:00",
         "mismatches": {}
       }
     },
@@ -135192,7 +135192,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/a71c17124001d93036d7a14f71996b095d2d2018ecccc63385243c8dc077179f.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/a71c17124001d93036d7a14f71996b095d2d2018ecccc63385243c8dc077179f.metadata.json",
-        "reconciled_at_utc": "2026-11-17T18:47:59.845613+00:00",
+        "reconciled_at_utc": "2026-11-17T18:54:57.686809+00:00",
         "mismatches": {}
       }
     },
@@ -135894,7 +135894,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/9fe96d8db440a60fc0b10e2953000f139d83ac0bd4a984cbc2fedd9b8c190f25.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/9fe96d8db440a60fc0b10e2953000f139d83ac0bd4a984cbc2fedd9b8c190f25.metadata.json",
-        "reconciled_at_utc": "2026-11-17T18:48:04.851564+00:00",
+        "reconciled_at_utc": "2026-11-17T18:54:58.707991+00:00",
         "mismatches": {}
       }
     },
@@ -137346,7 +137346,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/48887e8e0f682dd38c489190245dddc48511799138cc03f1dc10c9aa795e9ea0.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/48887e8e0f682dd38c489190245dddc48511799138cc03f1dc10c9aa795e9ea0.metadata.json",
-        "reconciled_at_utc": "2026-11-17T18:48:08.071511+00:00",
+        "reconciled_at_utc": "2026-11-17T18:54:59.685723+00:00",
         "mismatches": {}
       }
     },
@@ -137900,7 +137900,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/802fd824860d783e472520302fe91b5708878e67bdb1a46a4536601de9982aae.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/802fd824860d783e472520302fe91b5708878e67bdb1a46a4536601de9982aae.metadata.json",
-        "reconciled_at_utc": "2026-11-17T18:48:12.537919+00:00",
+        "reconciled_at_utc": "2026-11-17T18:55:00.712278+00:00",
         "mismatches": {}
       }
     },
@@ -148324,7 +148324,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/45d89a0990376fa554e6e03efa3b747bfac28d3737837cc91b6e2399467fa239.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/45d89a0990376fa554e6e03efa3b747bfac28d3737837cc91b6e2399467fa239.metadata.json",
-        "reconciled_at_utc": "2026-11-17T18:48:15.224957+00:00",
+        "reconciled_at_utc": "2026-11-17T18:55:01.694786+00:00",
         "mismatches": {}
       }
     },
@@ -148410,7 +148410,7 @@
       "status": "FAIL",
       "reason": "CURRENT_RATIO_UNDER_70",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-06-30:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-06-30:KRW",
       "assets": 92754320480,
       "liabilities": 71550432916,
       "equity": 21203887564,
@@ -148423,9 +148423,9 @@
       "unit": "KRW",
       "report_period": "2026-06-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -148433,35 +148433,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "92,754,320,480",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "71,550,432,916",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "21,203,887,564",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동 자산",
           "column": "당기 반기말",
           "raw": "17,896,085,440",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동 부채",
           "column": "당기 반기말",
           "raw": "54,042,622,334",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -149610,7 +149610,7 @@
       "status": "PASS",
       "reason": "PASS",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-06-30:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-06-30:KRW",
       "assets": 63394184866,
       "liabilities": 26739626687,
       "equity": 36654558179,
@@ -149623,9 +149623,9 @@
       "unit": "KRW",
       "report_period": "2026-06-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -149633,35 +149633,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "63,394,184,866",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "26,739,626,687",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "36,654,558,179",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동 자산",
           "column": "당기 반기말",
           "raw": "32,311,780,001",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동 부채",
           "column": "당기 반기말",
           "raw": "11,476,283,856",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -154785,7 +154785,7 @@
       "status": "PASS",
       "reason": "PASS",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-06-30:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-06-30:KRW",
       "assets": 109928899894,
       "liabilities": 46852668560,
       "equity": 63076231334,
@@ -154798,9 +154798,9 @@
       "unit": "KRW",
       "report_period": "2026-06-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -154808,35 +154808,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "109,928,899,894",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "46,852,668,560",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "63,076,231,334",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동 자산",
           "column": "당기 반기말",
           "raw": "40,087,942,413",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동 부채",
           "column": "당기 반기말",
           "raw": "27,134,251,416",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -154951,7 +154951,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/65cfd2201efb16eb0728e3a8535ab773780296bdb1f40b8eb993b6accd148bb5.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/65cfd2201efb16eb0728e3a8535ab773780296bdb1f40b8eb993b6accd148bb5.metadata.json",
-        "reconciled_at_utc": "2026-11-17T18:48:19.157144+00:00",
+        "reconciled_at_utc": "2026-11-17T18:55:02.692661+00:00",
         "mismatches": {}
       }
     },
@@ -157498,7 +157498,7 @@
       "status": "NOT_APPLICABLE",
       "reason": "FINANCIAL_SECTOR_NOT_COMPARABLE",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-09-30:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-09-30:KRW",
       "assets": 91537636006,
       "liabilities": 13727623697,
       "equity": 77810012309,
@@ -157511,9 +157511,9 @@
       "unit": "KRW",
       "report_period": "2026-09-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_▒▌└╢▒Γ┼╕_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_▒▌└╢▒Γ┼╕_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -157521,35 +157521,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "91,537,636,006",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_▒▌└╢▒Γ┼╕_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_▒▌└╢▒Γ┼╕_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "13,727,623,697",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_▒▌└╢▒Γ┼╕_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_▒▌└╢▒Γ┼╕_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "77,810,012,309",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_▒▌└╢▒Γ┼╕_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_▒▌└╢▒Γ┼╕_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "entity00599151_CurrenAssetsOfAssetsAbstract",
           "account_name": "유동자산",
           "column": "당기 반기말",
           "raw": "19,476,878,475",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_▒▌└╢▒Γ┼╕_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_▒▌└╢▒Γ┼╕_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "entity00599151_CurrentLiabilitiesOfLiabilitiesAbstract",
           "account_name": "유동부채",
           "column": "당기 반기말",
           "raw": "8,691,011,142",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_▒▌└╢▒Γ┼╕_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_▒▌└╢▒Γ┼╕_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -159134,7 +159134,7 @@
       "status": "FAIL",
       "reason": "CURRENT_RATIO_UNDER_70",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-06-30:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-06-30:KRW",
       "assets": 3112048937908,
       "liabilities": 2335924705694,
       "equity": 776124232214,
@@ -159147,9 +159147,9 @@
       "unit": "KRW",
       "report_period": "2026-06-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -159157,35 +159157,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "3,112,048,937,908",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "2,335,924,705,694",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "776,124,232,214",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동자산",
           "column": "당기 반기말",
           "raw": "83,252,303,965",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동부채",
           "column": "당기 반기말",
           "raw": "918,108,104,700",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -161912,7 +161912,7 @@
       "status": "HOLD",
       "reason": "INVALID_FILING_DATE",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-06-30:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-06-30:KRW",
       "assets": 53557930175,
       "liabilities": 38384642379,
       "equity": 15173287796,
@@ -161925,9 +161925,9 @@
       "unit": "KRW",
       "report_period": "2026-06-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [
         "INVALID_FILING_DATE"
       ],
@@ -161937,35 +161937,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "53,557,930,175",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "38,384,642,379",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "15,173,287,796",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동 자산",
           "column": "당기 반기말",
           "raw": "27,722,896,454",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동 부채",
           "column": "당기 반기말",
           "raw": "18,272,363,506",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": false,
@@ -162950,7 +162950,7 @@
       "status": "FAIL",
       "reason": "CURRENT_RATIO_UNDER_70",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-06-30:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-06-30:KRW",
       "assets": 183585576641,
       "liabilities": 123603928295,
       "equity": 59981648346,
@@ -162963,9 +162963,9 @@
       "unit": "KRW",
       "report_period": "2026-06-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -162973,35 +162973,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "183,585,576,641",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "123,603,928,295",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "59,981,648,346",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동 자산",
           "column": "당기 반기말",
           "raw": "44,161,531,677",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동 부채",
           "column": "당기 반기말",
           "raw": "67,263,871,601",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -163116,7 +163116,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/9eba78ef2c08ace8d53e97b53e614b00f987dfb8785d083dbf513ef716fa3e59.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/9eba78ef2c08ace8d53e97b53e614b00f987dfb8785d083dbf513ef716fa3e59.metadata.json",
-        "reconciled_at_utc": "2026-11-17T18:48:23.092505+00:00",
+        "reconciled_at_utc": "2026-11-17T18:55:03.695939+00:00",
         "mismatches": {}
       }
     },
@@ -164193,7 +164193,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/859f794738b61325819802078f1be091b4ae1f27da7173a571ea527ce90663e6.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/859f794738b61325819802078f1be091b4ae1f27da7173a571ea527ce90663e6.metadata.json",
-        "reconciled_at_utc": "2026-11-17T18:48:26.493746+00:00",
+        "reconciled_at_utc": "2026-11-17T18:55:04.691243+00:00",
         "mismatches": {}
       }
     },
@@ -165406,7 +165406,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/10526b99cf570b7544fdeebfee48e6e80379b2a333a1169cc73b0ba1bcd0b045.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/10526b99cf570b7544fdeebfee48e6e80379b2a333a1169cc73b0ba1bcd0b045.metadata.json",
-        "reconciled_at_utc": "2026-11-17T18:48:29.358163+00:00",
+        "reconciled_at_utc": "2026-11-17T18:55:05.698504+00:00",
         "mismatches": {}
       }
     },
@@ -166183,7 +166183,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/76a0a93c3b29b2617371646f5a59cd36080581f93560792279b362185b863563.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/76a0a93c3b29b2617371646f5a59cd36080581f93560792279b362185b863563.metadata.json",
-        "reconciled_at_utc": "2026-11-17T18:48:34.196056+00:00",
+        "reconciled_at_utc": "2026-11-17T18:55:06.706549+00:00",
         "mismatches": {}
       }
     },
@@ -167455,7 +167455,7 @@
       "status": "HOLD",
       "reason": "MIXED_PERIOD",
       "scope": "OFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:OFS:2026-09-30:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:OFS:2026-09-30:KRW",
       "assets": null,
       "liabilities": null,
       "equity": null,
@@ -167468,9 +167468,9 @@
       "unit": "KRW",
       "report_period": "2026-09-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [
         "MIXED_PERIOD",
         "CONFLICTING_ACCOUNT_ASSETS",
@@ -167485,35 +167485,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "2,859,921,867,748",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "1,762,736,378,026",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "1,097,185,489,722",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동자산",
           "column": "당기 반기말",
           "raw": "73,575,501,437",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동부채",
           "column": "당기 반기말",
           "raw": "880,579,786,868",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         }
       },
       "facts_verified": false,
@@ -168437,7 +168437,7 @@
       "status": "FAIL",
       "reason": "CURRENT_RATIO_UNDER_70",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-05-31:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-05-31:KRW",
       "assets": 584123609679,
       "liabilities": 146952508046,
       "equity": 437171101633,
@@ -168450,9 +168450,9 @@
       "unit": "KRW",
       "report_period": "2026-05-31",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -168460,35 +168460,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "584,123,609,679",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "146,952,508,046",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "437,171,101,633",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동 자산",
           "column": "당기 반기말",
           "raw": "26,608,048,042",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동 부채",
           "column": "당기 반기말",
           "raw": "146,952,508,046",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -169187,7 +169187,7 @@
       "status": "HOLD",
       "reason": "MIXED_PERIOD",
       "scope": "OFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:OFS:2026-08-31:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:OFS:2026-08-31:KRW",
       "assets": null,
       "liabilities": null,
       "equity": null,
@@ -169200,9 +169200,9 @@
       "unit": "KRW",
       "report_period": "2026-08-31",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [
         "MIXED_PERIOD",
         "CONFLICTING_ACCOUNT_ASSETS",
@@ -169217,35 +169217,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "107,738,591,210",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "157,189,732",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "107,581,401,478",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동자산",
           "column": "당기 반기말",
           "raw": "61,373,190,795",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동부채",
           "column": "당기 반기말",
           "raw": "157,189,732",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         }
       },
       "facts_verified": false,
@@ -171291,71 +171291,79 @@
       "issuer_code": "348950",
       "issuer_name": "제이알글로벌리츠",
       "sector": "부동산 임대 및 공급업",
-      "status": "FAIL",
-      "reason": "CURRENT_RATIO_UNDER_70",
+      "status": "HOLD",
+      "reason": "MIXED_PERIOD",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-03-31:KRW",
-      "assets": 2877869006741,
-      "liabilities": 1694903004753,
-      "equity": 1182966001988,
-      "current_assets": 170107686116,
-      "current_liabilities": 673895561200,
-      "debt_to_equity_pct": 143.275716,
-      "current_ratio_pct": 25.242441,
-      "identity_gap_pct": 0.0,
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-09-30:KRW",
+      "assets": null,
+      "liabilities": null,
+      "equity": null,
+      "current_assets": null,
+      "current_liabilities": null,
+      "debt_to_equity_pct": null,
+      "current_ratio_pct": null,
+      "identity_gap_pct": null,
       "currency": "KRW",
       "unit": "KRW",
-      "report_period": "2026-03-31",
+      "report_period": "2026-09-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
-      "validation_issues": [],
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
+      "validation_issues": [
+        "MIXED_PERIOD",
+        "CONFLICTING_ACCOUNT_ASSETS",
+        "CONFLICTING_ACCOUNT_LIABILITIES",
+        "CONFLICTING_ACCOUNT_EQUITY",
+        "CONFLICTING_ACCOUNT_CURRENT_ASSETS",
+        "CONFLICTING_ACCOUNT_CURRENT_LIABILITIES",
+        "INVALID_FILING_DATE"
+      ],
       "account_evidence": {
         "assets": {
           "account_code": "ifrs-full_Assets",
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "2,877,869,006,741",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "1,694,903,004,753",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "1,182,966,001,988",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동자산",
           "column": "당기 반기말",
           "raw": "170,107,686,116",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동부채",
           "column": "당기 반기말",
           "raw": "673,895,561,200",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
-      "facts_verified": true,
+      "facts_verified": false,
       "corp_code": "01415892",
-      "receipt_no": "20260515003003",
-      "filing_date": "2026-05-15",
-      "source_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260515003003",
-      "report_name": "반기보고서 (2026.03)",
-      "correction_status": "ORIGINAL",
-      "correction_check": "OPENDART_API: last_reprt_at=Y; explicit rcept_dt; exact stock/name/type/period; bulk amendment incorporation unverified",
+      "receipt_no": "",
+      "filing_date": "",
+      "source_url": "",
+      "report_name": "",
+      "correction_status": "UNKNOWN",
+      "correction_check": "NOT_CHECKED",
       "search_sha256": "",
       "profile_sha256": "",
       "reconciliation_error": "",
@@ -171369,7 +171377,7 @@
       "status": "HOLD",
       "reason": "MIXED_PERIOD",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-09-30:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-09-30:KRW",
       "assets": null,
       "liabilities": null,
       "equity": null,
@@ -171382,9 +171390,9 @@
       "unit": "KRW",
       "report_period": "2026-09-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [
         "MIXED_PERIOD",
         "CONFLICTING_ACCOUNT_ASSETS",
@@ -171399,35 +171407,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "418,125,300,498",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "102,051,709,239",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "316,073,591,259",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동자산",
           "column": "당기 반기말",
           "raw": "19,497,737,799",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동부채",
           "column": "당기 반기말",
           "raw": "102,051,709,239",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": false,
@@ -173101,7 +173109,7 @@
       "status": "FAIL",
       "reason": "CURRENT_RATIO_UNDER_70",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-08-31:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-08-31:KRW",
       "assets": 1857724477154,
       "liabilities": 1281045081846,
       "equity": 576679395308,
@@ -173114,9 +173122,9 @@
       "unit": "KRW",
       "report_period": "2026-08-31",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -173124,35 +173132,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "1,857,724,477,154",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "1,281,045,081,846",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "576,679,395,308",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동자산",
           "column": "당기 반기말",
           "raw": "86,958,857,025",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동부채",
           "column": "당기 반기말",
           "raw": "813,907,665,354",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -173251,7 +173259,7 @@
       "status": "HOLD",
       "reason": "MIXED_PERIOD",
       "scope": "OFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:OFS:2026-08-31:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:OFS:2026-08-31:KRW",
       "assets": null,
       "liabilities": null,
       "equity": null,
@@ -173264,9 +173272,9 @@
       "unit": "KRW",
       "report_period": "2026-08-31",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [
         "MIXED_PERIOD",
         "CONFLICTING_ACCOUNT_ASSETS",
@@ -173281,35 +173289,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "301,539,190,421",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "207,606,806,664",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "93,932,383,757",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동자산",
           "column": "당기 반기말",
           "raw": "16,227,001,251",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동부채",
           "column": "당기 반기말",
           "raw": "5,482,863,098",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         }
       },
       "facts_verified": false,
@@ -173333,7 +173341,7 @@
       "status": "FAIL",
       "reason": "CURRENT_RATIO_UNDER_70",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-06-30:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-06-30:KRW",
       "assets": 152395822542,
       "liabilities": 59043555039,
       "equity": 93352267503,
@@ -173346,9 +173354,9 @@
       "unit": "KRW",
       "report_period": "2026-06-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -173356,35 +173364,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "152,395,822,542",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "59,043,555,039",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "93,352,267,503",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동 자산",
           "column": "당기 반기말",
           "raw": "4,329,590,361",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동 부채",
           "column": "당기 반기말",
           "raw": "59,043,555,039",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -174983,7 +174991,7 @@
       "status": "HOLD",
       "reason": "MIXED_PERIOD",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-08-31:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-08-31:KRW",
       "assets": null,
       "liabilities": null,
       "equity": null,
@@ -174996,9 +175004,9 @@
       "unit": "KRW",
       "report_period": "2026-08-31",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [
         "MIXED_PERIOD",
         "CONFLICTING_ACCOUNT_ASSETS",
@@ -175013,35 +175021,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "2,817,078,860,607",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "1,680,613,621,507",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "1,136,465,239,100",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동자산",
           "column": "당기 반기말",
           "raw": "203,802,655,501",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동부채",
           "column": "당기 반기말",
           "raw": "699,984,370,785",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": false,
@@ -176715,7 +176723,7 @@
       "status": "FAIL",
       "reason": "CURRENT_RATIO_UNDER_70",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-06-30:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-06-30:KRW",
       "assets": 56786097663,
       "liabilities": 40566922942,
       "equity": 16219174721,
@@ -176728,9 +176736,9 @@
       "unit": "KRW",
       "report_period": "2026-06-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -176738,35 +176746,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "56,786,097,663",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "40,566,922,942",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "16,219,174,721",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동 자산",
           "column": "당기 반기말",
           "raw": "23,318,030,945",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동 부채",
           "column": "당기 반기말",
           "raw": "35,383,915,804",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -177240,7 +177248,7 @@
       "status": "PASS",
       "reason": "PASS",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-06-30:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-06-30:KRW",
       "assets": 1057013567628,
       "liabilities": 705551776446,
       "equity": 351461791182,
@@ -177253,9 +177261,9 @@
       "unit": "KRW",
       "report_period": "2026-06-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -177263,35 +177271,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "1,057,013,567,628",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "705,551,776,446",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "351,461,791,182",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동 자산",
           "column": "당기 반기말",
           "raw": "598,732,653,251",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동 부채",
           "column": "당기 반기말",
           "raw": "622,215,711,928",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -180093,7 +180101,7 @@
       "status": "PASS",
       "reason": "PASS",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-06-30:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-06-30:KRW",
       "assets": 194138286898,
       "liabilities": 83056136131,
       "equity": 111082150767,
@@ -180106,9 +180114,9 @@
       "unit": "KRW",
       "report_period": "2026-06-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -180116,35 +180124,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "194,138,286,898",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "83,056,136,131",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "111,082,150,767",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동 자산",
           "column": "당기 반기말",
           "raw": "121,378,580,634",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동 부채",
           "column": "당기 반기말",
           "raw": "42,499,923,039",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -180618,7 +180626,7 @@
       "status": "PASS",
       "reason": "PASS",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-06-30:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-06-30:KRW",
       "assets": 154038499945,
       "liabilities": 92804347088,
       "equity": 61234152857,
@@ -180631,9 +180639,9 @@
       "unit": "KRW",
       "report_period": "2026-06-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -180641,35 +180649,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "154,038,499,945",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "92,804,347,088",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "61,234,152,857",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동 자산",
           "column": "당기 반기말",
           "raw": "61,300,803,869",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동 부채",
           "column": "당기 반기말",
           "raw": "76,837,332,036",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -181225,7 +181233,7 @@
       "status": "FAIL",
       "reason": "CURRENT_RATIO_UNDER_70",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-06-30:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-06-30:KRW",
       "assets": 384329635960,
       "liabilities": 241037719274,
       "equity": 143291916686,
@@ -181238,9 +181246,9 @@
       "unit": "KRW",
       "report_period": "2026-06-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -181248,35 +181256,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "384,329,635,960",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "241,037,719,274",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "143,291,916,686",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동 자산",
           "column": "당기 반기말",
           "raw": "20,257,190,887",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동 부채",
           "column": "당기 반기말",
           "raw": "241,037,719,274",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -181450,7 +181458,7 @@
       "status": "PASS",
       "reason": "PASS",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-06-30:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-06-30:KRW",
       "assets": 38556651300,
       "liabilities": 13398429960,
       "equity": 25158221340,
@@ -181463,9 +181471,9 @@
       "unit": "KRW",
       "report_period": "2026-06-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -181473,35 +181481,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "38,556,651,300",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "13,398,429,960",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "25,158,221,340",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동 자산",
           "column": "당기 반기말",
           "raw": "24,580,349,867",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동 부채",
           "column": "당기 반기말",
           "raw": "12,655,202,458",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -181600,7 +181608,7 @@
       "status": "HOLD",
       "reason": "MIXED_PERIOD",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-09-30:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-09-30:KRW",
       "assets": null,
       "liabilities": null,
       "equity": null,
@@ -181613,9 +181621,9 @@
       "unit": "KRW",
       "report_period": "2026-09-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [
         "MIXED_PERIOD",
         "CONFLICTING_ACCOUNT_ASSETS",
@@ -181630,35 +181638,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "835,536,569,466",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "627,842,469,083",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "207,694,100,383",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동 자산",
           "column": "당기 반기말",
           "raw": "86,444,501,093",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동 부채",
           "column": "당기 반기말",
           "raw": "373,157,660,003",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": false,
@@ -182207,7 +182215,7 @@
       "status": "HOLD",
       "reason": "MIXED_PERIOD",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-09-30:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-09-30:KRW",
       "assets": null,
       "liabilities": null,
       "equity": null,
@@ -182220,9 +182228,9 @@
       "unit": "KRW",
       "report_period": "2026-09-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [
         "MIXED_PERIOD",
         "CONFLICTING_ACCOUNT_ASSETS",
@@ -182237,35 +182245,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "1,089,532,031,363",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "741,734,637,780",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "347,797,393,583",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동자산",
           "column": "당기 반기말",
           "raw": "101,204,095,523",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동부채",
           "column": "당기 반기말",
           "raw": "307,236,405,371",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": false,
@@ -182755,7 +182763,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/b739e7a14bb38a15d7b7e09d279427d19f005b63db17193ff3ce4763537603f8.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/b739e7a14bb38a15d7b7e09d279427d19f005b63db17193ff3ce4763537603f8.metadata.json",
-        "reconciled_at_utc": "2026-11-17T18:48:38.852789+00:00",
+        "reconciled_at_utc": "2026-11-17T18:55:07.703323+00:00",
         "mismatches": {}
       }
     },
@@ -184842,7 +184850,7 @@
       "status": "PASS",
       "reason": "PASS",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-06-30:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-06-30:KRW",
       "assets": 53136656725,
       "liabilities": 18255032172,
       "equity": 34881624553,
@@ -184855,9 +184863,9 @@
       "unit": "KRW",
       "report_period": "2026-06-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -184865,35 +184873,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "53,136,656,725",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "18,255,032,172",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "34,881,624,553",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동 자산",
           "column": "당기 반기말",
           "raw": "24,613,329,536",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동 부채",
           "column": "당기 반기말",
           "raw": "2,255,398,967",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -185008,7 +185016,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/5a004338a3060c6ba9763c78c174fd394e6fc4fad96327fc764773d166df18a1.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/5a004338a3060c6ba9763c78c174fd394e6fc4fad96327fc764773d166df18a1.metadata.json",
-        "reconciled_at_utc": "2026-11-17T18:48:42.074842+00:00",
+        "reconciled_at_utc": "2026-11-17T18:55:08.689660+00:00",
         "mismatches": {}
       }
     },
@@ -185635,7 +185643,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/ab0ffd665e9f6ad18c2ec45e726b5ece5abf499a94ec0eac402411cb89186b05.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/ab0ffd665e9f6ad18c2ec45e726b5ece5abf499a94ec0eac402411cb89186b05.metadata.json",
-        "reconciled_at_utc": "2026-11-17T18:48:46.547378+00:00",
+        "reconciled_at_utc": "2026-11-17T18:55:09.693509+00:00",
         "mismatches": {}
       }
     },
@@ -186171,7 +186179,7 @@
       "status": "FAIL",
       "reason": "CURRENT_RATIO_UNDER_70",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-04-30:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-04-30:KRW",
       "assets": 1213115091022,
       "liabilities": 935695504459,
       "equity": 277419586563,
@@ -186184,9 +186192,9 @@
       "unit": "KRW",
       "report_period": "2026-04-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -186194,35 +186202,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "1,213,115,091,022",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "935,695,504,459",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "277,419,586,563",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동자산",
           "column": "당기 반기말",
           "raw": "196,682,384,510",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동부채",
           "column": "당기 반기말",
           "raw": "738,977,776,451",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -189014,7 +189022,7 @@
       "status": "HOLD",
       "reason": "MIXED_PERIOD",
       "scope": "OFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:OFS:2026-07-31:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:OFS:2026-07-31:KRW",
       "assets": null,
       "liabilities": null,
       "equity": null,
@@ -189027,9 +189035,9 @@
       "unit": "KRW",
       "report_period": "2026-07-31",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [
         "MIXED_PERIOD",
         "CONFLICTING_ACCOUNT_ASSETS",
@@ -189044,35 +189052,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "1,539,926,202,392",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "858,783,786,563",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "681,142,415,829",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동자산",
           "column": "당기 반기말",
           "raw": "22,702,495,438",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동부채",
           "column": "당기 반기말",
           "raw": "81,194,818,816",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         }
       },
       "facts_verified": false,
@@ -190764,7 +190772,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/61b3e89f117c6f13efef609d6f3fe1616d0d61ca8804ab402fcadbbec9b85026.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/61b3e89f117c6f13efef609d6f3fe1616d0d61ca8804ab402fcadbbec9b85026.metadata.json",
-        "reconciled_at_utc": "2026-11-17T18:48:54.094579+00:00",
+        "reconciled_at_utc": "2026-11-17T18:55:11.697375+00:00",
         "mismatches": {}
       }
     },
@@ -191228,7 +191236,7 @@
       "status": "PASS",
       "reason": "PASS",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-06-30:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-06-30:KRW",
       "assets": 82244901649,
       "liabilities": 57486290315,
       "equity": 24758611334,
@@ -191241,9 +191249,9 @@
       "unit": "KRW",
       "report_period": "2026-06-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -191251,35 +191259,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "82,244,901,649",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "57,486,290,315",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "24,758,611,334",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동자산",
           "column": "당기 반기말",
           "raw": "30,435,637,346",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동부채",
           "column": "당기 반기말",
           "raw": "31,154,058,088",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -191394,7 +191402,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/ae80955ee9269b70e1307980f4a688caf1e9348b5d644af9f113af0cb890fb86.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/ae80955ee9269b70e1307980f4a688caf1e9348b5d644af9f113af0cb890fb86.metadata.json",
-        "reconciled_at_utc": "2026-11-17T18:48:58.571899+00:00",
+        "reconciled_at_utc": "2026-11-17T18:55:12.689527+00:00",
         "mismatches": {}
       }
     },
@@ -192530,7 +192538,7 @@
       "status": "PASS",
       "reason": "PASS",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-06-30:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-06-30:KRW",
       "assets": 64156221958,
       "liabilities": 40366967075,
       "equity": 23789254883,
@@ -192543,9 +192551,9 @@
       "unit": "KRW",
       "report_period": "2026-06-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -192553,35 +192561,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "64,156,221,958",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "40,366,967,075",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "23,789,254,883",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동자산",
           "column": "당기 반기말",
           "raw": "35,449,851,280",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동부채",
           "column": "당기 반기말",
           "raw": "20,937,362,745",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -193880,7 +193888,7 @@
       "status": "NOT_APPLICABLE",
       "reason": "FINANCIAL_SECTOR_NOT_COMPARABLE",
       "scope": "OFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:OFS:2026-06-30:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:OFS:2026-06-30:KRW",
       "assets": 12881403035,
       "liabilities": 1767103059,
       "equity": 11114299976,
@@ -193893,9 +193901,9 @@
       "unit": "KRW",
       "report_period": "2026-06-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [
         "IDENTITY_MISMATCH"
       ],
@@ -193905,35 +193913,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "12,881,403,035",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "1,767,103,059",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "11,114,299,976",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동 자산",
           "column": "당기 반기말",
           "raw": "12,881,403,035",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동 부채",
           "column": "당기 반기말",
           "raw": "37,674,532",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         }
       },
       "facts_verified": false,
@@ -194032,7 +194040,7 @@
       "status": "NOT_APPLICABLE",
       "reason": "FINANCIAL_SECTOR_NOT_COMPARABLE",
       "scope": "OFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:OFS:2026-06-30:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:OFS:2026-06-30:KRW",
       "assets": 10259843474,
       "liabilities": 1741405232,
       "equity": 8518438242,
@@ -194045,9 +194053,9 @@
       "unit": "KRW",
       "report_period": "2026-06-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [
         "IDENTITY_MISMATCH"
       ],
@@ -194057,28 +194065,28 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "10,259,843,474",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "1,741,405,232",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "8,518,438,242",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동 자산",
           "column": "당기 반기말",
           "raw": "10,259,843,474",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         }
       },
       "facts_verified": false,
@@ -195150,7 +195158,7 @@
       "status": "NOT_APPLICABLE",
       "reason": "FINANCIAL_SECTOR_NOT_COMPARABLE",
       "scope": "OFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:OFS:2026-06-30:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:OFS:2026-06-30:KRW",
       "assets": 7382410323,
       "liabilities": 982613237,
       "equity": 6399797086,
@@ -195163,9 +195171,9 @@
       "unit": "KRW",
       "report_period": "2026-06-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [
         "IDENTITY_MISMATCH"
       ],
@@ -195175,35 +195183,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "7,382,410,323",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "982,613,237",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "6,399,797,086",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동 자산",
           "column": "당기 반기말",
           "raw": "7,382,410,323",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동 부채",
           "column": "당기 반기말",
           "raw": "29,870,968",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261118.txt"
         }
       },
       "facts_verified": false,
@@ -196368,7 +196376,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/13d96f7ae34d83f87bc7cca21a94ff1b4bf5ef869c382504ef7dba1f7cf428b5.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/13d96f7ae34d83f87bc7cca21a94ff1b4bf5ef869c382504ef7dba1f7cf428b5.metadata.json",
-        "reconciled_at_utc": "2026-11-17T18:49:00.469083+00:00",
+        "reconciled_at_utc": "2026-11-17T18:55:13.686730+00:00",
         "mismatches": {}
       }
     },
@@ -197354,7 +197362,7 @@
       "status": "NOT_APPLICABLE",
       "reason": "FINANCIAL_SECTOR_NOT_COMPARABLE",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-05-31:KRW",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-05-31:KRW",
       "assets": 115792179272,
       "liabilities": 29389065557,
       "equity": 86403113715,
@@ -197367,9 +197375,9 @@
       "unit": "KRW",
       "report_period": "2026-05-31",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -197377,35 +197385,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "115,792,179,272",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "29,389,065,557",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "86,403,113,715",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동 자산",
           "column": "당기 반기말",
           "raw": "641,984,273",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동 부채",
           "column": "당기 반기말",
           "raw": "29,389,065,557",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -199756,7 +199764,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/5f50b8d06d245a07c360813d51e12ccf82e4e3ccfa36fe625ef14166722615b7.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/5f50b8d06d245a07c360813d51e12ccf82e4e3ccfa36fe625ef14166722615b7.metadata.json",
-        "reconciled_at_utc": "2026-11-17T18:49:03.870895+00:00",
+        "reconciled_at_utc": "2026-11-17T18:55:14.687216+00:00",
         "mismatches": {}
       }
     },
@@ -200442,7 +200450,7 @@
       "status": "NOT_APPLICABLE",
       "reason": "FINANCIAL_SECTOR_NOT_COMPARABLE",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-06-30:USD",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-06-30:USD",
       "assets": 125606118,
       "liabilities": 25455473,
       "equity": 100150645,
@@ -200455,9 +200463,9 @@
       "unit": "USD",
       "report_period": "2026-06-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -200465,35 +200473,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "125,606,118",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "25,455,473",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "100,150,645",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동 자산",
           "column": "당기 반기말",
           "raw": "82,849,891",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동 부채",
           "column": "당기 반기말",
           "raw": "21,682,726",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -200517,7 +200525,7 @@
       "status": "PASS",
       "reason": "PASS",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-06-30:USD",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-06-30:USD",
       "assets": 30157208,
       "liabilities": 6176598,
       "equity": 23980610,
@@ -200530,9 +200538,9 @@
       "unit": "USD",
       "report_period": "2026-06-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -200540,35 +200548,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "30,157,208",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "6,176,598",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "23,980,610",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동 자산",
           "column": "당기 반기말",
           "raw": "4,216,964",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동 부채",
           "column": "당기 반기말",
           "raw": "4,393,792",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -200683,7 +200691,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/794e8a69664ccd932da8b5b427bc088f6d1625783bec277f000680037f55b09c.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/794e8a69664ccd932da8b5b427bc088f6d1625783bec277f000680037f55b09c.metadata.json",
-        "reconciled_at_utc": "2026-11-17T18:49:08.350471+00:00",
+        "reconciled_at_utc": "2026-11-17T18:55:15.698837+00:00",
         "mismatches": {}
       }
     },
@@ -200694,7 +200702,7 @@
       "status": "NOT_APPLICABLE",
       "reason": "FINANCIAL_SECTOR_NOT_COMPARABLE",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-06-30:CNY",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-06-30:CNY",
       "assets": 1855579176,
       "liabilities": 83186867,
       "equity": 1772392309,
@@ -200707,9 +200715,9 @@
       "unit": "CNY",
       "report_period": "2026-06-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -200717,35 +200725,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "1,855,579,176",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "83,186,867",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "1,772,392,309",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동 자산",
           "column": "당기 반기말",
           "raw": "1,488,663,941",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동 부채",
           "column": "당기 반기말",
           "raw": "46,308,643",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -200844,7 +200852,7 @@
       "status": "PASS",
       "reason": "PASS",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-06-30:USD",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-06-30:USD",
       "assets": 497220648,
       "liabilities": 119091587,
       "equity": 378129061,
@@ -200857,9 +200865,9 @@
       "unit": "USD",
       "report_period": "2026-06-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -200867,35 +200875,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "497,220,648",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "119,091,587",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "378,129,061",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동 자산",
           "column": "당기 반기말",
           "raw": "173,452,034",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동 부채",
           "column": "당기 반기말",
           "raw": "91,593,250",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -200919,7 +200927,7 @@
       "status": "NOT_APPLICABLE",
       "reason": "FINANCIAL_SECTOR_NOT_COMPARABLE",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-06-30:CNY",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-06-30:CNY",
       "assets": 2557837566,
       "liabilities": 96655469,
       "equity": 2461182097,
@@ -200932,9 +200940,9 @@
       "unit": "CNY",
       "report_period": "2026-06-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -200942,35 +200950,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "2,557,837,566",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "96,655,469",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "2,461,182,097",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동 자산",
           "column": "당기 반기말",
           "raw": "1,811,518,709",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동 부채",
           "column": "당기 반기말",
           "raw": "82,869,992",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -201085,7 +201093,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/57ddf0f079dda97b287ba448e94e8d2cc01824f8f75df237cc1f6f3409da4021.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/57ddf0f079dda97b287ba448e94e8d2cc01824f8f75df237cc1f6f3409da4021.metadata.json",
-        "reconciled_at_utc": "2026-11-17T18:49:11.579470+00:00",
+        "reconciled_at_utc": "2026-11-17T18:55:16.686358+00:00",
         "mismatches": {}
       }
     },
@@ -201096,7 +201104,7 @@
       "status": "NOT_APPLICABLE",
       "reason": "FINANCIAL_SECTOR_NOT_COMPARABLE",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-06-30:CNY",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-06-30:CNY",
       "assets": 3130730110,
       "liabilities": 1678238627,
       "equity": 1452491483,
@@ -201109,9 +201117,9 @@
       "unit": "CNY",
       "report_period": "2026-06-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -201119,35 +201127,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "3,130,730,110",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "1,678,238,627",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "1,452,491,483",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동 자산",
           "column": "당기 반기말",
           "raw": "2,784,495,300",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동 부채",
           "column": "당기 반기말",
           "raw": "1,570,616,076",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -201171,7 +201179,7 @@
       "status": "NOT_APPLICABLE",
       "reason": "FINANCIAL_SECTOR_NOT_COMPARABLE",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-06-30:CNY",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-06-30:CNY",
       "assets": 2139504929,
       "liabilities": 249906126,
       "equity": 1889598803,
@@ -201184,9 +201192,9 @@
       "unit": "CNY",
       "report_period": "2026-06-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -201194,35 +201202,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "2,139,504,929",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "249,906,126",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "1,889,598,803",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동 자산",
           "column": "당기 반기말",
           "raw": "1,894,754,105",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동 부채",
           "column": "당기 반기말",
           "raw": "221,903,322",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -201321,7 +201329,7 @@
       "status": "NOT_APPLICABLE",
       "reason": "FINANCIAL_SECTOR_NOT_COMPARABLE",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-06-30:CNY",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-06-30:CNY",
       "assets": 1805254206,
       "liabilities": 397902684,
       "equity": 1407351522,
@@ -201334,9 +201342,9 @@
       "unit": "CNY",
       "report_period": "2026-06-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -201344,35 +201352,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "1,805,254,206",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "397,902,684",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "1,407,351,522",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동 자산",
           "column": "당기 반기말",
           "raw": "1,404,335,854",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동 부채",
           "column": "당기 반기말",
           "raw": "397,902,684",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -201396,7 +201404,7 @@
       "status": "NOT_APPLICABLE",
       "reason": "FINANCIAL_SECTOR_NOT_COMPARABLE",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-06-30:CNY",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-06-30:CNY",
       "assets": 1560687579,
       "liabilities": 188392521,
       "equity": 1372295058,
@@ -201409,9 +201417,9 @@
       "unit": "CNY",
       "report_period": "2026-06-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -201419,35 +201427,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "1,560,687,579",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "188,392,521",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "1,372,295,058",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동 자산",
           "column": "당기 반기말",
           "raw": "1,129,524,408",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동 부채",
           "column": "당기 반기말",
           "raw": "188,243,379",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -201562,7 +201570,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/cfbdcc97588ea295aa26117ced619ca78235c87a28982d6f0ba55af0afff473a.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/cfbdcc97588ea295aa26117ced619ca78235c87a28982d6f0ba55af0afff473a.metadata.json",
-        "reconciled_at_utc": "2026-11-17T18:49:14.978432+00:00",
+        "reconciled_at_utc": "2026-11-17T18:55:17.691321+00:00",
         "mismatches": {}
       }
     },
@@ -201573,7 +201581,7 @@
       "status": "NOT_APPLICABLE",
       "reason": "FINANCIAL_SECTOR_NOT_COMPARABLE",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-06-30:CNY",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-06-30:CNY",
       "assets": 1521886022,
       "liabilities": 305398191,
       "equity": 1216487831,
@@ -201586,9 +201594,9 @@
       "unit": "CNY",
       "report_period": "2026-06-30",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -201596,35 +201604,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "1,521,886,022",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "305,398,191",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "1,216,487,831",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동 자산",
           "column": "당기 반기말",
           "raw": "975,608,156",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동 부채",
           "column": "당기 반기말",
           "raw": "191,516,234",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": true,
@@ -201873,7 +201881,7 @@
       "status": "PASS",
       "reason": "PASS",
       "scope": "CFS",
-      "basis": "2026_2Q_BS_20261117043904.zip:CFS:2026-08-31:JPY",
+      "basis": "2026_2Q_BS_20261118032826.zip:CFS:2026-08-31:JPY",
       "assets": 33474961015,
       "liabilities": 16607003333,
       "equity": 16867957682,
@@ -201886,9 +201894,9 @@
       "unit": "JPY",
       "report_period": "2026-08-31",
       "report_kind": "반기보고서",
-      "source_file": "2026_2Q_BS_20261117043904.zip",
-      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "988f52bd854a5c91a0e1a000f56465c5198c6a11d74cf9347875f46f9f1bd001",
+      "source_file": "2026_2Q_BS_20261118032826.zip",
+      "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
+      "source_zip_sha256": "30a90fe73670d1e574f197964bd38bb04b363215b97964b77dd5ea0f0e5e5166",
       "validation_issues": [],
       "account_evidence": {
         "assets": {
@@ -201896,35 +201904,35 @@
           "account_name": "자산총계",
           "column": "당기 반기말",
           "raw": "33,474,961,015",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기 반기말",
           "raw": "16,607,003,333",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기 반기말",
           "raw": "16,867,957,682",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동자산",
           "column": "당기 반기말",
           "raw": "10,747,016,385",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동부채",
           "column": "당기 반기말",
           "raw": "3,441,959,613",
-          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2026_╣▌▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
       "facts_verified": true,
