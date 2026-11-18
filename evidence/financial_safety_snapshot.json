@@ -3,8 +3,8 @@
   "policy_version": "STAGE4_BS_SAFETY_V1",
   "snapshot_date_kst": "2026-11-19",
   "source": "FSS OpenDART bulk balance sheets + OPENDART_AUTHENTICATED_API",
-  "source_file": "2025_4Q_BS_20261117035210.zip|2026_1Q_BS_20261118030339.zip|2026_2Q_BS_20261118032826.zip|2026_3Q_BS_20261118035133.zip",
-  "collected_at_utc": "2026-11-18T18:00:08.177536+00:00",
+  "source_file": "2025_4Q_BS_20261119030354.zip|2026_1Q_BS_20261118030339.zip|2026_2Q_BS_20261118032826.zip|2026_3Q_BS_20261118035133.zip",
+  "collected_at_utc": "2026-11-18T18:30:23.192107+00:00",
   "quant_records_sha256": "8dc0818fac75397bc0f96d144e80a7bdbf15e76ea41b47060d89e2745195b8d1",
   "thresholds": {
     "debt_to_equity_max_pct": 400.0,
@@ -958,7 +958,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/08c871b55157bfe7b39ad3f6919543091e38c346a4bbdcc54eea47e76e2d493e.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/08c871b55157bfe7b39ad3f6919543091e38c346a4bbdcc54eea47e76e2d493e.metadata.json",
-        "reconciled_at_utc": "2026-11-18T17:59:16.912526+00:00",
+        "reconciled_at_utc": "2026-11-18T18:29:32.541773+00:00",
         "mismatches": {}
       }
     },
@@ -11929,7 +11929,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/7041d5aebd6db5ee727e231ed672b164b00d72d0ddda96b9e3f302275aff09e2.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/7041d5aebd6db5ee727e231ed672b164b00d72d0ddda96b9e3f302275aff09e2.metadata.json",
-        "reconciled_at_utc": "2026-11-18T17:59:18.070745+00:00",
+        "reconciled_at_utc": "2026-11-18T18:29:33.761258+00:00",
         "mismatches": {}
       }
     },
@@ -12090,7 +12090,7 @@
       "status": "NOT_APPLICABLE",
       "reason": "FINANCIAL_SECTOR_NOT_COMPARABLE",
       "scope": "CFS",
-      "basis": "2025_4Q_BS_20261117035210.zip:CFS:2025-11-30:KRW",
+      "basis": "2025_4Q_BS_20261119030354.zip:CFS:2025-11-30:KRW",
       "assets": null,
       "liabilities": null,
       "equity": null,
@@ -12103,9 +12103,9 @@
       "unit": "KRW",
       "report_period": "2025-11-30",
       "report_kind": "사업보고서",
-      "source_file": "2025_4Q_BS_20261117035210.zip",
-      "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "62dd09ae44eddd8c00487d2f3f913faa2427039b50ffa584e27237889b6d18b3",
+      "source_file": "2025_4Q_BS_20261119030354.zip",
+      "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261119.txt",
+      "source_zip_sha256": "d580e3ce28307730b63a9223d958f12ca83ff23de1b02a1cefcf2c2eb8ad0666",
       "validation_issues": [
         "MIXED_PERIOD",
         "CONFLICTING_ACCOUNT_ASSETS",
@@ -12120,35 +12120,35 @@
           "account_name": "자산총계",
           "column": "당기",
           "raw": "717,538,263,941",
-          "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261119.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기",
           "raw": "568,624,428,883",
-          "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261119.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기",
           "raw": "148,913,835,058",
-          "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261119.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동자산",
           "column": "당기",
           "raw": "21,001,908,921",
-          "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261119.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동부채",
           "column": "당기",
           "raw": "146,419,957,323",
-          "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261119.txt"
         }
       },
       "facts_verified": false,
@@ -16836,7 +16836,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/eea66652e34a0cd43c71ff2a28cad962b73b8d731546ff90f6171d250cfa88ee.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/eea66652e34a0cd43c71ff2a28cad962b73b8d731546ff90f6171d250cfa88ee.metadata.json",
-        "reconciled_at_utc": "2026-11-18T17:59:19.064540+00:00",
+        "reconciled_at_utc": "2026-11-18T18:29:34.711584+00:00",
         "mismatches": {}
       }
     },
@@ -18513,7 +18513,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/5730d8cc61da90ae0d7bf5940011927bfe7215882229a3e655d33f9ead3be06e.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/5730d8cc61da90ae0d7bf5940011927bfe7215882229a3e655d33f9ead3be06e.metadata.json",
-        "reconciled_at_utc": "2026-11-18T17:59:19.934317+00:00",
+        "reconciled_at_utc": "2026-11-18T18:29:35.578300+00:00",
         "mismatches": {}
       }
     },
@@ -28000,7 +28000,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/c3da6552c5b87a6222d59e7b8dffba10d87e56b5004409f1fdc33ff6ab287fbc.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/c3da6552c5b87a6222d59e7b8dffba10d87e56b5004409f1fdc33ff6ab287fbc.metadata.json",
-        "reconciled_at_utc": "2026-11-18T17:59:21.915487+00:00",
+        "reconciled_at_utc": "2026-11-18T18:29:37.307599+00:00",
         "mismatches": {}
       }
     },
@@ -34683,7 +34683,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/24e7b85eaf4c0bb96dd214ad0a035d1e60fcbb6ecef83272a59043e239898fd8.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/24e7b85eaf4c0bb96dd214ad0a035d1e60fcbb6ecef83272a59043e239898fd8.metadata.json",
-        "reconciled_at_utc": "2026-11-18T17:59:22.913157+00:00",
+        "reconciled_at_utc": "2026-11-18T18:29:38.321503+00:00",
         "mismatches": {}
       }
     },
@@ -35085,7 +35085,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/27144dfd6919c128ca17ba713d367846f6c43be476e7b8ca63341b69bebe3676.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/27144dfd6919c128ca17ba713d367846f6c43be476e7b8ca63341b69bebe3676.metadata.json",
-        "reconciled_at_utc": "2026-11-18T17:59:24.064655+00:00",
+        "reconciled_at_utc": "2026-11-18T18:29:39.576013+00:00",
         "mismatches": {}
       }
     },
@@ -36987,7 +36987,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/12e290763e1aa9316f0fd704d1259f316bc1b50b285417be945fe2c237633970.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/12e290763e1aa9316f0fd704d1259f316bc1b50b285417be945fe2c237633970.metadata.json",
-        "reconciled_at_utc": "2026-11-18T17:59:25.078967+00:00",
+        "reconciled_at_utc": "2026-11-18T18:29:40.581996+00:00",
         "mismatches": {}
       }
     },
@@ -52352,7 +52352,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/b380d03d5337d87d5ac260a039eb4e014759649f4d7cd08dc374aaa6a5ebc203.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/b380d03d5337d87d5ac260a039eb4e014759649f4d7cd08dc374aaa6a5ebc203.metadata.json",
-        "reconciled_at_utc": "2026-11-18T17:59:25.931187+00:00",
+        "reconciled_at_utc": "2026-11-18T18:29:41.317131+00:00",
         "mismatches": {}
       }
     },
@@ -54212,7 +54212,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/e27cff8890dc1a4ad4f8444be7ca2b9c366f68a1511be5782830f17fb80a7b0d.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/e27cff8890dc1a4ad4f8444be7ca2b9c366f68a1511be5782830f17fb80a7b0d.metadata.json",
-        "reconciled_at_utc": "2026-11-18T17:59:26.913537+00:00",
+        "reconciled_at_utc": "2026-11-18T18:29:42.047510+00:00",
         "mismatches": {}
       }
     },
@@ -59386,7 +59386,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/a82f1b947fdcff28347fd72c4c595365cfa031a087e27117e83a582283a6f21a.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/a82f1b947fdcff28347fd72c4c595365cfa031a087e27117e83a582283a6f21a.metadata.json",
-        "reconciled_at_utc": "2026-11-18T17:59:27.915732+00:00",
+        "reconciled_at_utc": "2026-11-18T18:29:43.196876+00:00",
         "mismatches": {}
       }
     },
@@ -59938,7 +59938,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/848bc54c223d9452693f81e75c4cdc65f4f4ca8f7ea0e033aa2913f13b8fe5a7.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/848bc54c223d9452693f81e75c4cdc65f4f4ca8f7ea0e033aa2913f13b8fe5a7.metadata.json",
-        "reconciled_at_utc": "2026-11-18T17:59:29.069548+00:00",
+        "reconciled_at_utc": "2026-11-18T18:29:44.452539+00:00",
         "mismatches": {}
       }
     },
@@ -68726,7 +68726,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/d92973a65e3fa2023a2a2d7245ba3a89005adfe602b6be2be320d6b91c9950ac.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/d92973a65e3fa2023a2a2d7245ba3a89005adfe602b6be2be320d6b91c9950ac.metadata.json",
-        "reconciled_at_utc": "2026-11-18T17:59:29.927108+00:00",
+        "reconciled_at_utc": "2026-11-18T18:29:45.182463+00:00",
         "mismatches": {}
       }
     },
@@ -77153,7 +77153,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/e69c1663fb7043cd4d4d36c9ad443f4febcb863adcd240a77103cc0a1366ff5d.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/e69c1663fb7043cd4d4d36c9ad443f4febcb863adcd240a77103cc0a1366ff5d.metadata.json",
-        "reconciled_at_utc": "2026-11-18T17:59:30.924366+00:00",
+        "reconciled_at_utc": "2026-11-18T18:29:46.185027+00:00",
         "mismatches": {}
       }
     },
@@ -81366,7 +81366,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/d023320e9fdf8a2242ba0f26f9df4afc974869e22abfa2a977bebeac1ed95305.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/d023320e9fdf8a2242ba0f26f9df4afc974869e22abfa2a977bebeac1ed95305.metadata.json",
-        "reconciled_at_utc": "2026-11-18T17:59:31.920877+00:00",
+        "reconciled_at_utc": "2026-11-18T18:29:47.183199+00:00",
         "mismatches": {}
       }
     },
@@ -81618,7 +81618,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/78c66abc625a497cdb9c7064cd4099906ba2dd98d30f0a21a3f12845ee55b9c8.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/78c66abc625a497cdb9c7064cd4099906ba2dd98d30f0a21a3f12845ee55b9c8.metadata.json",
-        "reconciled_at_utc": "2026-11-18T17:59:32.910440+00:00",
+        "reconciled_at_utc": "2026-11-18T18:29:48.048437+00:00",
         "mismatches": {}
       }
     },
@@ -82395,7 +82395,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/9df5220cef22026eff375c79ba726fe0880d421efcaa565cb87d14c65474f69a.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/9df5220cef22026eff375c79ba726fe0880d421efcaa565cb87d14c65474f69a.metadata.json",
-        "reconciled_at_utc": "2026-11-18T17:59:34.065438+00:00",
+        "reconciled_at_utc": "2026-11-18T18:29:49.312024+00:00",
         "mismatches": {}
       }
     },
@@ -86022,7 +86022,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/7925a2e264c16561283fb814fdbc5100cf613da5148aed984f35566707d930cb.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/7925a2e264c16561283fb814fdbc5100cf613da5148aed984f35566707d930cb.metadata.json",
-        "reconciled_at_utc": "2026-11-18T17:59:34.913152+00:00",
+        "reconciled_at_utc": "2026-11-18T18:29:50.062278+00:00",
         "mismatches": {}
       }
     },
@@ -86349,7 +86349,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/2b368cfffec5e5d18e77e5713b37731559d02cdae699c71d0f27a6f3c9602018.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/2b368cfffec5e5d18e77e5713b37731559d02cdae699c71d0f27a6f3c9602018.metadata.json",
-        "reconciled_at_utc": "2026-11-18T17:59:35.932233+00:00",
+        "reconciled_at_utc": "2026-11-18T18:29:51.049679+00:00",
         "mismatches": {}
       }
     },
@@ -102935,7 +102935,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/3c9271c9a7fa3a910fb82490dadb0b38acce49d02fa2a42f8770ec82eb4b7f59.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/3c9271c9a7fa3a910fb82490dadb0b38acce49d02fa2a42f8770ec82eb4b7f59.metadata.json",
-        "reconciled_at_utc": "2026-11-18T17:59:37.075243+00:00",
+        "reconciled_at_utc": "2026-11-18T18:29:52.320695+00:00",
         "mismatches": {}
       }
     },
@@ -106532,7 +106532,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/5f9b7fa479bc154138b9f36478e2e0605763ed1e9f3465c6d0af4ecd81ee3572.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/5f9b7fa479bc154138b9f36478e2e0605763ed1e9f3465c6d0af4ecd81ee3572.metadata.json",
-        "reconciled_at_utc": "2026-11-18T17:59:37.931299+00:00",
+        "reconciled_at_utc": "2026-11-18T18:29:53.339386+00:00",
         "mismatches": {}
       }
     },
@@ -109559,7 +109559,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/78e6ccf30d34fcbe839e8bdc98df6c65bbf224e6c8eea80eac5b4b0d18f135b1.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/78e6ccf30d34fcbe839e8bdc98df6c65bbf224e6c8eea80eac5b4b0d18f135b1.metadata.json",
-        "reconciled_at_utc": "2026-11-18T17:59:38.911457+00:00",
+        "reconciled_at_utc": "2026-11-18T18:29:54.046901+00:00",
         "mismatches": {}
       }
     },
@@ -111372,7 +111372,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/a358324621dab0386db89525c20d3f3adb9d2952b01470a462a53695e15dd841.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/a358324621dab0386db89525c20d3f3adb9d2952b01470a462a53695e15dd841.metadata.json",
-        "reconciled_at_utc": "2026-11-18T17:59:39.917725+00:00",
+        "reconciled_at_utc": "2026-11-18T18:29:55.054518+00:00",
         "mismatches": {}
       }
     },
@@ -116335,7 +116335,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/2e20f20bb10e1d724e68d3bcaec354507621c7d8e4ac8094502edf4d03663952.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/2e20f20bb10e1d724e68d3bcaec354507621c7d8e4ac8094502edf4d03663952.metadata.json",
-        "reconciled_at_utc": "2026-11-18T17:59:41.066542+00:00",
+        "reconciled_at_utc": "2026-11-18T18:29:56.200649+00:00",
         "mismatches": {}
       }
     },
@@ -129812,7 +129812,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/858151d306754ecdb798540f57baa5ff8e27c847af654b5b99fc98e2d3badf40.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/858151d306754ecdb798540f57baa5ff8e27c847af654b5b99fc98e2d3badf40.metadata.json",
-        "reconciled_at_utc": "2026-11-18T17:59:41.912913+00:00",
+        "reconciled_at_utc": "2026-11-18T18:29:57.052958+00:00",
         "mismatches": {}
       }
     },
@@ -131775,7 +131775,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/ee5be998315640a6a4b3eafdab8f9429e12a5474164bec538597dc24f9137e3d.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/ee5be998315640a6a4b3eafdab8f9429e12a5474164bec538597dc24f9137e3d.metadata.json",
-        "reconciled_at_utc": "2026-11-18T17:59:42.920571+00:00",
+        "reconciled_at_utc": "2026-11-18T18:29:58.044847+00:00",
         "mismatches": {}
       }
     },
@@ -132102,7 +132102,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/c707f6cddabb6e53270399b3d8403fa855163c0f9d237d6567f9d1620b149866.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/c707f6cddabb6e53270399b3d8403fa855163c0f9d237d6567f9d1620b149866.metadata.json",
-        "reconciled_at_utc": "2026-11-18T17:59:44.069222+00:00",
+        "reconciled_at_utc": "2026-11-18T18:29:59.188188+00:00",
         "mismatches": {}
       }
     },
@@ -132429,7 +132429,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/6b2a591a686f0e33d20d666fa5ece364e79ddcca93f15101ec478b748cd8fbf9.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/6b2a591a686f0e33d20d666fa5ece364e79ddcca93f15101ec478b748cd8fbf9.metadata.json",
-        "reconciled_at_utc": "2026-11-18T17:59:45.066772+00:00",
+        "reconciled_at_utc": "2026-11-18T18:30:00.186450+00:00",
         "mismatches": {}
       }
     },
@@ -134242,7 +134242,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/350f004afd72d5ae01c6a38b53aebfece9216dfe5eb9e8aff314141d54e84bcf.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/350f004afd72d5ae01c6a38b53aebfece9216dfe5eb9e8aff314141d54e84bcf.metadata.json",
-        "reconciled_at_utc": "2026-11-18T17:59:45.913836+00:00",
+        "reconciled_at_utc": "2026-11-18T18:30:01.049611+00:00",
         "mismatches": {}
       }
     },
@@ -134869,7 +134869,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/2329d98f718685173ddabdc03601bde553ec6992d9a3ea12b61229a9e2f94c0d.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/2329d98f718685173ddabdc03601bde553ec6992d9a3ea12b61229a9e2f94c0d.metadata.json",
-        "reconciled_at_utc": "2026-11-18T17:59:46.914981+00:00",
+        "reconciled_at_utc": "2026-11-18T18:30:02.049847+00:00",
         "mismatches": {}
       }
     },
@@ -135796,7 +135796,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/a71c17124001d93036d7a14f71996b095d2d2018ecccc63385243c8dc077179f.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/a71c17124001d93036d7a14f71996b095d2d2018ecccc63385243c8dc077179f.metadata.json",
-        "reconciled_at_utc": "2026-11-18T17:59:47.912508+00:00",
+        "reconciled_at_utc": "2026-11-18T18:30:03.050614+00:00",
         "mismatches": {}
       }
     },
@@ -136498,7 +136498,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/9fe96d8db440a60fc0b10e2953000f139d83ac0bd4a984cbc2fedd9b8c190f25.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/9fe96d8db440a60fc0b10e2953000f139d83ac0bd4a984cbc2fedd9b8c190f25.metadata.json",
-        "reconciled_at_utc": "2026-11-18T17:59:48.929686+00:00",
+        "reconciled_at_utc": "2026-11-18T18:30:04.060501+00:00",
         "mismatches": {}
       }
     },
@@ -137952,7 +137952,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/48887e8e0f682dd38c489190245dddc48511799138cc03f1dc10c9aa795e9ea0.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/48887e8e0f682dd38c489190245dddc48511799138cc03f1dc10c9aa795e9ea0.metadata.json",
-        "reconciled_at_utc": "2026-11-18T17:59:49.926184+00:00",
+        "reconciled_at_utc": "2026-11-18T18:30:05.054485+00:00",
         "mismatches": {}
       }
     },
@@ -138506,7 +138506,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/802fd824860d783e472520302fe91b5708878e67bdb1a46a4536601de9982aae.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/802fd824860d783e472520302fe91b5708878e67bdb1a46a4536601de9982aae.metadata.json",
-        "reconciled_at_utc": "2026-11-18T17:59:50.918648+00:00",
+        "reconciled_at_utc": "2026-11-18T18:30:06.056427+00:00",
         "mismatches": {}
       }
     },
@@ -148930,7 +148930,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/45d89a0990376fa554e6e03efa3b747bfac28d3737837cc91b6e2399467fa239.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/45d89a0990376fa554e6e03efa3b747bfac28d3737837cc91b6e2399467fa239.metadata.json",
-        "reconciled_at_utc": "2026-11-18T17:59:51.911695+00:00",
+        "reconciled_at_utc": "2026-11-18T18:30:06.922863+00:00",
         "mismatches": {}
       }
     },
@@ -155557,7 +155557,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/65cfd2201efb16eb0728e3a8535ab773780296bdb1f40b8eb993b6accd148bb5.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/65cfd2201efb16eb0728e3a8535ab773780296bdb1f40b8eb993b6accd148bb5.metadata.json",
-        "reconciled_at_utc": "2026-11-18T17:59:52.922267+00:00",
+        "reconciled_at_utc": "2026-11-18T18:30:08.062176+00:00",
         "mismatches": {}
       }
     },
@@ -163722,7 +163722,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/9eba78ef2c08ace8d53e97b53e614b00f987dfb8785d083dbf513ef716fa3e59.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/9eba78ef2c08ace8d53e97b53e614b00f987dfb8785d083dbf513ef716fa3e59.metadata.json",
-        "reconciled_at_utc": "2026-11-18T17:59:53.917967+00:00",
+        "reconciled_at_utc": "2026-11-18T18:30:09.053564+00:00",
         "mismatches": {}
       }
     },
@@ -164799,7 +164799,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/859f794738b61325819802078f1be091b4ae1f27da7173a571ea527ce90663e6.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/859f794738b61325819802078f1be091b4ae1f27da7173a571ea527ce90663e6.metadata.json",
-        "reconciled_at_utc": "2026-11-18T17:59:54.914009+00:00",
+        "reconciled_at_utc": "2026-11-18T18:30:10.050204+00:00",
         "mismatches": {}
       }
     },
@@ -166012,7 +166012,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/10526b99cf570b7544fdeebfee48e6e80379b2a333a1169cc73b0ba1bcd0b045.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/10526b99cf570b7544fdeebfee48e6e80379b2a333a1169cc73b0ba1bcd0b045.metadata.json",
-        "reconciled_at_utc": "2026-11-18T17:59:55.913180+00:00",
+        "reconciled_at_utc": "2026-11-18T18:30:11.427513+00:00",
         "mismatches": {}
       }
     },
@@ -166789,7 +166789,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/76a0a93c3b29b2617371646f5a59cd36080581f93560792279b362185b863563.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/76a0a93c3b29b2617371646f5a59cd36080581f93560792279b362185b863563.metadata.json",
-        "reconciled_at_utc": "2026-11-18T17:59:56.923377+00:00",
+        "reconciled_at_utc": "2026-11-18T18:30:12.062235+00:00",
         "mismatches": {}
       }
     },
@@ -181532,7 +181532,7 @@
       "status": "HOLD",
       "reason": "MIXED_PERIOD",
       "scope": "CFS",
-      "basis": "2025_4Q_BS_20261117035210.zip:CFS:2025-12-31:KRW",
+      "basis": "2025_4Q_BS_20261119030354.zip:CFS:2025-12-31:KRW",
       "assets": null,
       "liabilities": null,
       "equity": null,
@@ -181545,9 +181545,9 @@
       "unit": "KRW",
       "report_period": "2025-12-31",
       "report_kind": "사업보고서",
-      "source_file": "2025_4Q_BS_20261117035210.zip",
-      "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt",
-      "source_zip_sha256": "62dd09ae44eddd8c00487d2f3f913faa2427039b50ffa584e27237889b6d18b3",
+      "source_file": "2025_4Q_BS_20261119030354.zip",
+      "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261119.txt",
+      "source_zip_sha256": "d580e3ce28307730b63a9223d958f12ca83ff23de1b02a1cefcf2c2eb8ad0666",
       "validation_issues": [
         "MIXED_PERIOD",
         "CONFLICTING_ACCOUNT_ASSETS",
@@ -181562,35 +181562,35 @@
           "account_name": "자산총계",
           "column": "당기",
           "raw": "5,098,456,514,982",
-          "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261119.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기",
           "raw": "3,136,125,732,336",
-          "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261119.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기",
           "raw": "1,962,330,782,646",
-          "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261119.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동자산",
           "column": "당기",
           "raw": "175,036,234,522",
-          "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261119.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동부채",
           "column": "당기",
           "raw": "585,547,833,446",
-          "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261117.txt"
+          "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261119.txt"
         }
       },
       "facts_verified": false,
@@ -183369,7 +183369,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/b739e7a14bb38a15d7b7e09d279427d19f005b63db17193ff3ce4763537603f8.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/b739e7a14bb38a15d7b7e09d279427d19f005b63db17193ff3ce4763537603f8.metadata.json",
-        "reconciled_at_utc": "2026-11-18T17:59:57.914304+00:00",
+        "reconciled_at_utc": "2026-11-18T18:30:13.054226+00:00",
         "mismatches": {}
       }
     },
@@ -184549,7 +184549,7 @@
       "status": "HOLD",
       "reason": "MIXED_PERIOD",
       "scope": "OFS",
-      "basis": "2025_4Q_BS_20261117035210.zip:OFS:2025-11-30:KRW",
+      "basis": "2025_4Q_BS_20261119030354.zip:OFS:2025-11-30:KRW",
       "assets": null,
       "liabilities": null,
       "equity": null,
@@ -184562,9 +184562,9 @@
       "unit": "KRW",
       "report_period": "2025-11-30",
       "report_kind": "사업보고서",
-      "source_file": "2025_4Q_BS_20261117035210.zip",
-      "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt",
-      "source_zip_sha256": "62dd09ae44eddd8c00487d2f3f913faa2427039b50ffa584e27237889b6d18b3",
+      "source_file": "2025_4Q_BS_20261119030354.zip",
+      "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261119.txt",
+      "source_zip_sha256": "d580e3ce28307730b63a9223d958f12ca83ff23de1b02a1cefcf2c2eb8ad0666",
       "validation_issues": [
         "MIXED_PERIOD",
         "CONFLICTING_ACCOUNT_ASSETS",
@@ -184579,35 +184579,35 @@
           "account_name": "자산총계",
           "column": "당기",
           "raw": "511,135,289,875",
-          "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261119.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기",
           "raw": "311,599,833,213",
-          "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261119.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기",
           "raw": "199,535,456,662",
-          "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261119.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동자산",
           "column": "당기",
           "raw": "7,096,389,391",
-          "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261119.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동부채",
           "column": "당기",
           "raw": "305,100,982,808",
-          "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261119.txt"
         }
       },
       "facts_verified": false,
@@ -185622,7 +185622,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/5a004338a3060c6ba9763c78c174fd394e6fc4fad96327fc764773d166df18a1.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/5a004338a3060c6ba9763c78c174fd394e6fc4fad96327fc764773d166df18a1.metadata.json",
-        "reconciled_at_utc": "2026-11-18T17:59:58.917039+00:00",
+        "reconciled_at_utc": "2026-11-18T18:30:13.920328+00:00",
         "mismatches": {}
       }
     },
@@ -186249,7 +186249,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/ab0ffd665e9f6ad18c2ec45e726b5ece5abf499a94ec0eac402411cb89186b05.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/ab0ffd665e9f6ad18c2ec45e726b5ece5abf499a94ec0eac402411cb89186b05.metadata.json",
-        "reconciled_at_utc": "2026-11-18T17:59:59.923894+00:00",
+        "reconciled_at_utc": "2026-11-18T18:30:15.055526+00:00",
         "mismatches": {}
       }
     },
@@ -188946,7 +188946,7 @@
       "status": "HOLD",
       "reason": "MIXED_PERIOD",
       "scope": "OFS",
-      "basis": "2025_4Q_BS_20261117035210.zip:OFS:2025-10-31:KRW",
+      "basis": "2025_4Q_BS_20261119030354.zip:OFS:2025-10-31:KRW",
       "assets": null,
       "liabilities": null,
       "equity": null,
@@ -188959,9 +188959,9 @@
       "unit": "KRW",
       "report_period": "2025-10-31",
       "report_kind": "사업보고서",
-      "source_file": "2025_4Q_BS_20261117035210.zip",
-      "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt",
-      "source_zip_sha256": "62dd09ae44eddd8c00487d2f3f913faa2427039b50ffa584e27237889b6d18b3",
+      "source_file": "2025_4Q_BS_20261119030354.zip",
+      "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261119.txt",
+      "source_zip_sha256": "d580e3ce28307730b63a9223d958f12ca83ff23de1b02a1cefcf2c2eb8ad0666",
       "validation_issues": [
         "MIXED_PERIOD",
         "CONFLICTING_ACCOUNT_ASSETS",
@@ -188975,36 +188975,36 @@
           "account_code": "ifrs-full_Assets",
           "account_name": "자산총계",
           "column": "당기",
-          "raw": "868,078,558,297",
-          "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "raw": "874,044,586,437",
+          "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261119.txt"
         },
         "liabilities": {
           "account_code": "ifrs-full_Liabilities",
           "account_name": "부채총계",
           "column": "당기",
-          "raw": "461,532,884,850",
-          "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "raw": "461,148,418,304",
+          "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261119.txt"
         },
         "equity": {
           "account_code": "ifrs-full_Equity",
           "account_name": "자본총계",
           "column": "당기",
-          "raw": "406,545,673,447",
-          "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "raw": "412,896,168,133",
+          "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261119.txt"
         },
         "current_assets": {
           "account_code": "ifrs-full_CurrentAssets",
           "account_name": "유동자산",
           "column": "당기",
-          "raw": "32,661,028,044",
-          "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "raw": "35,978,526,431",
+          "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261119.txt"
         },
         "current_liabilities": {
           "account_code": "ifrs-full_CurrentLiabilities",
           "account_name": "유동부채",
           "column": "당기",
-          "raw": "435,274,372,429",
-          "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261117.txt"
+          "raw": "4,918,059,442",
+          "source_member": "2025_╗τ╛≈║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_20261119.txt"
         }
       },
       "facts_verified": false,
@@ -191301,7 +191301,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/590a8a7ad2ae271fc35e1ade0877efdb92b16f26f4cf15d8368568a9844a0398.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/590a8a7ad2ae271fc35e1ade0877efdb92b16f26f4cf15d8368568a9844a0398.metadata.json",
-        "reconciled_at_utc": "2026-11-18T18:00:00.948992+00:00",
+        "reconciled_at_utc": "2026-11-18T18:30:16.053867+00:00",
         "mismatches": {}
       }
     },
@@ -191478,7 +191478,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/61b3e89f117c6f13efef609d6f3fe1616d0d61ca8804ab402fcadbbec9b85026.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/61b3e89f117c6f13efef609d6f3fe1616d0d61ca8804ab402fcadbbec9b85026.metadata.json",
-        "reconciled_at_utc": "2026-11-18T18:00:01.925418+00:00",
+        "reconciled_at_utc": "2026-11-18T18:30:16.921296+00:00",
         "mismatches": {}
       }
     },
@@ -192108,7 +192108,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/ae80955ee9269b70e1307980f4a688caf1e9348b5d644af9f113af0cb890fb86.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/ae80955ee9269b70e1307980f4a688caf1e9348b5d644af9f113af0cb890fb86.metadata.json",
-        "reconciled_at_utc": "2026-11-18T18:00:02.929676+00:00",
+        "reconciled_at_utc": "2026-11-18T18:30:18.055072+00:00",
         "mismatches": {}
       }
     },
@@ -197084,7 +197084,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/13d96f7ae34d83f87bc7cca21a94ff1b4bf5ef869c382504ef7dba1f7cf428b5.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/13d96f7ae34d83f87bc7cca21a94ff1b4bf5ef869c382504ef7dba1f7cf428b5.metadata.json",
-        "reconciled_at_utc": "2026-11-18T18:00:03.922466+00:00",
+        "reconciled_at_utc": "2026-11-18T18:30:18.914183+00:00",
         "mismatches": {}
       }
     },
@@ -200472,7 +200472,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/5f50b8d06d245a07c360813d51e12ccf82e4e3ccfa36fe625ef14166722615b7.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/5f50b8d06d245a07c360813d51e12ccf82e4e3ccfa36fe625ef14166722615b7.metadata.json",
-        "reconciled_at_utc": "2026-11-18T18:00:04.924322+00:00",
+        "reconciled_at_utc": "2026-11-18T18:30:19.922812+00:00",
         "mismatches": {}
       }
     },
@@ -201399,7 +201399,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/794e8a69664ccd932da8b5b427bc088f6d1625783bec277f000680037f55b09c.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/794e8a69664ccd932da8b5b427bc088f6d1625783bec277f000680037f55b09c.metadata.json",
-        "reconciled_at_utc": "2026-11-18T18:00:05.935465+00:00",
+        "reconciled_at_utc": "2026-11-18T18:30:21.054842+00:00",
         "mismatches": {}
       }
     },
@@ -201801,7 +201801,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/57ddf0f079dda97b287ba448e94e8d2cc01824f8f75df237cc1f6f3409da4021.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/57ddf0f079dda97b287ba448e94e8d2cc01824f8f75df237cc1f6f3409da4021.metadata.json",
-        "reconciled_at_utc": "2026-11-18T18:00:06.926653+00:00",
+        "reconciled_at_utc": "2026-11-18T18:30:21.922433+00:00",
         "mismatches": {}
       }
     },
@@ -202278,7 +202278,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/cfbdcc97588ea295aa26117ced619ca78235c87a28982d6f0ba55af0afff473a.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/cfbdcc97588ea295aa26117ced619ca78235c87a28982d6f0ba55af0afff473a.metadata.json",
-        "reconciled_at_utc": "2026-11-18T18:00:07.918456+00:00",
+        "reconciled_at_utc": "2026-11-18T18:30:22.932252+00:00",
         "mismatches": {}
       }
     },
