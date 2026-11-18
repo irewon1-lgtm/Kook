@@ -4,7 +4,7 @@
   "snapshot_date_kst": "2026-11-19",
   "source": "FSS OpenDART bulk balance sheets + OPENDART_AUTHENTICATED_API",
   "source_file": "2025_4Q_BS_20261119030354.zip|2026_1Q_BS_20261119033115.zip|2026_2Q_BS_20261119035449.zip|2026_3Q_BS_20261119041821.zip",
-  "collected_at_utc": "2026-11-18T21:01:06.397471+00:00",
+  "collected_at_utc": "2026-11-18T21:41:45.746768+00:00",
   "quant_records_sha256": "b02e20f7c5d9ea1a27c5e5e4af05e9a4bb10fb78796576e76aa74c405365ca76",
   "thresholds": {
     "debt_to_equity_max_pct": 400.0,
@@ -958,7 +958,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/08c871b55157bfe7b39ad3f6919543091e38c346a4bbdcc54eea47e76e2d493e.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/08c871b55157bfe7b39ad3f6919543091e38c346a4bbdcc54eea47e76e2d493e.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:00:15.266231+00:00",
+        "reconciled_at_utc": "2026-11-18T21:40:54.476838+00:00",
         "mismatches": {}
       }
     },
@@ -11929,7 +11929,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/7041d5aebd6db5ee727e231ed672b164b00d72d0ddda96b9e3f302275aff09e2.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/7041d5aebd6db5ee727e231ed672b164b00d72d0ddda96b9e3f302275aff09e2.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:00:16.401946+00:00",
+        "reconciled_at_utc": "2026-11-18T21:40:55.611373+00:00",
         "mismatches": {}
       }
     },
@@ -16836,7 +16836,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/eea66652e34a0cd43c71ff2a28cad962b73b8d731546ff90f6171d250cfa88ee.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/eea66652e34a0cd43c71ff2a28cad962b73b8d731546ff90f6171d250cfa88ee.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:00:17.263849+00:00",
+        "reconciled_at_utc": "2026-11-18T21:40:56.471927+00:00",
         "mismatches": {}
       }
     },
@@ -18513,7 +18513,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/5730d8cc61da90ae0d7bf5940011927bfe7215882229a3e655d33f9ead3be06e.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/5730d8cc61da90ae0d7bf5940011927bfe7215882229a3e655d33f9ead3be06e.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:00:18.262071+00:00",
+        "reconciled_at_utc": "2026-11-18T21:40:57.476711+00:00",
         "mismatches": {}
       }
     },
@@ -28000,7 +28000,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/c3da6552c5b87a6222d59e7b8dffba10d87e56b5004409f1fdc33ff6ab287fbc.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/c3da6552c5b87a6222d59e7b8dffba10d87e56b5004409f1fdc33ff6ab287fbc.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:00:20.269029+00:00",
+        "reconciled_at_utc": "2026-11-18T21:40:59.490713+00:00",
         "mismatches": {}
       }
     },
@@ -34683,7 +34683,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/24e7b85eaf4c0bb96dd214ad0a035d1e60fcbb6ecef83272a59043e239898fd8.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/24e7b85eaf4c0bb96dd214ad0a035d1e60fcbb6ecef83272a59043e239898fd8.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:00:21.262601+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:00.476097+00:00",
         "mismatches": {}
       }
     },
@@ -35085,7 +35085,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/27144dfd6919c128ca17ba713d367846f6c43be476e7b8ca63341b69bebe3676.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/27144dfd6919c128ca17ba713d367846f6c43be476e7b8ca63341b69bebe3676.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:00:22.270319+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:01.611512+00:00",
         "mismatches": {}
       }
     },
@@ -36987,7 +36987,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/12e290763e1aa9316f0fd704d1259f316bc1b50b285417be945fe2c237633970.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/12e290763e1aa9316f0fd704d1259f316bc1b50b285417be945fe2c237633970.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:00:23.410308+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:02.621645+00:00",
         "mismatches": {}
       }
     },
@@ -52352,7 +52352,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/b380d03d5337d87d5ac260a039eb4e014759649f4d7cd08dc374aaa6a5ebc203.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/b380d03d5337d87d5ac260a039eb4e014759649f4d7cd08dc374aaa6a5ebc203.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:00:24.262784+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:03.481390+00:00",
         "mismatches": {}
       }
     },
@@ -54212,7 +54212,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/e27cff8890dc1a4ad4f8444be7ca2b9c366f68a1511be5782830f17fb80a7b0d.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/e27cff8890dc1a4ad4f8444be7ca2b9c366f68a1511be5782830f17fb80a7b0d.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:00:25.131691+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:04.486902+00:00",
         "mismatches": {}
       }
     },
@@ -59386,7 +59386,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/a82f1b947fdcff28347fd72c4c595365cfa031a087e27117e83a582283a6f21a.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/a82f1b947fdcff28347fd72c4c595365cfa031a087e27117e83a582283a6f21a.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:00:26.272430+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:05.474703+00:00",
         "mismatches": {}
       }
     },
@@ -59938,7 +59938,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/848bc54c223d9452693f81e75c4cdc65f4f4ca8f7ea0e033aa2913f13b8fe5a7.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/848bc54c223d9452693f81e75c4cdc65f4f4ca8f7ea0e033aa2913f13b8fe5a7.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:00:27.416628+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:06.616132+00:00",
         "mismatches": {}
       }
     },
@@ -68726,7 +68726,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/d92973a65e3fa2023a2a2d7245ba3a89005adfe602b6be2be320d6b91c9950ac.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/d92973a65e3fa2023a2a2d7245ba3a89005adfe602b6be2be320d6b91c9950ac.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:00:28.264247+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:07.478225+00:00",
         "mismatches": {}
       }
     },
@@ -77153,7 +77153,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/e69c1663fb7043cd4d4d36c9ad443f4febcb863adcd240a77103cc0a1366ff5d.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/e69c1663fb7043cd4d4d36c9ad443f4febcb863adcd240a77103cc0a1366ff5d.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:00:29.266134+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:08.475908+00:00",
         "mismatches": {}
       }
     },
@@ -81366,7 +81366,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/d023320e9fdf8a2242ba0f26f9df4afc974869e22abfa2a977bebeac1ed95305.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/d023320e9fdf8a2242ba0f26f9df4afc974869e22abfa2a977bebeac1ed95305.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:00:30.262130+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:09.490387+00:00",
         "mismatches": {}
       }
     },
@@ -81618,7 +81618,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/78c66abc625a497cdb9c7064cd4099906ba2dd98d30f0a21a3f12845ee55b9c8.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/78c66abc625a497cdb9c7064cd4099906ba2dd98d30f0a21a3f12845ee55b9c8.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:00:31.128420+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:10.474170+00:00",
         "mismatches": {}
       }
     },
@@ -82395,7 +82395,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/9df5220cef22026eff375c79ba726fe0880d421efcaa565cb87d14c65474f69a.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/9df5220cef22026eff375c79ba726fe0880d421efcaa565cb87d14c65474f69a.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:00:32.289673+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:11.484962+00:00",
         "mismatches": {}
       }
     },
@@ -86022,7 +86022,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/7925a2e264c16561283fb814fdbc5100cf613da5148aed984f35566707d930cb.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/7925a2e264c16561283fb814fdbc5100cf613da5148aed984f35566707d930cb.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:00:33.264749+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:12.484006+00:00",
         "mismatches": {}
       }
     },
@@ -86349,7 +86349,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/2b368cfffec5e5d18e77e5713b37731559d02cdae699c71d0f27a6f3c9602018.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/2b368cfffec5e5d18e77e5713b37731559d02cdae699c71d0f27a6f3c9602018.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:00:34.146437+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:13.475082+00:00",
         "mismatches": {}
       }
     },
@@ -102935,7 +102935,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/3c9271c9a7fa3a910fb82490dadb0b38acce49d02fa2a42f8770ec82eb4b7f59.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/3c9271c9a7fa3a910fb82490dadb0b38acce49d02fa2a42f8770ec82eb4b7f59.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:00:35.273994+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:14.622730+00:00",
         "mismatches": {}
       }
     },
@@ -106532,7 +106532,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/5f9b7fa479bc154138b9f36478e2e0605763ed1e9f3465c6d0af4ecd81ee3572.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/5f9b7fa479bc154138b9f36478e2e0605763ed1e9f3465c6d0af4ecd81ee3572.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:00:36.265581+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:15.475948+00:00",
         "mismatches": {}
       }
     },
@@ -109559,7 +109559,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/78e6ccf30d34fcbe839e8bdc98df6c65bbf224e6c8eea80eac5b4b0d18f135b1.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/78e6ccf30d34fcbe839e8bdc98df6c65bbf224e6c8eea80eac5b4b0d18f135b1.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:00:37.125214+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:16.485294+00:00",
         "mismatches": {}
       }
     },
@@ -111372,7 +111372,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/a358324621dab0386db89525c20d3f3adb9d2952b01470a462a53695e15dd841.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/a358324621dab0386db89525c20d3f3adb9d2952b01470a462a53695e15dd841.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:00:38.125802+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:17.472894+00:00",
         "mismatches": {}
       }
     },
@@ -116335,7 +116335,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/2e20f20bb10e1d724e68d3bcaec354507621c7d8e4ac8094502edf4d03663952.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/2e20f20bb10e1d724e68d3bcaec354507621c7d8e4ac8094502edf4d03663952.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:00:39.267346+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:18.485425+00:00",
         "mismatches": {}
       }
     },
@@ -129812,7 +129812,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/858151d306754ecdb798540f57baa5ff8e27c847af654b5b99fc98e2d3badf40.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/858151d306754ecdb798540f57baa5ff8e27c847af654b5b99fc98e2d3badf40.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:00:40.265889+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:19.479486+00:00",
         "mismatches": {}
       }
     },
@@ -131775,7 +131775,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/ee5be998315640a6a4b3eafdab8f9429e12a5474164bec538597dc24f9137e3d.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/ee5be998315640a6a4b3eafdab8f9429e12a5474164bec538597dc24f9137e3d.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:00:41.114689+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:20.483515+00:00",
         "mismatches": {}
       }
     },
@@ -132102,7 +132102,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/c707f6cddabb6e53270399b3d8403fa855163c0f9d237d6567f9d1620b149866.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/c707f6cddabb6e53270399b3d8403fa855163c0f9d237d6567f9d1620b149866.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:00:42.270046+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:21.480640+00:00",
         "mismatches": {}
       }
     },
@@ -132429,7 +132429,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/6b2a591a686f0e33d20d666fa5ece364e79ddcca93f15101ec478b748cd8fbf9.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/6b2a591a686f0e33d20d666fa5ece364e79ddcca93f15101ec478b748cd8fbf9.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:00:43.269130+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:22.480639+00:00",
         "mismatches": {}
       }
     },
@@ -134242,7 +134242,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/350f004afd72d5ae01c6a38b53aebfece9216dfe5eb9e8aff314141d54e84bcf.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/350f004afd72d5ae01c6a38b53aebfece9216dfe5eb9e8aff314141d54e84bcf.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:00:44.261450+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:23.474869+00:00",
         "mismatches": {}
       }
     },
@@ -134869,7 +134869,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/2329d98f718685173ddabdc03601bde553ec6992d9a3ea12b61229a9e2f94c0d.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/2329d98f718685173ddabdc03601bde553ec6992d9a3ea12b61229a9e2f94c0d.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:00:45.128459+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:24.475395+00:00",
         "mismatches": {}
       }
     },
@@ -135796,7 +135796,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/a71c17124001d93036d7a14f71996b095d2d2018ecccc63385243c8dc077179f.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/a71c17124001d93036d7a14f71996b095d2d2018ecccc63385243c8dc077179f.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:00:46.124279+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:25.498421+00:00",
         "mismatches": {}
       }
     },
@@ -136498,7 +136498,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/9fe96d8db440a60fc0b10e2953000f139d83ac0bd4a984cbc2fedd9b8c190f25.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/9fe96d8db440a60fc0b10e2953000f139d83ac0bd4a984cbc2fedd9b8c190f25.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:00:47.265891+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:26.476515+00:00",
         "mismatches": {}
       }
     },
@@ -137952,7 +137952,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/48887e8e0f682dd38c489190245dddc48511799138cc03f1dc10c9aa795e9ea0.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/48887e8e0f682dd38c489190245dddc48511799138cc03f1dc10c9aa795e9ea0.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:00:48.120098+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:27.476612+00:00",
         "mismatches": {}
       }
     },
@@ -138506,7 +138506,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/802fd824860d783e472520302fe91b5708878e67bdb1a46a4536601de9982aae.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/802fd824860d783e472520302fe91b5708878e67bdb1a46a4536601de9982aae.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:00:49.263074+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:28.478873+00:00",
         "mismatches": {}
       }
     },
@@ -148930,7 +148930,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/45d89a0990376fa554e6e03efa3b747bfac28d3737837cc91b6e2399467fa239.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/45d89a0990376fa554e6e03efa3b747bfac28d3737837cc91b6e2399467fa239.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:00:50.119210+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:29.473148+00:00",
         "mismatches": {}
       }
     },
@@ -155557,7 +155557,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/65cfd2201efb16eb0728e3a8535ab773780296bdb1f40b8eb993b6accd148bb5.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/65cfd2201efb16eb0728e3a8535ab773780296bdb1f40b8eb993b6accd148bb5.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:00:51.131720+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:30.482562+00:00",
         "mismatches": {}
       }
     },
@@ -163722,7 +163722,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/9eba78ef2c08ace8d53e97b53e614b00f987dfb8785d083dbf513ef716fa3e59.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/9eba78ef2c08ace8d53e97b53e614b00f987dfb8785d083dbf513ef716fa3e59.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:00:52.123524+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:31.474973+00:00",
         "mismatches": {}
       }
     },
@@ -164799,7 +164799,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/859f794738b61325819802078f1be091b4ae1f27da7173a571ea527ce90663e6.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/859f794738b61325819802078f1be091b4ae1f27da7173a571ea527ce90663e6.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:00:53.128569+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:32.475825+00:00",
         "mismatches": {}
       }
     },
@@ -166012,7 +166012,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/10526b99cf570b7544fdeebfee48e6e80379b2a333a1169cc73b0ba1bcd0b045.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/10526b99cf570b7544fdeebfee48e6e80379b2a333a1169cc73b0ba1bcd0b045.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:00:54.118521+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:33.489590+00:00",
         "mismatches": {}
       }
     },
@@ -166789,7 +166789,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/76a0a93c3b29b2617371646f5a59cd36080581f93560792279b362185b863563.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/76a0a93c3b29b2617371646f5a59cd36080581f93560792279b362185b863563.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:00:55.270172+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:34.481617+00:00",
         "mismatches": {}
       }
     },
@@ -183369,7 +183369,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/b739e7a14bb38a15d7b7e09d279427d19f005b63db17193ff3ce4763537603f8.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/b739e7a14bb38a15d7b7e09d279427d19f005b63db17193ff3ce4763537603f8.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:00:56.259039+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:35.484360+00:00",
         "mismatches": {}
       }
     },
@@ -185622,7 +185622,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/5a004338a3060c6ba9763c78c174fd394e6fc4fad96327fc764773d166df18a1.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/5a004338a3060c6ba9763c78c174fd394e6fc4fad96327fc764773d166df18a1.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:00:57.119555+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:36.474582+00:00",
         "mismatches": {}
       }
     },
@@ -186249,7 +186249,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/ab0ffd665e9f6ad18c2ec45e726b5ece5abf499a94ec0eac402411cb89186b05.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/ab0ffd665e9f6ad18c2ec45e726b5ece5abf499a94ec0eac402411cb89186b05.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:00:58.269837+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:37.487919+00:00",
         "mismatches": {}
       }
     },
@@ -191301,7 +191301,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/590a8a7ad2ae271fc35e1ade0877efdb92b16f26f4cf15d8368568a9844a0398.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/590a8a7ad2ae271fc35e1ade0877efdb92b16f26f4cf15d8368568a9844a0398.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:00:59.268433+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:38.493205+00:00",
         "mismatches": {}
       }
     },
@@ -191478,7 +191478,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/61b3e89f117c6f13efef609d6f3fe1616d0d61ca8804ab402fcadbbec9b85026.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/61b3e89f117c6f13efef609d6f3fe1616d0d61ca8804ab402fcadbbec9b85026.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:01:00.134009+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:39.471781+00:00",
         "mismatches": {}
       }
     },
@@ -192108,7 +192108,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/ae80955ee9269b70e1307980f4a688caf1e9348b5d644af9f113af0cb890fb86.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/ae80955ee9269b70e1307980f4a688caf1e9348b5d644af9f113af0cb890fb86.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:01:01.144648+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:40.475957+00:00",
         "mismatches": {}
       }
     },
@@ -197084,7 +197084,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/13d96f7ae34d83f87bc7cca21a94ff1b4bf5ef869c382504ef7dba1f7cf428b5.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/13d96f7ae34d83f87bc7cca21a94ff1b4bf5ef869c382504ef7dba1f7cf428b5.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:01:02.131401+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:41.468428+00:00",
         "mismatches": {}
       }
     },
@@ -200472,7 +200472,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/5f50b8d06d245a07c360813d51e12ccf82e4e3ccfa36fe625ef14166722615b7.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/5f50b8d06d245a07c360813d51e12ccf82e4e3ccfa36fe625ef14166722615b7.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:01:03.155260+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:42.483697+00:00",
         "mismatches": {}
       }
     },
@@ -201399,7 +201399,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/794e8a69664ccd932da8b5b427bc088f6d1625783bec277f000680037f55b09c.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/794e8a69664ccd932da8b5b427bc088f6d1625783bec277f000680037f55b09c.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:01:04.264465+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:43.482808+00:00",
         "mismatches": {}
       }
     },
@@ -201801,7 +201801,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/57ddf0f079dda97b287ba448e94e8d2cc01824f8f75df237cc1f6f3409da4021.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/57ddf0f079dda97b287ba448e94e8d2cc01824f8f75df237cc1f6f3409da4021.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:01:05.124014+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:44.482156+00:00",
         "mismatches": {}
       }
     },
@@ -202278,7 +202278,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/cfbdcc97588ea295aa26117ced619ca78235c87a28982d6f0ba55af0afff473a.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/cfbdcc97588ea295aa26117ced619ca78235c87a28982d6f0ba55af0afff473a.metadata.json",
-        "reconciled_at_utc": "2026-11-18T21:01:06.124521+00:00",
+        "reconciled_at_utc": "2026-11-18T21:41:45.474403+00:00",
         "mismatches": {}
       }
     },
