@@ -1,28 +1,28 @@
 {
   "schema_version": 2,
   "policy_version": "STAGE4_BS_SAFETY_V1",
-  "snapshot_date_kst": "2026-11-18",
+  "snapshot_date_kst": "2026-11-19",
   "source": "FSS OpenDART bulk balance sheets + OPENDART_AUTHENTICATED_API",
   "source_file": "2025_4Q_BS_20261117035210.zip|2026_1Q_BS_20261118030339.zip|2026_2Q_BS_20261118032826.zip|2026_3Q_BS_20261118035133.zip",
-  "collected_at_utc": "2026-11-17T22:22:47.271948+00:00",
-  "quant_records_sha256": "47a8e7f2c9329c05b02999add557fb4e81f89dac6c07071016249695d69db286",
+  "collected_at_utc": "2026-11-18T18:00:08.177536+00:00",
+  "quant_records_sha256": "8dc0818fac75397bc0f96d144e80a7bdbf15e76ea41b47060d89e2745195b8d1",
   "thresholds": {
     "debt_to_equity_max_pct": 400.0,
     "current_ratio_min_pct": 70.0,
     "accounting_identity_tolerance_pct": 5.0
   },
   "coverage": {
-    "pass": 2095,
-    "fail": 290,
-    "hold": 38,
+    "pass": 2098,
+    "fail": 292,
+    "hold": 33,
     "not_applicable": 226,
     "total": 2649,
     "raw_balance_sheet": 2645,
-    "verified_facts": 2597,
+    "verified_facts": 2602,
     "filing_verified": 2623,
     "hold_reasons": {
       "ACCOUNTING_IDENTITY_MISMATCH": 1,
-      "CORRECTION_VALUES_NOT_RECONCILED": 6,
+      "CORRECTION_VALUES_NOT_RECONCILED": 1,
       "DART_NO_BALANCE_SHEET": 1,
       "IDENTITY_MISMATCH": 2,
       "INVALID_FILING_DATE": 2,
@@ -958,7 +958,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/08c871b55157bfe7b39ad3f6919543091e38c346a4bbdcc54eea47e76e2d493e.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/08c871b55157bfe7b39ad3f6919543091e38c346a4bbdcc54eea47e76e2d493e.metadata.json",
-        "reconciled_at_utc": "2026-11-17T22:21:57.927618+00:00",
+        "reconciled_at_utc": "2026-11-18T17:59:16.912526+00:00",
         "mismatches": {}
       }
     },
@@ -11929,7 +11929,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/7041d5aebd6db5ee727e231ed672b164b00d72d0ddda96b9e3f302275aff09e2.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/7041d5aebd6db5ee727e231ed672b164b00d72d0ddda96b9e3f302275aff09e2.metadata.json",
-        "reconciled_at_utc": "2026-11-17T22:21:59.059370+00:00",
+        "reconciled_at_utc": "2026-11-18T17:59:18.070745+00:00",
         "mismatches": {}
       }
     },
@@ -16667,8 +16667,8 @@
       "issuer_code": "004540",
       "issuer_name": "깨끗한나라",
       "sector": "펄프, 종이 및 판지 제조업",
-      "status": "HOLD",
-      "reason": "CORRECTION_VALUES_NOT_RECONCILED",
+      "status": "FAIL",
+      "reason": "CURRENT_RATIO_UNDER_70",
       "scope": "CFS",
       "basis": "2026_3Q_BS_20261118035133.zip:CFS:2026-09-30:KRW",
       "assets": 622310291927,
@@ -16676,9 +16676,9 @@
       "equity": 156748885016,
       "current_assets": 149078625453,
       "current_liabilities": 302749413094,
-      "debt_to_equity_pct": null,
-      "current_ratio_pct": null,
-      "identity_gap_pct": null,
+      "debt_to_equity_pct": 297.010985,
+      "current_ratio_pct": 49.24159,
+      "identity_gap_pct": 0.0,
       "currency": "KRW",
       "unit": "KRW",
       "report_period": "2026-09-30",
@@ -16686,9 +16686,7 @@
       "source_file": "2026_3Q_BS_20261118035133.zip",
       "source_member": "2026_3║╨▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
       "source_zip_sha256": "5163236950c8c2f765ccf3612dce0c85ec4bb6cbe926cf07dbc25797c5aa3f1c",
-      "validation_issues": [
-        "CORRECTION_VALUES_NOT_RECONCILED"
-      ],
+      "validation_issues": [],
       "account_evidence": {
         "assets": {
           "account_code": "ifrs-full_Assets",
@@ -16726,19 +16724,121 @@
           "source_member": "2026_3║╨▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
-      "facts_verified": false,
+      "facts_verified": true,
       "corp_code": "00113492",
       "receipt_no": "20261116002234",
       "filing_date": "2026-11-16",
       "source_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261116002234",
       "report_name": "[기재정정]분기보고서 (2026.09)",
       "correction_status": "LATEST_CORRECTION",
-      "correction_check": "OPENDART_API: last_reprt_at=Y; explicit rcept_dt; exact stock/name/type/period; bulk amendment incorporation unverified",
+      "correction_check": "OPENDART_API: latest final receipt; exact corporation/period/scope/currency and all five unchanged bulk amounts match fnlttSinglAcntAll",
       "search_sha256": "",
       "profile_sha256": "",
-      "reconciliation_error": "RECEIPT_MISMATCH",
-      "values_reconciled": false,
-      "correction_reconciliation": null
+      "reconciliation_error": "",
+      "values_reconciled": true,
+      "correction_reconciliation": {
+        "receipt_no": "20261116002234",
+        "corp_code": "00113492",
+        "report_period": "2026-09-30",
+        "scope": "CFS",
+        "currency": "KRW",
+        "bsns_year": "2026",
+        "reprt_code": "11014",
+        "amounts": {
+          "assets": 622310291927,
+          "liabilities": 465561406911,
+          "equity": 156748885016,
+          "current_assets": 149078625453,
+          "current_liabilities": 302749413094
+        },
+        "bulk_amounts": {
+          "assets": 622310291927,
+          "liabilities": 465561406911,
+          "equity": 156748885016,
+          "current_assets": 149078625453,
+          "current_liabilities": 302749413094
+        },
+        "account_candidates": {
+          "assets": [
+            622310291927
+          ],
+          "liabilities": [
+            465561406911
+          ],
+          "equity": [
+            156748885016
+          ],
+          "current_assets": [
+            149078625453
+          ],
+          "current_liabilities": [
+            302749413094
+          ]
+        },
+        "account_evidence": {
+          "assets": [
+            {
+              "account_id": "ifrs-full_Assets",
+              "account_name": "자산총계",
+              "raw_amount": "622310291927",
+              "amount": 622310291927
+            }
+          ],
+          "liabilities": [
+            {
+              "account_id": "ifrs-full_Liabilities",
+              "account_name": "부채총계",
+              "raw_amount": "465561406911",
+              "amount": 465561406911
+            }
+          ],
+          "equity": [
+            {
+              "account_id": "ifrs-full_Equity",
+              "account_name": "자본총계",
+              "raw_amount": "156748885016",
+              "amount": 156748885016
+            }
+          ],
+          "current_assets": [
+            {
+              "account_id": "ifrs-full_CurrentAssets",
+              "account_name": "유동자산",
+              "raw_amount": "149078625453",
+              "amount": 149078625453
+            }
+          ],
+          "current_liabilities": [
+            {
+              "account_id": "ifrs-full_CurrentLiabilities",
+              "account_name": "유동부채",
+              "raw_amount": "302749413094",
+              "amount": 302749413094
+            }
+          ]
+        },
+        "observed_receipt_nos": [
+          "20261116002234"
+        ],
+        "observed_corp_codes": [
+          "00113492"
+        ],
+        "observed_currencies": [
+          "KRW"
+        ],
+        "source_api_url": "https://opendart.fss.or.kr/api/fnlttSinglAcntAll.json",
+        "source_api_sha256": "6de31360c3a4526b004e90bf43271aa482eebb7003af038e08c1ddf3144d303b",
+        "source_api_params": {
+          "corp_code": "00113492",
+          "bsns_year": "2026",
+          "reprt_code": "11014",
+          "fs_div": "CFS"
+        },
+        "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/eea66652e34a0cd43c71ff2a28cad962b73b8d731546ff90f6171d250cfa88ee.response.json",
+        "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/eea66652e34a0cd43c71ff2a28cad962b73b8d731546ff90f6171d250cfa88ee.metadata.json",
+        "reconciled_at_utc": "2026-11-18T17:59:19.064540+00:00",
+        "mismatches": {}
+      }
     },
     "004560": {
       "issuer_code": "004560",
@@ -18303,17 +18403,119 @@
       },
       "facts_verified": true,
       "corp_code": "00156488",
-      "receipt_no": "20261116002210",
-      "filing_date": "2026-11-16",
-      "source_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261116002210",
-      "report_name": "분기보고서 (2026.09)",
-      "correction_status": "ORIGINAL",
-      "correction_check": "OPENDART_API: last_reprt_at=Y; explicit rcept_dt; exact stock/name/type/period; bulk amendment incorporation unverified",
+      "receipt_no": "20261118000133",
+      "filing_date": "2026-11-18",
+      "source_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261118000133",
+      "report_name": "[기재정정]분기보고서 (2026.09)",
+      "correction_status": "LATEST_CORRECTION",
+      "correction_check": "OPENDART_API: latest final receipt; exact corporation/period/scope/currency and all five unchanged bulk amounts match fnlttSinglAcntAll",
       "search_sha256": "",
       "profile_sha256": "",
       "reconciliation_error": "",
-      "values_reconciled": false,
-      "correction_reconciliation": null
+      "values_reconciled": true,
+      "correction_reconciliation": {
+        "receipt_no": "20261118000133",
+        "corp_code": "00156488",
+        "report_period": "2026-09-30",
+        "scope": "CFS",
+        "currency": "KRW",
+        "bsns_year": "2026",
+        "reprt_code": "11014",
+        "amounts": {
+          "assets": 1440535231008,
+          "liabilities": 414005050185,
+          "equity": 1026530180823,
+          "current_assets": 484846492343,
+          "current_liabilities": 259144213092
+        },
+        "bulk_amounts": {
+          "assets": 1440535231008,
+          "liabilities": 414005050185,
+          "equity": 1026530180823,
+          "current_assets": 484846492343,
+          "current_liabilities": 259144213092
+        },
+        "account_candidates": {
+          "assets": [
+            1440535231008
+          ],
+          "liabilities": [
+            414005050185
+          ],
+          "equity": [
+            1026530180823
+          ],
+          "current_assets": [
+            484846492343
+          ],
+          "current_liabilities": [
+            259144213092
+          ]
+        },
+        "account_evidence": {
+          "assets": [
+            {
+              "account_id": "ifrs-full_Assets",
+              "account_name": "자산총계",
+              "raw_amount": "1440535231008",
+              "amount": 1440535231008
+            }
+          ],
+          "liabilities": [
+            {
+              "account_id": "ifrs-full_Liabilities",
+              "account_name": "부채총계",
+              "raw_amount": "414005050185",
+              "amount": 414005050185
+            }
+          ],
+          "equity": [
+            {
+              "account_id": "ifrs-full_Equity",
+              "account_name": "자본총계",
+              "raw_amount": "1026530180823",
+              "amount": 1026530180823
+            }
+          ],
+          "current_assets": [
+            {
+              "account_id": "ifrs-full_CurrentAssets",
+              "account_name": "유동 자산",
+              "raw_amount": "484846492343",
+              "amount": 484846492343
+            }
+          ],
+          "current_liabilities": [
+            {
+              "account_id": "ifrs-full_CurrentLiabilities",
+              "account_name": "유동 부채",
+              "raw_amount": "259144213092",
+              "amount": 259144213092
+            }
+          ]
+        },
+        "observed_receipt_nos": [
+          "20261118000133"
+        ],
+        "observed_corp_codes": [
+          "00156488"
+        ],
+        "observed_currencies": [
+          "KRW"
+        ],
+        "source_api_url": "https://opendart.fss.or.kr/api/fnlttSinglAcntAll.json",
+        "source_api_sha256": "6943ef0bbcc752761ad55e08d32847b6cf66f45bc484e8ca73259d5519213211",
+        "source_api_params": {
+          "corp_code": "00156488",
+          "bsns_year": "2026",
+          "reprt_code": "11014",
+          "fs_div": "CFS"
+        },
+        "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/5730d8cc61da90ae0d7bf5940011927bfe7215882229a3e655d33f9ead3be06e.response.json",
+        "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/5730d8cc61da90ae0d7bf5940011927bfe7215882229a3e655d33f9ead3be06e.metadata.json",
+        "reconciled_at_utc": "2026-11-18T17:59:19.934317+00:00",
+        "mismatches": {}
+      }
     },
     "005030": {
       "issuer_code": "005030",
@@ -27798,7 +28000,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/c3da6552c5b87a6222d59e7b8dffba10d87e56b5004409f1fdc33ff6ab287fbc.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/c3da6552c5b87a6222d59e7b8dffba10d87e56b5004409f1fdc33ff6ab287fbc.metadata.json",
-        "reconciled_at_utc": "2026-11-17T22:22:01.936092+00:00",
+        "reconciled_at_utc": "2026-11-18T17:59:21.915487+00:00",
         "mismatches": {}
       }
     },
@@ -34481,7 +34683,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/24e7b85eaf4c0bb96dd214ad0a035d1e60fcbb6ecef83272a59043e239898fd8.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/24e7b85eaf4c0bb96dd214ad0a035d1e60fcbb6ecef83272a59043e239898fd8.metadata.json",
-        "reconciled_at_utc": "2026-11-17T22:22:02.935692+00:00",
+        "reconciled_at_utc": "2026-11-18T17:59:22.913157+00:00",
         "mismatches": {}
       }
     },
@@ -34883,7 +35085,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/27144dfd6919c128ca17ba713d367846f6c43be476e7b8ca63341b69bebe3676.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/27144dfd6919c128ca17ba713d367846f6c43be476e7b8ca63341b69bebe3676.metadata.json",
-        "reconciled_at_utc": "2026-11-17T22:22:04.058392+00:00",
+        "reconciled_at_utc": "2026-11-18T17:59:24.064655+00:00",
         "mismatches": {}
       }
     },
@@ -36785,7 +36987,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/12e290763e1aa9316f0fd704d1259f316bc1b50b285417be945fe2c237633970.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/12e290763e1aa9316f0fd704d1259f316bc1b50b285417be945fe2c237633970.metadata.json",
-        "reconciled_at_utc": "2026-11-17T22:22:05.054870+00:00",
+        "reconciled_at_utc": "2026-11-18T17:59:25.078967+00:00",
         "mismatches": {}
       }
     },
@@ -52150,7 +52352,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/b380d03d5337d87d5ac260a039eb4e014759649f4d7cd08dc374aaa6a5ebc203.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/b380d03d5337d87d5ac260a039eb4e014759649f4d7cd08dc374aaa6a5ebc203.metadata.json",
-        "reconciled_at_utc": "2026-11-17T22:22:05.931335+00:00",
+        "reconciled_at_utc": "2026-11-18T17:59:25.931187+00:00",
         "mismatches": {}
       }
     },
@@ -54010,7 +54212,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/e27cff8890dc1a4ad4f8444be7ca2b9c366f68a1511be5782830f17fb80a7b0d.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/e27cff8890dc1a4ad4f8444be7ca2b9c366f68a1511be5782830f17fb80a7b0d.metadata.json",
-        "reconciled_at_utc": "2026-11-17T22:22:06.933601+00:00",
+        "reconciled_at_utc": "2026-11-18T17:59:26.913537+00:00",
         "mismatches": {}
       }
     },
@@ -59184,7 +59386,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/a82f1b947fdcff28347fd72c4c595365cfa031a087e27117e83a582283a6f21a.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/a82f1b947fdcff28347fd72c4c595365cfa031a087e27117e83a582283a6f21a.metadata.json",
-        "reconciled_at_utc": "2026-11-17T22:22:07.942759+00:00",
+        "reconciled_at_utc": "2026-11-18T17:59:27.915732+00:00",
         "mismatches": {}
       }
     },
@@ -59567,8 +59769,8 @@
       "issuer_code": "036460",
       "issuer_name": "한국가스공사",
       "sector": "연료용 가스 제조 및 배관공급업",
-      "status": "HOLD",
-      "reason": "CORRECTION_VALUES_NOT_RECONCILED",
+      "status": "PASS",
+      "reason": "PASS",
       "scope": "CFS",
       "basis": "2026_3Q_BS_20261118035133.zip:CFS:2026-09-30:KRW",
       "assets": 53047085000000,
@@ -59576,9 +59778,9 @@
       "equity": 11693804000000,
       "current_assets": 13016911000000,
       "current_liabilities": 16488468000000,
-      "debt_to_equity_pct": null,
-      "current_ratio_pct": null,
-      "identity_gap_pct": null,
+      "debt_to_equity_pct": 353.634121,
+      "current_ratio_pct": 78.945545,
+      "identity_gap_pct": 0.0,
       "currency": "KRW",
       "unit": "KRW",
       "report_period": "2026-09-30",
@@ -59586,9 +59788,7 @@
       "source_file": "2026_3Q_BS_20261118035133.zip",
       "source_member": "2026_3║╨▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
       "source_zip_sha256": "5163236950c8c2f765ccf3612dce0c85ec4bb6cbe926cf07dbc25797c5aa3f1c",
-      "validation_issues": [
-        "CORRECTION_VALUES_NOT_RECONCILED"
-      ],
+      "validation_issues": [],
       "account_evidence": {
         "assets": {
           "account_code": "ifrs-full_Assets",
@@ -59626,19 +59826,121 @@
           "source_member": "2026_3║╨▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
-      "facts_verified": false,
+      "facts_verified": true,
       "corp_code": "00261285",
       "receipt_no": "20261116002070",
       "filing_date": "2026-11-16",
       "source_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261116002070",
       "report_name": "[기재정정]분기보고서 (2026.09)",
       "correction_status": "LATEST_CORRECTION",
-      "correction_check": "OPENDART_API: last_reprt_at=Y; explicit rcept_dt; exact stock/name/type/period; bulk amendment incorporation unverified",
+      "correction_check": "OPENDART_API: latest final receipt; exact corporation/period/scope/currency and all five unchanged bulk amounts match fnlttSinglAcntAll",
       "search_sha256": "",
       "profile_sha256": "",
-      "reconciliation_error": "RECEIPT_MISMATCH",
-      "values_reconciled": false,
-      "correction_reconciliation": null
+      "reconciliation_error": "",
+      "values_reconciled": true,
+      "correction_reconciliation": {
+        "receipt_no": "20261116002070",
+        "corp_code": "00261285",
+        "report_period": "2026-09-30",
+        "scope": "CFS",
+        "currency": "KRW",
+        "bsns_year": "2026",
+        "reprt_code": "11014",
+        "amounts": {
+          "assets": 53047085000000,
+          "liabilities": 41353281000000,
+          "equity": 11693804000000,
+          "current_assets": 13016911000000,
+          "current_liabilities": 16488468000000
+        },
+        "bulk_amounts": {
+          "assets": 53047085000000,
+          "liabilities": 41353281000000,
+          "equity": 11693804000000,
+          "current_assets": 13016911000000,
+          "current_liabilities": 16488468000000
+        },
+        "account_candidates": {
+          "assets": [
+            53047085000000
+          ],
+          "liabilities": [
+            41353281000000
+          ],
+          "equity": [
+            11693804000000
+          ],
+          "current_assets": [
+            13016911000000
+          ],
+          "current_liabilities": [
+            16488468000000
+          ]
+        },
+        "account_evidence": {
+          "assets": [
+            {
+              "account_id": "ifrs-full_Assets",
+              "account_name": "자산총계",
+              "raw_amount": "53047085000000",
+              "amount": 53047085000000
+            }
+          ],
+          "liabilities": [
+            {
+              "account_id": "ifrs-full_Liabilities",
+              "account_name": "부채총계",
+              "raw_amount": "41353281000000",
+              "amount": 41353281000000
+            }
+          ],
+          "equity": [
+            {
+              "account_id": "ifrs-full_Equity",
+              "account_name": "자본총계",
+              "raw_amount": "11693804000000",
+              "amount": 11693804000000
+            }
+          ],
+          "current_assets": [
+            {
+              "account_id": "ifrs-full_CurrentAssets",
+              "account_name": "유동 자산",
+              "raw_amount": "13016911000000",
+              "amount": 13016911000000
+            }
+          ],
+          "current_liabilities": [
+            {
+              "account_id": "ifrs-full_CurrentLiabilities",
+              "account_name": "유동 부채",
+              "raw_amount": "16488468000000",
+              "amount": 16488468000000
+            }
+          ]
+        },
+        "observed_receipt_nos": [
+          "20261116002070"
+        ],
+        "observed_corp_codes": [
+          "00261285"
+        ],
+        "observed_currencies": [
+          "KRW"
+        ],
+        "source_api_url": "https://opendart.fss.or.kr/api/fnlttSinglAcntAll.json",
+        "source_api_sha256": "c07bf28ee0026e3af9f588ace79fed671f6fc5110b21782d3907c2951c60a675",
+        "source_api_params": {
+          "corp_code": "00261285",
+          "bsns_year": "2026",
+          "reprt_code": "11014",
+          "fs_div": "CFS"
+        },
+        "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/848bc54c223d9452693f81e75c4cdc65f4f4ca8f7ea0e033aa2913f13b8fe5a7.response.json",
+        "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/848bc54c223d9452693f81e75c4cdc65f4f4ca8f7ea0e033aa2913f13b8fe5a7.metadata.json",
+        "reconciled_at_utc": "2026-11-18T17:59:29.069548+00:00",
+        "mismatches": {}
+      }
     },
     "036480": {
       "issuer_code": "036480",
@@ -68424,7 +68726,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/d92973a65e3fa2023a2a2d7245ba3a89005adfe602b6be2be320d6b91c9950ac.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/d92973a65e3fa2023a2a2d7245ba3a89005adfe602b6be2be320d6b91c9950ac.metadata.json",
-        "reconciled_at_utc": "2026-11-17T22:22:09.936310+00:00",
+        "reconciled_at_utc": "2026-11-18T17:59:29.927108+00:00",
         "mismatches": {}
       }
     },
@@ -76851,7 +77153,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/e69c1663fb7043cd4d4d36c9ad443f4febcb863adcd240a77103cc0a1366ff5d.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/e69c1663fb7043cd4d4d36c9ad443f4febcb863adcd240a77103cc0a1366ff5d.metadata.json",
-        "reconciled_at_utc": "2026-11-17T22:22:10.935137+00:00",
+        "reconciled_at_utc": "2026-11-18T17:59:30.924366+00:00",
         "mismatches": {}
       }
     },
@@ -80895,8 +81197,8 @@
       "issuer_code": "060370",
       "issuer_name": "LS마린솔루션",
       "sector": "전기 및 통신 공사업",
-      "status": "HOLD",
-      "reason": "CORRECTION_VALUES_NOT_RECONCILED",
+      "status": "PASS",
+      "reason": "PASS",
       "scope": "CFS",
       "basis": "2026_3Q_BS_20261118035133.zip:CFS:2026-09-30:KRW",
       "assets": 742540343631,
@@ -80904,9 +81206,9 @@
       "equity": 640228081279,
       "current_assets": 396450387268,
       "current_liabilities": 62030433254,
-      "debt_to_equity_pct": null,
-      "current_ratio_pct": null,
-      "identity_gap_pct": null,
+      "debt_to_equity_pct": 15.980596,
+      "current_ratio_pct": 639.12239,
+      "identity_gap_pct": 0.0,
       "currency": "KRW",
       "unit": "KRW",
       "report_period": "2026-09-30",
@@ -80914,9 +81216,7 @@
       "source_file": "2026_3Q_BS_20261118035133.zip",
       "source_member": "2026_3║╨▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
       "source_zip_sha256": "5163236950c8c2f765ccf3612dce0c85ec4bb6cbe926cf07dbc25797c5aa3f1c",
-      "validation_issues": [
-        "CORRECTION_VALUES_NOT_RECONCILED"
-      ],
+      "validation_issues": [],
       "account_evidence": {
         "assets": {
           "account_code": "ifrs-full_Assets",
@@ -80954,19 +81254,121 @@
           "source_member": "2026_3║╨▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
-      "facts_verified": false,
+      "facts_verified": true,
       "corp_code": "00225742",
       "receipt_no": "20261113001430",
       "filing_date": "2026-11-13",
       "source_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261113001430",
       "report_name": "[기재정정]분기보고서 (2026.09)",
       "correction_status": "LATEST_CORRECTION",
-      "correction_check": "OPENDART_API: last_reprt_at=Y; explicit rcept_dt; exact stock/name/type/period; bulk amendment incorporation unverified",
+      "correction_check": "OPENDART_API: latest final receipt; exact corporation/period/scope/currency and all five unchanged bulk amounts match fnlttSinglAcntAll",
       "search_sha256": "",
       "profile_sha256": "",
-      "reconciliation_error": "RECEIPT_MISMATCH",
-      "values_reconciled": false,
-      "correction_reconciliation": null
+      "reconciliation_error": "",
+      "values_reconciled": true,
+      "correction_reconciliation": {
+        "receipt_no": "20261113001430",
+        "corp_code": "00225742",
+        "report_period": "2026-09-30",
+        "scope": "CFS",
+        "currency": "KRW",
+        "bsns_year": "2026",
+        "reprt_code": "11014",
+        "amounts": {
+          "assets": 742540343631,
+          "liabilities": 102312262352,
+          "equity": 640228081279,
+          "current_assets": 396450387268,
+          "current_liabilities": 62030433254
+        },
+        "bulk_amounts": {
+          "assets": 742540343631,
+          "liabilities": 102312262352,
+          "equity": 640228081279,
+          "current_assets": 396450387268,
+          "current_liabilities": 62030433254
+        },
+        "account_candidates": {
+          "assets": [
+            742540343631
+          ],
+          "liabilities": [
+            102312262352
+          ],
+          "equity": [
+            640228081279
+          ],
+          "current_assets": [
+            396450387268
+          ],
+          "current_liabilities": [
+            62030433254
+          ]
+        },
+        "account_evidence": {
+          "assets": [
+            {
+              "account_id": "ifrs-full_Assets",
+              "account_name": "자산총계",
+              "raw_amount": "742540343631",
+              "amount": 742540343631
+            }
+          ],
+          "liabilities": [
+            {
+              "account_id": "ifrs-full_Liabilities",
+              "account_name": "부채총계",
+              "raw_amount": "102312262352",
+              "amount": 102312262352
+            }
+          ],
+          "equity": [
+            {
+              "account_id": "ifrs-full_Equity",
+              "account_name": "자본총계",
+              "raw_amount": "640228081279",
+              "amount": 640228081279
+            }
+          ],
+          "current_assets": [
+            {
+              "account_id": "ifrs-full_CurrentAssets",
+              "account_name": "유동자산",
+              "raw_amount": "396450387268",
+              "amount": 396450387268
+            }
+          ],
+          "current_liabilities": [
+            {
+              "account_id": "ifrs-full_CurrentLiabilities",
+              "account_name": "유동부채",
+              "raw_amount": "62030433254",
+              "amount": 62030433254
+            }
+          ]
+        },
+        "observed_receipt_nos": [
+          "20261113001430"
+        ],
+        "observed_corp_codes": [
+          "00225742"
+        ],
+        "observed_currencies": [
+          "KRW"
+        ],
+        "source_api_url": "https://opendart.fss.or.kr/api/fnlttSinglAcntAll.json",
+        "source_api_sha256": "feb81a7348a66c477bff22031e0617dfc79d17ee2a07c183f2b15134001a24af",
+        "source_api_params": {
+          "corp_code": "00225742",
+          "bsns_year": "2026",
+          "reprt_code": "11014",
+          "fs_div": "CFS"
+        },
+        "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/d023320e9fdf8a2242ba0f26f9df4afc974869e22abfa2a977bebeac1ed95305.response.json",
+        "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/d023320e9fdf8a2242ba0f26f9df4afc974869e22abfa2a977bebeac1ed95305.metadata.json",
+        "reconciled_at_utc": "2026-11-18T17:59:31.920877+00:00",
+        "mismatches": {}
+      }
     },
     "060380": {
       "issuer_code": "060380",
@@ -81216,7 +81618,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/78c66abc625a497cdb9c7064cd4099906ba2dd98d30f0a21a3f12845ee55b9c8.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/78c66abc625a497cdb9c7064cd4099906ba2dd98d30f0a21a3f12845ee55b9c8.metadata.json",
-        "reconciled_at_utc": "2026-11-17T22:22:12.925145+00:00",
+        "reconciled_at_utc": "2026-11-18T17:59:32.910440+00:00",
         "mismatches": {}
       }
     },
@@ -81993,7 +82395,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/9df5220cef22026eff375c79ba726fe0880d421efcaa565cb87d14c65474f69a.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/9df5220cef22026eff375c79ba726fe0880d421efcaa565cb87d14c65474f69a.metadata.json",
-        "reconciled_at_utc": "2026-11-17T22:22:14.057972+00:00",
+        "reconciled_at_utc": "2026-11-18T17:59:34.065438+00:00",
         "mismatches": {}
       }
     },
@@ -85620,7 +86022,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/7925a2e264c16561283fb814fdbc5100cf613da5148aed984f35566707d930cb.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/7925a2e264c16561283fb814fdbc5100cf613da5148aed984f35566707d930cb.metadata.json",
-        "reconciled_at_utc": "2026-11-17T22:22:14.928609+00:00",
+        "reconciled_at_utc": "2026-11-18T17:59:34.913152+00:00",
         "mismatches": {}
       }
     },
@@ -85947,7 +86349,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/2b368cfffec5e5d18e77e5713b37731559d02cdae699c71d0f27a6f3c9602018.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/2b368cfffec5e5d18e77e5713b37731559d02cdae699c71d0f27a6f3c9602018.metadata.json",
-        "reconciled_at_utc": "2026-11-17T22:22:15.928966+00:00",
+        "reconciled_at_utc": "2026-11-18T17:59:35.932233+00:00",
         "mismatches": {}
       }
     },
@@ -102533,7 +102935,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/3c9271c9a7fa3a910fb82490dadb0b38acce49d02fa2a42f8770ec82eb4b7f59.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/3c9271c9a7fa3a910fb82490dadb0b38acce49d02fa2a42f8770ec82eb4b7f59.metadata.json",
-        "reconciled_at_utc": "2026-11-17T22:22:17.079280+00:00",
+        "reconciled_at_utc": "2026-11-18T17:59:37.075243+00:00",
         "mismatches": {}
       }
     },
@@ -106130,7 +106532,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/5f9b7fa479bc154138b9f36478e2e0605763ed1e9f3465c6d0af4ecd81ee3572.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/5f9b7fa479bc154138b9f36478e2e0605763ed1e9f3465c6d0af4ecd81ee3572.metadata.json",
-        "reconciled_at_utc": "2026-11-17T22:22:17.931167+00:00",
+        "reconciled_at_utc": "2026-11-18T17:59:37.931299+00:00",
         "mismatches": {}
       }
     },
@@ -109157,7 +109559,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/78e6ccf30d34fcbe839e8bdc98df6c65bbf224e6c8eea80eac5b4b0d18f135b1.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/78e6ccf30d34fcbe839e8bdc98df6c65bbf224e6c8eea80eac5b4b0d18f135b1.metadata.json",
-        "reconciled_at_utc": "2026-11-17T22:22:18.925588+00:00",
+        "reconciled_at_utc": "2026-11-18T17:59:38.911457+00:00",
         "mismatches": {}
       }
     },
@@ -110970,7 +111372,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/a358324621dab0386db89525c20d3f3adb9d2952b01470a462a53695e15dd841.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/a358324621dab0386db89525c20d3f3adb9d2952b01470a462a53695e15dd841.metadata.json",
-        "reconciled_at_utc": "2026-11-17T22:22:19.935365+00:00",
+        "reconciled_at_utc": "2026-11-18T17:59:39.917725+00:00",
         "mismatches": {}
       }
     },
@@ -115933,7 +116335,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/2e20f20bb10e1d724e68d3bcaec354507621c7d8e4ac8094502edf4d03663952.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/2e20f20bb10e1d724e68d3bcaec354507621c7d8e4ac8094502edf4d03663952.metadata.json",
-        "reconciled_at_utc": "2026-11-17T22:22:21.061286+00:00",
+        "reconciled_at_utc": "2026-11-18T17:59:41.066542+00:00",
         "mismatches": {}
       }
     },
@@ -129410,7 +129812,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/858151d306754ecdb798540f57baa5ff8e27c847af654b5b99fc98e2d3badf40.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/858151d306754ecdb798540f57baa5ff8e27c847af654b5b99fc98e2d3badf40.metadata.json",
-        "reconciled_at_utc": "2026-11-17T22:22:21.928400+00:00",
+        "reconciled_at_utc": "2026-11-18T17:59:41.912913+00:00",
         "mismatches": {}
       }
     },
@@ -131373,7 +131775,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/ee5be998315640a6a4b3eafdab8f9429e12a5474164bec538597dc24f9137e3d.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/ee5be998315640a6a4b3eafdab8f9429e12a5474164bec538597dc24f9137e3d.metadata.json",
-        "reconciled_at_utc": "2026-11-17T22:22:22.931296+00:00",
+        "reconciled_at_utc": "2026-11-18T17:59:42.920571+00:00",
         "mismatches": {}
       }
     },
@@ -131590,17 +131992,119 @@
       },
       "facts_verified": true,
       "corp_code": "00606886",
-      "receipt_no": "20261116000713",
-      "filing_date": "2026-11-16",
-      "source_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261116000713",
-      "report_name": "분기보고서 (2026.09)",
-      "correction_status": "ORIGINAL",
-      "correction_check": "OPENDART_API: last_reprt_at=Y; explicit rcept_dt; exact stock/name/type/period; bulk amendment incorporation unverified",
+      "receipt_no": "20261118000067",
+      "filing_date": "2026-11-18",
+      "source_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261118000067",
+      "report_name": "[기재정정]분기보고서 (2026.09)",
+      "correction_status": "LATEST_CORRECTION",
+      "correction_check": "OPENDART_API: latest final receipt; exact corporation/period/scope/currency and all five unchanged bulk amounts match fnlttSinglAcntAll",
       "search_sha256": "",
       "profile_sha256": "",
       "reconciliation_error": "",
-      "values_reconciled": false,
-      "correction_reconciliation": null
+      "values_reconciled": true,
+      "correction_reconciliation": {
+        "receipt_no": "20261118000067",
+        "corp_code": "00606886",
+        "report_period": "2026-09-30",
+        "scope": "CFS",
+        "currency": "KRW",
+        "bsns_year": "2026",
+        "reprt_code": "11014",
+        "amounts": {
+          "assets": 164829334351,
+          "liabilities": 20284959732,
+          "equity": 144544374619,
+          "current_assets": 132468291966,
+          "current_liabilities": 11149564302
+        },
+        "bulk_amounts": {
+          "assets": 164829334351,
+          "liabilities": 20284959732,
+          "equity": 144544374619,
+          "current_assets": 132468291966,
+          "current_liabilities": 11149564302
+        },
+        "account_candidates": {
+          "assets": [
+            164829334351
+          ],
+          "liabilities": [
+            20284959732
+          ],
+          "equity": [
+            144544374619
+          ],
+          "current_assets": [
+            132468291966
+          ],
+          "current_liabilities": [
+            11149564302
+          ]
+        },
+        "account_evidence": {
+          "assets": [
+            {
+              "account_id": "ifrs-full_Assets",
+              "account_name": "자산총계",
+              "raw_amount": "164829334351",
+              "amount": 164829334351
+            }
+          ],
+          "liabilities": [
+            {
+              "account_id": "ifrs-full_Liabilities",
+              "account_name": "부채총계",
+              "raw_amount": "20284959732",
+              "amount": 20284959732
+            }
+          ],
+          "equity": [
+            {
+              "account_id": "ifrs-full_Equity",
+              "account_name": "자본총계",
+              "raw_amount": "144544374619",
+              "amount": 144544374619
+            }
+          ],
+          "current_assets": [
+            {
+              "account_id": "ifrs-full_CurrentAssets",
+              "account_name": "유동 자산",
+              "raw_amount": "132468291966",
+              "amount": 132468291966
+            }
+          ],
+          "current_liabilities": [
+            {
+              "account_id": "ifrs-full_CurrentLiabilities",
+              "account_name": "유동 부채",
+              "raw_amount": "11149564302",
+              "amount": 11149564302
+            }
+          ]
+        },
+        "observed_receipt_nos": [
+          "20261118000067"
+        ],
+        "observed_corp_codes": [
+          "00606886"
+        ],
+        "observed_currencies": [
+          "KRW"
+        ],
+        "source_api_url": "https://opendart.fss.or.kr/api/fnlttSinglAcntAll.json",
+        "source_api_sha256": "6403206bb8a1adc369cbfa6718722df9c7f08d1de941e156f86aa5eb3646b934",
+        "source_api_params": {
+          "corp_code": "00606886",
+          "bsns_year": "2026",
+          "reprt_code": "11014",
+          "fs_div": "CFS"
+        },
+        "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/c707f6cddabb6e53270399b3d8403fa855163c0f9d237d6567f9d1620b149866.response.json",
+        "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/c707f6cddabb6e53270399b3d8403fa855163c0f9d237d6567f9d1620b149866.metadata.json",
+        "reconciled_at_utc": "2026-11-18T17:59:44.069222+00:00",
+        "mismatches": {}
+      }
     },
     "184230": {
       "issuer_code": "184230",
@@ -131756,8 +132260,8 @@
       "issuer_code": "185750",
       "issuer_name": "종근당",
       "sector": "의약품 제조업",
-      "status": "HOLD",
-      "reason": "CORRECTION_VALUES_NOT_RECONCILED",
+      "status": "PASS",
+      "reason": "PASS",
       "scope": "CFS",
       "basis": "2026_3Q_BS_20261118035133.zip:CFS:2026-09-30:KRW",
       "assets": 1873783806096,
@@ -131765,9 +132269,9 @@
       "equity": 1031968047982,
       "current_assets": 1054875767539,
       "current_liabilities": 512042900422,
-      "debt_to_equity_pct": null,
-      "current_ratio_pct": null,
-      "identity_gap_pct": null,
+      "debt_to_equity_pct": 81.57382,
+      "current_ratio_pct": 206.013162,
+      "identity_gap_pct": 0.0,
       "currency": "KRW",
       "unit": "KRW",
       "report_period": "2026-09-30",
@@ -131775,9 +132279,7 @@
       "source_file": "2026_3Q_BS_20261118035133.zip",
       "source_member": "2026_3║╨▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
       "source_zip_sha256": "5163236950c8c2f765ccf3612dce0c85ec4bb6cbe926cf07dbc25797c5aa3f1c",
-      "validation_issues": [
-        "CORRECTION_VALUES_NOT_RECONCILED"
-      ],
+      "validation_issues": [],
       "account_evidence": {
         "assets": {
           "account_code": "ifrs-full_Assets",
@@ -131815,19 +132317,121 @@
           "source_member": "2026_3║╨▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
-      "facts_verified": false,
+      "facts_verified": true,
       "corp_code": "00992871",
       "receipt_no": "20261116002243",
       "filing_date": "2026-11-16",
       "source_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261116002243",
       "report_name": "[기재정정]분기보고서 (2026.09)",
       "correction_status": "LATEST_CORRECTION",
-      "correction_check": "OPENDART_API: last_reprt_at=Y; explicit rcept_dt; exact stock/name/type/period; bulk amendment incorporation unverified",
+      "correction_check": "OPENDART_API: latest final receipt; exact corporation/period/scope/currency and all five unchanged bulk amounts match fnlttSinglAcntAll",
       "search_sha256": "",
       "profile_sha256": "",
-      "reconciliation_error": "RECEIPT_MISMATCH",
-      "values_reconciled": false,
-      "correction_reconciliation": null
+      "reconciliation_error": "",
+      "values_reconciled": true,
+      "correction_reconciliation": {
+        "receipt_no": "20261116002243",
+        "corp_code": "00992871",
+        "report_period": "2026-09-30",
+        "scope": "CFS",
+        "currency": "KRW",
+        "bsns_year": "2026",
+        "reprt_code": "11014",
+        "amounts": {
+          "assets": 1873783806096,
+          "liabilities": 841815758114,
+          "equity": 1031968047982,
+          "current_assets": 1054875767539,
+          "current_liabilities": 512042900422
+        },
+        "bulk_amounts": {
+          "assets": 1873783806096,
+          "liabilities": 841815758114,
+          "equity": 1031968047982,
+          "current_assets": 1054875767539,
+          "current_liabilities": 512042900422
+        },
+        "account_candidates": {
+          "assets": [
+            1873783806096
+          ],
+          "liabilities": [
+            841815758114
+          ],
+          "equity": [
+            1031968047982
+          ],
+          "current_assets": [
+            1054875767539
+          ],
+          "current_liabilities": [
+            512042900422
+          ]
+        },
+        "account_evidence": {
+          "assets": [
+            {
+              "account_id": "ifrs-full_Assets",
+              "account_name": "자산총계",
+              "raw_amount": "1873783806096",
+              "amount": 1873783806096
+            }
+          ],
+          "liabilities": [
+            {
+              "account_id": "ifrs-full_Liabilities",
+              "account_name": "부채총계",
+              "raw_amount": "841815758114",
+              "amount": 841815758114
+            }
+          ],
+          "equity": [
+            {
+              "account_id": "ifrs-full_Equity",
+              "account_name": "자본총계",
+              "raw_amount": "1031968047982",
+              "amount": 1031968047982
+            }
+          ],
+          "current_assets": [
+            {
+              "account_id": "ifrs-full_CurrentAssets",
+              "account_name": "유동 자산",
+              "raw_amount": "1054875767539",
+              "amount": 1054875767539
+            }
+          ],
+          "current_liabilities": [
+            {
+              "account_id": "ifrs-full_CurrentLiabilities",
+              "account_name": "유동 부채",
+              "raw_amount": "512042900422",
+              "amount": 512042900422
+            }
+          ]
+        },
+        "observed_receipt_nos": [
+          "20261116002243"
+        ],
+        "observed_corp_codes": [
+          "00992871"
+        ],
+        "observed_currencies": [
+          "KRW"
+        ],
+        "source_api_url": "https://opendart.fss.or.kr/api/fnlttSinglAcntAll.json",
+        "source_api_sha256": "9e449fc7ba9a37c48de009952aa1667c9267dd14b82aa3e30c4e2507425bbe20",
+        "source_api_params": {
+          "corp_code": "00992871",
+          "bsns_year": "2026",
+          "reprt_code": "11014",
+          "fs_div": "CFS"
+        },
+        "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/6b2a591a686f0e33d20d666fa5ece364e79ddcca93f15101ec478b748cd8fbf9.response.json",
+        "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/6b2a591a686f0e33d20d666fa5ece364e79ddcca93f15101ec478b748cd8fbf9.metadata.json",
+        "reconciled_at_utc": "2026-11-18T17:59:45.066772+00:00",
+        "mismatches": {}
+      }
     },
     "186230": {
       "issuer_code": "186230",
@@ -133638,7 +134242,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/350f004afd72d5ae01c6a38b53aebfece9216dfe5eb9e8aff314141d54e84bcf.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/350f004afd72d5ae01c6a38b53aebfece9216dfe5eb9e8aff314141d54e84bcf.metadata.json",
-        "reconciled_at_utc": "2026-11-17T22:22:24.927635+00:00",
+        "reconciled_at_utc": "2026-11-18T17:59:45.913836+00:00",
         "mismatches": {}
       }
     },
@@ -134265,7 +134869,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/2329d98f718685173ddabdc03601bde553ec6992d9a3ea12b61229a9e2f94c0d.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/2329d98f718685173ddabdc03601bde553ec6992d9a3ea12b61229a9e2f94c0d.metadata.json",
-        "reconciled_at_utc": "2026-11-17T22:22:25.932534+00:00",
+        "reconciled_at_utc": "2026-11-18T17:59:46.914981+00:00",
         "mismatches": {}
       }
     },
@@ -135192,7 +135796,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/a71c17124001d93036d7a14f71996b095d2d2018ecccc63385243c8dc077179f.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/a71c17124001d93036d7a14f71996b095d2d2018ecccc63385243c8dc077179f.metadata.json",
-        "reconciled_at_utc": "2026-11-17T22:22:26.927453+00:00",
+        "reconciled_at_utc": "2026-11-18T17:59:47.912508+00:00",
         "mismatches": {}
       }
     },
@@ -135894,7 +136498,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/9fe96d8db440a60fc0b10e2953000f139d83ac0bd4a984cbc2fedd9b8c190f25.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/9fe96d8db440a60fc0b10e2953000f139d83ac0bd4a984cbc2fedd9b8c190f25.metadata.json",
-        "reconciled_at_utc": "2026-11-17T22:22:27.930569+00:00",
+        "reconciled_at_utc": "2026-11-18T17:59:48.929686+00:00",
         "mismatches": {}
       }
     },
@@ -137348,7 +137952,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/48887e8e0f682dd38c489190245dddc48511799138cc03f1dc10c9aa795e9ea0.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/48887e8e0f682dd38c489190245dddc48511799138cc03f1dc10c9aa795e9ea0.metadata.json",
-        "reconciled_at_utc": "2026-11-17T22:22:28.928838+00:00",
+        "reconciled_at_utc": "2026-11-18T17:59:49.926184+00:00",
         "mismatches": {}
       }
     },
@@ -137902,7 +138506,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/802fd824860d783e472520302fe91b5708878e67bdb1a46a4536601de9982aae.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/802fd824860d783e472520302fe91b5708878e67bdb1a46a4536601de9982aae.metadata.json",
-        "reconciled_at_utc": "2026-11-17T22:22:29.926449+00:00",
+        "reconciled_at_utc": "2026-11-18T17:59:50.918648+00:00",
         "mismatches": {}
       }
     },
@@ -148326,7 +148930,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/45d89a0990376fa554e6e03efa3b747bfac28d3737837cc91b6e2399467fa239.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/45d89a0990376fa554e6e03efa3b747bfac28d3737837cc91b6e2399467fa239.metadata.json",
-        "reconciled_at_utc": "2026-11-17T22:22:30.926576+00:00",
+        "reconciled_at_utc": "2026-11-18T17:59:51.911695+00:00",
         "mismatches": {}
       }
     },
@@ -154953,7 +155557,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/65cfd2201efb16eb0728e3a8535ab773780296bdb1f40b8eb993b6accd148bb5.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/65cfd2201efb16eb0728e3a8535ab773780296bdb1f40b8eb993b6accd148bb5.metadata.json",
-        "reconciled_at_utc": "2026-11-17T22:22:31.930365+00:00",
+        "reconciled_at_utc": "2026-11-18T17:59:52.922267+00:00",
         "mismatches": {}
       }
     },
@@ -163118,7 +163722,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/9eba78ef2c08ace8d53e97b53e614b00f987dfb8785d083dbf513ef716fa3e59.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/9eba78ef2c08ace8d53e97b53e614b00f987dfb8785d083dbf513ef716fa3e59.metadata.json",
-        "reconciled_at_utc": "2026-11-17T22:22:32.970168+00:00",
+        "reconciled_at_utc": "2026-11-18T17:59:53.917967+00:00",
         "mismatches": {}
       }
     },
@@ -164195,7 +164799,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/859f794738b61325819802078f1be091b4ae1f27da7173a571ea527ce90663e6.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/859f794738b61325819802078f1be091b4ae1f27da7173a571ea527ce90663e6.metadata.json",
-        "reconciled_at_utc": "2026-11-17T22:22:33.932839+00:00",
+        "reconciled_at_utc": "2026-11-18T17:59:54.914009+00:00",
         "mismatches": {}
       }
     },
@@ -165408,7 +166012,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/10526b99cf570b7544fdeebfee48e6e80379b2a333a1169cc73b0ba1bcd0b045.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/10526b99cf570b7544fdeebfee48e6e80379b2a333a1169cc73b0ba1bcd0b045.metadata.json",
-        "reconciled_at_utc": "2026-11-17T22:22:34.930980+00:00",
+        "reconciled_at_utc": "2026-11-18T17:59:55.913180+00:00",
         "mismatches": {}
       }
     },
@@ -166185,7 +166789,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/76a0a93c3b29b2617371646f5a59cd36080581f93560792279b362185b863563.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/76a0a93c3b29b2617371646f5a59cd36080581f93560792279b362185b863563.metadata.json",
-        "reconciled_at_utc": "2026-11-17T22:22:35.939287+00:00",
+        "reconciled_at_utc": "2026-11-18T17:59:56.923377+00:00",
         "mismatches": {}
       }
     },
@@ -182765,7 +183369,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/b739e7a14bb38a15d7b7e09d279427d19f005b63db17193ff3ce4763537603f8.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/b739e7a14bb38a15d7b7e09d279427d19f005b63db17193ff3ce4763537603f8.metadata.json",
-        "reconciled_at_utc": "2026-11-17T22:22:36.930399+00:00",
+        "reconciled_at_utc": "2026-11-18T17:59:57.914304+00:00",
         "mismatches": {}
       }
     },
@@ -185018,7 +185622,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/5a004338a3060c6ba9763c78c174fd394e6fc4fad96327fc764773d166df18a1.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/5a004338a3060c6ba9763c78c174fd394e6fc4fad96327fc764773d166df18a1.metadata.json",
-        "reconciled_at_utc": "2026-11-17T22:22:37.927804+00:00",
+        "reconciled_at_utc": "2026-11-18T17:59:58.917039+00:00",
         "mismatches": {}
       }
     },
@@ -185645,7 +186249,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/ab0ffd665e9f6ad18c2ec45e726b5ece5abf499a94ec0eac402411cb89186b05.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/ab0ffd665e9f6ad18c2ec45e726b5ece5abf499a94ec0eac402411cb89186b05.metadata.json",
-        "reconciled_at_utc": "2026-11-17T22:22:38.939214+00:00",
+        "reconciled_at_utc": "2026-11-18T17:59:59.923894+00:00",
         "mismatches": {}
       }
     },
@@ -190528,8 +191132,8 @@
       "issuer_code": "457190",
       "issuer_name": "이수스페셜티케미컬",
       "sector": "기초 화학물질 제조업",
-      "status": "HOLD",
-      "reason": "CORRECTION_VALUES_NOT_RECONCILED",
+      "status": "FAIL",
+      "reason": "CURRENT_RATIO_UNDER_70",
       "scope": "CFS",
       "basis": "2026_3Q_BS_20261118035133.zip:CFS:2026-09-30:KRW",
       "assets": 395438584000,
@@ -190537,9 +191141,9 @@
       "equity": 134423320000,
       "current_assets": 125515689000,
       "current_liabilities": 202234282000,
-      "debt_to_equity_pct": null,
-      "current_ratio_pct": null,
-      "identity_gap_pct": null,
+      "debt_to_equity_pct": 194.174094,
+      "current_ratio_pct": 62.064497,
+      "identity_gap_pct": 0.0,
       "currency": "KRW",
       "unit": "KRW",
       "report_period": "2026-09-30",
@@ -190547,9 +191151,7 @@
       "source_file": "2026_3Q_BS_20261118035133.zip",
       "source_member": "2026_3║╨▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt",
       "source_zip_sha256": "5163236950c8c2f765ccf3612dce0c85ec4bb6cbe926cf07dbc25797c5aa3f1c",
-      "validation_issues": [
-        "CORRECTION_VALUES_NOT_RECONCILED"
-      ],
+      "validation_issues": [],
       "account_evidence": {
         "assets": {
           "account_code": "ifrs-full_Assets",
@@ -190587,19 +191189,121 @@
           "source_member": "2026_3║╨▒Γ║╕░φ╝¡_01_└τ╣½╗≤┼┬╟Ñ_┐¼░ß_20261118.txt"
         }
       },
-      "facts_verified": false,
+      "facts_verified": true,
       "corp_code": "01762569",
       "receipt_no": "20261116002202",
       "filing_date": "2026-11-16",
       "source_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261116002202",
       "report_name": "[기재정정]분기보고서 (2026.09)",
       "correction_status": "LATEST_CORRECTION",
-      "correction_check": "OPENDART_API: last_reprt_at=Y; explicit rcept_dt; exact stock/name/type/period; bulk amendment incorporation unverified",
+      "correction_check": "OPENDART_API: latest final receipt; exact corporation/period/scope/currency and all five unchanged bulk amounts match fnlttSinglAcntAll",
       "search_sha256": "",
       "profile_sha256": "",
-      "reconciliation_error": "RECEIPT_MISMATCH",
-      "values_reconciled": false,
-      "correction_reconciliation": null
+      "reconciliation_error": "",
+      "values_reconciled": true,
+      "correction_reconciliation": {
+        "receipt_no": "20261116002202",
+        "corp_code": "01762569",
+        "report_period": "2026-09-30",
+        "scope": "CFS",
+        "currency": "KRW",
+        "bsns_year": "2026",
+        "reprt_code": "11014",
+        "amounts": {
+          "assets": 395438584000,
+          "liabilities": 261015264000,
+          "equity": 134423320000,
+          "current_assets": 125515689000,
+          "current_liabilities": 202234282000
+        },
+        "bulk_amounts": {
+          "assets": 395438584000,
+          "liabilities": 261015264000,
+          "equity": 134423320000,
+          "current_assets": 125515689000,
+          "current_liabilities": 202234282000
+        },
+        "account_candidates": {
+          "assets": [
+            395438584000
+          ],
+          "liabilities": [
+            261015264000
+          ],
+          "equity": [
+            134423320000
+          ],
+          "current_assets": [
+            125515689000
+          ],
+          "current_liabilities": [
+            202234282000
+          ]
+        },
+        "account_evidence": {
+          "assets": [
+            {
+              "account_id": "ifrs-full_Assets",
+              "account_name": "자산총계",
+              "raw_amount": "395438584000",
+              "amount": 395438584000
+            }
+          ],
+          "liabilities": [
+            {
+              "account_id": "ifrs-full_Liabilities",
+              "account_name": "부채총계",
+              "raw_amount": "261015264000",
+              "amount": 261015264000
+            }
+          ],
+          "equity": [
+            {
+              "account_id": "ifrs-full_Equity",
+              "account_name": "자본총계",
+              "raw_amount": "134423320000",
+              "amount": 134423320000
+            }
+          ],
+          "current_assets": [
+            {
+              "account_id": "ifrs-full_CurrentAssets",
+              "account_name": "유동자산",
+              "raw_amount": "125515689000",
+              "amount": 125515689000
+            }
+          ],
+          "current_liabilities": [
+            {
+              "account_id": "ifrs-full_CurrentLiabilities",
+              "account_name": "유동부채",
+              "raw_amount": "202234282000",
+              "amount": 202234282000
+            }
+          ]
+        },
+        "observed_receipt_nos": [
+          "20261116002202"
+        ],
+        "observed_corp_codes": [
+          "01762569"
+        ],
+        "observed_currencies": [
+          "KRW"
+        ],
+        "source_api_url": "https://opendart.fss.or.kr/api/fnlttSinglAcntAll.json",
+        "source_api_sha256": "8536c69e2d4e815b0445c68912e74e02aa8c4998636c877094ed2c15cdca4d74",
+        "source_api_params": {
+          "corp_code": "01762569",
+          "bsns_year": "2026",
+          "reprt_code": "11014",
+          "fs_div": "CFS"
+        },
+        "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/590a8a7ad2ae271fc35e1ade0877efdb92b16f26f4cf15d8368568a9844a0398.response.json",
+        "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/590a8a7ad2ae271fc35e1ade0877efdb92b16f26f4cf15d8368568a9844a0398.metadata.json",
+        "reconciled_at_utc": "2026-11-18T18:00:00.948992+00:00",
+        "mismatches": {}
+      }
     },
     "457370": {
       "issuer_code": "457370",
@@ -190774,7 +191478,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/61b3e89f117c6f13efef609d6f3fe1616d0d61ca8804ab402fcadbbec9b85026.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/61b3e89f117c6f13efef609d6f3fe1616d0d61ca8804ab402fcadbbec9b85026.metadata.json",
-        "reconciled_at_utc": "2026-11-17T22:22:40.953745+00:00",
+        "reconciled_at_utc": "2026-11-18T18:00:01.925418+00:00",
         "mismatches": {}
       }
     },
@@ -191404,7 +192108,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/ae80955ee9269b70e1307980f4a688caf1e9348b5d644af9f113af0cb890fb86.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/ae80955ee9269b70e1307980f4a688caf1e9348b5d644af9f113af0cb890fb86.metadata.json",
-        "reconciled_at_utc": "2026-11-17T22:22:41.934346+00:00",
+        "reconciled_at_utc": "2026-11-18T18:00:02.929676+00:00",
         "mismatches": {}
       }
     },
@@ -196380,7 +197084,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/13d96f7ae34d83f87bc7cca21a94ff1b4bf5ef869c382504ef7dba1f7cf428b5.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/13d96f7ae34d83f87bc7cca21a94ff1b4bf5ef869c382504ef7dba1f7cf428b5.metadata.json",
-        "reconciled_at_utc": "2026-11-17T22:22:42.923801+00:00",
+        "reconciled_at_utc": "2026-11-18T18:00:03.922466+00:00",
         "mismatches": {}
       }
     },
@@ -199768,7 +200472,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/5f50b8d06d245a07c360813d51e12ccf82e4e3ccfa36fe625ef14166722615b7.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/5f50b8d06d245a07c360813d51e12ccf82e4e3ccfa36fe625ef14166722615b7.metadata.json",
-        "reconciled_at_utc": "2026-11-17T22:22:43.931580+00:00",
+        "reconciled_at_utc": "2026-11-18T18:00:04.924322+00:00",
         "mismatches": {}
       }
     },
@@ -200695,7 +201399,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/794e8a69664ccd932da8b5b427bc088f6d1625783bec277f000680037f55b09c.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/794e8a69664ccd932da8b5b427bc088f6d1625783bec277f000680037f55b09c.metadata.json",
-        "reconciled_at_utc": "2026-11-17T22:22:44.932399+00:00",
+        "reconciled_at_utc": "2026-11-18T18:00:05.935465+00:00",
         "mismatches": {}
       }
     },
@@ -201097,7 +201801,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/57ddf0f079dda97b287ba448e94e8d2cc01824f8f75df237cc1f6f3409da4021.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/57ddf0f079dda97b287ba448e94e8d2cc01824f8f75df237cc1f6f3409da4021.metadata.json",
-        "reconciled_at_utc": "2026-11-17T22:22:45.927595+00:00",
+        "reconciled_at_utc": "2026-11-18T18:00:06.926653+00:00",
         "mismatches": {}
       }
     },
@@ -201574,7 +202278,7 @@
         },
         "source_api_raw_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/cfbdcc97588ea295aa26117ced619ca78235c87a28982d6f0ba55af0afff473a.response.json",
         "source_api_metadata_path": "/home/runner/work/_temp/kr4-financial-raw/dart/corrections/cfbdcc97588ea295aa26117ced619ca78235c87a28982d6f0ba55af0afff473a.metadata.json",
-        "reconciled_at_utc": "2026-11-17T22:22:46.929811+00:00",
+        "reconciled_at_utc": "2026-11-18T18:00:07.918456+00:00",
         "mismatches": {}
       }
     },
