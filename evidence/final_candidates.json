@@ -2,16 +2,16 @@
   "schema_version": "KR4_FINAL_CANDIDATE_V2",
   "policy_version": "STAGE4567_SAFETY_AND_RELATIVE_PER_BAND_V1",
   "generated_from": "real_quant_snapshot.json#financial_safety",
-  "snapshot_date_kst": "2026-11-20",
-  "price_cutoff_date_kst": "2026-11-19",
+  "snapshot_date_kst": "2026-11-21",
+  "price_cutoff_date_kst": "2026-11-20",
   "universe_count": 2649,
   "financial_safety_policy_version": "STAGE4_BS_SAFETY_V1",
-  "eligible_count": 1370,
+  "eligible_count": 1353,
   "candidate_limit": 10,
   "candidate_count": 10,
   "reject_counts": {
-    "base_incomplete_or_nonpositive_per": 1166,
-    "financial_safety_not_pass": 113
+    "base_incomplete_or_nonpositive_per": 1181,
+    "financial_safety_not_pass": 115
   },
   "selection_policy": {
     "purpose": "research_priority_only",
@@ -35,37 +35,37 @@
       "name": "액토즈소프트",
       "market": "KOSDAQ",
       "sector": "소프트웨어 개발 및 공급업",
-      "composite_score": 94.383083,
-      "financial_snapshot_date": "2026-11-20",
-      "price_cutoff_date": "2026-11-19",
+      "composite_score": 95.089752,
+      "financial_snapshot_date": "2026-11-21",
+      "price_cutoff_date": "2026-11-20",
       "metrics": {
         "M01": {
           "id": "M01",
           "raw": 80.354712,
-          "percentile": 91.995314,
+          "percentile": 91.992188,
           "basis": "2026HY_3M_CFS",
-          "as_of_date": "2026-11-20"
+          "as_of_date": "2026-11-21"
         },
         "M02": {
           "id": "M02",
           "raw": 31.660746,
-          "percentile": 96.637609,
+          "percentile": 96.677741,
           "basis": "2026HY_3M_CFS",
-          "as_of_date": "2026-11-20"
+          "as_of_date": "2026-11-21"
         },
         "M03": {
           "id": "M03",
-          "raw": 1.88,
-          "percentile": 96.394627,
-          "basis": "2026-11-19_NAVER_REPORTED_TRAILING_PER",
-          "as_of_date": "2026-11-19"
+          "raw": 1.4,
+          "percentile": 97.884106,
+          "basis": "2026-11-20_NAVER_REPORTED_TRAILING_PER",
+          "as_of_date": "2026-11-20"
         },
         "M04": {
           "id": "M04",
-          "raw": 5.83501,
-          "percentile": 92.50478,
-          "basis": "2026-05-19->2026-11-19_NAVER_LEGACY_ADJUSTED_CLOSE_CA0",
-          "as_of_date": "2026-11-19"
+          "raw": 8.649789,
+          "percentile": 93.804971,
+          "basis": "2026-05-20->2026-11-20_NAVER_LEGACY_ADJUSTED_CLOSE_CA0",
+          "as_of_date": "2026-11-20"
         }
       },
       "financial_safety": {
@@ -80,7 +80,7 @@
         "method": "MARKET_RELATIVE_TRAILING_PER_PERCENTILE",
         "band": "LOW_RELATIVE_PER",
         "band_ko": "시장 내 낮은 PER 구간",
-        "m03_percentile": 96.394627,
+        "m03_percentile": 97.884106,
         "changes_rank": false
       },
       "selection_flags": [
@@ -105,37 +105,37 @@
       "name": "피델릭스",
       "market": "KOSDAQ",
       "sector": "반도체 제조업",
-      "composite_score": 92.679544,
-      "financial_snapshot_date": "2026-11-20",
-      "price_cutoff_date": "2026-11-19",
+      "composite_score": 92.459629,
+      "financial_snapshot_date": "2026-11-21",
+      "price_cutoff_date": "2026-11-20",
       "metrics": {
         "M01": {
           "id": "M01",
           "raw": 179.824939,
-          "percentile": 96.485748,
+          "percentile": 96.484375,
           "basis": "2026HY_3M_OFS",
-          "as_of_date": "2026-11-20"
+          "as_of_date": "2026-11-21"
         },
         "M02": {
           "id": "M02",
           "raw": 28.749853,
-          "percentile": 95.8489,
+          "percentile": 95.888704,
           "basis": "2026HY_3M_OFS",
-          "as_of_date": "2026-11-20"
+          "as_of_date": "2026-11-21"
         },
         "M03": {
           "id": "M03",
           "raw": 4.67,
-          "percentile": 79.874925,
-          "basis": "2026-11-19_NAVER_REPORTED_TRAILING_PER",
-          "as_of_date": "2026-11-19"
+          "percentile": 79.377483,
+          "basis": "2026-11-20_NAVER_REPORTED_TRAILING_PER",
+          "as_of_date": "2026-11-20"
         },
         "M04": {
           "id": "M04",
-          "raw": 44.893617,
-          "percentile": 98.508604,
-          "basis": "2026-05-19->2026-11-19_NAVER_LEGACY_ADJUSTED_CLOSE_CA0",
-          "as_of_date": "2026-11-19"
+          "raw": 35.928144,
+          "percentile": 98.087954,
+          "basis": "2026-05-20->2026-11-20_NAVER_LEGACY_ADJUSTED_CLOSE_CA0",
+          "as_of_date": "2026-11-20"
         }
       },
       "financial_safety": {
@@ -150,7 +150,7 @@
         "method": "MARKET_RELATIVE_TRAILING_PER_PERCENTILE",
         "band": "BELOW_MEDIAN_PER",
         "band_ko": "시장 중앙값보다 낮은 PER 구간",
-        "m03_percentile": 79.874925,
+        "m03_percentile": 79.377483,
         "changes_rank": false
       },
       "selection_flags": [
@@ -171,110 +171,41 @@
       "policy_version": "STAGE4567_SAFETY_AND_RELATIVE_PER_BAND_V1",
       "candidate_rank": 3,
       "source_rank": 3,
-      "code": "025560",
-      "name": "미래산업",
-      "market": "KOSPI",
-      "sector": "측정, 시험, 항해, 제어 및 기타 정밀기기 제조업; 광학기기 제외",
-      "composite_score": 89.258361,
-      "financial_snapshot_date": "2026-11-20",
-      "price_cutoff_date": "2026-11-19",
-      "metrics": {
-        "M01": {
-          "id": "M01",
-          "raw": 352.485625,
-          "percentile": 98.633346,
-          "basis": "2026HY_3M_CFS",
-          "as_of_date": "2026-11-20"
-        },
-        "M02": {
-          "id": "M02",
-          "raw": 33.638905,
-          "percentile": 97.301785,
-          "basis": "2026HY_3M_CFS",
-          "as_of_date": "2026-11-20"
-        },
-        "M03": {
-          "id": "M03",
-          "raw": 5.2,
-          "percentile": 75.97403,
-          "basis": "2026-11-19_NAVER_REPORTED_TRAILING_PER_CA_XCHECK_PASS_POLLING_EPS",
-          "as_of_date": "2026-11-19"
-        },
-        "M04": {
-          "id": "M04",
-          "raw": -0.967118,
-          "percentile": 85.124283,
-          "basis": "2026-05-19->2026-11-19_NAVER_LEGACY_ADJUSTED_CLOSE_CA1_EVT20260727:STOCK_SPLIT:0.200000",
-          "as_of_date": "2026-11-19"
-        }
-      },
-      "financial_safety": {
-        "status": "PASS",
-        "reason": "PASS",
-        "basis": "2026_3Q_BS_20261120050304.zip:CFS:2026-09-30:KRW",
-        "debt_to_equity_pct": 78.831605,
-        "current_ratio_pct": 141.636158,
-        "identity_gap_pct": 0.0
-      },
-      "valuation": {
-        "method": "MARKET_RELATIVE_TRAILING_PER_PERCENTILE",
-        "band": "BELOW_MEDIAN_PER",
-        "band_ko": "시장 중앙값보다 낮은 PER 구간",
-        "m03_percentile": 75.97403,
-        "changes_rank": false
-      },
-      "selection_flags": [
-        "FOUR_METRICS_COMPLETE",
-        "POSITIVE_TRAILING_PER",
-        "FINANCIAL_SAFETY_PASS",
-        "VALUATION_BAND_CLASSIFIED",
-        "EXISTING_COMPOSITE_RANK_REUSED",
-        "POSITIVE_REVENUE_GROWTH",
-        "POSITIVE_OPERATING_MARGIN"
-      ],
-      "research_status": "FINAL_RESEARCH_CANDIDATE",
-      "selection_reason_ko": "4지표 검증 · 재무안정성 PASS · 시장 중앙값보다 낮은 PER 구간 · 기존 종합순위 3위 기준 조사 후보"
-    },
-    {
-      "schema_version": "KR4_FINAL_CANDIDATE_V2",
-      "policy_version": "STAGE4567_SAFETY_AND_RELATIVE_PER_BAND_V1",
-      "candidate_rank": 4,
-      "source_rank": 4,
       "code": "013700",
       "name": "까뮤이앤씨",
       "market": "KOSPI",
       "sector": "건물 건설업",
-      "composite_score": 86.348149,
-      "financial_snapshot_date": "2026-11-20",
-      "price_cutoff_date": "2026-11-19",
+      "composite_score": 87.751604,
+      "financial_snapshot_date": "2026-11-21",
+      "price_cutoff_date": "2026-11-20",
       "metrics": {
         "M01": {
           "id": "M01",
           "raw": 77.127424,
-          "percentile": 91.604842,
+          "percentile": 91.601562,
           "basis": "2026HY_3M_CFS",
-          "as_of_date": "2026-11-20"
+          "as_of_date": "2026-11-21"
         },
         "M02": {
           "id": "M02",
           "raw": 11.161711,
-          "percentile": 77.459527,
+          "percentile": 77.491694,
           "basis": "2026HY_3M_CFS",
-          "as_of_date": "2026-11-20"
+          "as_of_date": "2026-11-21"
         },
         "M03": {
           "id": "M03",
           "raw": 2.76,
-          "percentile": 92.198209,
-          "basis": "2026-11-19_NAVER_REPORTED_TRAILING_PER",
-          "as_of_date": "2026-11-19"
+          "percentile": 91.89404,
+          "basis": "2026-11-20_NAVER_REPORTED_TRAILING_PER",
+          "as_of_date": "2026-11-20"
         },
         "M04": {
           "id": "M04",
-          "raw": -1.923077,
-          "percentile": 84.130019,
-          "basis": "2026-05-19->2026-11-19_NAVER_LEGACY_ADJUSTED_CLOSE_CA0",
-          "as_of_date": "2026-11-19"
+          "raw": 0.606061,
+          "percentile": 90.01912,
+          "basis": "2026-05-20->2026-11-20_NAVER_LEGACY_ADJUSTED_CLOSE_CA0",
+          "as_of_date": "2026-11-20"
         }
       },
       "financial_safety": {
@@ -289,7 +220,7 @@
         "method": "MARKET_RELATIVE_TRAILING_PER_PERCENTILE",
         "band": "LOW_RELATIVE_PER",
         "band_ko": "시장 내 낮은 PER 구간",
-        "m03_percentile": 92.198209,
+        "m03_percentile": 91.89404,
         "changes_rank": false
       },
       "selection_flags": [
@@ -299,66 +230,67 @@
         "VALUATION_BAND_CLASSIFIED",
         "EXISTING_COMPOSITE_RANK_REUSED",
         "POSITIVE_REVENUE_GROWTH",
-        "POSITIVE_OPERATING_MARGIN"
+        "POSITIVE_OPERATING_MARGIN",
+        "POSITIVE_6M_MOMENTUM"
       ],
       "research_status": "FINAL_RESEARCH_CANDIDATE",
-      "selection_reason_ko": "4지표 검증 · 재무안정성 PASS · 시장 내 낮은 PER 구간 · 기존 종합순위 4위 기준 조사 후보"
+      "selection_reason_ko": "4지표 검증 · 재무안정성 PASS · 시장 내 낮은 PER 구간 · 기존 종합순위 3위 기준 조사 후보"
     },
     {
       "schema_version": "KR4_FINAL_CANDIDATE_V2",
       "policy_version": "STAGE4567_SAFETY_AND_RELATIVE_PER_BAND_V1",
-      "candidate_rank": 5,
-      "source_rank": 6,
-      "code": "255440",
-      "name": "야스",
-      "market": "KOSDAQ",
-      "sector": "특수 목적용 기계 제조업",
-      "composite_score": 85.378482,
-      "financial_snapshot_date": "2026-11-20",
-      "price_cutoff_date": "2026-11-19",
+      "candidate_rank": 4,
+      "source_rank": 4,
+      "code": "025560",
+      "name": "미래산업",
+      "market": "KOSPI",
+      "sector": "측정, 시험, 항해, 제어 및 기타 정밀기기 제조업; 광학기기 제외",
+      "composite_score": 87.455846,
+      "financial_snapshot_date": "2026-11-21",
+      "price_cutoff_date": "2026-11-20",
       "metrics": {
         "M01": {
           "id": "M01",
-          "raw": 1318.786919,
-          "percentile": 99.843811,
+          "raw": 352.485625,
+          "percentile": 98.632812,
           "basis": "2026HY_3M_CFS",
-          "as_of_date": "2026-11-20"
+          "as_of_date": "2026-11-21"
         },
         "M02": {
           "id": "M02",
-          "raw": 32.120489,
-          "percentile": 96.803653,
+          "raw": 33.638905,
+          "percentile": 97.342193,
           "basis": "2026HY_3M_CFS",
-          "as_of_date": "2026-11-20"
+          "as_of_date": "2026-11-21"
         },
         "M03": {
           "id": "M03",
-          "raw": 2.56,
-          "percentile": 93.202985,
-          "basis": "2026-11-19_NAVER_REPORTED_TRAILING_PER",
-          "as_of_date": "2026-11-19"
+          "raw": 4.76,
+          "percentile": 78.781457,
+          "basis": "2026-11-20_NAVER_REPORTED_TRAILING_PER_CA_XCHECK_PASS_POLLING_EPS",
+          "as_of_date": "2026-11-20"
         },
         "M04": {
           "id": "M04",
-          "raw": -26.485398,
-          "percentile": 51.66348,
-          "basis": "2026-05-19->2026-11-19_NAVER_LEGACY_ADJUSTED_CLOSE_CA0",
-          "as_of_date": "2026-11-19"
+          "raw": -11.93609,
+          "percentile": 75.066922,
+          "basis": "2026-05-20->2026-11-20_NAVER_LEGACY_ADJUSTED_CLOSE_CA1_EVT20260727:STOCK_SPLIT:0.200000",
+          "as_of_date": "2026-11-20"
         }
       },
       "financial_safety": {
         "status": "PASS",
         "reason": "PASS",
         "basis": "2026_3Q_BS_20261120050304.zip:CFS:2026-09-30:KRW",
-        "debt_to_equity_pct": 44.77592,
-        "current_ratio_pct": 213.928526,
+        "debt_to_equity_pct": 78.831605,
+        "current_ratio_pct": 141.636158,
         "identity_gap_pct": 0.0
       },
       "valuation": {
         "method": "MARKET_RELATIVE_TRAILING_PER_PERCENTILE",
-        "band": "LOW_RELATIVE_PER",
-        "band_ko": "시장 내 낮은 PER 구간",
-        "m03_percentile": 93.202985,
+        "band": "BELOW_MEDIAN_PER",
+        "band_ko": "시장 중앙값보다 낮은 PER 구간",
+        "m03_percentile": 78.781457,
         "changes_rank": false
       },
       "selection_flags": [
@@ -371,48 +303,48 @@
         "POSITIVE_OPERATING_MARGIN"
       ],
       "research_status": "FINAL_RESEARCH_CANDIDATE",
-      "selection_reason_ko": "4지표 검증 · 재무안정성 PASS · 시장 내 낮은 PER 구간 · 기존 종합순위 6위 기준 조사 후보"
+      "selection_reason_ko": "4지표 검증 · 재무안정성 PASS · 시장 중앙값보다 낮은 PER 구간 · 기존 종합순위 4위 기준 조사 후보"
     },
     {
       "schema_version": "KR4_FINAL_CANDIDATE_V2",
       "policy_version": "STAGE4567_SAFETY_AND_RELATIVE_PER_BAND_V1",
-      "candidate_rank": 6,
-      "source_rank": 7,
+      "candidate_rank": 5,
+      "source_rank": 5,
       "code": "134380",
       "name": "미원화학",
       "market": "KOSPI",
       "sector": "기타 화학제품 제조업",
-      "composite_score": 85.121897,
-      "financial_snapshot_date": "2026-11-20",
-      "price_cutoff_date": "2026-11-19",
+      "composite_score": 86.464515,
+      "financial_snapshot_date": "2026-11-21",
+      "price_cutoff_date": "2026-11-20",
       "metrics": {
         "M01": {
           "id": "M01",
           "raw": 50.267903,
-          "percentile": 86.333463,
+          "percentile": 86.328125,
           "basis": "2026HY_3M_OFS",
-          "as_of_date": "2026-11-20"
+          "as_of_date": "2026-11-21"
         },
         "M02": {
           "id": "M02",
           "raw": 23.096031,
-          "percentile": 92.984641,
+          "percentile": 93.023256,
           "basis": "2026HY_3M_OFS",
-          "as_of_date": "2026-11-20"
+          "as_of_date": "2026-11-21"
         },
         "M03": {
           "id": "M03",
-          "raw": 5.38,
-          "percentile": 74.821493,
-          "basis": "2026-11-19_NAVER_REPORTED_TRAILING_PER",
-          "as_of_date": "2026-11-19"
+          "raw": 5.4,
+          "percentile": 74.728477,
+          "basis": "2026-11-20_NAVER_REPORTED_TRAILING_PER",
+          "as_of_date": "2026-11-20"
         },
         "M04": {
           "id": "M04",
-          "raw": -0.084818,
-          "percentile": 86.347992,
-          "basis": "2026-05-19->2026-11-19_NAVER_LEGACY_ADJUSTED_CLOSE_CA0",
-          "as_of_date": "2026-11-19"
+          "raw": 2.956522,
+          "percentile": 91.778203,
+          "basis": "2026-05-20->2026-11-20_NAVER_LEGACY_ADJUSTED_CLOSE_CA0",
+          "as_of_date": "2026-11-20"
         }
       },
       "financial_safety": {
@@ -427,76 +359,7 @@
         "method": "MARKET_RELATIVE_TRAILING_PER_PERCENTILE",
         "band": "BELOW_MEDIAN_PER",
         "band_ko": "시장 중앙값보다 낮은 PER 구간",
-        "m03_percentile": 74.821493,
-        "changes_rank": false
-      },
-      "selection_flags": [
-        "FOUR_METRICS_COMPLETE",
-        "POSITIVE_TRAILING_PER",
-        "FINANCIAL_SAFETY_PASS",
-        "VALUATION_BAND_CLASSIFIED",
-        "EXISTING_COMPOSITE_RANK_REUSED",
-        "POSITIVE_REVENUE_GROWTH",
-        "POSITIVE_OPERATING_MARGIN"
-      ],
-      "research_status": "FINAL_RESEARCH_CANDIDATE",
-      "selection_reason_ko": "4지표 검증 · 재무안정성 PASS · 시장 중앙값보다 낮은 PER 구간 · 기존 종합순위 7위 기준 조사 후보"
-    },
-    {
-      "schema_version": "KR4_FINAL_CANDIDATE_V2",
-      "policy_version": "STAGE4567_SAFETY_AND_RELATIVE_PER_BAND_V1",
-      "candidate_rank": 7,
-      "source_rank": 8,
-      "code": "049430",
-      "name": "코메론",
-      "market": "KOSDAQ",
-      "sector": "측정, 시험, 항해, 제어 및 기타 정밀기기 제조업; 광학기기 제외",
-      "composite_score": 84.414663,
-      "financial_snapshot_date": "2026-11-20",
-      "price_cutoff_date": "2026-11-19",
-      "metrics": {
-        "M01": {
-          "id": "M01",
-          "raw": 29.885831,
-          "percentile": 75.087856,
-          "basis": "2026HY_3M_CFS",
-          "as_of_date": "2026-11-20"
-        },
-        "M02": {
-          "id": "M02",
-          "raw": 41.646671,
-          "percentile": 98.132005,
-          "basis": "2026HY_3M_CFS",
-          "as_of_date": "2026-11-20"
-        },
-        "M03": {
-          "id": "M03",
-          "raw": 5.86,
-          "percentile": 71.245672,
-          "basis": "2026-11-19_NAVER_REPORTED_TRAILING_PER",
-          "as_of_date": "2026-11-19"
-        },
-        "M04": {
-          "id": "M04",
-          "raw": 7.663249,
-          "percentile": 93.193117,
-          "basis": "2026-05-19->2026-11-19_NAVER_LEGACY_ADJUSTED_CLOSE_CA0",
-          "as_of_date": "2026-11-19"
-        }
-      },
-      "financial_safety": {
-        "status": "PASS",
-        "reason": "PASS",
-        "basis": "2026_3Q_BS_20261120050304.zip:CFS:2026-09-30:KRW",
-        "debt_to_equity_pct": 5.67998,
-        "current_ratio_pct": 1759.815208,
-        "identity_gap_pct": 0.0
-      },
-      "valuation": {
-        "method": "MARKET_RELATIVE_TRAILING_PER_PERCENTILE",
-        "band": "BELOW_MEDIAN_PER",
-        "band_ko": "시장 중앙값보다 낮은 PER 구간",
-        "m03_percentile": 71.245672,
+        "m03_percentile": 74.728477,
         "changes_rank": false
       },
       "selection_flags": [
@@ -510,7 +373,145 @@
         "POSITIVE_6M_MOMENTUM"
       ],
       "research_status": "FINAL_RESEARCH_CANDIDATE",
-      "selection_reason_ko": "4지표 검증 · 재무안정성 PASS · 시장 중앙값보다 낮은 PER 구간 · 기존 종합순위 8위 기준 조사 후보"
+      "selection_reason_ko": "4지표 검증 · 재무안정성 PASS · 시장 중앙값보다 낮은 PER 구간 · 기존 종합순위 5위 기준 조사 후보"
+    },
+    {
+      "schema_version": "KR4_FINAL_CANDIDATE_V2",
+      "policy_version": "STAGE4567_SAFETY_AND_RELATIVE_PER_BAND_V1",
+      "candidate_rank": 6,
+      "source_rank": 7,
+      "code": "255440",
+      "name": "야스",
+      "market": "KOSDAQ",
+      "sector": "특수 목적용 기계 제조업",
+      "composite_score": 85.710186,
+      "financial_snapshot_date": "2026-11-21",
+      "price_cutoff_date": "2026-11-20",
+      "metrics": {
+        "M01": {
+          "id": "M01",
+          "raw": 1318.786919,
+          "percentile": 99.84375,
+          "basis": "2026HY_3M_CFS",
+          "as_of_date": "2026-11-21"
+        },
+        "M02": {
+          "id": "M02",
+          "raw": 32.120489,
+          "percentile": 96.843854,
+          "basis": "2026HY_3M_CFS",
+          "as_of_date": "2026-11-21"
+        },
+        "M03": {
+          "id": "M03",
+          "raw": 2.47,
+          "percentile": 93.801325,
+          "basis": "2026-11-20_NAVER_REPORTED_TRAILING_PER",
+          "as_of_date": "2026-11-20"
+        },
+        "M04": {
+          "id": "M04",
+          "raw": -26.715177,
+          "percentile": 52.351816,
+          "basis": "2026-05-20->2026-11-20_NAVER_LEGACY_ADJUSTED_CLOSE_CA0",
+          "as_of_date": "2026-11-20"
+        }
+      },
+      "financial_safety": {
+        "status": "PASS",
+        "reason": "PASS",
+        "basis": "2026_3Q_BS_20261120050304.zip:CFS:2026-09-30:KRW",
+        "debt_to_equity_pct": 44.77592,
+        "current_ratio_pct": 213.928526,
+        "identity_gap_pct": 0.0
+      },
+      "valuation": {
+        "method": "MARKET_RELATIVE_TRAILING_PER_PERCENTILE",
+        "band": "LOW_RELATIVE_PER",
+        "band_ko": "시장 내 낮은 PER 구간",
+        "m03_percentile": 93.801325,
+        "changes_rank": false
+      },
+      "selection_flags": [
+        "FOUR_METRICS_COMPLETE",
+        "POSITIVE_TRAILING_PER",
+        "FINANCIAL_SAFETY_PASS",
+        "VALUATION_BAND_CLASSIFIED",
+        "EXISTING_COMPOSITE_RANK_REUSED",
+        "POSITIVE_REVENUE_GROWTH",
+        "POSITIVE_OPERATING_MARGIN"
+      ],
+      "research_status": "FINAL_RESEARCH_CANDIDATE",
+      "selection_reason_ko": "4지표 검증 · 재무안정성 PASS · 시장 내 낮은 PER 구간 · 기존 종합순위 7위 기준 조사 후보"
+    },
+    {
+      "schema_version": "KR4_FINAL_CANDIDATE_V2",
+      "policy_version": "STAGE4567_SAFETY_AND_RELATIVE_PER_BAND_V1",
+      "candidate_rank": 7,
+      "source_rank": 8,
+      "code": "115480",
+      "name": "씨유메디칼",
+      "market": "KOSDAQ",
+      "sector": "의료용 기기 제조업",
+      "composite_score": 84.902641,
+      "financial_snapshot_date": "2026-11-21",
+      "price_cutoff_date": "2026-11-20",
+      "metrics": {
+        "M01": {
+          "id": "M01",
+          "raw": 70.568355,
+          "percentile": 90.625,
+          "basis": "2026HY_3M_CFS",
+          "as_of_date": "2026-11-21"
+        },
+        "M02": {
+          "id": "M02",
+          "raw": 27.735556,
+          "percentile": 95.431894,
+          "basis": "2026HY_3M_CFS",
+          "as_of_date": "2026-11-21"
+        },
+        "M03": {
+          "id": "M03",
+          "raw": 2.15,
+          "percentile": 95.350993,
+          "basis": "2026-11-20_NAVER_REPORTED_TRAILING_PER",
+          "as_of_date": "2026-11-20"
+        },
+        "M04": {
+          "id": "M04",
+          "raw": -22.914798,
+          "percentile": 58.202677,
+          "basis": "2026-05-20->2026-11-20_NAVER_LEGACY_ADJUSTED_CLOSE_CA0",
+          "as_of_date": "2026-11-20"
+        }
+      },
+      "financial_safety": {
+        "status": "PASS",
+        "reason": "PASS",
+        "basis": "2026_3Q_BS_20261120050304.zip:CFS:2026-09-30:KRW",
+        "debt_to_equity_pct": 72.791535,
+        "current_ratio_pct": 112.199114,
+        "identity_gap_pct": 0.0
+      },
+      "valuation": {
+        "method": "MARKET_RELATIVE_TRAILING_PER_PERCENTILE",
+        "band": "LOW_RELATIVE_PER",
+        "band_ko": "시장 내 낮은 PER 구간",
+        "m03_percentile": 95.350993,
+        "changes_rank": false
+      },
+      "selection_flags": [
+        "FOUR_METRICS_COMPLETE",
+        "POSITIVE_TRAILING_PER",
+        "FINANCIAL_SAFETY_PASS",
+        "VALUATION_BAND_CLASSIFIED",
+        "EXISTING_COMPOSITE_RANK_REUSED",
+        "POSITIVE_REVENUE_GROWTH",
+        "POSITIVE_OPERATING_MARGIN"
+      ],
+      "research_status": "FINAL_RESEARCH_CANDIDATE",
+      "selection_reason_ko": "4지표 검증 · 재무안정성 PASS · 시장 내 낮은 PER 구간 · 기존 종합순위 8위 기준 조사 후보"
     },
     {
       "schema_version": "KR4_FINAL_CANDIDATE_V2",
@@ -521,37 +522,37 @@
       "name": "빅솔론",
       "market": "KOSDAQ",
       "sector": "컴퓨터 및 주변장치 제조업",
-      "composite_score": 84.132902,
-      "financial_snapshot_date": "2026-11-20",
-      "price_cutoff_date": "2026-11-19",
+      "composite_score": 84.610311,
+      "financial_snapshot_date": "2026-11-21",
+      "price_cutoff_date": "2026-11-20",
       "metrics": {
         "M01": {
           "id": "M01",
           "raw": 48.230779,
-          "percentile": 85.66966,
+          "percentile": 85.664062,
           "basis": "2026HY_3M_CFS",
-          "as_of_date": "2026-11-20"
+          "as_of_date": "2026-11-21"
         },
         "M02": {
           "id": "M02",
           "raw": 24.115471,
-          "percentile": 93.731839,
+          "percentile": 93.770764,
           "basis": "2026HY_3M_CFS",
-          "as_of_date": "2026-11-20"
+          "as_of_date": "2026-11-21"
         },
         "M03": {
           "id": "M03",
-          "raw": 4.96,
-          "percentile": 77.894925,
-          "basis": "2026-11-19_NAVER_REPORTED_TRAILING_PER",
-          "as_of_date": "2026-11-19"
+          "raw": 4.77,
+          "percentile": 78.662252,
+          "basis": "2026-11-20_NAVER_REPORTED_TRAILING_PER",
+          "as_of_date": "2026-11-20"
         },
         "M04": {
           "id": "M04",
-          "raw": -7.233503,
-          "percentile": 79.235182,
-          "basis": "2026-05-19->2026-11-19_NAVER_LEGACY_ADJUSTED_CLOSE_CA0",
-          "as_of_date": "2026-11-19"
+          "raw": -6.6313,
+          "percentile": 80.344168,
+          "basis": "2026-05-20->2026-11-20_NAVER_LEGACY_ADJUSTED_CLOSE_CA0",
+          "as_of_date": "2026-11-20"
         }
       },
       "financial_safety": {
@@ -566,7 +567,7 @@
         "method": "MARKET_RELATIVE_TRAILING_PER_PERCENTILE",
         "band": "BELOW_MEDIAN_PER",
         "band_ko": "시장 중앙값보다 낮은 PER 구간",
-        "m03_percentile": 77.894925,
+        "m03_percentile": 78.662252,
         "changes_rank": false
       },
       "selection_flags": [
@@ -585,42 +586,112 @@
       "schema_version": "KR4_FINAL_CANDIDATE_V2",
       "policy_version": "STAGE4567_SAFETY_AND_RELATIVE_PER_BAND_V1",
       "candidate_rank": 9,
+      "source_rank": 10,
+      "code": "049430",
+      "name": "코메론",
+      "market": "KOSDAQ",
+      "sector": "측정, 시험, 항해, 제어 및 기타 정밀기기 제조업; 광학기기 제외",
+      "composite_score": 84.556061,
+      "financial_snapshot_date": "2026-11-21",
+      "price_cutoff_date": "2026-11-20",
+      "metrics": {
+        "M01": {
+          "id": "M01",
+          "raw": 29.885831,
+          "percentile": 75.078125,
+          "basis": "2026HY_3M_CFS",
+          "as_of_date": "2026-11-21"
+        },
+        "M02": {
+          "id": "M02",
+          "raw": 41.646671,
+          "percentile": 98.172757,
+          "basis": "2026HY_3M_CFS",
+          "as_of_date": "2026-11-21"
+        },
+        "M03": {
+          "id": "M03",
+          "raw": 5.64,
+          "percentile": 72.850993,
+          "basis": "2026-11-20_NAVER_REPORTED_TRAILING_PER",
+          "as_of_date": "2026-11-20"
+        },
+        "M04": {
+          "id": "M04",
+          "raw": 4.008667,
+          "percentile": 92.122371,
+          "basis": "2026-05-20->2026-11-20_NAVER_LEGACY_ADJUSTED_CLOSE_CA0",
+          "as_of_date": "2026-11-20"
+        }
+      },
+      "financial_safety": {
+        "status": "PASS",
+        "reason": "PASS",
+        "basis": "2026_3Q_BS_20261120050304.zip:CFS:2026-09-30:KRW",
+        "debt_to_equity_pct": 5.67998,
+        "current_ratio_pct": 1759.815208,
+        "identity_gap_pct": 0.0
+      },
+      "valuation": {
+        "method": "MARKET_RELATIVE_TRAILING_PER_PERCENTILE",
+        "band": "BELOW_MEDIAN_PER",
+        "band_ko": "시장 중앙값보다 낮은 PER 구간",
+        "m03_percentile": 72.850993,
+        "changes_rank": false
+      },
+      "selection_flags": [
+        "FOUR_METRICS_COMPLETE",
+        "POSITIVE_TRAILING_PER",
+        "FINANCIAL_SAFETY_PASS",
+        "VALUATION_BAND_CLASSIFIED",
+        "EXISTING_COMPOSITE_RANK_REUSED",
+        "POSITIVE_REVENUE_GROWTH",
+        "POSITIVE_OPERATING_MARGIN",
+        "POSITIVE_6M_MOMENTUM"
+      ],
+      "research_status": "FINAL_RESEARCH_CANDIDATE",
+      "selection_reason_ko": "4지표 검증 · 재무안정성 PASS · 시장 중앙값보다 낮은 PER 구간 · 기존 종합순위 10위 기준 조사 후보"
+    },
+    {
+      "schema_version": "KR4_FINAL_CANDIDATE_V2",
+      "policy_version": "STAGE4567_SAFETY_AND_RELATIVE_PER_BAND_V1",
+      "candidate_rank": 10,
       "source_rank": 11,
       "code": "461300",
       "name": "아이스크림미디어",
       "market": "KOSDAQ",
       "sector": "소프트웨어 개발 및 공급업",
-      "composite_score": 83.386381,
-      "financial_snapshot_date": "2026-11-20",
-      "price_cutoff_date": "2026-11-19",
+      "composite_score": 83.614348,
+      "financial_snapshot_date": "2026-11-21",
+      "price_cutoff_date": "2026-11-20",
       "metrics": {
         "M01": {
           "id": "M01",
           "raw": 19.315534,
-          "percentile": 64.740336,
+          "percentile": 64.765625,
           "basis": "2026HY_3M_OFS",
-          "as_of_date": "2026-11-20"
+          "as_of_date": "2026-11-21"
         },
         "M02": {
           "id": "M02",
           "raw": 41.885535,
-          "percentile": 98.215027,
+          "percentile": 98.255814,
           "basis": "2026HY_3M_OFS",
-          "as_of_date": "2026-11-20"
+          "as_of_date": "2026-11-21"
         },
         "M03": {
           "id": "M03",
-          "raw": 3.13,
-          "percentile": 89.863582,
-          "basis": "2026-11-19_NAVER_REPORTED_TRAILING_PER",
-          "as_of_date": "2026-11-19"
+          "raw": 3.08,
+          "percentile": 90.135762,
+          "basis": "2026-11-20_NAVER_REPORTED_TRAILING_PER",
+          "as_of_date": "2026-11-20"
         },
         "M04": {
           "id": "M04",
-          "raw": -6.032097,
-          "percentile": 80.726577,
-          "basis": "2026-05-19->2026-11-19_NAVER_LEGACY_ADJUSTED_CLOSE_CA0",
-          "as_of_date": "2026-11-19"
+          "raw": -5.649718,
+          "percentile": 81.300191,
+          "basis": "2026-05-20->2026-11-20_NAVER_LEGACY_ADJUSTED_CLOSE_CA0",
+          "as_of_date": "2026-11-20"
         }
       },
       "financial_safety": {
@@ -635,7 +706,7 @@
         "method": "MARKET_RELATIVE_TRAILING_PER_PERCENTILE",
         "band": "LOW_RELATIVE_PER",
         "band_ko": "시장 내 낮은 PER 구간",
-        "m03_percentile": 89.863582,
+        "m03_percentile": 90.135762,
         "changes_rank": false
       },
       "selection_flags": [
@@ -649,76 +720,6 @@
       ],
       "research_status": "FINAL_RESEARCH_CANDIDATE",
       "selection_reason_ko": "4지표 검증 · 재무안정성 PASS · 시장 내 낮은 PER 구간 · 기존 종합순위 11위 기준 조사 후보"
-    },
-    {
-      "schema_version": "KR4_FINAL_CANDIDATE_V2",
-      "policy_version": "STAGE4567_SAFETY_AND_RELATIVE_PER_BAND_V1",
-      "candidate_rank": 10,
-      "source_rank": 13,
-      "code": "143240",
-      "name": "사람인",
-      "market": "KOSDAQ",
-      "sector": "자료처리, 호스팅, 포털 및 기타 인터넷 정보매개 서비스업",
-      "composite_score": 82.360719,
-      "financial_snapshot_date": "2026-11-20",
-      "price_cutoff_date": "2026-11-19",
-      "metrics": {
-        "M01": {
-          "id": "M01",
-          "raw": 11.667251,
-          "percentile": 52.948067,
-          "basis": "2026HY_3M_CFS",
-          "as_of_date": "2026-11-20"
-        },
-        "M02": {
-          "id": "M02",
-          "raw": 18.308329,
-          "percentile": 88.916563,
-          "basis": "2026HY_3M_CFS",
-          "as_of_date": "2026-11-20"
-        },
-        "M03": {
-          "id": "M03",
-          "raw": 2.16,
-          "percentile": 95.035224,
-          "basis": "2026-11-19_NAVER_REPORTED_TRAILING_PER",
-          "as_of_date": "2026-11-19"
-        },
-        "M04": {
-          "id": "M04",
-          "raw": 6.0625,
-          "percentile": 92.543021,
-          "basis": "2026-05-19->2026-11-19_NAVER_LEGACY_ADJUSTED_CLOSE_CA0",
-          "as_of_date": "2026-11-19"
-        }
-      },
-      "financial_safety": {
-        "status": "PASS",
-        "reason": "PASS",
-        "basis": "2026_3Q_BS_20261120050304.zip:CFS:2026-09-30:KRW",
-        "debt_to_equity_pct": 14.879426,
-        "current_ratio_pct": 879.760263,
-        "identity_gap_pct": 0.0
-      },
-      "valuation": {
-        "method": "MARKET_RELATIVE_TRAILING_PER_PERCENTILE",
-        "band": "LOW_RELATIVE_PER",
-        "band_ko": "시장 내 낮은 PER 구간",
-        "m03_percentile": 95.035224,
-        "changes_rank": false
-      },
-      "selection_flags": [
-        "FOUR_METRICS_COMPLETE",
-        "POSITIVE_TRAILING_PER",
-        "FINANCIAL_SAFETY_PASS",
-        "VALUATION_BAND_CLASSIFIED",
-        "EXISTING_COMPOSITE_RANK_REUSED",
-        "POSITIVE_REVENUE_GROWTH",
-        "POSITIVE_OPERATING_MARGIN",
-        "POSITIVE_6M_MOMENTUM"
-      ],
-      "research_status": "FINAL_RESEARCH_CANDIDATE",
-      "selection_reason_ko": "4지표 검증 · 재무안정성 PASS · 시장 내 낮은 PER 구간 · 기존 종합순위 13위 기준 조사 후보"
     }
   ]
 }
