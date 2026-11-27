@@ -12,9 +12,9 @@
     "naver_integration_pattern": "https://m.stock.naver.com/api/stock/{code}/integration",
     "naver_price_pattern": "https://m.stock.naver.com/api/stock/{code}/price?pageSize=60&page={page}"
   },
-  "dart_bulk_file": "2026_2Q_PL_20261127033202.zip",
-  "dart_bulk_zip_sha256": "def868b17e02e0b95319ba11f0b392e06c65274d2ac8df42baa46688e72ce147",
-  "generated_kotlin_sha256": "5f9415d3155ebe0d9d9cc99778e186f405193c3eecd9963f6ae225760a9e6aa5",
+  "dart_bulk_file": "2026_2Q_PL_20261128035856.zip",
+  "dart_bulk_zip_sha256": "1bff6155c0686d646de29cb2cfbf1a463cdadf25c77febcc95d1ff69b988b93e",
+  "generated_kotlin_sha256": "42b48e054e0081eb5a2ee1ffde5d85f721ee070989d8f3675486d11556c9e91e",
   "coverage": {
     "m01_available": 2561,
     "m02_available": 2409,
@@ -49,8 +49,8 @@
     }
   },
   "rules": {
-    "M01": "latest OpenDART PL period; 3-month YoY preferred, YTD/annual comparable fallback; CFS preferred to OFS; deterministic name/preferred-share alias recovery; if the latest DART period is unavailable, use exactly the immediately preceding validated quarter's revenue YoY; final rankability guard -100%..5000% with fail-close before full rerank; if the latest DART period is unavailable, use exactly the immediately preceding validated quarter's revenue YoY; final rankability guard -100%..5000% with fail-close before full rerank",
-    "M02": "same latest OpenDART PL period; operating income/revenue on a matched period column; financial/insurance sectors excluded; deterministic name/preferred-share alias recovery; if the latest DART period is unavailable, use exactly the immediately preceding validated quarter's operating margin (financial-sector exclusion unchanged); final rankability guard -5000%..200% with fail-close before full rerank; if the latest DART period is unavailable, use exactly the immediately preceding validated quarter's operating margin (financial-sector exclusion unchanged); final rankability guard -5000%..200% with fail-close before full rerank",
+    "M01": "latest OpenDART PL period; 3-month YoY preferred, YTD/annual comparable fallback; CFS preferred to OFS; deterministic name/preferred-share alias recovery; if the latest DART period is unavailable, use exactly the immediately preceding validated quarter's revenue YoY; final rankability guard -100%..5000% with fail-close before full rerank",
+    "M02": "same latest OpenDART PL period; operating income/revenue on a matched period column; financial/insurance sectors excluded; deterministic name/preferred-share alias recovery; if the latest DART period is unavailable, use exactly the immediately preceding validated quarter's operating margin (financial-sector exclusion unchanged); final rankability guard -5000%..200% with fail-close before full rerank",
     "M03": "positive reported trailing PER preferred; otherwise completed-session close / actual non-consensus EPS; missing integration EPS may fall back to latest non-consensus annual EPS; negative EPS yields negative PER with 0 valuation percentile; zero EPS remains unavailable",
     "M04": "close-to-close return from last session on/before six-month target to price cutoff; at least 150 calendar days required",
     "percentiles": "available-universe percentile; higher is better except PER where lower is better",
@@ -6377,7 +6377,7 @@
       },
       "m02": {
         "raw": -4.13182,
-        "percentile": 25.290698,
+        "percentile": 25.249169,
         "reason": null,
         "basis": "2026HY_3M_OFS"
       },
@@ -6393,7 +6393,7 @@
         "reason": null,
         "basis": "2026-05-27->2026-11-27_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 43.992704,
+      "composite": 43.982321,
       "rank": 1238
     },
     "003850": {
@@ -8218,7 +8218,7 @@
         "basis": "2026-05-27->2026-11-27_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 25.308465,
-      "rank": 2002
+      "rank": 2003
     },
     "005290": {
       "name": "동진쎄미켐",
@@ -16683,7 +16683,7 @@
       },
       "m02": {
         "raw": -4.153082,
-        "percentile": 25.249169,
+        "percentile": 25.207641,
         "reason": null,
         "basis": "2026HY_3M_OFS"
       },
@@ -16699,7 +16699,7 @@
         "reason": null,
         "basis": "2026-05-27->2026-11-27_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 29.295158,
+      "composite": 29.284776,
       "rank": 1841
     },
     "015230": {
@@ -20555,7 +20555,7 @@
       },
       "m02": {
         "raw": -4.164767,
-        "percentile": 25.166113,
+        "percentile": 25.124585,
         "reason": null,
         "basis": "2026HY_3M_OFS"
       },
@@ -20571,7 +20571,7 @@
         "reason": null,
         "basis": "2026-05-27->2026-11-27_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 34.067326,
+      "composite": 34.056944,
       "rank": 1637
     },
     "024840": {
@@ -27626,8 +27626,8 @@
         "basis": "2026HY_3M_CFS"
       },
       "m02": {
-        "raw": -4.298127,
-        "percentile": 24.958472,
+        "raw": -4.01173,
+        "percentile": 25.373754,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -27643,8 +27643,8 @@
         "reason": null,
         "basis": "2026-05-27->2026-11-27_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 25.214825,
-      "rank": 2005
+      "composite": 25.318645,
+      "rank": 2001
     },
     "040420": {
       "name": "정상제이엘에스",
@@ -29643,7 +29643,7 @@
       },
       "m02": {
         "raw": -4.262122,
-        "percentile": 25.0,
+        "percentile": 24.958472,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -29659,8 +29659,8 @@
         "reason": null,
         "basis": "2026-05-27->2026-11-27_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 25.462495,
-      "rank": 1993
+      "composite": 25.452113,
+      "rank": 1994
     },
     "046310": {
       "name": "백금T&A",
@@ -30556,7 +30556,7 @@
         "basis": "2026-05-27->2026-11-27_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 25.30545,
-      "rank": 2003
+      "rank": 2004
     },
     "049180": {
       "name": "셀루메드",
@@ -32171,7 +32171,7 @@
       },
       "m02": {
         "raw": -4.05075,
-        "percentile": 25.373754,
+        "percentile": 25.332226,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -32187,7 +32187,7 @@
         "reason": null,
         "basis": "2026-05-27->2026-11-27_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 30.059119,
+      "composite": 30.048737,
       "rank": 1809
     },
     "053160": {
@@ -32203,7 +32203,7 @@
       },
       "m02": {
         "raw": -4.187026,
-        "percentile": 25.083056,
+        "percentile": 25.041528,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -32219,7 +32219,7 @@
         "reason": null,
         "basis": "2026-05-27->2026-11-27_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 27.070593,
+      "composite": 27.060211,
       "rank": 1937
     },
     "053210": {
@@ -34716,7 +34716,7 @@
         "basis": "2026-05-27->2026-11-27_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 25.460922,
-      "rank": 1994
+      "rank": 1993
     },
     "060900": {
       "name": "에이전트AI",
@@ -34795,7 +34795,7 @@
       },
       "m02": {
         "raw": -4.252121,
-        "percentile": 25.041528,
+        "percentile": 25.0,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -34811,8 +34811,8 @@
         "reason": null,
         "basis": "2026-05-27->2026-11-27_NAVER_LEGACY_ADJUSTED_CLOSE_CA1_EVT20260528:REVERSE_SPLIT:5.002581"
       },
-      "composite": 17.764232,
-      "rank": 2174
+      "composite": 17.75385,
+      "rank": 2175
     },
     "061090": {
       "name": "세나테크놀로지",
@@ -38336,7 +38336,7 @@
         "basis": "2026-05-27->2026-11-27_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
       "composite": 25.309591,
-      "rank": 2001
+      "rank": 2002
     },
     "071840": {
       "name": "롯데하이마트",
@@ -41583,7 +41583,7 @@
       },
       "m02": {
         "raw": -4.168299,
-        "percentile": 25.124585,
+        "percentile": 25.083056,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -41599,7 +41599,7 @@
         "reason": null,
         "basis": "2026-05-27->2026-11-27_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 36.819768,
+      "composite": 36.809386,
       "rank": 1517
     },
     "084680": {
@@ -64113,7 +64113,7 @@
       },
       "m02": {
         "raw": -4.164153,
-        "percentile": 25.207641,
+        "percentile": 25.166113,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -64129,7 +64129,7 @@
         "reason": null,
         "basis": "2026-05-27->2026-11-27_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 28.945519,
+      "composite": 28.935137,
       "rank": 1857
     },
     "263720": {
@@ -65474,7 +65474,7 @@
         "basis": "2026-05-27->2026-11-27_NAVER_LEGACY_ADJUSTED_CLOSE_CA1_EVT20260821:STOCK_SPLIT:0.200087"
       },
       "composite": 17.764025,
-      "rank": 2175
+      "rank": 2174
     },
     "277070": {
       "name": "린드먼아시아",
@@ -66257,7 +66257,7 @@
       },
       "m02": {
         "raw": -4.077545,
-        "percentile": 25.332226,
+        "percentile": 25.290698,
         "reason": null,
         "basis": "2026HY_3M_CFS"
       },
@@ -66273,7 +66273,7 @@
         "reason": null,
         "basis": "2026-05-27->2026-11-27_NAVER_LEGACY_ADJUSTED_CLOSE_CA0"
       },
-      "composite": 12.682673,
+      "composite": 12.672291,
       "rank": 2258
     },
     "288330": {
@@ -77838,7 +77838,7 @@
         "basis": "2026-05-27->2026-11-27_NAVER_LEGACY_ADJUSTED_CLOSE_CA1_EVT20261104:REVERSE_SPLIT:5.000000"
       },
       "composite": 25.240941,
-      "rank": 2004
+      "rank": 2005
     },
     "419050": {
       "name": "삼기에너지솔루션즈",
@@ -84995,10 +84995,46 @@
   "recent_dart_fallback": {
     "policy": "one-quarter-back validated OpenDART history only; no multi-quarter skip; final economic fail-close + full rerank",
     "source_period": "2026Q1",
-    "m01_recovered": 0,
-    "m02_recovered": 0,
-    "m01_codes": [],
-    "m02_codes": [],
+    "m01_recovered": 17,
+    "m02_recovered": 17,
+    "m01_codes": [
+      "001080",
+      "001570",
+      "003620",
+      "004960",
+      "021820",
+      "030960",
+      "032800",
+      "050860",
+      "082660",
+      "093240",
+      "097870",
+      "169330",
+      "189690",
+      "334970",
+      "344820",
+      "365330",
+      "950210"
+    ],
+    "m02_codes": [
+      "001080",
+      "001570",
+      "003620",
+      "004960",
+      "021820",
+      "030960",
+      "032800",
+      "050860",
+      "093240",
+      "097870",
+      "169330",
+      "189690",
+      "334970",
+      "344820",
+      "365330",
+      "489460",
+      "950210"
+    ],
     "economic_guard": {
       "m01_range": [
         -100.0,
@@ -85008,50 +85044,131 @@
         -5000.0,
         200.0
       ],
-      "m01_excluded_codes": [],
-      "m02_excluded_codes": []
+      "m01_excluded_codes": [
+        "068240",
+        "214610",
+        "288330",
+        "308080",
+        "493280"
+      ],
+      "m02_excluded_codes": [
+        "0082N0",
+        "068240",
+        "378800",
+        "389470"
+      ]
     },
     "coverage_before": {
-      "m01_available": 2561,
-      "m02_available": 2409,
+      "m01_available": 2479,
+      "m02_available": 2390,
       "m03_available": 2618,
       "m04_available": 2616,
-      "complete_count": 2374,
-      "ranked_count": 2374
+      "complete_count": 2360,
+      "ranked_count": 2360
     },
     "coverage_after": {
-      "m01_available": 2561,
-      "m02_available": 2409,
+      "m01_available": 2491,
+      "m02_available": 2403,
       "m03_available": 2618,
       "m04_available": 2616,
-      "complete_count": 2374,
-      "ranked_count": 2374
+      "complete_count": 2368,
+      "ranked_count": 2368
     }
   },
   "fiscal_calendar_recovery": {
     "policy": "non-December fiscal issuers only; latest completed Naver actual quarter; consensus rejected; existing numeric metrics preserved",
-    "m01_recovered": 0,
-    "m02_recovered": 0,
-    "m01_codes": [],
-    "m02_codes": [],
-    "details": {},
+    "m01_recovered": 9,
+    "m02_recovered": 2,
+    "m01_codes": [
+      "001720",
+      "0030R0",
+      "190650",
+      "289080",
+      "395400",
+      "448730",
+      "900120",
+      "900290",
+      "950250"
+    ],
+    "m02_codes": [
+      "395400",
+      "448730"
+    ],
+    "details": {
+      "001720": {
+        "fiscal_month": 3,
+        "latest_actual_period": "202609",
+        "prior_year_period": "202509",
+        "m01": 172.955289
+      },
+      "0030R0": {
+        "fiscal_month": 8,
+        "latest_actual_period": "202608",
+        "prior_year_period": "202508",
+        "m01": -1.123596
+      },
+      "190650": {
+        "fiscal_month": 3,
+        "latest_actual_period": "202606",
+        "prior_year_period": "202506",
+        "m01": 3.357664
+      },
+      "289080": {
+        "fiscal_month": 3,
+        "latest_actual_period": "202606",
+        "prior_year_period": "202506",
+        "m01": 40.0
+      },
+      "395400": {
+        "fiscal_month": 3,
+        "latest_actual_period": "202606",
+        "prior_year_period": "202506",
+        "m01": 12.957746,
+        "m02": 89.48
+      },
+      "448730": {
+        "fiscal_month": 1,
+        "latest_actual_period": "202607",
+        "prior_year_period": "202507",
+        "m01": 23.770492,
+        "m02": 65.4
+      },
+      "900120": {
+        "fiscal_month": 6,
+        "latest_actual_period": "202606",
+        "prior_year_period": "202506",
+        "m01": -10.362694
+      },
+      "900290": {
+        "fiscal_month": 6,
+        "latest_actual_period": "202606",
+        "prior_year_period": "202506",
+        "m01": 38.996764
+      },
+      "950250": {
+        "fiscal_month": 4,
+        "latest_actual_period": "202607",
+        "prior_year_period": "202507",
+        "m01": -15.789474
+      }
+    },
     "coverage_before": {
-      "m01_available": 2561,
-      "m02_available": 2409,
+      "m01_available": 2491,
+      "m02_available": 2403,
       "m03_available": 2618,
       "m04_available": 2616,
-      "complete_count": 2374,
-      "ranked_count": 2374
+      "complete_count": 2368,
+      "ranked_count": 2368
     },
     "coverage_after": {
-      "m01_available": 2561,
-      "m02_available": 2409,
+      "m01_available": 2500,
+      "m02_available": 2405,
       "m03_available": 2618,
       "m04_available": 2616,
-      "complete_count": 2374,
-      "ranked_count": 2374
+      "complete_count": 2370,
+      "ranked_count": 2370
     },
-    "candidate_count": 0,
+    "candidate_count": 9,
     "source_errors": {}
   },
   "standard_actual_recovery": {
