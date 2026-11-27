@@ -71,7 +71,7 @@
       "financial_safety": {
         "status": "PASS",
         "reason": "PASS",
-        "basis": "2026_3Q_BS_20261127035218.zip:CFS:2026-09-30:KRW",
+        "basis": "2026_3Q_BS_20261128042105.zip:CFS:2026-09-30:KRW",
         "debt_to_equity_pct": 20.692547,
         "current_ratio_pct": 674.150231,
         "identity_gap_pct": 0.0
@@ -141,7 +141,7 @@
       "financial_safety": {
         "status": "PASS",
         "reason": "PASS",
-        "basis": "2026_3Q_BS_20261127035218.zip:OFS:2026-09-30:KRW",
+        "basis": "2026_3Q_BS_20261128042105.zip:OFS:2026-09-30:KRW",
         "debt_to_equity_pct": 62.297171,
         "current_ratio_pct": 254.834339,
         "identity_gap_pct": 0.0
@@ -211,7 +211,7 @@
       "financial_safety": {
         "status": "PASS",
         "reason": "PASS",
-        "basis": "2026_3Q_BS_20261127035218.zip:CFS:2026-09-30:KRW",
+        "basis": "2026_3Q_BS_20261128042105.zip:CFS:2026-09-30:KRW",
         "debt_to_equity_pct": 118.253836,
         "current_ratio_pct": 172.734123,
         "identity_gap_pct": 0.0
@@ -281,7 +281,7 @@
       "financial_safety": {
         "status": "PASS",
         "reason": "PASS",
-        "basis": "2026_3Q_BS_20261127035218.zip:OFS:2026-09-30:KRW",
+        "basis": "2026_3Q_BS_20261128042105.zip:OFS:2026-09-30:KRW",
         "debt_to_equity_pct": 31.690952,
         "current_ratio_pct": 379.056734,
         "identity_gap_pct": 0.0
@@ -351,7 +351,7 @@
       "financial_safety": {
         "status": "PASS",
         "reason": "PASS",
-        "basis": "2026_3Q_BS_20261127035218.zip:CFS:2026-09-30:KRW",
+        "basis": "2026_3Q_BS_20261128042105.zip:CFS:2026-09-30:KRW",
         "debt_to_equity_pct": 44.77592,
         "current_ratio_pct": 213.928526,
         "identity_gap_pct": 0.0
@@ -420,7 +420,7 @@
       "financial_safety": {
         "status": "PASS",
         "reason": "PASS",
-        "basis": "2026_3Q_BS_20261127035218.zip:CFS:2026-09-30:KRW",
+        "basis": "2026_3Q_BS_20261128042105.zip:CFS:2026-09-30:KRW",
         "debt_to_equity_pct": 20.799962,
         "current_ratio_pct": 454.828151,
         "identity_gap_pct": 0.0
@@ -490,7 +490,7 @@
       "financial_safety": {
         "status": "PASS",
         "reason": "PASS",
-        "basis": "2026_3Q_BS_20261127035218.zip:OFS:2026-09-30:KRW",
+        "basis": "2026_3Q_BS_20261128042105.zip:OFS:2026-09-30:KRW",
         "debt_to_equity_pct": 20.390777,
         "current_ratio_pct": 124.881238,
         "identity_gap_pct": 0.0
@@ -559,7 +559,7 @@
       "financial_safety": {
         "status": "PASS",
         "reason": "PASS",
-        "basis": "2026_3Q_BS_20261127035218.zip:CFS:2026-09-30:KRW",
+        "basis": "2026_3Q_BS_20261128042105.zip:CFS:2026-09-30:KRW",
         "debt_to_equity_pct": 39.369973,
         "current_ratio_pct": 248.123704,
         "identity_gap_pct": 0.0
@@ -628,7 +628,7 @@
       "financial_safety": {
         "status": "PASS",
         "reason": "PASS",
-        "basis": "2026_3Q_BS_20261127035218.zip:CFS:2026-09-30:KRW",
+        "basis": "2026_3Q_BS_20261128042105.zip:CFS:2026-09-30:KRW",
         "debt_to_equity_pct": 148.492064,
         "current_ratio_pct": 173.227946,
         "identity_gap_pct": 0.0
@@ -698,7 +698,7 @@
       "financial_safety": {
         "status": "PASS",
         "reason": "PASS",
-        "basis": "2026_3Q_BS_20261127035218.zip:CFS:2026-09-30:KRW",
+        "basis": "2026_3Q_BS_20261128042105.zip:CFS:2026-09-30:KRW",
         "debt_to_equity_pct": 14.879426,
         "current_ratio_pct": 879.760263,
         "identity_gap_pct": 0.0
